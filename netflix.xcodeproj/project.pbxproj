@@ -14,9 +14,10 @@
 		A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991628BEBD040077A5A6 /* AppConfiguration.swift */; };
 		A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */; };
 		A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991A28BEC0580077A5A6 /* AppDependencies.swift */; };
-		A18B991E28BEC5CE0077A5A6 /* HomeDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991D28BEC5CE0077A5A6 /* HomeDependencies.swift */; };
-		A18B992128BEC6050077A5A6 /* HomeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992028BEC6050077A5A6 /* HomeFlowCoordinator.swift */; };
 		A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992528BEC7920077A5A6 /* HomeViewController.swift */; };
+		A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992C28BEE7990077A5A6 /* AuthViewController.swift */; };
+		A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */; };
+		A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993028BEE9320077A5A6 /* SceneDependencies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,9 +30,10 @@
 		A18B991628BEBD040077A5A6 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B991A28BEC0580077A5A6 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
-		A18B991D28BEC5CE0077A5A6 /* HomeDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDependencies.swift; sourceTree = "<group>"; };
-		A18B992028BEC6050077A5A6 /* HomeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B992528BEC7920077A5A6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		A18B992C28BEE7990077A5A6 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		A18B993028BEE9320077A5A6 /* SceneDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDependencies.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,8 @@
 		A18B991228BEB9490077A5A6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A18B992828BEE73C0077A5A6 /* Flow */,
+				A18B992728BEE7350077A5A6 /* Auth Scene */,
 				A18B991528BEBB9C0077A5A6 /* Home Scene */,
 			);
 			path = Presentation;
@@ -107,11 +111,11 @@
 			isa = PBXGroup;
 			children = (
 				A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */,
-				A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */,
 				A18B991628BEBD040077A5A6 /* AppConfiguration.swift */,
-				A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */,
 				A18B991A28BEC0580077A5A6 /* AppDependencies.swift */,
-				A18B991C28BEC5750077A5A6 /* Home Scene Dependencies */,
+				A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */,
+				A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */,
+				A18B993028BEE9320077A5A6 /* SceneDependencies.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -129,35 +133,10 @@
 		A18B991528BEBB9C0077A5A6 /* Home Scene */ = {
 			isa = PBXGroup;
 			children = (
-				A18B991F28BEC5FA0077A5A6 /* Flow */,
-				A18B992228BEC7750077A5A6 /* Home */,
-			);
-			path = "Home Scene";
-			sourceTree = "<group>";
-		};
-		A18B991C28BEC5750077A5A6 /* Home Scene Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				A18B991D28BEC5CE0077A5A6 /* HomeDependencies.swift */,
-			);
-			path = "Home Scene Dependencies";
-			sourceTree = "<group>";
-		};
-		A18B991F28BEC5FA0077A5A6 /* Flow */ = {
-			isa = PBXGroup;
-			children = (
-				A18B992028BEC6050077A5A6 /* HomeFlowCoordinator.swift */,
-			);
-			path = Flow;
-			sourceTree = "<group>";
-		};
-		A18B992228BEC7750077A5A6 /* Home */ = {
-			isa = PBXGroup;
-			children = (
 				A18B992428BEC7860077A5A6 /* View */,
 				A18B992328BEC7820077A5A6 /* ViewModel */,
 			);
-			path = Home;
+			path = "Home Scene";
 			sourceTree = "<group>";
 		};
 		A18B992328BEC7820077A5A6 /* ViewModel */ = {
@@ -171,6 +150,38 @@
 			isa = PBXGroup;
 			children = (
 				A18B992528BEC7920077A5A6 /* HomeViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A18B992728BEE7350077A5A6 /* Auth Scene */ = {
+			isa = PBXGroup;
+			children = (
+				A18B992B28BEE7540077A5A6 /* View */,
+				A18B992A28BEE7510077A5A6 /* ViewModel */,
+			);
+			path = "Auth Scene";
+			sourceTree = "<group>";
+		};
+		A18B992828BEE73C0077A5A6 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		A18B992A28BEE7510077A5A6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A18B992B28BEE7540077A5A6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A18B992C28BEE7990077A5A6 /* AuthViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -245,13 +256,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A18B992128BEC6050077A5A6 /* HomeFlowCoordinator.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
+				A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
-				A18B991E28BEC5CE0077A5A6 /* HomeDependencies.swift in Sources */,
+				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
+				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

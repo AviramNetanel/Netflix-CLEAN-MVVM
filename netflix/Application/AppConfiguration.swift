@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - AppConfiguration class
+
 final class AppConfiguration {
     
     lazy var apiScheme: String = {

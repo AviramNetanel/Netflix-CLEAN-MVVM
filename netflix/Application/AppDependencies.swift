@@ -5,31 +5,33 @@
 //  Created by Zach Bazov on 31/08/2022.
 //
 
-import UIKit
+import Foundation
 
-enum AppScene {
-    case home
-}
+// MARK: - Dependable protocol
 
 protocol Dependable {
-    
+    func createSceneDependencies() -> Dependable?
 }
 
-protocol AppDependencies {
-    func createScene(for scene: AppScene) -> Dependable
+// MARK: - Dependable default implementation
+
+extension Dependable {
+    func createSceneDependencies() -> Dependable? { return nil }
 }
 
-final class DefaultAppDependencies {
+// MARK: - AppDependencies class
+
+final class AppDependencies {
     
     lazy var configuration = AppConfiguration()
 }
 
-extension DefaultAppDependencies: AppDependencies {
-    func createScene(for scene: AppScene) -> Dependable {
-        switch scene {
-        case .home:
-            let dependencies = HomeDependencies.Dependencies()
-            return HomeDependencies(dependencies: dependencies) as Dependable
-        }
+// MARK: - Dependable implementation
+
+extension AppDependencies: Dependable {
+    
+    func createSceneDependencies() -> Dependable? {
+        let dependencies = SceneDependencies.Dependencies()
+        return SceneDependencies(dependencies: dependencies) as Dependable
     }
 }
