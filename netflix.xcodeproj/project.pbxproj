@@ -18,6 +18,24 @@
 		A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992C28BEE7990077A5A6 /* AuthViewController.swift */; };
 		A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */; };
 		A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993028BEE9320077A5A6 /* SceneDependencies.swift */; };
+		A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */; };
+		A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */; };
+		A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993A28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift */; };
+		A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993C28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift */; };
+		A18B993F28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993E28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift */; };
+		A18B994228BFD9C70077A5A6 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994128BFD9C70077A5A6 /* Section.swift */; };
+		A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994328BFD9CC0077A5A6 /* Media.swift */; };
+		A18B994628BFD9D50077A5A6 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994528BFD9D50077A5A6 /* Season.swift */; };
+		A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994728BFD9DA0077A5A6 /* Episode.swift */; };
+		A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994928BFD9DD0077A5A6 /* User.swift */; };
+		A18B995228BFEF050077A5A6 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995128BFEF050077A5A6 /* JWT.swift */; };
+		A18B995528BFF1D10077A5A6 /* User+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995428BFF1D10077A5A6 /* User+Codable.swift */; };
+		A18B995728BFF66C0077A5A6 /* Section+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */; };
+		A18B995928BFF6A20077A5A6 /* Media+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */; };
+		A18B995B28BFFB500077A5A6 /* Season+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */; };
+		A18B995D28BFFBF30077A5A6 /* Episode+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */; };
+		A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995F28BFFCA80077A5A6 /* Sectionable.swift */; };
+		A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996128BFFE2B0077A5A6 /* Mediable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +52,24 @@
 		A18B992C28BEE7990077A5A6 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B993028BEE9320077A5A6 /* SceneDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDependencies.swift; sourceTree = "<group>"; };
+		A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
+		A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddBehaviors.swift"; sourceTree = "<group>"; };
+		A18B993A28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonEmptyTitleNavigationBarBehavior.swift; sourceTree = "<group>"; };
+		A18B993C28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackStyleNavigationBarBehavior.swift; sourceTree = "<group>"; };
+		A18B993E28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
+		A18B994128BFD9C70077A5A6 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		A18B994328BFD9CC0077A5A6 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		A18B994528BFD9D50077A5A6 /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
+		A18B994728BFD9DA0077A5A6 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+		A18B994928BFD9DD0077A5A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A18B995128BFEF050077A5A6 /* JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
+		A18B995428BFF1D10077A5A6 /* User+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Codable.swift"; sourceTree = "<group>"; };
+		A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Section+Decodable.swift"; sourceTree = "<group>"; };
+		A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+Decodable.swift"; sourceTree = "<group>"; };
+		A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Season+Decodable.swift"; sourceTree = "<group>"; };
+		A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Episode+Decodable.swift"; sourceTree = "<group>"; };
+		A18B995F28BFFCA80077A5A6 /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
+		A18B996128BFFE2B0077A5A6 /* Mediable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mediable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +122,8 @@
 		A18B991028BEB9440077A5A6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A18B995E28BFFCA10077A5A6 /* Protocols */,
+				A18B995328BFF1260077A5A6 /* Extensions */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -93,6 +131,8 @@
 		A18B991128BEB9460077A5A6 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				A18B994028BFD96E0077A5A6 /* Entities */,
+				A18B995028BFEEC70077A5A6 /* Interfaces */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -103,6 +143,7 @@
 				A18B992828BEE73C0077A5A6 /* Flow */,
 				A18B992728BEE7350077A5A6 /* Auth Scene */,
 				A18B991528BEBB9C0077A5A6 /* Home Scene */,
+				A18B993228BFC6FC0077A5A6 /* Utilities */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -135,6 +176,7 @@
 			children = (
 				A18B992428BEC7860077A5A6 /* View */,
 				A18B992328BEC7820077A5A6 /* ViewModel */,
+				A18B993928BFC95A0077A5A6 /* Behaviors */,
 			);
 			path = "Home Scene";
 			sourceTree = "<group>";
@@ -184,6 +226,82 @@
 				A18B992C28BEE7990077A5A6 /* AuthViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		A18B993228BFC6FC0077A5A6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A18B993428BFC7130077A5A6 /* Protocols */,
+				A18B993328BFC70D0077A5A6 /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A18B993328BFC70D0077A5A6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */,
+				A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */,
+				A18B993E28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A18B993428BFC7130077A5A6 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A18B993928BFC95A0077A5A6 /* Behaviors */ = {
+			isa = PBXGroup;
+			children = (
+				A18B993A28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift */,
+				A18B993C28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift */,
+			);
+			path = Behaviors;
+			sourceTree = "<group>";
+		};
+		A18B994028BFD96E0077A5A6 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A18B994928BFD9DD0077A5A6 /* User.swift */,
+				A18B994128BFD9C70077A5A6 /* Section.swift */,
+				A18B994328BFD9CC0077A5A6 /* Media.swift */,
+				A18B994528BFD9D50077A5A6 /* Season.swift */,
+				A18B994728BFD9DA0077A5A6 /* Episode.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A18B995028BFEEC70077A5A6 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				A18B995128BFEF050077A5A6 /* JWT.swift */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		A18B995328BFF1260077A5A6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A18B995428BFF1D10077A5A6 /* User+Codable.swift */,
+				A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */,
+				A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */,
+				A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */,
+				A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A18B995E28BFFCA10077A5A6 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A18B995F28BFFCA80077A5A6 /* Sectionable.swift */,
+				A18B996128BFFE2B0077A5A6 /* Mediable.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,15 +374,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A18B995D28BFFBF30077A5A6 /* Episode+Decodable.swift in Sources */,
+				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
+				A18B995528BFF1D10077A5A6 /* User+Codable.swift in Sources */,
+				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
+				A18B993F28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift in Sources */,
+				A18B995228BFEF050077A5A6 /* JWT.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
+				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
+				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
+				A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */,
+				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */,
+				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
+				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
+				A18B995B28BFFB500077A5A6 /* Season+Decodable.swift in Sources */,
+				A18B995928BFF6A20077A5A6 /* Media+Decodable.swift in Sources */,
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
+				A18B994628BFD9D50077A5A6 /* Season.swift in Sources */,
+				A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */,
+				A18B995728BFF66C0077A5A6 /* Section+Decodable.swift in Sources */,
+				A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

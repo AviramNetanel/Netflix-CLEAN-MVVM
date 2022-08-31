@@ -8,8 +8,17 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("home loaded")
+        
+        setupBehaviors()
+    }
+    
+    // MARK: Private
+    
+    private func setupBehaviors() {
+        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
+                      BlackStyleNavigationBarBehavior()])
     }
 }
