@@ -1,5 +1,5 @@
 //
-//  User+Codable.swift
+//  UserDTO+DataMapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - Codable implementation
+// MARK: - UserDTO struct
 
-extension User: Codable {
+struct UserDTO: Codable {
     
     enum CodingKeys: String, CodingKey {
         case name,
@@ -19,6 +19,13 @@ extension User: Codable {
              role,
              active
     }
+    
+    let name: String
+    let email: String
+    let password: String
+    let passwordConfirm: String
+    let role: String
+    let active: Bool
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -45,5 +52,18 @@ extension User: Codable {
         try container.encode(passwordConfirm, forKey: .passwordConfirm)
         try container.encode(role, forKey: .role)
         try container.encode(active, forKey: .active)
+    }
+}
+
+// MARK: - DataMapping
+
+extension UserDTO {
+    func toDomain() -> User {
+        return .init(name: name,
+                     email: email,
+                     password: password,
+                     passwordConfirm: passwordConfirm,
+                     role: role,
+                     active: active)
     }
 }

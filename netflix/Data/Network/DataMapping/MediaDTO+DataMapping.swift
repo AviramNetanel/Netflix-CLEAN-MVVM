@@ -1,5 +1,5 @@
 //
-//  Media+Decodable.swift
+//  MediaDTO+DataMapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - Codable implementation
+// MARK: - MediaDTO struct
 
-extension Media: Codable {
+struct MediaDTO: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id,
@@ -41,6 +41,38 @@ extension Media: Codable {
              writers,
              previewURL
     }
+    
+    var id: String?
+    var title: String
+    var rating: CGFloat
+    var description: String
+    var cast: String
+    var isHD: Bool
+    var displayCover: String
+    var detailCover: String
+    var hasWatched: Bool
+    var newRelease: Bool
+    var logoPosition: String
+    var slug: String
+    var presentedCover: String?
+    var presentedLogo: String?
+    var presentedDisplayLogo: String?
+    
+    var displayLogos: [String]?
+    var logos: [String]
+    var genres: [String]
+    var trailers: [String]
+    var covers: [String]
+    
+    var duration: String?
+    var seasonCount: Int?
+    var episodeCount: Int?
+    var isNetflixExclusive: Bool?
+    
+    var year: Int?
+    var length: String?
+    var writers: String?
+    var previewURL: String?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -136,26 +168,37 @@ extension Media: Codable {
     }
 }
 
-// MARK: - Equatable implementation
+// MARK: - DataMapping
 
-extension Media: Equatable {
-    static func ==(lhs: Media, rhs: Media) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-// MARK: - Comparable implemntation
-
-extension Media: Comparable {
-    static func <(lhs: Media, rhs: Media) -> Bool {
-        return lhs.title < rhs.title
-    }
-}
-
-// MARK: - Hashable implementation
-
-extension Media: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self)
+extension MediaDTO {
+    func toDomain() -> Media {
+        return .init(id: id,
+                     title: title,
+                     rating: rating,
+                     description: description,
+                     cast: cast,
+                     isHD: isHD,
+                     displayCover: displayCover,
+                     detailCover: detailCover,
+                     hasWatched: hasWatched,
+                     newRelease: newRelease,
+                     logoPosition: logoPosition,
+                     slug: slug,
+                     presentedCover: presentedCover,
+                     presentedLogo: presentedLogo,
+                     presentedDisplayLogo: presentedDisplayLogo,
+                     displayLogos: displayLogos,
+                     logos: logos,
+                     genres: genres,
+                     trailers: trailers,
+                     covers: covers,
+                     duration: duration,
+                     seasonCount: seasonCount,
+                     episodeCount: episodeCount,
+                     isNetflixExclusive: isNetflixExclusive,
+                     year: year,
+                     length: length,
+                     writers: writers,
+                     previewURL: previewURL)
     }
 }

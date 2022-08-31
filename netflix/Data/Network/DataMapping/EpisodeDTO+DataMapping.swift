@@ -1,5 +1,5 @@
 //
-//  Episode+Decodable.swift
+//  EpisodeDTO+DataMapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - Decodable implementation
+// MARK: - EpisodeDTO struct
 
-extension Episode: Decodable {
+struct EpisodeDTO: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id,
@@ -20,6 +20,14 @@ extension Episode: Decodable {
              episode,
              url
     }
+    
+    let id: String
+    let tvShow: String
+    let title: String
+    let slug: String
+    let season: Int
+    let episode: Int
+    let url: String
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -38,5 +46,19 @@ extension Episode: Decodable {
         self.season = season
         self.episode = episode
         self.url = url
+    }
+}
+
+// MARK: - DataMapping
+
+extension EpisodeDTO {
+    func toDomain() -> Episode {
+        return .init(id: id,
+                     tvShow: tvShow,
+                     title: title,
+                     slug: slug,
+                     season: season,
+                     episode: episode,
+                     url: url)
     }
 }

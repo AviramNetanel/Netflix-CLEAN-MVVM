@@ -28,11 +28,11 @@
 		A18B994628BFD9D50077A5A6 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994528BFD9D50077A5A6 /* Season.swift */; };
 		A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994728BFD9DA0077A5A6 /* Episode.swift */; };
 		A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B994928BFD9DD0077A5A6 /* User.swift */; };
-		A18B995528BFF1D10077A5A6 /* User+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995428BFF1D10077A5A6 /* User+Codable.swift */; };
-		A18B995728BFF66C0077A5A6 /* Section+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */; };
-		A18B995928BFF6A20077A5A6 /* Media+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */; };
-		A18B995B28BFFB500077A5A6 /* Season+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */; };
-		A18B995D28BFFBF30077A5A6 /* Episode+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */; };
+		A18B995528BFF1D10077A5A6 /* UserDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995428BFF1D10077A5A6 /* UserDTO+DataMapping.swift */; };
+		A18B995728BFF66C0077A5A6 /* SectionDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995628BFF66C0077A5A6 /* SectionDTO+DataMapping.swift */; };
+		A18B995928BFF6A20077A5A6 /* MediaDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995828BFF6A20077A5A6 /* MediaDTO+DataMapping.swift */; };
+		A18B995B28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995A28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift */; };
+		A18B995D28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995C28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift */; };
 		A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995F28BFFCA80077A5A6 /* Sectionable.swift */; };
 		A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996128BFFE2B0077A5A6 /* Mediable.swift */; };
 /* End PBXBuildFile section */
@@ -61,11 +61,11 @@
 		A18B994528BFD9D50077A5A6 /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
 		A18B994728BFD9DA0077A5A6 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		A18B994928BFD9DD0077A5A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		A18B995428BFF1D10077A5A6 /* User+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Codable.swift"; sourceTree = "<group>"; };
-		A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Section+Decodable.swift"; sourceTree = "<group>"; };
-		A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+Decodable.swift"; sourceTree = "<group>"; };
-		A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Season+Decodable.swift"; sourceTree = "<group>"; };
-		A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Episode+Decodable.swift"; sourceTree = "<group>"; };
+		A18B995428BFF1D10077A5A6 /* UserDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDTO+DataMapping.swift"; sourceTree = "<group>"; };
+		A18B995628BFF66C0077A5A6 /* SectionDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionDTO+DataMapping.swift"; sourceTree = "<group>"; };
+		A18B995828BFF6A20077A5A6 /* MediaDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaDTO+DataMapping.swift"; sourceTree = "<group>"; };
+		A18B995A28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeasonDTO+DataMapping.swift"; sourceTree = "<group>"; };
+		A18B995C28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodeDTO+DataMapping.swift"; sourceTree = "<group>"; };
 		A18B995F28BFFCA80077A5A6 /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
 		A18B996128BFFE2B0077A5A6 /* Mediable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mediable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,7 +120,6 @@
 		A18B991028BEB9440077A5A6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				A18B995E28BFFCA10077A5A6 /* Protocols */,
 				A18B996528C005F80077A5A6 /* Network */,
 			);
 			path = Data;
@@ -129,6 +128,7 @@
 		A18B991128BEB9460077A5A6 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				A18B995E28BFFCA10077A5A6 /* Protocols */,
 				A18B994028BFD96E0077A5A6 /* Models */,
 				A18B996328C004BE0077A5A6 /* UseCases */,
 				A18B995028BFEEC70077A5A6 /* Repositories */,
@@ -284,11 +284,11 @@
 		A18B995328BFF1260077A5A6 /* DataMapping */ = {
 			isa = PBXGroup;
 			children = (
-				A18B995428BFF1D10077A5A6 /* User+Codable.swift */,
-				A18B995628BFF66C0077A5A6 /* Section+Decodable.swift */,
-				A18B995828BFF6A20077A5A6 /* Media+Decodable.swift */,
-				A18B995A28BFFB500077A5A6 /* Season+Decodable.swift */,
-				A18B995C28BFFBF30077A5A6 /* Episode+Decodable.swift */,
+				A18B995428BFF1D10077A5A6 /* UserDTO+DataMapping.swift */,
+				A18B995628BFF66C0077A5A6 /* SectionDTO+DataMapping.swift */,
+				A18B995828BFF6A20077A5A6 /* MediaDTO+DataMapping.swift */,
+				A18B995A28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift */,
+				A18B995C28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift */,
 			);
 			path = DataMapping;
 			sourceTree = "<group>";
@@ -387,10 +387,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A18B995D28BFFBF30077A5A6 /* Episode+Decodable.swift in Sources */,
+				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift in Sources */,
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
-				A18B995528BFF1D10077A5A6 /* User+Codable.swift in Sources */,
+				A18B995528BFF1D10077A5A6 /* UserDTO+DataMapping.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
 				A18B993F28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift in Sources */,
@@ -404,14 +404,14 @@
 				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
-				A18B995B28BFFB500077A5A6 /* Season+Decodable.swift in Sources */,
-				A18B995928BFF6A20077A5A6 /* Media+Decodable.swift in Sources */,
+				A18B995B28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift in Sources */,
+				A18B995928BFF6A20077A5A6 /* MediaDTO+DataMapping.swift in Sources */,
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
 				A18B994628BFD9D50077A5A6 /* Season.swift in Sources */,
 				A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */,
-				A18B995728BFF66C0077A5A6 /* Section+Decodable.swift in Sources */,
+				A18B995728BFF66C0077A5A6 /* SectionDTO+DataMapping.swift in Sources */,
 				A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
