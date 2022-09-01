@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - HomeViewController class
+
 final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {

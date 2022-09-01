@@ -48,6 +48,8 @@
 		A18B997C28C029A30077A5A6 /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997B28C029A30077A5A6 /* DataTransferService.swift */; };
 		A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997D28C03BB10077A5A6 /* Observable.swift */; };
 		A18B998028C03CA20077A5A6 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997F28C03CA20077A5A6 /* JWT.swift */; };
+		A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B998328C03E1C0077A5A6 /* CoreDataStorage.swift */; };
+		A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A18B998528C03F050077A5A6 /* CoreDataStorage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		A18B997B28C029A30077A5A6 /* DataTransferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferService.swift; sourceTree = "<group>"; };
 		A18B997D28C03BB10077A5A6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		A18B997F28C03CA20077A5A6 /* JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
+		A18B998328C03E1C0077A5A6 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
+		A18B998628C03F050077A5A6 /* CoreDataStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStorage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				A18B996528C005F80077A5A6 /* Network */,
+				A18B998128C03DED0077A5A6 /* PersistentStorage */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -364,6 +369,23 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		A18B998128C03DED0077A5A6 /* PersistentStorage */ = {
+			isa = PBXGroup;
+			children = (
+				A18B998228C03DFE0077A5A6 /* CoreDataStorage */,
+			);
+			path = PersistentStorage;
+			sourceTree = "<group>";
+		};
+		A18B998228C03DFE0077A5A6 /* CoreDataStorage */ = {
+			isa = PBXGroup;
+			children = (
+				A18B998328C03E1C0077A5A6 /* CoreDataStorage.swift */,
+				A18B998528C03F050077A5A6 /* CoreDataStorage.xcdatamodeld */,
+			);
+			path = CoreDataStorage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -434,6 +456,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */,
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
@@ -449,6 +472,7 @@
 				A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */,
 				A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */,
 				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
+				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
@@ -684,6 +708,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A18B998528C03F050077A5A6 /* CoreDataStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A18B998628C03F050077A5A6 /* CoreDataStorage.xcdatamodel */,
+			);
+			currentVersion = A18B998628C03F050077A5A6 /* CoreDataStorage.xcdatamodel */;
+			path = CoreDataStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A18B98F028BEB62C0077A5A6 /* Project object */;
 }

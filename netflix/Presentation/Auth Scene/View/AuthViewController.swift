@@ -7,9 +7,20 @@
 
 import UIKit
 
+// MARK: - AuthViewController class
+
 final class AuthViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("auth loaded")
+        
+        setupBehaviors()
+    }
+    
+    // MARK: Private
+    
+    private func setupBehaviors() {
+        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
+                      BlackStyleNavigationBarBehavior()])
     }
 }
