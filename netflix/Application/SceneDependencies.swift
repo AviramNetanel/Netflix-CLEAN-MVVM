@@ -19,6 +19,7 @@ final class SceneDependencies {
     
     struct Dependencies {
         fileprivate let viewControllers = ViewControllers()
+        let dataTransferService: DataTransferService
     }
     
     fileprivate struct ViewControllers {

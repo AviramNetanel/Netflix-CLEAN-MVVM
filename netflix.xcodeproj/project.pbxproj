@@ -35,6 +35,19 @@
 		A18B995D28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995C28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift */; };
 		A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B995F28BFFCA80077A5A6 /* Sectionable.swift */; };
 		A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996128BFFE2B0077A5A6 /* Mediable.swift */; };
+		A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996628C00F5C0077A5A6 /* TVShowsRepository.swift */; };
+		A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996828C00F660077A5A6 /* MoviesRepository.swift */; };
+		A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996A28C00F6E0077A5A6 /* AuthRepository.swift */; };
+		A18B996D28C00F7C0077A5A6 /* SectionsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996C28C00F7C0077A5A6 /* SectionsRepository.swift */; };
+		A18B996F28C00F850077A5A6 /* SeasonsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B996E28C00F850077A5A6 /* SeasonsRepository.swift */; };
+		A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997028C00F890077A5A6 /* EpisodesRepository.swift */; };
+		A18B997328C00F8E0077A5A6 /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997228C00F8E0077A5A6 /* UsersRepository.swift */; };
+		A18B997628C0119A0077A5A6 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997528C0119A0077A5A6 /* NetworkConfig.swift */; };
+		A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997728C020FC0077A5A6 /* NetworkService.swift */; };
+		A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997928C0244D0077A5A6 /* Endpoint.swift */; };
+		A18B997C28C029A30077A5A6 /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997B28C029A30077A5A6 /* DataTransferService.swift */; };
+		A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997D28C03BB10077A5A6 /* Observable.swift */; };
+		A18B998028C03CA20077A5A6 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B997F28C03CA20077A5A6 /* JWT.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +81,19 @@
 		A18B995C28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodeDTO+DataMapping.swift"; sourceTree = "<group>"; };
 		A18B995F28BFFCA80077A5A6 /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
 		A18B996128BFFE2B0077A5A6 /* Mediable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mediable.swift; sourceTree = "<group>"; };
+		A18B996628C00F5C0077A5A6 /* TVShowsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowsRepository.swift; sourceTree = "<group>"; };
+		A18B996828C00F660077A5A6 /* MoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesRepository.swift; sourceTree = "<group>"; };
+		A18B996A28C00F6E0077A5A6 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
+		A18B996C28C00F7C0077A5A6 /* SectionsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsRepository.swift; sourceTree = "<group>"; };
+		A18B996E28C00F850077A5A6 /* SeasonsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonsRepository.swift; sourceTree = "<group>"; };
+		A18B997028C00F890077A5A6 /* EpisodesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesRepository.swift; sourceTree = "<group>"; };
+		A18B997228C00F8E0077A5A6 /* UsersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
+		A18B997528C0119A0077A5A6 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
+		A18B997728C020FC0077A5A6 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		A18B997928C0244D0077A5A6 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		A18B997B28C029A30077A5A6 /* DataTransferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferService.swift; sourceTree = "<group>"; };
+		A18B997D28C03BB10077A5A6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		A18B997F28C03CA20077A5A6 /* JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +139,7 @@
 		A18B990F28BEB93F0077A5A6 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				A18B997428C011700077A5A6 /* Network */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -128,7 +155,6 @@
 		A18B991128BEB9460077A5A6 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				A18B995E28BFFCA10077A5A6 /* Protocols */,
 				A18B994028BFD96E0077A5A6 /* Models */,
 				A18B996328C004BE0077A5A6 /* UseCases */,
 				A18B995028BFEEC70077A5A6 /* Repositories */,
@@ -232,6 +258,7 @@
 			children = (
 				A18B993428BFC7130077A5A6 /* Protocols */,
 				A18B993328BFC70D0077A5A6 /* Extensions */,
+				A18B997D28C03BB10077A5A6 /* Observable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -265,11 +292,13 @@
 		A18B994028BFD96E0077A5A6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A18B995E28BFFCA10077A5A6 /* Protocols */,
 				A18B994928BFD9DD0077A5A6 /* User.swift */,
 				A18B994128BFD9C70077A5A6 /* Section.swift */,
 				A18B994328BFD9CC0077A5A6 /* Media.swift */,
 				A18B994528BFD9D50077A5A6 /* Season.swift */,
 				A18B994728BFD9DA0077A5A6 /* Episode.swift */,
+				A18B997F28C03CA20077A5A6 /* JWT.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -277,6 +306,13 @@
 		A18B995028BFEEC70077A5A6 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				A18B996A28C00F6E0077A5A6 /* AuthRepository.swift */,
+				A18B997228C00F8E0077A5A6 /* UsersRepository.swift */,
+				A18B996C28C00F7C0077A5A6 /* SectionsRepository.swift */,
+				A18B996628C00F5C0077A5A6 /* TVShowsRepository.swift */,
+				A18B996828C00F660077A5A6 /* MoviesRepository.swift */,
+				A18B996E28C00F850077A5A6 /* SeasonsRepository.swift */,
+				A18B997028C00F890077A5A6 /* EpisodesRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -313,6 +349,17 @@
 			isa = PBXGroup;
 			children = (
 				A18B995328BFF1260077A5A6 /* DataMapping */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		A18B997428C011700077A5A6 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A18B997528C0119A0077A5A6 /* NetworkConfig.swift */,
+				A18B997728C020FC0077A5A6 /* NetworkService.swift */,
+				A18B997B28C029A30077A5A6 /* DataTransferService.swift */,
+				A18B997928C0244D0077A5A6 /* Endpoint.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -387,31 +434,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
+				A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */,
+				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
+				A18B996D28C00F7C0077A5A6 /* SectionsRepository.swift in Sources */,
 				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+DataMapping.swift in Sources */,
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B995528BFF1D10077A5A6 /* UserDTO+DataMapping.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
+				A18B997C28C029A30077A5A6 /* DataTransferService.swift in Sources */,
 				A18B993F28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift in Sources */,
+				A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */,
+				A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */,
+				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
 				A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */,
+				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
+				A18B997628C0119A0077A5A6 /* NetworkConfig.swift in Sources */,
 				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
+				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
 				A18B995B28BFFB500077A5A6 /* SeasonDTO+DataMapping.swift in Sources */,
 				A18B995928BFF6A20077A5A6 /* MediaDTO+DataMapping.swift in Sources */,
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
+				A18B996F28C00F850077A5A6 /* SeasonsRepository.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
 				A18B994628BFD9D50077A5A6 /* Season.swift in Sources */,
 				A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */,
 				A18B995728BFF66C0077A5A6 /* SectionDTO+DataMapping.swift in Sources */,
+				A18B997328C00F8E0077A5A6 /* UsersRepository.swift in Sources */,
 				A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

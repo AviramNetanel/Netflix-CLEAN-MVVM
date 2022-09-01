@@ -24,6 +24,12 @@ extension Dependable {
 final class AppDependencies {
     
     lazy var configuration = AppConfiguration()
+    
+    lazy var dataTransferService: DataTransferService = {
+        let config = NetworkConfig(baseURL: URL(string: configuration.apiScheme + "://" + configuration.apiHost)!)
+        let defaultNetworkService = DefaultNetworkService(config: config)
+        return DefaultDataTransferService(with: defaultNetworkService)
+    }()
 }
 
 // MARK: - Dependable implementation
@@ -31,7 +37,7 @@ final class AppDependencies {
 extension AppDependencies: Dependable {
     
     func createSceneDependencies() -> Dependable? {
-        let dependencies = SceneDependencies.Dependencies()
+        let dependencies = SceneDependencies.Dependencies(dataTransferService: dataTransferService)
         return SceneDependencies(dependencies: dependencies) as Dependable
     }
 }
