@@ -9,12 +9,20 @@ import UIKit
 
 // MARK: - HomeViewController class
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController, StoryboardInstantiable {
+    
+    private var viewModel: HomeViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupBehaviors()
+    }
+    
+    static func create(with viewModel: HomeViewModel) -> HomeViewController {
+        let view = HomeViewController.instantiateViewController()
+        view.viewModel = viewModel
+        return view
     }
     
     // MARK: Private

@@ -118,8 +118,10 @@ extension Requestable {
         if !bodyParameters.isEmpty {
             urlRequest.httpBody = encodeBody(bodyParameters: bodyParameters, bodyEncoding: bodyEncoding)
         }
+        
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = allHeaders
+        urlRequest.setValue("application/json", forHTTPHeaderField: "content-type")
         return urlRequest
     }
     
@@ -128,7 +130,7 @@ extension Requestable {
     private func encodeBody(bodyParameters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
         switch bodyEncoding {
         case .jsonSerializationData:
-            return try? JSONSerialization.data(withJSONObject: bodyEncoding)
+            return try? JSONSerialization.data(withJSONObject: bodyParameters)
         case .stringEncodingAscii:
             return bodyParameters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
         }
@@ -149,7 +151,7 @@ enum RequestGenerationError: Error {
     case components
 }
 
-// MARK: -
+// MARK: - Dictionary + `queryString`
 
 private extension Dictionary {
     var queryString: String {
@@ -158,6 +160,8 @@ private extension Dictionary {
             .addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) ?? ""
     }
 }
+
+// MARK: - Encodable + `toDictionary`
 
 private extension Encodable {
     func toDictionary() throws -> [String: Any]? {

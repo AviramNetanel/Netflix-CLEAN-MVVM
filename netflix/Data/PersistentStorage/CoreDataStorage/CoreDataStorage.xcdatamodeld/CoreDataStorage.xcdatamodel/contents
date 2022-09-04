@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="JWT" representedClassName="JWT" syncable="YES" codeGenerationType="class">
+    <entity name="AuthRequestEntity" representedClassName="AuthRequestEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="user" optional="YES" attributeType="Transformable" valueTransformerName="UserToDataTransformer" customClassName="UserDTO"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AuthResponseEntity" inverseName="request" inverseEntity="AuthResponseEntity"/>
+    </entity>
+    <entity name="AuthResponseEntity" representedClassName="AuthResponseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="UserToDataTransformer" customClassName="UserDTO"/>
         <attribute name="token" optional="YES" attributeType="String"/>
+        <relationship name="request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AuthRequestEntity" inverseName="response" inverseEntity="AuthRequestEntity"/>
+    </entity>
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="passwordConfirm" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="JWT" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="AuthRequestEntity" positionX="-36" positionY="18" width="128" height="59"/>
+        <element name="AuthResponseEntity" positionX="-54" positionY="0" width="128" height="74"/>
+        <element name="UserEntity" positionX="-18" positionY="81" width="128" height="119"/>
     </elements>
 </model>

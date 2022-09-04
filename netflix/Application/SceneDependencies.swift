@@ -29,8 +29,32 @@ final class SceneDependencies {
     
     private let dependencies: Dependencies
     
+    lazy var authResponseCache: AuthResponseStorage = CoreDataAuthResponseStorage()
+    
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+    }
+    
+    // MARK: UseCases
+    
+    func createAuthUseCase() -> AuthUseCase {
+        return DefaultAuthUseCase(authRepository: createAuthRepository())
+    }
+    
+    // MARK: Repositories
+    
+    func createAuthRepository() -> AuthRepository {
+        return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService, cache: authResponseCache)
+    }
+    
+    // MARK: Home
+    
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
+        return HomeViewController.create(with: createHomeViewModel())
+    }
+    
+    func createHomeViewModel() -> HomeViewModel {
+        return DefaultHomeViewModel(authUseCase: createAuthUseCase(), actions: nil)
     }
 }
 
@@ -51,6 +75,6 @@ extension SceneDependencies: SceneDependable {
 extension SceneDependencies: FlowCoordinatorDependencies {
     func instantiateViewController(for scene: FlowCoordinator.Scene) -> UIViewController {
         var viewControllers = dependencies.viewControllers
-        return scene == .auth ? viewControllers.authViewController : viewControllers.homeViewController
+        return scene == .auth ? viewControllers.authViewController : createHomeViewController(actions: .init())
     }
 }
