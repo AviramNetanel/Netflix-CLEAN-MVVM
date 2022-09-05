@@ -12,7 +12,7 @@ import Foundation
 protocol AuthRepository {
     
     func signUp(query: AuthQuery,
-                cached: @escaping (AuthResponseDTO) -> Void,
+                cached: @escaping (User?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
     
     func signIn(query: AuthQuery,

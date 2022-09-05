@@ -28,22 +28,39 @@ final class DefaultAuthUseCase: AuthUseCase {
     func execute(requestValue: AuthUseCaseRequestValue,
                  cached: @escaping (User?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
-        return authRepository.signIn(query: requestValue.query,
-                                     cached: cached,
-                                     completion: { result in
+        let x = authRepository.signIn(query: requestValue.query,
+                                      cached: cached) { result in
+             switch result {
+             case .success(let response):
+                 cached(requestValue.query.user.toDomain())
+                 completion(.success(response))
+             case .failure(let error):
+                 completion(.failure(error))
+             }
+         }
+        let y = authRepository.signUp(query: requestValue.query,
+                                      cached: cached) { result in
             switch result {
             case .success(let response):
-                cached(requestValue.query.user.toDomain())
                 completion(.success(response))
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
+        return requestValue.method == .signin ? x : y
     }
 }
 
 // MARK: - AuthUseCaseRequestValue struct
 
 struct AuthUseCaseRequestValue {
+    let method: AuthMethod
     let query: AuthQuery
+}
+
+// MARK: - AuthMethod struct
+
+enum AuthMethod {
+    case signup
+    case signin
 }

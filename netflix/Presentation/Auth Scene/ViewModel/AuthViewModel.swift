@@ -27,28 +27,58 @@ final class DefaultAuthViewModel: AuthViewModel {
     private let actions: AuthViewModelActions?
     
     private var authorizationTask: Cancellable? {
-        willSet { authorizationTask?.cancel() }
+        willSet {
+            authorizationTask?.cancel()
+        }
     }
     
     init(authUseCase: AuthUseCase, actions: AuthViewModelActions? = nil) {
         self.authUseCase = authUseCase
         self.actions = actions
         
-        self.signIn()
+//        self.signIn()
+//        self.signUp()
     }
     
     // MARK:
     
+    func signUp() {
+        let userDTO = UserDTO(name: "new",
+                              email: "newone@gmail.com",
+                              password: "newpassword",
+                              passwordConfirm: "newpassword",
+                              role: "user",
+                              active: true)
+        let requestDTO = AuthRequestDTO(user: userDTO)
+        let authQuery = AuthQuery(user: requestDTO.user)
+        register(query: authQuery)
+    }
+    
     func signIn() {
-        let requestDTO = AuthRequestDTO(user: UserDTO(email: "qwe@gmail.com", password: "qweqweqwe"))
+        let userDTO = UserDTO(email: "qwe@gmail.com", password: "qweqweqwe")
+        let requestDTO = AuthRequestDTO(user: userDTO)
         let authQuery = AuthQuery(user: requestDTO.user)
         authorization(query: authQuery)
     }
     
     // MARK: Private
     
+    private func register(query: AuthQuery) {
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query), cached: { _ in }, completion: { result in
+            switch result {
+            case .success(let response):
+                print("signUpResponse: \(response)")
+            case .failure(let error):
+                print("signUpError \(error)")
+            }
+        })
+    }
+    
     private func authorization(query: AuthQuery) {
-        authorizationTask = authUseCase.execute(requestValue: .init(query: query), cached: { _ in }, completion: { result in
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signin,
+                                                                    query: query),
+                                                cached: { _ in },
+                                                completion: { result in
             switch result {
             case .success(let response):
                 print("r", response)

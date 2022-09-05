@@ -13,7 +13,12 @@ struct APIEndpoint {
     
     static func signUp(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
         return Endpoint(path: "api/v1/users/signup",
-                        method: .post)
+                        method: .post,
+                        bodyParameters: ["name": authRequestDTO.user.name!,
+                                         "email": authRequestDTO.user.email!,
+                                         "password": authRequestDTO.user.password!,
+                                         "passwordConfirm": authRequestDTO.user.passwordConfirm!],
+                        bodyEncoding: .jsonSerializationData)
     }
     
     static func signIn(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
