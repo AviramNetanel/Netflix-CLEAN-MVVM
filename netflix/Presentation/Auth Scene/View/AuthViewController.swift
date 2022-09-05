@@ -14,6 +14,8 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     @IBOutlet weak var statusBarGradientView: UIView!
     @IBOutlet weak var topGradientView: UIView!
     @IBOutlet weak var bottomGradientView: UIView!
+    @IBOutlet weak var signInButton: UIBarButtonItem!
+    @IBOutlet weak var signUpButton: UIButton!
     
     private var viewModel: AuthViewModel!
     

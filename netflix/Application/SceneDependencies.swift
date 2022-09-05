@@ -78,6 +78,7 @@ extension SceneDependencies: FlowCoordinatorDependencies {
     func instantiateViewController(for scene: FlowCoordinator.Scene) -> UIViewController {
         switch scene {
         case .auth:
+//            let actions = AuthViewModelActions(showSignInViewController: <#T##() -> Void#>)
             return createAuthViewController(actions: .init())
         case .home:
             return createHomeViewController(actions: .init())

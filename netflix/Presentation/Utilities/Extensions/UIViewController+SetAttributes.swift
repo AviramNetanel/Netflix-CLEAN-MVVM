@@ -12,7 +12,7 @@ import UIKit
 extension UIViewController {
     func setAttributes(for fields: [UITextField]) {
         for field in fields {
-            field.setPlaceholderAtrributes(string: field.placeholder!, attributes: NSAttributedString.placeholderAttributes)
+            field.setPlaceholderAtrributes(string: field.placeholder ?? .init(), attributes: NSAttributedString.placeholderAttributes)
         }
     }
 }

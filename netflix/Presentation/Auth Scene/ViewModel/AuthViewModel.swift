@@ -10,7 +10,7 @@ import Foundation
 // MARK: - AuthViewModelActions struct
 
 struct AuthViewModelActions {
-    
+//    let showSignInViewController: () -> Void
 }
 
 // MARK: - AuthViewModelInput protocol
