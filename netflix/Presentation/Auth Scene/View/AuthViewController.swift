@@ -40,6 +40,7 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     
     private func setupViews() {
         setGradientLayers()
+        setActions()
     }
     
     private func setGradientLayers() {
@@ -63,5 +64,16 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
                                                  .black.withAlphaComponent(0.75),
                                                  .clear],
                                             locations: [0.0, 0.5, 1.0])
+    }
+    
+    private func setActions() {
+        guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
+        
+        signInButton.target = viewModel
+        signInButton.action = #selector(viewModel.signInButtonDidTap)
+        
+        signUpButton.addTarget(viewModel,
+                               action: #selector(viewModel.signUpButtonDidTap),
+                               for: .touchUpInside)
     }
 }

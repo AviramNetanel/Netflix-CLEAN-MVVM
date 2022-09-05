@@ -13,7 +13,6 @@ final class AppFlowCoordinator {
     
     private let appDependencies: AppDependencies
     private var navigationController: UINavigationController
-    private var flowCoordinator: FlowCoordinator!
     
     init(navigationController: UINavigationController, dependencies: AppDependencies) {
         self.navigationController = navigationController
@@ -22,7 +21,7 @@ final class AppFlowCoordinator {
     
     func createSceneFlow() {
         let sceneDependencies = appDependencies.createSceneDependencies()
-        flowCoordinator = sceneDependencies.createFlowCoordinator(navigationController: navigationController)
-        flowCoordinator.coordinate(to: .auth)
+        let flowCoordinator = sceneDependencies.createFlowCoordinator(navigationController: navigationController)
+        flowCoordinator.coordinate()
     }
 }

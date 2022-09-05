@@ -115,6 +115,8 @@
                         <outlet property="signUpButton" destination="Vba-QI-8I4" id="4h0-cQ-FmG"/>
                         <outlet property="statusBarGradientView" destination="ZhT-Gs-772" id="CNU-v1-QZh"/>
                         <outlet property="topGradientView" destination="BzR-2i-DYB" id="MCH-yH-8f7"/>
+                        <segue destination="PCR-Hq-oCg" kind="show" identifier="SegueSignInViewController" id="Y6g-Nm-CRE"/>
+                        <segue destination="DPY-tv-6UP" kind="show" identifier="SegueSignUpViewController" id="BoD-g5-Dtp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

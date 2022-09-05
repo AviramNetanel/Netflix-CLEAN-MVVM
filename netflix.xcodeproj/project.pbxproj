@@ -18,7 +18,7 @@
 		A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991A28BEC0580077A5A6 /* AppDependencies.swift */; };
 		A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992528BEC7920077A5A6 /* HomeViewController.swift */; };
 		A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992C28BEE7990077A5A6 /* AuthViewController.swift */; };
-		A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */; };
+		A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992E28BEE7C10077A5A6 /* AuthFlowCoordinator.swift */; };
 		A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993028BEE9320077A5A6 /* SceneDependencies.swift */; };
 		A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */; };
 		A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */; };
@@ -95,7 +95,7 @@
 		A18B991A28BEC0580077A5A6 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		A18B992528BEC7920077A5A6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A18B992C28BEE7990077A5A6 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		A18B992E28BEE7C10077A5A6 /* AuthFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B993028BEE9320077A5A6 /* SceneDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDependencies.swift; sourceTree = "<group>"; };
 		A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
 		A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddBehaviors.swift"; sourceTree = "<group>"; };
@@ -230,7 +230,6 @@
 		A18B991228BEB9490077A5A6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				A18B992828BEE73C0077A5A6 /* Flow */,
 				A18B992728BEE7350077A5A6 /* Auth Scene */,
 				A18B991528BEBB9C0077A5A6 /* Home Scene */,
 				A18B993228BFC6FC0077A5A6 /* Utilities */,
@@ -292,6 +291,7 @@
 		A18B992728BEE7350077A5A6 /* Auth Scene */ = {
 			isa = PBXGroup;
 			children = (
+				A18B992828BEE73C0077A5A6 /* Flow */,
 				A18B992B28BEE7540077A5A6 /* View */,
 				A18B992A28BEE7510077A5A6 /* ViewModel */,
 			);
@@ -301,7 +301,7 @@
 		A18B992828BEE73C0077A5A6 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				A18B992E28BEE7C10077A5A6 /* FlowCoordinator.swift */,
+				A18B992E28BEE7C10077A5A6 /* AuthFlowCoordinator.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -689,7 +689,7 @@
 				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
-				A18B992F28BEE7C10077A5A6 /* FlowCoordinator.swift in Sources */,
+				A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */,
 				A18B999828C0DFC00077A5A6 /* AuthResponseDTO.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				A18B997628C0119A0077A5A6 /* NetworkConfig.swift in Sources */,

@@ -10,7 +10,7 @@ import UIKit
 // MARK: - SceneDependable protocol
 
 protocol SceneDependable {
-    func createFlowCoordinator(navigationController: UINavigationController) -> FlowCoordinator
+    func createFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
 }
 
 // MARK: - SceneDependencies class
@@ -45,12 +45,12 @@ final class SceneDependencies {
     // MARK: Auth
     
     func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
-        return AuthViewController.create(with: createAuthViewModel())
+        return AuthViewController.create(with: createAuthViewModel(actions: actions))
     }
     
-    func createAuthViewModel() -> AuthViewModel {
+    func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
         return DefaultAuthViewModel(authUseCase: createAuthUseCase(),
-                                    actions: nil)
+                                    actions: actions)
     }
     
     // MARK: Home
@@ -67,21 +67,11 @@ final class SceneDependencies {
 // MARK: - SceneDependable implementation
 
 extension SceneDependencies: SceneDependable {
-    func createFlowCoordinator(navigationController: UINavigationController) -> FlowCoordinator {
-        return FlowCoordinator(navigationController: navigationController, dependencies: self)
+    func createFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator {
+        return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
 }
 
 // MARK: - FlowCoordinatorDependencies implementation
 
-extension SceneDependencies: FlowCoordinatorDependencies {
-    func instantiateViewController(for scene: FlowCoordinator.Scene) -> UIViewController {
-        switch scene {
-        case .auth:
-//            let actions = AuthViewModelActions(showSignInViewController: <#T##() -> Void#>)
-            return createAuthViewController(actions: .init())
-        case .home:
-            return createHomeViewController(actions: .init())
-        }
-    }
-}
+extension SceneDependencies: AuthFlowCoordinatorDependencies {}

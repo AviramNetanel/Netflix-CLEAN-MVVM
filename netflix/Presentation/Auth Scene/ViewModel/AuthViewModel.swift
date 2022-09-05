@@ -10,7 +10,8 @@ import Foundation
 // MARK: - AuthViewModelActions struct
 
 struct AuthViewModelActions {
-//    let showSignInViewController: () -> Void
+    let showSignInViewController: () -> Void
+    let showSignUpViewController: () -> Void
 }
 
 // MARK: - AuthViewModelInput protocol
@@ -19,6 +20,7 @@ protocol AuthViewModelInput {
     func viewDidLoad()
     func didSignUp()
     func didSignIn()
+    func signInButtonDidTap()
 }
 
 // MARK: - AuthViewModelOutput protocol
@@ -106,6 +108,16 @@ extension DefaultAuthViewModel: AuthViewModelInput {
         let authQuery = AuthQuery(user: requestDTO.user)
         
         signIn(query: authQuery)
+    }
+    
+    @objc
+    func signInButtonDidTap() {
+        actions?.showSignInViewController()
+    }
+    
+    @objc
+    func signUpButtonDidTap() {
+        actions?.showSignUpViewController()
     }
 }
 
