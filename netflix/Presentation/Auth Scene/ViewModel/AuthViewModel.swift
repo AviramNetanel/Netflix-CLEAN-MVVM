@@ -55,7 +55,7 @@ final class DefaultAuthViewModel: AuthViewModel {
     }
     
     func signIn() {
-        let userDTO = UserDTO(email: "qwe@gmail.com", password: "qweqweqwe")
+        let userDTO = UserDTO(email: "newone@gmail.com", password: "newpassword")
         let requestDTO = AuthRequestDTO(user: userDTO)
         let authQuery = AuthQuery(user: requestDTO.user)
         authorization(query: authQuery)
@@ -64,7 +64,9 @@ final class DefaultAuthViewModel: AuthViewModel {
     // MARK: Private
     
     private func register(query: AuthQuery) {
-        authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query), cached: { _ in }, completion: { result in
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query),
+                                                cached: { _ in },
+                                                completion: { result in
             switch result {
             case .success(let response):
                 print("signUpResponse: \(response)")
@@ -75,15 +77,14 @@ final class DefaultAuthViewModel: AuthViewModel {
     }
     
     private func authorization(query: AuthQuery) {
-        authorizationTask = authUseCase.execute(requestValue: .init(method: .signin,
-                                                                    query: query),
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signin, query: query),
                                                 cached: { _ in },
                                                 completion: { result in
             switch result {
             case .success(let response):
-                print("r", response)
+                print("signInResponse \(response)")
             case .failure(let error):
-                print("e", error)
+                print("signInError \(error)")
             }
         })
     }

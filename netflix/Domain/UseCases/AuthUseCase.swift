@@ -28,26 +28,40 @@ final class DefaultAuthUseCase: AuthUseCase {
     func execute(requestValue: AuthUseCaseRequestValue,
                  cached: @escaping (User?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
-        let x = authRepository.signIn(query: requestValue.query,
-                                      cached: cached) { result in
-             switch result {
-             case .success(let response):
-                 cached(requestValue.query.user.toDomain())
-                 completion(.success(response))
-             case .failure(let error):
-                 completion(.failure(error))
-             }
-         }
-        let y = authRepository.signUp(query: requestValue.query,
-                                      cached: cached) { result in
+        return requestValue.method == .signin
+            ? createSignInRequest(with: requestValue, cached: cached, completion: completion)
+            : createSignUpRequest(with: requestValue, cached: cached, completion: completion)
+    }
+    
+    // MARK: Private
+    
+    private func createSignUpRequest(with requestValue: AuthUseCaseRequestValue,
+                                     cached: @escaping (User?) -> Void,
+                                     completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
+        return authRepository.signUp(query: requestValue.query,
+                                     cached: cached) { result in
+           switch result {
+           case .success(let response):
+               completion(.success(response))
+           case .failure(let error):
+               completion(.failure(error))
+           }
+       }
+    }
+    
+    private func createSignInRequest(with requestValue: AuthUseCaseRequestValue,
+                                     cached: @escaping (User?) -> Void,
+                                     completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
+        return authRepository.signIn(query: requestValue.query,
+                                     cached: cached) { result in
             switch result {
             case .success(let response):
+                cached(requestValue.query.user.toDomain())
                 completion(.success(response))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
-        return requestValue.method == .signin ? x : y
     }
 }
 
