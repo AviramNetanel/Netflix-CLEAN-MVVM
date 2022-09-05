@@ -12,7 +12,7 @@ import UIKit
 class SceneDelegate: UIResponder {
     
     private let appDependencies = AppDependencies()
-    private var appFlowCoordinator: AppFlowCoordinator?
+    private(set) var appFlowCoordinator: AppFlowCoordinator?
     var window: UIWindow?
 }
 
@@ -22,6 +22,8 @@ extension SceneDelegate: UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        AppAppearance.setupAppearance()
         
         window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController()

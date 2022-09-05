@@ -18,13 +18,7 @@ protocol SceneDependable {
 final class SceneDependencies {
     
     struct Dependencies {
-        fileprivate let viewControllers = ViewControllers()
         let dataTransferService: DataTransferService
-    }
-    
-    fileprivate struct ViewControllers {
-        lazy var authViewController = AuthViewController()
-        lazy var homeViewController = HomeViewController()
     }
     
     private let dependencies: Dependencies
@@ -44,7 +38,8 @@ final class SceneDependencies {
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
-        return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService, cache: authResponseCache)
+        return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService,
+                                     cache: authResponseCache)
     }
     
     // MARK: Auth
@@ -54,7 +49,8 @@ final class SceneDependencies {
     }
     
     func createAuthViewModel() -> AuthViewModel {
-        return DefaultAuthViewModel(authUseCase: createAuthUseCase(), actions: nil)
+        return DefaultAuthViewModel(authUseCase: createAuthUseCase(),
+                                    actions: nil)
     }
     
     // MARK: Home
@@ -68,10 +64,6 @@ final class SceneDependencies {
     }
 }
 
-// MARK: - Dependable implementation
-
-extension SceneDependencies: Dependable {}
-
 // MARK: - SceneDependable implementation
 
 extension SceneDependencies: SceneDependable {
@@ -84,8 +76,11 @@ extension SceneDependencies: SceneDependable {
 
 extension SceneDependencies: FlowCoordinatorDependencies {
     func instantiateViewController(for scene: FlowCoordinator.Scene) -> UIViewController {
-        return scene == .auth
-            ? createAuthViewController(actions: .init())
-            : createHomeViewController(actions: .init())
+        switch scene {
+        case .auth:
+            return createAuthViewController(actions: .init())
+        case .home:
+            return createHomeViewController(actions: .init())
+        }
     }
 }

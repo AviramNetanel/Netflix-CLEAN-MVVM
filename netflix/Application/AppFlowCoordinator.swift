@@ -7,32 +7,22 @@
 
 import UIKit
 
-// MARK: - FlowCoordinating protocol
-
-protocol FlowCoordinating {
-    func createSceneFlow()
-}
-
 // MARK: - AppFlowCoordinator class
 
 final class AppFlowCoordinator {
     
-    private let dependencies: AppDependencies
+    private let appDependencies: AppDependencies
     private var navigationController: UINavigationController
+    private var flowCoordinator: FlowCoordinator!
     
     init(navigationController: UINavigationController, dependencies: AppDependencies) {
         self.navigationController = navigationController
-        self.dependencies = dependencies
+        self.appDependencies = dependencies
     }
-}
-
-// MARK: - FlowCoordinating implementation
-
-extension AppFlowCoordinator: FlowCoordinating {
     
     func createSceneFlow() {
-        let sceneDependencies = dependencies.createSceneDependencies() as! SceneDependencies
-        let flowCoordinator = sceneDependencies.createFlowCoordinator(navigationController: navigationController)
-        flowCoordinator.coordinate()
+        let sceneDependencies = appDependencies.createSceneDependencies()
+        flowCoordinator = sceneDependencies.createFlowCoordinator(navigationController: navigationController)
+        flowCoordinator.coordinate(to: .auth)
     }
 }

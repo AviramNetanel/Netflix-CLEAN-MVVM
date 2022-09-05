@@ -13,11 +13,23 @@ struct AuthViewModelActions {
     
 }
 
-// MARK: - AuthViewModel protocol
+// MARK: - AuthViewModelInput protocol
 
-protocol AuthViewModel {
+protocol AuthViewModelInput {
+    func viewDidLoad()
+    func didSignUp()
+    func didSignIn()
+}
+
+// MARK: - AuthViewModelOutput protocol
+
+protocol AuthViewModelOutput {
     
 }
+
+//
+
+protocol AuthViewModel {}
 
 // MARK: - AuthViewModel class
 
@@ -36,34 +48,13 @@ final class DefaultAuthViewModel: AuthViewModel {
         self.authUseCase = authUseCase
         self.actions = actions
         
-//        self.signIn()
-//        self.signUp()
-    }
-    
-    // MARK:
-    
-    func signUp() {
-        let userDTO = UserDTO(name: "new",
-                              email: "newone@gmail.com",
-                              password: "newpassword",
-                              passwordConfirm: "newpassword",
-                              role: "user",
-                              active: true)
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthQuery(user: requestDTO.user)
-        register(query: authQuery)
-    }
-    
-    func signIn() {
-        let userDTO = UserDTO(email: "newone@gmail.com", password: "newpassword")
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthQuery(user: requestDTO.user)
-        authorization(query: authQuery)
+//        self.didSignUp()
+//        self.didSignIn()
     }
     
     // MARK: Private
     
-    private func register(query: AuthQuery) {
+    private func signUp(query: AuthQuery) {
         authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query),
                                                 cached: { _ in },
                                                 completion: { result in
@@ -76,7 +67,7 @@ final class DefaultAuthViewModel: AuthViewModel {
         })
     }
     
-    private func authorization(query: AuthQuery) {
+    private func signIn(query: AuthQuery) {
         authorizationTask = authUseCase.execute(requestValue: .init(method: .signin, query: query),
                                                 cached: { _ in },
                                                 completion: { result in
@@ -88,4 +79,38 @@ final class DefaultAuthViewModel: AuthViewModel {
             }
         })
     }
+}
+
+// MARK: - AuthViewModelInput implementation
+
+extension DefaultAuthViewModel: AuthViewModelInput {
+    
+    func viewDidLoad() {}
+    
+    func didSignUp() {
+        let userDTO = UserDTO(name: "new2",
+                              email: "newone2@gmail.com",
+                              password: "newpassword",
+                              passwordConfirm: "newpassword",
+                              role: "user",
+                              active: true)
+        let requestDTO = AuthRequestDTO(user: userDTO)
+        let authQuery = AuthQuery(user: requestDTO.user)
+        
+        signUp(query: authQuery)
+    }
+    
+    func didSignIn() {
+        let userDTO = UserDTO(email: "newone2@gmail.com", password: "newpassword")
+        let requestDTO = AuthRequestDTO(user: userDTO)
+        let authQuery = AuthQuery(user: requestDTO.user)
+        
+        signIn(query: authQuery)
+    }
+}
+
+// MARK: - AuthViewModelOutput implementation
+
+extension DefaultAuthViewModel: AuthViewModelOutput {
+    
 }

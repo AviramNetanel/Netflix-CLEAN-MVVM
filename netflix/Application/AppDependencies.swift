@@ -7,18 +7,6 @@
 
 import Foundation
 
-// MARK: - Dependable protocol
-
-protocol Dependable {
-    func createSceneDependencies() -> Dependable?
-}
-
-// MARK: - Dependable default implementation
-
-extension Dependable {
-    func createSceneDependencies() -> Dependable? { return nil }
-}
-
 // MARK: - AppDependencies class
 
 final class AppDependencies {
@@ -30,14 +18,9 @@ final class AppDependencies {
         let defaultNetworkService = DefaultNetworkService(config: config)
         return DefaultDataTransferService(with: defaultNetworkService)
     }()
-}
-
-// MARK: - Dependable implementation
-
-extension AppDependencies: Dependable {
     
-    func createSceneDependencies() -> Dependable? {
+    func createSceneDependencies() -> SceneDependencies {
         let dependencies = SceneDependencies.Dependencies(dataTransferService: dataTransferService)
-        return SceneDependencies(dependencies: dependencies) as Dependable
+        return SceneDependencies(dependencies: dependencies)
     }
 }

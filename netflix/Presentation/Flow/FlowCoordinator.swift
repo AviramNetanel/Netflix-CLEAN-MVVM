@@ -37,4 +37,10 @@ final class FlowCoordinator {
         navigationController?.pushViewController(viewController, animated: false)
         self.viewController = viewController
     }
+    
+    func coordinate(to scene: Scene) {
+        let viewController = dependencies.instantiateViewController(for: scene)
+        navigationController?.pushViewController(viewController, animated: false)
+        self.viewController = viewController
+    }
 }
