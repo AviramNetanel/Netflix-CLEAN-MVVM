@@ -47,6 +47,16 @@ final class SceneDependencies {
         return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService, cache: authResponseCache)
     }
     
+    // MARK: Auth
+    
+    func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
+        return AuthViewController.create(with: createAuthViewModel())
+    }
+    
+    func createAuthViewModel() -> AuthViewModel {
+        return DefaultAuthViewModel(authUseCase: createAuthUseCase(), actions: nil)
+    }
+    
     // MARK: Home
     
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
@@ -54,7 +64,7 @@ final class SceneDependencies {
     }
     
     func createHomeViewModel() -> HomeViewModel {
-        return DefaultHomeViewModel(authUseCase: createAuthUseCase(), actions: nil)
+        return DefaultHomeViewModel(actions: nil)
     }
 }
 
@@ -74,7 +84,8 @@ extension SceneDependencies: SceneDependable {
 
 extension SceneDependencies: FlowCoordinatorDependencies {
     func instantiateViewController(for scene: FlowCoordinator.Scene) -> UIViewController {
-        var viewControllers = dependencies.viewControllers
-        return scene == .auth ? viewControllers.authViewController : createHomeViewController(actions: .init())
+        return scene == .auth
+            ? createAuthViewController(actions: .init())
+            : createHomeViewController(actions: .init())
     }
 }

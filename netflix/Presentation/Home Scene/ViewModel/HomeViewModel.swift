@@ -7,56 +7,40 @@
 
 import Foundation
 
-// MARK: - HomeViewModel
+// MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
     
 }
 
-// MARK: - HomeViewModel
+// MARK: - HomeViewModel protocol
 
 protocol HomeViewModel {
     
 }
 
-// MARK: - HomeViewModel
+// MARK: - HomeViewModel class
 
 final class DefaultHomeViewModel: HomeViewModel {
     
-    private let authUseCase: AuthUseCase
+    //private let authUseCase: AuthUseCase
     private let actions: HomeViewModelActions
     
-    private var authLoadTask: Cancellable? {
+    private var task: Cancellable? {
         willSet {
-            authLoadTask?.cancel()
+            task?.cancel()
         }
     }
     
-    init(authUseCase: AuthUseCase, actions: HomeViewModelActions? = nil) {
-        self.authUseCase = authUseCase
+    init(//authUseCase: AuthUseCase,
+         actions: HomeViewModelActions? = nil) {
+        //self.authUseCase = authUseCase
         self.actions = actions ?? .init()
-        
-        self.signIn()
     }
     
-    // MARK:
     
-    func signIn() {
-        let requestDTO = AuthRequestDTO(user: UserDTO(email: "qwe@gmail.com", password: "qweqweqwe"))
-        let authQuery = AuthQuery(user: requestDTO.user)
-        authorization(query: authQuery)
-    }
     
     // MARK: Private
     
-    private func authorization(query: AuthQuery) {
-        authLoadTask = authUseCase.execute(requestValue: .init(query: query), cached: { _ in }, completion: { result in
-            switch result {
-            case .success(let response):
-                print("r", response)
-            case .failure(let error):
-                print("e", error)
-            }
-        })
-    }
+    
 }

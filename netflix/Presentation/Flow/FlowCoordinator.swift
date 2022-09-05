@@ -22,7 +22,7 @@ final class FlowCoordinator {
         case home
     }
     
-    private var scene: Scene = .home
+    private var scene: Scene = .auth
     private let dependencies: FlowCoordinatorDependencies
     private weak var navigationController: UINavigationController?
     private weak var viewController: UIViewController?

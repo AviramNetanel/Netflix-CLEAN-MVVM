@@ -65,6 +65,8 @@
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
 		A1B3F99028C5605B0042DE9F /* HomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F98F28C5605B0042DE9F /* HomeViewController.storyboard */; };
+		A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */; };
+		A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99328C575A30042DE9F /* AuthViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +130,8 @@
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		A1B3F98F28C5605B0042DE9F /* HomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeViewController.storyboard; sourceTree = "<group>"; };
+		A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthViewController.storyboard; sourceTree = "<group>"; };
+		A1B3F99328C575A30042DE9F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +284,7 @@
 		A18B992A28BEE7510077A5A6 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				A1B3F99328C575A30042DE9F /* AuthViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				A18B992C28BEE7990077A5A6 /* AuthViewController.swift */,
+				A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -578,6 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
+				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeViewController.storyboard in Resources */,
 			);
@@ -642,6 +649,7 @@
 				A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */,
 				A18B995728BFF66C0077A5A6 /* SectionDTO+Mapping.swift in Sources */,
 				A18B997328C00F8E0077A5A6 /* UsersRepository.swift in Sources */,
+				A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */,
 				A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */,
 				A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */,
 				A18B999628C0DFB90077A5A6 /* AuthRequestDTO.swift in Sources */,
