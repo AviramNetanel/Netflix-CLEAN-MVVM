@@ -25,7 +25,7 @@ final class DefaultAuthRepository {
 extension DefaultAuthRepository: AuthRepository {
     
     func signUp(query: AuthQuery,
-                cached: @escaping (User?) -> Void,
+                cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         
         let requestDTO = AuthRequestDTO(user: query.user)
@@ -37,6 +37,7 @@ extension DefaultAuthRepository: AuthRepository {
         task.networkTask = self.dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):
+                self.cache.save(response: response, for: requestDTO)
                 completion(.success(response))
             case .failure(let error):
                 completion(.failure(error))
@@ -47,7 +48,7 @@ extension DefaultAuthRepository: AuthRepository {
     }
     
     func signIn(query: AuthQuery,
-                cached: @escaping (User?) -> Void,
+                cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         
         let requestDTO = AuthRequestDTO(user: query.user)
@@ -55,7 +56,7 @@ extension DefaultAuthRepository: AuthRepository {
         
         cache.getResponse(for: requestDTO) { result in
             if case let .success(responseDTO?) = result {
-                cached(responseDTO.toDomain())
+                return cached(responseDTO)
             }
             
             guard !task.isCancelled else { return }

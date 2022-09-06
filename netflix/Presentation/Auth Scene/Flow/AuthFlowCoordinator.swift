@@ -29,19 +29,26 @@ final class AuthFlowCoordinator {
     
     func coordinate() {
         let actions = AuthViewModelActions(showSignInViewController: showSignInViewController,
-                                           showSignUpViewController: showSignUpViewController)
+                                           showSignUpViewController: showSignUpViewController,
+                                           showHomeViewController: showHomeViewController)
         let viewController = dependencies.createAuthViewController(actions: actions)
+        
         navigationController?.pushViewController(viewController, animated: false)
+        
         self.viewController = viewController
     }
     
     // MARK: Private
     
     private func showSignInViewController() {
-        viewController?.performSegue(withIdentifier: "SegueSignInViewController", sender: viewController)
+        viewController?.performSegue(withIdentifier: String(describing: SignInViewController.self), sender: viewController)
     }
     
     private func showSignUpViewController() {
-        viewController?.performSegue(withIdentifier: "SegueSignUpViewController", sender: viewController)
+        viewController?.performSegue(withIdentifier: String(describing: SignUpViewController.self), sender: viewController)
+    }
+    
+    private func showHomeViewController() {
+        viewController?.performSegue(withIdentifier: String(describing: HomeViewController.self), sender: viewController)
     }
 }

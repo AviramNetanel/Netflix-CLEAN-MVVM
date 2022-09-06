@@ -19,16 +19,35 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     
     private var viewModel: AuthViewModel!
     
+    private var signInViewController: SignInViewController?
+    private var signUpViewController: SignUpViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupBehaviors()
         setupViews()
+        
+        guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
+        viewModel.viewDidLoad()
     }
     
     static func create(with viewModel: AuthViewModel) -> AuthViewController {
         let view = AuthViewController.instantiateViewController()
         view.viewModel = viewModel
         return view
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == String(describing: SignInViewController.self),
+           let destinationVC = segue.destination as? SignInViewController {
+            signInViewController = destinationVC
+            signInViewController?.viewModel = viewModel
+        } else if segue.identifier == String(describing: SignUpViewController.self),
+                  let destinationVC = segue.destination as? SignUpViewController {
+            signUpViewController = destinationVC
+            signUpViewController?.viewModel = viewModel
+        }
     }
     
     // MARK: Private

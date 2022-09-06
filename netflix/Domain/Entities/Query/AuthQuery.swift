@@ -7,8 +7,13 @@
 
 import Foundation
 
-// MARK: - AuthQuery struct
+// MARK: - AuthQuery class
 
-struct AuthQuery {
+@objc
+final class AuthQuery: NSObject {
     let user: UserDTO
+    
+    init(user: UserDTO) {
+        self.user = user
+    }
 }

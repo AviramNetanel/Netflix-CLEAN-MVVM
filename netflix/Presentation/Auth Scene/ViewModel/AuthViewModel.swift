@@ -12,14 +12,15 @@ import Foundation
 struct AuthViewModelActions {
     let showSignInViewController: () -> Void
     let showSignUpViewController: () -> Void
+    let showHomeViewController: () -> Void
 }
 
 // MARK: - AuthViewModelInput protocol
 
 protocol AuthViewModelInput {
     func viewDidLoad()
-    func didSignUp()
-    func didSignIn()
+    func signUp(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+    func signIn(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
     func signInButtonDidTap()
 }
 
@@ -49,37 +50,6 @@ final class DefaultAuthViewModel: AuthViewModel {
     init(authUseCase: AuthUseCase, actions: AuthViewModelActions? = nil) {
         self.authUseCase = authUseCase
         self.actions = actions
-        
-//        self.didSignUp()
-//        self.didSignIn()
-    }
-    
-    // MARK: Private
-    
-    private func signUp(query: AuthQuery) {
-        authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query),
-                                                cached: { _ in },
-                                                completion: { result in
-            switch result {
-            case .success(let response):
-                print("signUpResponse: \(response)")
-            case .failure(let error):
-                print("signUpError \(error)")
-            }
-        })
-    }
-    
-    private func signIn(query: AuthQuery) {
-        authorizationTask = authUseCase.execute(requestValue: .init(method: .signin, query: query),
-                                                cached: { _ in },
-                                                completion: { result in
-            switch result {
-            case .success(let response):
-                print("signInResponse \(response)")
-            case .failure(let error):
-                print("signInError \(error)")
-            }
-        })
     }
 }
 
@@ -87,27 +57,53 @@ final class DefaultAuthViewModel: AuthViewModel {
 
 extension DefaultAuthViewModel: AuthViewModelInput {
     
-    func viewDidLoad() {}
-    
-    func didSignUp() {
-        let userDTO = UserDTO(name: "new2",
-                              email: "newone2@gmail.com",
-                              password: "newpassword",
-                              passwordConfirm: "newpassword",
-                              role: "user",
-                              active: true)
+    func viewDidLoad() {
+        // should be fetchrequested from coredata.
+        let userDTO = UserDTO(email: "qwe@gmail.com", password: "qweqweqwe")
         let requestDTO = AuthRequestDTO(user: userDTO)
         let authQuery = AuthQuery(user: requestDTO.user)
         
-        signUp(query: authQuery)
+        signIn(query: authQuery) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.actions?.showHomeViewController()
+                }
+            case .failure(let error):
+                print("Unresolved error \(error)")
+            }
+        }
     }
     
-    func didSignIn() {
-        let userDTO = UserDTO(email: "newone2@gmail.com", password: "newpassword")
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthQuery(user: requestDTO.user)
-        
-        signIn(query: authQuery)
+    func signUp(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query),
+                                                cached: { _ in },
+                                                completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func signIn(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
+        authorizationTask = authUseCase.execute(requestValue: .init(method: .signin, query: query),
+                                                cached: { response in
+            if let response = response {
+                return completion(.success(response))
+            }
+        },
+                                                completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
     }
     
     @objc

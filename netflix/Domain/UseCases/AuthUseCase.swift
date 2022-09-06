@@ -11,7 +11,7 @@ import Foundation
 
 protocol AuthUseCase {
     func execute(requestValue: AuthUseCaseRequestValue,
-                 cached: @escaping (User?) -> Void,
+                 cached: @escaping (AuthResponseDTO?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
@@ -26,7 +26,7 @@ final class DefaultAuthUseCase: AuthUseCase {
     }
     
     func execute(requestValue: AuthUseCaseRequestValue,
-                 cached: @escaping (User?) -> Void,
+                 cached: @escaping (AuthResponseDTO?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         return request(requestValue: requestValue, cached: cached, completion: completion)
     }
@@ -34,7 +34,7 @@ final class DefaultAuthUseCase: AuthUseCase {
     // MARK: Private
     
     private func request(requestValue: AuthUseCaseRequestValue,
-                         cached: @escaping (User?) -> Void,
+                         cached: @escaping (AuthResponseDTO?) -> Void,
                          completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         switch requestValue.method {
         case .signup:
@@ -52,7 +52,7 @@ final class DefaultAuthUseCase: AuthUseCase {
                                          cached: cached) { result in
                 switch result {
                 case .success(let response):
-                    cached(requestValue.query.user.toDomain())
+                    cached(response)
                     completion(.success(response))
                 case .failure(let error):
                     completion(.failure(error))
