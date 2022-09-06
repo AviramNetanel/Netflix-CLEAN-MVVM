@@ -11,12 +11,17 @@ import UIKit
 
 final class NavigationBarTitleView: UINavigationItem {
     
+    private let imageView: UIImageView = {
+        let resourceName = "netflix-logo-2"
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 64, height: 20))
+        imageView.image = UIImage(named: resourceName)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 64, height: 20))
-        imageView.image = UIImage(named: "netflix-logo-2")
-        imageView.contentMode = .scaleAspectFit
         titleView = imageView
     }
 }

@@ -18,20 +18,26 @@ final class SignInViewController: UIViewController {
     var viewModel: AuthViewModel!
     
     private var credentials: (String?, String?) {
-        return (email: emailTextField.text, password: passwordTextField.text)
+        return (email: emailTextField.text,
+                password: passwordTextField.text)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         AppAppearance.darkAppearance()
+        
         setupViews()
     }
     
     // MARK: Private
     
     private func setupViews() {
-        setAttributes(for: [emailTextField, passwordTextField])
+        setAttributes(for: [emailTextField,
+                            passwordTextField])
+        
         signInButton.setLayerBorder(.black, width: 1.5)
+        
         setActions()
     }
     
@@ -54,7 +60,8 @@ final class SignInViewController: UIViewController {
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeViewController.self), sender: self)
+                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
+                                      sender: self)
                 }
             } else {
                 print("failure")

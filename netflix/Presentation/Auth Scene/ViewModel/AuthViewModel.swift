@@ -19,18 +19,18 @@ struct AuthViewModelActions {
 
 protocol AuthViewModelInput {
     func viewDidLoad()
-    func signUp(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
-    func signIn(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+    func signUp(query: AuthQuery,
+                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+    func signIn(query: AuthQuery,
+                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
     func signInButtonDidTap()
 }
 
 // MARK: - AuthViewModelOutput protocol
 
-protocol AuthViewModelOutput {
-    
-}
+protocol AuthViewModelOutput {}
 
-//
+// MARK: - AuthViewModel protocol
 
 protocol AuthViewModel {}
 
@@ -76,7 +76,8 @@ extension DefaultAuthViewModel: AuthViewModelInput {
         }
     }
     
-    func signUp(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
+    func signUp(query: AuthQuery,
+                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
         authorizationTask = authUseCase.execute(requestValue: .init(method: .signup, query: query),
                                                 cached: { _ in },
                                                 completion: { result in
@@ -89,7 +90,8 @@ extension DefaultAuthViewModel: AuthViewModelInput {
         })
     }
     
-    func signIn(query: AuthQuery, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
+    func signIn(query: AuthQuery,
+                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
         authorizationTask = authUseCase.execute(requestValue: .init(method: .signin, query: query),
                                                 cached: { response in
             if let response = response {
@@ -119,6 +121,4 @@ extension DefaultAuthViewModel: AuthViewModelInput {
 
 // MARK: - AuthViewModelOutput implementation
 
-extension DefaultAuthViewModel: AuthViewModelOutput {
-    
-}
+extension DefaultAuthViewModel: AuthViewModelOutput {}

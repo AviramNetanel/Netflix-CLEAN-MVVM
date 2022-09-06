@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A18691B728C698B50087DE3B /* UIColor+HEXColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */; };
 		A18691B928C698BB0087DE3B /* UIColor+RGBColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */; };
+		A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HEXColor.swift"; sourceTree = "<group>"; };
 		A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGBColor.swift"; sourceTree = "<group>"; };
+		A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -169,6 +171,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A18691BA28C6ECFF0087DE3B /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
 		A18B98EF28BEB62C0077A5A6 = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +274,7 @@
 		A18B991528BEBB9C0077A5A6 /* Home Scene */ = {
 			isa = PBXGroup;
 			children = (
+				A18691BA28C6ECFF0087DE3B /* Flow */,
 				A18B992428BEC7860077A5A6 /* View */,
 				A18B992328BEC7820077A5A6 /* ViewModel */,
 				A18B993928BFC95A0077A5A6 /* Behaviors */,
@@ -689,6 +700,7 @@
 				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
+				A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */,
 				A18B999828C0DFC00077A5A6 /* AuthResponseDTO.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,

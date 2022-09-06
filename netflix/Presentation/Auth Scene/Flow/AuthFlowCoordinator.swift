@@ -13,7 +13,7 @@ protocol AuthFlowCoordinatorDependencies {
     func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController
 }
 
-// MARK: - FlowCoordinator class
+// MARK: - AuthFlowCoordinator class
 
 final class AuthFlowCoordinator {
     
@@ -31,6 +31,7 @@ final class AuthFlowCoordinator {
         let actions = AuthViewModelActions(showSignInViewController: showSignInViewController,
                                            showSignUpViewController: showSignUpViewController,
                                            showHomeViewController: showHomeViewController)
+        
         let viewController = dependencies.createAuthViewController(actions: actions)
         
         navigationController?.pushViewController(viewController, animated: false)
