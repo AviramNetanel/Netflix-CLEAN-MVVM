@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+// MARK: - TVShowsRepository protocol
+
+protocol TVShowsRepository {
+    
+}

@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+// MARK: - MoviesRepository
+
+protocol MoviesRepository {
+    
+}
