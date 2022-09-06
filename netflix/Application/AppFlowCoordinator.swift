@@ -25,9 +25,9 @@ final class AppFlowCoordinator {
         flowCoordinator.coordinate()
     }
     
-    func createHomeSceneFlow() {
+    func createTabBarSceneFlow() {
         let sceneDependencies = appDependencies.createSceneDependencies()
-        let flowCoordinator = sceneDependencies.createHomeFlowCoordinator(navigationController: navigationController)
+        let flowCoordinator = sceneDependencies.createTabBarFlowCoordinator(navigationController: navigationController)
         flowCoordinator.coordinate()
     }
 }

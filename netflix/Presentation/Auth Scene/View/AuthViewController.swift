@@ -47,8 +47,9 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
                   let destinationVC = segue.destination as? SignUpViewController {
             signUpViewController = destinationVC
             signUpViewController?.viewModel = viewModel
-        } else if segue.identifier == String(describing: HomeViewController.self) {
-            sceneDelegate?.appFlowCoordinator?.createHomeSceneFlow()
+        } else if segue.identifier == String(describing: HomeTabBarController.self),
+                  let _ = segue.destination as? HomeTabBarController {
+            sceneDelegate?.appFlowCoordinator?.createTabBarSceneFlow()
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  HomeFlowCoordinator.swift
+//  TabBarFlowCoordinator.swift
 //  netflix
 //
 //  Created by Zach Bazov on 06/09/2022.
@@ -7,30 +7,30 @@
 
 import UIKit
 
-// MARK: - HomeFlowCoordinatorDependencies protocol
+// MARK: - TabBarFlowCoordinatorDependencies protocol
 
-protocol HomeFlowCoordinatorDependencies {
+protocol TabBarFlowCoordinatorDependencies {
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
+    func createTabBarController(actions: HomeViewModelActions) -> HomeTabBarController
 }
 
-// MARK: - HomeFlowCoordinator class
+// MARK: - TabBarFlowCoordinator class
 
-final class HomeFlowCoordinator {
+final class TabBarFlowCoordinator {
     
-    private let dependencies: HomeFlowCoordinatorDependencies
+    private let dependencies: TabBarFlowCoordinatorDependencies
     
     private weak var navigationController: UINavigationController?
     private weak var viewController: UIViewController?
     
-    init(navigationController: UINavigationController, dependencies: HomeFlowCoordinatorDependencies) {
+    init(navigationController: UINavigationController, dependencies: TabBarFlowCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
     }
     
     func coordinate() {
         let actions = HomeViewModelActions()
-        
-        let viewController = dependencies.createHomeViewController(actions: actions)
+        let viewController = dependencies.createTabBarController(actions: actions)
         
         navigationController?.pushViewController(viewController, animated: false)
         

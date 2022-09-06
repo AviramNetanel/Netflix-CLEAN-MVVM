@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - HomeViewController class
 
-final class HomeViewController: UIViewController, StoryboardInstantiable {
+final class HomeViewController: UIViewController {
     
     private var viewModel: HomeViewModel!
     
@@ -20,7 +20,9 @@ final class HomeViewController: UIViewController, StoryboardInstantiable {
     }
     
     static func create(with viewModel: HomeViewModel) -> HomeViewController {
-        let view = HomeViewController.instantiateViewController()
+        let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
+                                bundle: .main)
+            .instantiateViewController(withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
         view.viewModel = viewModel
         return view
     }

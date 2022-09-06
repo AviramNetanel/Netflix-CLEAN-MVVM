@@ -117,7 +117,7 @@
                         <outlet property="topGradientView" destination="BzR-2i-DYB" id="MCH-yH-8f7"/>
                         <segue destination="PCR-Hq-oCg" kind="show" identifier="SignInViewController" id="Y6g-Nm-CRE"/>
                         <segue destination="DPY-tv-6UP" kind="show" identifier="SignUpViewController" id="BoD-g5-Dtp"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="BVQ-LE-MV0"/>
+                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeTabBarController" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="BVQ-LE-MV0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -212,7 +212,7 @@
                         <outlet property="emailTextField" destination="sau-4d-6HP" id="KXx-n4-vCH"/>
                         <outlet property="passwordTextField" destination="fIo-Ec-tSS" id="Rs1-X6-Ddq"/>
                         <outlet property="signInButton" destination="eyt-xA-PX0" id="dVV-5A-Odc"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bhi-vr-xdk"/>
+                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeTabBarController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bhi-vr-xdk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6dg-7q-zzn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -313,17 +313,17 @@
                         <outlet property="passwordConfirmTextField" destination="kY4-Ly-B7c" id="xWD-R0-HgN"/>
                         <outlet property="passwordTextField" destination="kzM-AV-eFV" id="EKp-Ud-3hT"/>
                         <outlet property="signUpButton" destination="Ivb-Ea-dQI" id="Vy6-GS-J15"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bva-pn-vyf"/>
+                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeTabBarController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bva-pn-vyf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3y-1V-cTp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1893" y="435"/>
         </scene>
-        <!--HomeViewController-->
+        <!--HomeTabBarController-->
         <scene sceneID="FUM-q3-EWr">
             <objects>
-                <viewControllerPlaceholder storyboardName="HomeViewController" referencedIdentifier="HomeViewController" id="Kgb-7U-kSQ" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="HomeTabBarController" referencedIdentifier="HomeTabBarController" id="Kgb-7U-kSQ" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="a3O-Wt-pZg"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YW-d6-rkN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

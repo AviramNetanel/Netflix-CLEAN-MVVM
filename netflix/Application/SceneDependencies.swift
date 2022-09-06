@@ -11,7 +11,7 @@ import UIKit
 
 protocol SceneDependable {
     func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
-    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
+    func createTabBarFlowCoordinator(navigationController: UINavigationController) -> TabBarFlowCoordinator
 }
 
 // MARK: - SceneDependencies class
@@ -54,7 +54,13 @@ final class SceneDependencies {
                                     actions: actions)
     }
     
-    // MARK: Home
+    // MARK: TabBar
+    
+    func createTabBarController(actions: HomeViewModelActions) -> HomeTabBarController {
+        return HomeTabBarController.create(with: [createHomeViewController(actions: actions)])
+    }
+    
+    // MARK: TabBar > Home
     
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
         return HomeViewController.create(with: createHomeViewModel())
@@ -73,8 +79,8 @@ extension SceneDependencies: SceneDependable {
         return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
     
-    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
-        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
+    func createTabBarFlowCoordinator(navigationController: UINavigationController) -> TabBarFlowCoordinator {
+        return TabBarFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
 }
 
@@ -82,6 +88,6 @@ extension SceneDependencies: SceneDependable {
 
 extension SceneDependencies: AuthFlowCoordinatorDependencies {}
 
-// MARK: - HomeFlowCoordinatorDependencies implementation
+// MARK: - TabBarFlowCoordinatorDependencies implementation
 
-extension SceneDependencies: HomeFlowCoordinatorDependencies {}
+extension SceneDependencies: TabBarFlowCoordinatorDependencies {}
