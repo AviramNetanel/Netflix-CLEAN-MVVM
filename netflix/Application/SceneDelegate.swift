@@ -11,8 +11,8 @@ import UIKit
 
 class SceneDelegate: UIResponder {
     
-    private let appDependencies = AppDependencies()
-    private(set) var appFlowCoordinator: AppFlowCoordinator?
+    var appFlowCoordinator: AppFlowCoordinator?
+    var navigationController: UINavigationController!
     var window: UIWindow?
 }
 
@@ -26,10 +26,10 @@ extension SceneDelegate: UIWindowSceneDelegate {
         AppAppearance.setupAppearance()
         
         window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController()
+        navigationController = UINavigationController()
         
-        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController, dependencies: appDependencies)
-        appFlowCoordinator?.createSceneFlow()
+        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController)
+        appFlowCoordinator?.createAuthSceneFlow()
         
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

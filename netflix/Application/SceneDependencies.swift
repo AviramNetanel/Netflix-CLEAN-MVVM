@@ -10,7 +10,8 @@ import UIKit
 // MARK: - SceneDependable protocol
 
 protocol SceneDependable {
-    func createFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
+    func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
+    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
 }
 
 // MARK: - SceneDependencies class
@@ -67,11 +68,20 @@ final class SceneDependencies {
 // MARK: - SceneDependable implementation
 
 extension SceneDependencies: SceneDependable {
-    func createFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator {
+    
+    func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator {
         return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
+    }
+    
+    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
+        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
 }
 
-// MARK: - FlowCoordinatorDependencies implementation
+// MARK: - AuthFlowCoordinatorDependencies implementation
 
 extension SceneDependencies: AuthFlowCoordinatorDependencies {}
+
+// MARK: - HomeFlowCoordinatorDependencies implementation
+
+extension SceneDependencies: HomeFlowCoordinatorDependencies {}

@@ -47,6 +47,8 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
                   let destinationVC = segue.destination as? SignUpViewController {
             signUpViewController = destinationVC
             signUpViewController?.viewModel = viewModel
+        } else if segue.identifier == String(describing: HomeViewController.self) {
+            sceneDelegate?.appFlowCoordinator?.createHomeSceneFlow()
         }
     }
     
@@ -88,8 +90,8 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     private func setActions() {
         guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
         
-        signInButton.target = viewModel
-        signInButton.action = #selector(viewModel.signInButtonDidTap)
+        signInButton.addTarget(viewModel,
+                               action: #selector(viewModel.signInButtonDidTap))
         
         signUpButton.addTarget(viewModel,
                                action: #selector(viewModel.signUpButtonDidTap),

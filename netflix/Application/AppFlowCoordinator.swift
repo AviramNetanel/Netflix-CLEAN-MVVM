@@ -14,14 +14,20 @@ final class AppFlowCoordinator {
     private let appDependencies: AppDependencies
     private var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController, dependencies: AppDependencies) {
+    init(navigationController: UINavigationController, appDependencies: AppDependencies = AppDependencies()) {
         self.navigationController = navigationController
-        self.appDependencies = dependencies
+        self.appDependencies = appDependencies
     }
     
-    func createSceneFlow() {
+    func createAuthSceneFlow() {
         let sceneDependencies = appDependencies.createSceneDependencies()
-        let flowCoordinator = sceneDependencies.createFlowCoordinator(navigationController: navigationController)
+        let flowCoordinator = sceneDependencies.createAuthFlowCoordinator(navigationController: navigationController)
+        flowCoordinator.coordinate()
+    }
+    
+    func createHomeSceneFlow() {
+        let sceneDependencies = appDependencies.createSceneDependencies()
+        let flowCoordinator = sceneDependencies.createHomeFlowCoordinator(navigationController: navigationController)
         flowCoordinator.coordinate()
     }
 }

@@ -10,6 +10,8 @@
 		A18691B728C698B50087DE3B /* UIColor+HEXColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */; };
 		A18691B928C698BB0087DE3B /* UIColor+RGBColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */; };
 		A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */; };
+		A18691BE28C764600087DE3B /* UIBarButtonItem+AddTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */; };
+		A18691C028C772FA0087DE3B /* UIViewController+SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -86,6 +88,8 @@
 		A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HEXColor.swift"; sourceTree = "<group>"; };
 		A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGBColor.swift"; sourceTree = "<group>"; };
 		A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowCoordinator.swift; sourceTree = "<group>"; };
+		A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+AddTarget.swift"; sourceTree = "<group>"; };
+		A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SceneDelegate.swift"; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -358,8 +362,10 @@
 				A18B993528BFC72E0077A5A6 /* UIViewController+AddChild.swift */,
 				A18B993728BFC7820077A5A6 /* UIViewController+AddBehaviors.swift */,
 				A18B993E28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift */,
+				A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */,
 				A1F56A6C28C695D60089BD4F /* UIViewController+SetAttributes.swift */,
 				A1F56A6E28C695FC0089BD4F /* UITextField+SetPlaceholderAttributes.swift */,
+				A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -671,6 +677,7 @@
 				A1B3F9A128C63BC70042DE9F /* Nibable.swift in Sources */,
 				A1F56A6928C68FB10089BD4F /* NSAttributedString+Attributes.swift in Sources */,
 				A18B998A28C040A70077A5A6 /* Cancellable.swift in Sources */,
+				A18691BE28C764600087DE3B /* UIBarButtonItem+AddTarget.swift in Sources */,
 				A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */,
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */,
@@ -700,6 +707,7 @@
 				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
+				A18691C028C772FA0087DE3B /* UIViewController+SceneDelegate.swift in Sources */,
 				A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */,
 				A18B999828C0DFC00077A5A6 /* AuthResponseDTO.swift in Sources */,

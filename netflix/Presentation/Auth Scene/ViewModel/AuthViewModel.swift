@@ -10,9 +10,9 @@ import Foundation
 // MARK: - AuthViewModelActions struct
 
 struct AuthViewModelActions {
-    let showSignInViewController: () -> Void
-    let showSignUpViewController: () -> Void
-    let showHomeViewController: () -> Void
+    let presentSignInViewController: () -> Void
+    let presentSignUpViewController: () -> Void
+    let presentHomeViewController: () -> Void
 }
 
 // MARK: - AuthViewModelInput protocol
@@ -68,7 +68,7 @@ extension DefaultAuthViewModel: AuthViewModelInput {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.actions?.showHomeViewController()
+                    self.actions?.presentHomeViewController()
                 }
             case .failure(let error):
                 print("Unresolved error \(error)")
@@ -110,12 +110,12 @@ extension DefaultAuthViewModel: AuthViewModelInput {
     
     @objc
     func signInButtonDidTap() {
-        actions?.showSignInViewController()
+        actions?.presentSignInViewController()
     }
     
     @objc
     func signUpButtonDidTap() {
-        actions?.showSignUpViewController()
+        actions?.presentSignUpViewController()
     }
 }
 

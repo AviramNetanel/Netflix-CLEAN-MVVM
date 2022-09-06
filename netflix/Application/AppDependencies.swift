@@ -14,7 +14,8 @@ final class AppDependencies {
     lazy var configuration = AppConfiguration()
     
     lazy var dataTransferService: DataTransferService = {
-        let config = NetworkConfig(baseURL: URL(string: configuration.apiScheme + "://" + configuration.apiHost)!)
+        let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
+        let config = NetworkConfig(baseURL: url)
         let defaultNetworkService = DefaultNetworkService(config: config)
         return DefaultDataTransferService(with: defaultNetworkService)
     }()
