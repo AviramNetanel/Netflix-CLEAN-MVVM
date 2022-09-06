@@ -62,8 +62,8 @@ final class SceneDependencies {
     
     // MARK: TabBar > Home
     
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
-        return HomeViewController.create(with: createHomeViewModel())
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeTableViewController {
+        return HomeTableViewController.create(with: createHomeViewModel())
     }
     
     func createHomeViewModel() -> HomeViewModel {

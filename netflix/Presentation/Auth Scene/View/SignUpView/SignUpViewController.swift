@@ -68,7 +68,7 @@ final class SignUpViewController: UIViewController {
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
+                    self.performSegue(withIdentifier: String(describing: HomeTableViewController.self),
                                       sender: self)
                 }
             } else {

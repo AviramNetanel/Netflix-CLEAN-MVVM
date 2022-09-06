@@ -35,11 +35,8 @@ final class DefaultHomeViewModel: HomeViewModel {
     init(//authUseCase: AuthUseCase,
          actions: HomeViewModelActions? = nil) {
         //self.authUseCase = authUseCase
-        print("init")
         self.actions = actions ?? .init()
     }
-    
-    
     
     // MARK: Private
     

@@ -10,7 +10,7 @@ import UIKit
 // MARK: - TabBarFlowCoordinatorDependencies protocol
 
 protocol TabBarFlowCoordinatorDependencies {
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeTableViewController
     func createTabBarController(actions: HomeViewModelActions) -> HomeTabBarController
 }
 
