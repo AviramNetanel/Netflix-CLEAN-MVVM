@@ -168,39 +168,6 @@ struct MediaDTO: Codable {
     }
 }
 
-extension MediaDTO {
-    init() {
-        self.id = "na"
-        self.title = "na"
-        self.rating = 0.0
-        self.description = "na"
-        self.cast = "na"
-        self.isHD = false
-        self.displayCover = "na"
-        self.detailCover = "na"
-        self.hasWatched = false
-        self.newRelease = false
-        self.logoPosition = "na"
-        self.slug = "na"
-        self.presentedCover = "na"
-        self.presentedLogo = "na"
-        self.presentedDisplayLogo = "na"
-        self.displayLogos = []
-        self.logos = []
-        self.genres = []
-        self.trailers = []
-        self.covers = []
-        self.duration = "na"
-        self.seasonCount = 0
-        self.episodeCount = 0
-        self.isNetflixExclusive = false
-        self.year = 0
-        self.length = "na"
-        self.writers = "na"
-        self.previewURL = "na"
-    }
-}
-
 // MARK: - DataMapping
 
 extension MediaDTO {

@@ -14,3 +14,13 @@ struct SectionsResponseDTO: Decodable {
     let results: Int
     let data: [SectionDTO]
 }
+
+// MARK: - Mapping
+
+extension SectionsResponseDTO {
+    func toDomain() -> SectionsResponse {
+        return .init(status: status,
+                     results: results,
+                     data: data.map { $0.toDomain() })
+    }
+}

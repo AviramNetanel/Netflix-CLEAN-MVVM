@@ -14,3 +14,13 @@ struct MoviesResponseDTO: Decodable {
     let results: Int
     let data: [MediaDTO]
 }
+
+// MARK: - Mapping
+
+extension MoviesResponseDTO {
+    func toDomain() -> MoviesResponse {
+        return .init(status: status,
+                     results: results,
+                     data: data.map { $0.toDomain() })
+    }
+}

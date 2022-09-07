@@ -15,8 +15,12 @@ struct TVShowsResponseDTO: Decodable {
     let data: [MediaDTO]
 }
 
-struct RepoResponseDTO: Decodable {
-    let status: String
-    let results: Int
-    let data: [MediaDTO]
+// MARK: - Mapping
+
+extension TVShowsResponseDTO {
+    func toDomain() -> TVShowsResponse {
+        return .init(status: status,
+                     results: results,
+                     data: data.map { $0.toDomain() })
+    }
 }

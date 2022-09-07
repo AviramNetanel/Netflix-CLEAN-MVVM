@@ -13,11 +13,11 @@ struct StandardItemViewModel {
 }
 
 extension StandardItemViewModel {
-    init(media: MediaDTO) {
+    init(media: Media) {
         self.title = media.title
         self.covers = media.covers
     }
-    init(section: SectionDTO) {
+    init(section: Section) {
         self.title = section.title
         self.covers = []
     }

@@ -42,24 +42,19 @@ struct AuthResponseDTO: Decodable {
 // MARK: - Mapping
 
 extension AuthResponseDTO {
-    func toDomain() -> User {
-        return .init(name: data?.name ?? "",
-                     email: data?.email ?? "",
-                     password: data?.password ?? "",
-                     passwordConfirm: data?.passwordConfirm ?? "",
-                     role: data?.role ?? "",
-                     active: data?.active ?? true)
+    func toDomain() -> AuthResponse {
+        return .init(status: status,
+                     token: token,
+                     data: data?.toDomain())
     }
 }
 
 extension AuthResponseDTO {
-    func toEntity(in context: NSManagedObjectContext) -> UserEntity? {
+    func toEntity(in context: NSManagedObjectContext) -> AuthResponseEntity? {
         guard let data = data else { return nil }
-        let entity: UserEntity = .init(context: context)
-        entity.name = data.name
-        entity.email = data.email
-        entity.password = data.password
-        entity.passwordConfirm = data.passwordConfirm
+        let entity: AuthResponseEntity = .init(context: context)
+        entity.token = token
+        entity.data = data
         return entity
     }
 }

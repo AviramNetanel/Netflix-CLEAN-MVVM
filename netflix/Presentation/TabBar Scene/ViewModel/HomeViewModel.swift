@@ -10,7 +10,7 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
-    let presentMediaDetails: (MediaDTO) -> Void
+    let presentMediaDetails: (Media) -> Void
 }
 
 // MARK: - HomeViewModelEndpoints
@@ -31,8 +31,8 @@ protocol HomeViewModelInput {
 // MARK: - HomeViewModelOutput protocol
 
 protocol HomeViewModelOutput {
-    var sections: Observable<[SectionDTO]> { get }
-    var items: Observable<[MediaDTO]> { get }
+    var sections: Observable<[Section]> { get }
+    var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
 }
 
@@ -55,8 +55,8 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     // MARK: Output
     
-    var sections: Observable<[SectionDTO]> = Observable([])
-    var items: Observable<[MediaDTO]> = Observable([])
+    var sections: Observable<[Section]> = Observable([])
+    var items: Observable<[Media]> = Observable([])
     var isEmpty: Bool { return items.value.isEmpty }
     
     init(homeUseCase: HomeUseCase,

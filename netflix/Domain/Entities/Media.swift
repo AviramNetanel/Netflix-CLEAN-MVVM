@@ -58,18 +58,10 @@ extension Media: Equatable {
     }
 }
 
-// MARK: - Comparable implemntation
-
-extension Media: Comparable {
-    static func <(lhs: Media, rhs: Media) -> Bool {
-        return lhs.title < rhs.title
-    }
-}
-
 // MARK: - Hashable implementation
 
 extension Media: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self)
+        hasher.combine(id)
     }
 }
