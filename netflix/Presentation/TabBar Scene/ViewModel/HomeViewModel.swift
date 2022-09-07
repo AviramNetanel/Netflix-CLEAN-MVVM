@@ -10,25 +10,35 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
-    
+    let presentMediaDetails: (MediaDTO) -> Void
+}
+
+// MARK: - HomeViewModelEndpoints
+
+protocol HomeViewModelEndpoints {
+    func getSections()
+    func getTVShows()
+    func getMovies()
 }
 
 // MARK: - HomeViewModelInput protocol
 
 protocol HomeViewModelInput {
     func viewDidLoad()
-    func getTVShows(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void)
+    func didSelectItem(at index: Int)
 }
 
 // MARK: - HomeViewModelOutput protocol
 
 protocol HomeViewModelOutput {
+    var sections: Observable<[SectionDTO]> { get }
     var items: Observable<[MediaDTO]> { get }
+    var isEmpty: Bool { get }
 }
 
 // MARK: - HomeViewModel protocol
 
-protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput {}
+protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput, HomeViewModelEndpoints {}
 
 // MARK: - HomeViewModel class
 
@@ -45,7 +55,9 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     // MARK: Output
     
+    var sections: Observable<[SectionDTO]> = Observable([])
     var items: Observable<[MediaDTO]> = Observable([])
+    var isEmpty: Bool { return items.value.isEmpty }
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -54,20 +66,56 @@ final class DefaultHomeViewModel: HomeViewModel {
     }
 }
 
-// MARK: - HomeViewModel implementation
+// MARK: - HomeViewModelInput implementation
 
 extension DefaultHomeViewModel {
     
-    func viewDidLoad() {}
+    func viewDidLoad() {
+        getSections()
+    }
     
-    func getTVShows(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) {
-        task = homeUseCase.execute(completion: { result in
+    func didSelectItem(at index: Int) {
+        
+    }
+}
+
+// MARK: - HomeViewModelEndpoints implementation
+
+extension DefaultHomeViewModel {
+    
+    func getSections() {
+        task = homeUseCase.executeSections { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let response):
-                completion(.success(response))
+                self.sections.value = response.data
             case .failure(let error):
-                completion(.failure(error))
+                print(error)
             }
-        })
+        }
+    }
+    
+    func getTVShows() {
+        task = homeUseCase.executeTVShows { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.items.value = response.data
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getMovies() {
+        task = homeUseCase.executeMovies { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.items.value = response.data
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

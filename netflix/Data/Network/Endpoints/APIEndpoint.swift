@@ -31,6 +31,14 @@ struct APIEndpoint {
                         bodyEncoding: .jsonSerializationData)
     }
     
+    // MARK: SectionsRepository endpoints
+    
+    static func getSections() -> Endpoint<SectionsResponseDTO> {
+        return Endpoint(path: "api/v1/sections",
+                        method: .get,
+                        queryParameters: ["sort": "id"])
+    }
+    
     // MARK: TVShowsRepository endpoints
     
     static func getTVShows() -> Endpoint<TVShowsResponseDTO> {

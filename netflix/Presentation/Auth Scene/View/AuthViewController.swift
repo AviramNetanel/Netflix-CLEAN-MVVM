@@ -45,14 +45,15 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
             
             signUpViewController.viewModel = viewModel
             
-        } else if segue.identifier == String(describing: HomeViewController.self),
+        } else if segue.identifier == String(describing: HomeTableViewController.self),
                   let destinationVC = segue.destination as? UITabBarController,
-                  let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
+                  let homeViewController = destinationVC.viewControllers?.first as? HomeTableViewController {
             
             let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
             let sceneDependencies = appFlowCoordinator?.sceneDependencies
-            let actions = HomeViewModelActions()
+            let actions = HomeViewModelActions(presentMediaDetails: { _ in })
             homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
+            appFlowCoordinator?.createHomeSceneFlow()
         }
     }
     

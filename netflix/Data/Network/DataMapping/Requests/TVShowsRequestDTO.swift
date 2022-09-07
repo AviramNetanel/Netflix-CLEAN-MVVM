@@ -7,22 +7,8 @@
 
 import Foundation
 
+// MARK: - TVShowsRequestDTO struct
+
 struct TVShowsRequestDTO: Decodable {
     
-}
-
-struct TVShowsResponseDTO: Decodable {
-    let status: String
-    let results: Int
-    let data: [MediaDTO]
-}
-
-struct MoviesRequestDTO: Decodable {
-    
-}
-
-struct MoviesResponseDTO: Decodable {
-    let status: String
-    let results: Int
-    let data: [MediaDTO]
 }

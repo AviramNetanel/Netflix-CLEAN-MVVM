@@ -10,5 +10,5 @@ import Foundation
 // MARK: - MoviesRepository
 
 protocol MoviesRepository {
-    
+    func getAll(completion: @escaping (Result<MoviesResponseDTO, Error>) -> Void) -> Cancellable?
 }

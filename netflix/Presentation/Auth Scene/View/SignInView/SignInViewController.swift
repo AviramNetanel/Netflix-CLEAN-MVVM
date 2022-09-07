@@ -29,14 +29,15 @@ final class SignInViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == String(describing: HomeViewController.self),
+        if segue.identifier == String(describing: HomeTableViewController.self),
            let destinationVC = segue.destination as? UITabBarController,
-            let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
+            let homeViewController = destinationVC.viewControllers?.first as? HomeTableViewController {
             
             let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
             let sceneDependencies = appFlowCoordinator?.sceneDependencies
-            let actions = HomeViewModelActions()
+            let actions = HomeViewModelActions(presentMediaDetails: { _ in })
             homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
+            appFlowCoordinator?.createHomeSceneFlow()
         }
     }
     
@@ -66,7 +67,7 @@ final class SignInViewController: UIViewController {
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
+                    self.performSegue(withIdentifier: String(describing: HomeTableViewController.self),
                                       sender: self)
                 }
             } else {

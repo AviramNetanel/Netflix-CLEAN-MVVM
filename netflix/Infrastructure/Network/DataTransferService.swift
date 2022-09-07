@@ -68,7 +68,9 @@ final class DefaultDataTransferService {
 
 extension DefaultDataTransferService: DataTransferService {
     
-    func request<T, E>(with endpoint: E, completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where T : Decodable, T == E.Response, E : ResponseRequestable {
+    func request<T, E>(with endpoint: E,
+                       completion: @escaping CompletionHandler<T>) -> NetworkCancellable?
+    where T: Decodable, T == E.Response, E: ResponseRequestable {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
@@ -86,7 +88,9 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
+    func request<E>(with endpoint: E,
+                    completion: @escaping CompletionHandler<Void>) -> NetworkCancellable?
+    where E: ResponseRequestable, E.Response == Void { 
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success:

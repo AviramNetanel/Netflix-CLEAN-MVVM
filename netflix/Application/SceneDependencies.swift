@@ -11,7 +11,7 @@ import UIKit
 
 protocol SceneDependable {
     func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
-//    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
+    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
 }
 
 // MARK: - SceneDependencies class
@@ -37,7 +37,8 @@ final class SceneDependencies {
     }
     
     func createHomeUseCase() -> HomeUseCase {
-        return DefaultHomeUseCase(tvShowsRepository: createTVShowsRepository(),
+        return DefaultHomeUseCase(sectionsRepository: createSectionsRepository(),
+                                  tvShowsRepository: createTVShowsRepository(),
                                   moviesRepository: createMoviesRepository())
     }
     
@@ -46,6 +47,10 @@ final class SceneDependencies {
     func createAuthRepository() -> AuthRepository {
         return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService,
                                      cache: authResponseCache)
+    }
+    
+    func createSectionsRepository() -> SectionsRepository {
+        return DefaultSectionsRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     func createTVShowsRepository() -> TVShowsRepository {
@@ -69,8 +74,8 @@ final class SceneDependencies {
     
     // MARK: Home
     
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
-        return HomeViewController.create(with: createHomeViewModel(actions: actions))
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeTableViewController {
+        return HomeTableViewController.create(with: createHomeViewModel(actions: actions))
     }
     
     func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
@@ -86,9 +91,9 @@ extension SceneDependencies: SceneDependable {
         return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
     
-//    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
-//        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
-//    }
+    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
+        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
+    }
 }
 
 // MARK: - AuthFlowCoordinatorDependencies implementation

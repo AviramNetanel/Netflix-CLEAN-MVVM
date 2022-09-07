@@ -17,4 +17,8 @@ extension StandardItemViewModel {
         self.title = media.title
         self.covers = media.covers
     }
+    init(section: SectionDTO) {
+        self.title = section.title
+        self.covers = []
+    }
 }

@@ -9,22 +9,22 @@ import UIKit
 
 // MARK: - HomeTableViewController class
 
-final class HomeViewController: UIViewController, StoryboardInstantiable {
-    
-    @IBOutlet weak var tableView: UITableView!
+final class HomeTableViewController: UITableViewController {
     
     var viewModel: HomeViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
-        viewModel.viewDidLoad()
+        setupViews()
         bind(to: viewModel)
-        setupTableView()
+        viewModel.viewDidLoad()
     }
     
-    static func create(with viewModel: HomeViewModel) -> HomeViewController {
-        let view = HomeViewController.instantiateViewController()
+    static func create(with viewModel: HomeViewModel) -> HomeTableViewController {
+        let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
+                                bundle: .main)
+            .instantiateViewController(withIdentifier: String(describing: HomeTableViewController.self)) as! HomeTableViewController
         view.viewModel = viewModel
         return view
     }
@@ -40,48 +40,43 @@ final class HomeViewController: UIViewController, StoryboardInstantiable {
                       BlackStyleNavigationBarBehavior()])
     }
     
+    private func setupViews() {
+        setupTableView()
+    }
+    
     private func setupTableView() {
         tableView.estimatedRowHeight = StandardItemTableViewCell.height
         tableView.rowHeight = UITableView.automaticDimension
-        
-        viewModel.getTVShows { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.viewModel.items.value = response.data
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
     
     private func bind(to viewModel: HomeViewModel) {
+        viewModel.sections.observe(on: self) { [weak self] _ in self?.reload() }
         viewModel.items.observe(on: self) { [weak self] _ in self?.reload() }
     }
 }
 
 // MARK: - UITableViewDelegate & UITableViewDataSource implementation
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+extension HomeTableViewController {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.value.count
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.sections.value.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: StandardItemTableViewCell.reuseIdentifier,
                                                        for: indexPath) as? StandardItemTableViewCell else {
             fatalError("Cannot dequeue reusable cell \(StandardItemTableViewCell.self) with reuseIdentifier: \(StandardItemTableViewCell.reuseIdentifier)")
         }
-        cell.fill(with: .init(media: viewModel.items.value[indexPath.row]))
+        cell.fill(with: .init(section: viewModel.sections.value[indexPath.row]))
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100.0
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return viewModel.sections.value.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
 }

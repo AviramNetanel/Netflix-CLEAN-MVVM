@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+// MARK: - SectionsRepository protocol
+
+protocol SectionsRepository {
+    func getAll(completion: @escaping (Result<SectionsResponseDTO, Error>) -> Void) -> Cancellable?
+}

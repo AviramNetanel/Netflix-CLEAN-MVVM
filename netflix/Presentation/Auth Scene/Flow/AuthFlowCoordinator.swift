@@ -52,7 +52,7 @@ final class AuthFlowCoordinator {
     }
     
     private func showHomeViewController() {
-        viewController?.performSegue(withIdentifier: String(describing: HomeViewController.self),
+        viewController?.performSegue(withIdentifier: String(describing: HomeTableViewController.self),
                                      sender: viewController)
     }
 }

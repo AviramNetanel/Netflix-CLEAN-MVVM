@@ -10,7 +10,7 @@ import UIKit
 // MARK: - HomeFlowCoordinatorDependencies protocol
 
 protocol HomeFlowCoordinatorDependencies {
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeTableViewController
 }
 
 // MARK: - HomeFlowCoordinator class
@@ -29,10 +29,16 @@ final class HomeFlowCoordinator {
     }
     
     func coordinate() {
-        let actions = HomeViewModelActions()
+        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
         let viewController = dependencies.createHomeViewController(actions: actions)
-        navigationController?.pushViewController(viewController, animated: false)
         
         self.viewController = viewController
+    }
+    
+    // MARK: Private
+    
+    private func presentMediaDetails(media: MediaDTO) {
+        viewController?.performSegue(withIdentifier: String(describing: DetailViewController.self),
+                                     sender: viewController)
     }
 }
