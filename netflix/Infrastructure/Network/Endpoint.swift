@@ -112,6 +112,7 @@ extension Requestable {
         let url = try self.url(with: config)
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
+        
         headerParameters.forEach { allHeaders.updateValue($1, forKey: $0) }
         
         let bodyParameters = try bodyParametersEncodable?.toDictionary() ?? self.bodyParameters
@@ -122,6 +123,7 @@ extension Requestable {
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = allHeaders
         urlRequest.setValue("application/json", forHTTPHeaderField: "content-type")
+        
         return urlRequest
     }
     

@@ -10,7 +10,7 @@ import Foundation
 // MARK: - HomeUseCase protocol
 
 protocol HomeUseCase {
-    func execute() -> Cancellable?
+    func execute(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - DefaultHomeUseCase class
@@ -25,7 +25,20 @@ final class DefaultHomeUseCase: HomeUseCase {
         self.moviesRepository = moviesRepository
     }
     
-    func execute() -> Cancellable? {
-        return nil
+    func execute(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable? {
+        return request(completion: completion)
+    }
+    
+    // MARK: Private
+    
+    private func request(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable? {
+        return tvShowsRepository.getAll { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

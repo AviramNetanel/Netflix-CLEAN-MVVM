@@ -11,23 +11,19 @@ import UIKit
 
 final class AppFlowCoordinator {
     
-    private let appDependencies: AppDependencies
+    private var appDependencies: AppDependencies
+    private(set) var sceneDependencies: SceneDependencies
     private var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController, appDependencies: AppDependencies = AppDependencies()) {
+    init(navigationController: UINavigationController,
+         appDependencies: AppDependencies = AppDependencies()) {
         self.navigationController = navigationController
         self.appDependencies = appDependencies
+        self.sceneDependencies = appDependencies.createSceneDependencies()
     }
     
     func createAuthSceneFlow() {
-        let sceneDependencies = appDependencies.createSceneDependencies()
         let flowCoordinator = sceneDependencies.createAuthFlowCoordinator(navigationController: navigationController)
-        flowCoordinator.coordinate()
-    }
-    
-    func createTabBarSceneFlow() {
-        let sceneDependencies = appDependencies.createSceneDependencies()
-        let flowCoordinator = sceneDependencies.createTabBarFlowCoordinator(navigationController: navigationController)
         flowCoordinator.coordinate()
     }
 }

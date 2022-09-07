@@ -11,10 +11,10 @@ import Foundation
 
 final class DefaultTVShowsRepository {
     
-    private let dataTramsferService: DataTransferService
+    private let dataTransferService: DataTransferService
     
     init(dataTransferService: DataTransferService) {
-        self.dataTramsferService = dataTransferService
+        self.dataTransferService = dataTransferService
     }
 }
 
@@ -22,4 +22,21 @@ final class DefaultTVShowsRepository {
 
 extension DefaultTVShowsRepository: TVShowsRepository {
     
+    func getAll(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable? {
+        let task = RepositoryTask()
+        
+        guard !task.isCancelled else { return nil }
+        
+        let endpoint = APIEndpoint.getTVShows()
+        task.networkTask = dataTransferService.request(with: endpoint) { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+        return task
+    }
 }

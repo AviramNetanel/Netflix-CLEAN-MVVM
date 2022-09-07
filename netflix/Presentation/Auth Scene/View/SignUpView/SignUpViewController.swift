@@ -28,10 +28,20 @@ final class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         AppAppearance.darkAppearance()
-        
         setupViews()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == String(describing: HomeViewController.self),
+           let destinationVC = segue.destination as? UITabBarController,
+           let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
+            
+            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
+            let sceneDependencies = appFlowCoordinator?.sceneDependencies
+            let actions = HomeViewModelActions()
+            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
+        }
     }
     
     // MARK: Private
@@ -41,9 +51,7 @@ final class SignUpViewController: UIViewController {
                             emailTextField,
                             passwordTextField,
                             passwordConfirmTextField])
-        
         signUpButton.setLayerBorder(.black, width: 1.5)
-        
         setActions()
     }
     
@@ -68,7 +76,7 @@ final class SignUpViewController: UIViewController {
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeTableViewController.self),
+                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
                                       sender: self)
                 }
             } else {

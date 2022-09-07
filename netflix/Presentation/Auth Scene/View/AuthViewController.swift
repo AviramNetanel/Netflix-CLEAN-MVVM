@@ -19,16 +19,10 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     
     private var viewModel: AuthViewModel!
     
-    private var signInViewController: SignInViewController?
-    private var signUpViewController: SignUpViewController?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupBehaviors()
         setupViews()
-        
-        guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
         viewModel.viewDidLoad()
     }
     
@@ -40,16 +34,25 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == String(describing: SignInViewController.self),
-           let destinationVC = segue.destination as? SignInViewController {
-            signInViewController = destinationVC
-            signInViewController?.viewModel = viewModel
+           let destinationVC = segue.destination as? SignInViewController,
+           let signInViewController = destinationVC as SignInViewController? {
+            
+            signInViewController.viewModel = viewModel
+            
         } else if segue.identifier == String(describing: SignUpViewController.self),
-                  let destinationVC = segue.destination as? SignUpViewController {
-            signUpViewController = destinationVC
-            signUpViewController?.viewModel = viewModel
-        } else if segue.identifier == String(describing: HomeTabBarController.self),
-                  let _ = segue.destination as? HomeTabBarController {
-            sceneDelegate?.appFlowCoordinator?.createTabBarSceneFlow()
+                  let destinationVC = segue.destination as? SignUpViewController,
+                  let signUpViewController = destinationVC as SignUpViewController? {
+            
+            signUpViewController.viewModel = viewModel
+            
+        } else if segue.identifier == String(describing: HomeViewController.self),
+                  let destinationVC = segue.destination as? UITabBarController,
+                  let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
+            
+            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
+            let sceneDependencies = appFlowCoordinator?.sceneDependencies
+            let actions = HomeViewModelActions()
+            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
         }
     }
     

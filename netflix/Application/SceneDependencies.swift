@@ -11,7 +11,7 @@ import UIKit
 
 protocol SceneDependable {
     func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
-    func createTabBarFlowCoordinator(navigationController: UINavigationController) -> TabBarFlowCoordinator
+//    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
 }
 
 // MARK: - SceneDependencies class
@@ -36,11 +36,24 @@ final class SceneDependencies {
         return DefaultAuthUseCase(authRepository: createAuthRepository())
     }
     
+    func createHomeUseCase() -> HomeUseCase {
+        return DefaultHomeUseCase(tvShowsRepository: createTVShowsRepository(),
+                                  moviesRepository: createMoviesRepository())
+    }
+    
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
         return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService,
                                      cache: authResponseCache)
+    }
+    
+    func createTVShowsRepository() -> TVShowsRepository {
+        return DefaultTVShowsRepository(dataTransferService: dependencies.dataTransferService)
+    }
+    
+    func createMoviesRepository() -> MoviesRepository {
+        return DefaultMoviesRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     // MARK: Auth
@@ -54,20 +67,14 @@ final class SceneDependencies {
                                     actions: actions)
     }
     
-    // MARK: TabBar
+    // MARK: Home
     
-    func createTabBarController(actions: HomeViewModelActions) -> HomeTabBarController {
-        return HomeTabBarController.create(with: [createHomeViewController(actions: actions)])
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
+        return HomeViewController.create(with: createHomeViewModel(actions: actions))
     }
     
-    // MARK: TabBar > Home
-    
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeTableViewController {
-        return HomeTableViewController.create(with: createHomeViewModel())
-    }
-    
-    func createHomeViewModel() -> HomeViewModel {
-        return DefaultHomeViewModel(actions: nil)
+    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
+        return DefaultHomeViewModel(homeUseCase: createHomeUseCase(), actions: actions)
     }
 }
 
@@ -79,15 +86,15 @@ extension SceneDependencies: SceneDependable {
         return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
     }
     
-    func createTabBarFlowCoordinator(navigationController: UINavigationController) -> TabBarFlowCoordinator {
-        return TabBarFlowCoordinator(navigationController: navigationController, dependencies: self)
-    }
+//    func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
+//        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
+//    }
 }
 
 // MARK: - AuthFlowCoordinatorDependencies implementation
 
 extension SceneDependencies: AuthFlowCoordinatorDependencies {}
 
-// MARK: - TabBarFlowCoordinatorDependencies implementation
+// MARK: - HomeFlowCoordinatorDependencies implementation
 
-extension SceneDependencies: TabBarFlowCoordinatorDependencies {}
+extension SceneDependencies: HomeFlowCoordinatorDependencies {}

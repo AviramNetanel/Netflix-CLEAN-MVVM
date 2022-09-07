@@ -11,6 +11,8 @@ import Foundation
 
 struct APIEndpoint {
     
+    // MARK: AuthRepository endpoints
+    
     static func signUp(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
         return Endpoint(path: "api/v1/users/signup",
                         method: .post,
@@ -28,4 +30,21 @@ struct APIEndpoint {
                                          "password": authRequestDTO.user.password!],
                         bodyEncoding: .jsonSerializationData)
     }
+    
+    // MARK: TVShowsRepository endpoints
+    
+    static func getTVShows() -> Endpoint<TVShowsResponseDTO> {
+        return Endpoint(path: "api/v1/tvshows",
+                        method: .get,
+                        queryParameters: ["sort": "id"])
+    }
+    
+    // MARK: MoviesRepository endpoints
+    
+    static func getMovies() -> Endpoint<MoviesResponseDTO> {
+        return Endpoint(path: "api/v1/movies",
+                        method: .get,
+                        queryParameters: ["sort": "id"])
+    }
 }
+

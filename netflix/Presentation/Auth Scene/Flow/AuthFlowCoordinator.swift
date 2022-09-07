@@ -22,7 +22,8 @@ final class AuthFlowCoordinator {
     private weak var navigationController: UINavigationController?
     private weak var viewController: UIViewController?
     
-    init(navigationController: UINavigationController, dependencies: AuthFlowCoordinatorDependencies) {
+    init(navigationController: UINavigationController,
+         dependencies: AuthFlowCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
     }
@@ -33,7 +34,6 @@ final class AuthFlowCoordinator {
                                            presentHomeViewController: showHomeViewController)
         
         let viewController = dependencies.createAuthViewController(actions: actions)
-        
         navigationController?.pushViewController(viewController, animated: false)
         
         self.viewController = viewController
@@ -52,7 +52,7 @@ final class AuthFlowCoordinator {
     }
     
     private func showHomeViewController() {
-        viewController?.performSegue(withIdentifier: String(describing: HomeTabBarController.self),
+        viewController?.performSegue(withIdentifier: String(describing: HomeViewController.self),
                                      sender: viewController)
     }
 }

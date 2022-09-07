@@ -13,17 +13,28 @@ struct HomeViewModelActions {
     
 }
 
+// MARK: - HomeViewModelInput protocol
+
+protocol HomeViewModelInput {
+    func viewDidLoad()
+    func getTVShows(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void)
+}
+
+// MARK: - HomeViewModelOutput protocol
+
+protocol HomeViewModelOutput {
+    var items: Observable<[MediaDTO]> { get }
+}
+
 // MARK: - HomeViewModel protocol
 
-protocol HomeViewModel {
-    
-}
+protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput {}
 
 // MARK: - HomeViewModel class
 
 final class DefaultHomeViewModel: HomeViewModel {
     
-    //private let authUseCase: AuthUseCase
+    private let homeUseCase: HomeUseCase
     private let actions: HomeViewModelActions
     
     private var task: Cancellable? {
@@ -32,13 +43,31 @@ final class DefaultHomeViewModel: HomeViewModel {
         }
     }
     
-    init(//authUseCase: AuthUseCase,
-         actions: HomeViewModelActions? = nil) {
-        //self.authUseCase = authUseCase
-        self.actions = actions ?? .init()
+    // MARK: Output
+    
+    var items: Observable<[MediaDTO]> = Observable([])
+    
+    init(homeUseCase: HomeUseCase,
+         actions: HomeViewModelActions) {
+        self.homeUseCase = homeUseCase
+        self.actions = actions
     }
+}
+
+// MARK: - HomeViewModel implementation
+
+extension DefaultHomeViewModel {
     
-    // MARK: Private
+    func viewDidLoad() {}
     
-    
+    func getTVShows(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) {
+        task = homeUseCase.execute(completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
 }

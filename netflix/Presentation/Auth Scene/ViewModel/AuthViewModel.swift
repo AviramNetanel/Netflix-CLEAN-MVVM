@@ -26,13 +26,9 @@ protocol AuthViewModelInput {
     func signInButtonDidTap()
 }
 
-// MARK: - AuthViewModelOutput protocol
-
-protocol AuthViewModelOutput {}
-
 // MARK: - AuthViewModel protocol
 
-protocol AuthViewModel {}
+protocol AuthViewModel: AuthViewModelInput {}
 
 // MARK: - AuthViewModel class
 
@@ -53,9 +49,9 @@ final class DefaultAuthViewModel: AuthViewModel {
     }
 }
 
-// MARK: - AuthViewModelInput implementation
+// MARK: - AuthViewModel implementation
 
-extension DefaultAuthViewModel: AuthViewModelInput {
+extension DefaultAuthViewModel {
     
     func viewDidLoad() {
         // should be fetchrequested from coredata.
@@ -118,7 +114,3 @@ extension DefaultAuthViewModel: AuthViewModelInput {
         actions?.presentSignUpViewController()
     }
 }
-
-// MARK: - AuthViewModelOutput implementation
-
-extension DefaultAuthViewModel: AuthViewModelOutput {}

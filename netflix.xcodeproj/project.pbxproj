@@ -9,13 +9,15 @@
 /* Begin PBXBuildFile section */
 		A18691B728C698B50087DE3B /* UIColor+HEXColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */; };
 		A18691B928C698BB0087DE3B /* UIColor+RGBColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */; };
-		A18691BC28C6ED070087DE3B /* TabBarFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BB28C6ED070087DE3B /* TabBarFlowCoordinator.swift */; };
+		A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */; };
 		A18691BE28C764600087DE3B /* UIBarButtonItem+AddTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */; };
 		A18691C028C772FA0087DE3B /* UIViewController+SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */; };
-		A18691C328C7782B0087DE3B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691C228C7782B0087DE3B /* HomeTabBarController.swift */; };
 		A18691C528C7B0B20087DE3B /* HomeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691C428C7B0B20087DE3B /* HomeUseCase.swift */; };
 		A18691C728C7B2400087DE3B /* DefaultTVShowsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691C628C7B2400087DE3B /* DefaultTVShowsRepository.swift */; };
 		A18691C928C7B2970087DE3B /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691C828C7B2970087DE3B /* DefaultMoviesRepository.swift */; };
+		A18691CB28C7B6100087DE3B /* TVShowsRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691CA28C7B6100087DE3B /* TVShowsRequestDTO.swift */; };
+		A18691CE28C7D2230087DE3B /* StandardItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691CD28C7D2230087DE3B /* StandardItemTableViewCell.swift */; };
+		A18691D028C7D3660087DE3B /* StandardItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691CF28C7D3660087DE3B /* StandardItemViewModel.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -23,7 +25,7 @@
 		A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991628BEBD040077A5A6 /* AppConfiguration.swift */; };
 		A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */; };
 		A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B991A28BEC0580077A5A6 /* AppDependencies.swift */; };
-		A18B992628BEC7920077A5A6 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992528BEC7920077A5A6 /* HomeTableViewController.swift */; };
+		A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992528BEC7920077A5A6 /* HomeViewController.swift */; };
 		A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992C28BEE7990077A5A6 /* AuthViewController.swift */; };
 		A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B992E28BEE7C10077A5A6 /* AuthFlowCoordinator.swift */; };
 		A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B993028BEE9320077A5A6 /* SceneDependencies.swift */; };
@@ -64,7 +66,7 @@
 		A18B998F28C06A200077A5A6 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B998E28C06A200077A5A6 /* AuthUseCase.swift */; };
 		A18B999228C0DE710077A5A6 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999128C0DE710077A5A6 /* APIEndpoint.swift */; };
 		A18B999628C0DFB90077A5A6 /* AuthRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999528C0DFB90077A5A6 /* AuthRequestDTO.swift */; };
-		A18B999828C0DFC00077A5A6 /* AuthResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999728C0DFC00077A5A6 /* AuthResponseDTO.swift */; };
+		A18B999828C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */; };
 		A18B999C28C0E67D0077A5A6 /* AuthResponseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999B28C0E67D0077A5A6 /* AuthResponseStorage.swift */; };
 		A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999D28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift */; };
 		A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */; };
@@ -73,7 +75,7 @@
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
-		A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F98F28C5605B0042DE9F /* HomeTabBarController.storyboard */; };
+		A1B3F99028C5605B0042DE9F /* HomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F98F28C5605B0042DE9F /* HomeViewController.storyboard */; };
 		A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */; };
 		A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99328C575A30042DE9F /* AuthViewModel.swift */; };
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
@@ -91,13 +93,15 @@
 /* Begin PBXFileReference section */
 		A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HEXColor.swift"; sourceTree = "<group>"; };
 		A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGBColor.swift"; sourceTree = "<group>"; };
-		A18691BB28C6ED070087DE3B /* TabBarFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarFlowCoordinator.swift; sourceTree = "<group>"; };
+		A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+AddTarget.swift"; sourceTree = "<group>"; };
 		A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SceneDelegate.swift"; sourceTree = "<group>"; };
-		A18691C228C7782B0087DE3B /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
 		A18691C428C7B0B20087DE3B /* HomeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUseCase.swift; sourceTree = "<group>"; };
 		A18691C628C7B2400087DE3B /* DefaultTVShowsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTVShowsRepository.swift; sourceTree = "<group>"; };
 		A18691C828C7B2970087DE3B /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
+		A18691CA28C7B6100087DE3B /* TVShowsRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowsRequestDTO.swift; sourceTree = "<group>"; };
+		A18691CD28C7D2230087DE3B /* StandardItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardItemTableViewCell.swift; sourceTree = "<group>"; };
+		A18691CF28C7D3660087DE3B /* StandardItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardItemViewModel.swift; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,7 +111,7 @@
 		A18B991628BEBD040077A5A6 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B991A28BEC0580077A5A6 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
-		A18B992528BEC7920077A5A6 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		A18B992528BEC7920077A5A6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A18B992C28BEE7990077A5A6 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		A18B992E28BEE7C10077A5A6 /* AuthFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18B993028BEE9320077A5A6 /* SceneDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDependencies.swift; sourceTree = "<group>"; };
@@ -148,7 +152,7 @@
 		A18B998E28C06A200077A5A6 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		A18B999128C0DE710077A5A6 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		A18B999528C0DFB90077A5A6 /* AuthRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestDTO.swift; sourceTree = "<group>"; };
-		A18B999728C0DFC00077A5A6 /* AuthResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseDTO.swift; sourceTree = "<group>"; };
+		A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		A18B999B28C0E67D0077A5A6 /* AuthResponseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseStorage.swift; sourceTree = "<group>"; };
 		A18B999D28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataAuthResponseStorage.swift; sourceTree = "<group>"; };
 		A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseEntity+Mapping.swift"; sourceTree = "<group>"; };
@@ -157,7 +161,7 @@
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
-		A1B3F98F28C5605B0042DE9F /* HomeTabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeTabBarController.storyboard; sourceTree = "<group>"; };
+		A1B3F98F28C5605B0042DE9F /* HomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeViewController.storyboard; sourceTree = "<group>"; };
 		A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthViewController.storyboard; sourceTree = "<group>"; };
 		A1B3F99328C575A30042DE9F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -186,17 +190,17 @@
 		A18691BA28C6ECFF0087DE3B /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				A18691BB28C6ED070087DE3B /* TabBarFlowCoordinator.swift */,
+				A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
 		};
-		A18691C128C778200087DE3B /* HomeView */ = {
+		A18691CC28C7D1200087DE3B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A18B992528BEC7920077A5A6 /* HomeTableViewController.swift */,
+				A18691CD28C7D2230087DE3B /* StandardItemTableViewCell.swift */,
 			);
-			path = HomeView;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		A18B98EF28BEB62C0077A5A6 = {
@@ -306,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */,
+				A18691CF28C7D3660087DE3B /* StandardItemViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -313,9 +318,9 @@
 		A18B992428BEC7860077A5A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A18691C228C7782B0087DE3B /* HomeTabBarController.swift */,
-				A1B3F98F28C5605B0042DE9F /* HomeTabBarController.storyboard */,
-				A18691C128C778200087DE3B /* HomeView */,
+				A18B992528BEC7920077A5A6 /* HomeViewController.swift */,
+				A1B3F98F28C5605B0042DE9F /* HomeViewController.storyboard */,
+				A18691CC28C7D1200087DE3B /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -530,6 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				A18B999528C0DFB90077A5A6 /* AuthRequestDTO.swift */,
+				A18691CA28C7B6100087DE3B /* TVShowsRequestDTO.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -537,7 +543,7 @@
 		A18B999428C0DFA80077A5A6 /* Responses */ = {
 			isa = PBXGroup;
 			children = (
-				A18B999728C0DFC00077A5A6 /* AuthResponseDTO.swift */,
+				A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -683,7 +689,7 @@
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
-				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
+				A1B3F99028C5605B0042DE9F /* HomeViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,13 +708,13 @@
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
+				A18691D028C7D3660087DE3B /* StandardItemViewModel.swift in Sources */,
 				A18B996D28C00F7C0077A5A6 /* SectionsRepository.swift in Sources */,
 				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+Mapping.swift in Sources */,
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
-				A18691C328C7782B0087DE3B /* HomeTabBarController.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
 				A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */,
 				A18B998F28C06A200077A5A6 /* AuthUseCase.swift in Sources */,
@@ -721,7 +727,7 @@
 				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
 				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
 				A18B999228C0DE710077A5A6 /* APIEndpoint.swift in Sources */,
-				A18B992628BEC7920077A5A6 /* HomeTableViewController.swift in Sources */,
+				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
 				A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */,
@@ -730,14 +736,15 @@
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				A18691C028C772FA0087DE3B /* UIViewController+SceneDelegate.swift in Sources */,
-				A18691BC28C6ED070087DE3B /* TabBarFlowCoordinator.swift in Sources */,
+				A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */,
-				A18B999828C0DFC00077A5A6 /* AuthResponseDTO.swift in Sources */,
+				A18B999828C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				A18B997628C0119A0077A5A6 /* NetworkConfig.swift in Sources */,
 				A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */,
 				A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */,
 				A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */,
+				A18691CB28C7B6100087DE3B /* TVShowsRequestDTO.swift in Sources */,
 				A1F56A6D28C695D60089BD4F /* UIViewController+SetAttributes.swift in Sources */,
 				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
@@ -750,6 +757,7 @@
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,
 				A18B995B28BFFB500077A5A6 /* SeasonDTO+Mapping.swift in Sources */,
 				A18B995928BFF6A20077A5A6 /* MediaDTO+Mapping.swift in Sources */,
+				A18691CE28C7D2230087DE3B /* StandardItemTableViewCell.swift in Sources */,
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A18691B928C698BB0087DE3B /* UIColor+RGBColor.swift in Sources */,
 				A18691B728C698B50087DE3B /* UIColor+HEXColor.swift in Sources */,

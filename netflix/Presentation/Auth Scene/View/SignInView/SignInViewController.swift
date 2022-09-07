@@ -24,10 +24,20 @@ final class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         AppAppearance.darkAppearance()
-        
         setupViews()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == String(describing: HomeViewController.self),
+           let destinationVC = segue.destination as? UITabBarController,
+            let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
+            
+            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
+            let sceneDependencies = appFlowCoordinator?.sceneDependencies
+            let actions = HomeViewModelActions()
+            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
+        }
     }
     
     // MARK: Private
@@ -35,9 +45,7 @@ final class SignInViewController: UIViewController {
     private func setupViews() {
         setAttributes(for: [emailTextField,
                             passwordTextField])
-        
         signInButton.setLayerBorder(.black, width: 1.5)
-        
         setActions()
     }
     
@@ -49,8 +57,6 @@ final class SignInViewController: UIViewController {
     
     @objc
     private func didSignIn() {
-        guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
-        
         let userDTO = UserDTO(email: credentials.0,
                               password: credentials.1)
         let requestDTO = AuthRequestDTO(user: userDTO)
@@ -60,7 +66,7 @@ final class SignInViewController: UIViewController {
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeTableViewController.self),
+                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
                                       sender: self)
                 }
             } else {
