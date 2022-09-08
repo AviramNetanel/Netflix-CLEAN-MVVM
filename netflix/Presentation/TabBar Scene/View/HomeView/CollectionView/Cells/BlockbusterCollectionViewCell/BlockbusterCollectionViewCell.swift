@@ -1,5 +1,5 @@
 //
-//  ResumableCollectionViewCell.swift
+//  BlockbusterCollectionViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - ResumableCollectionViewCell class
+// MARK: - BlockbusterCollectionViewCell class
 
-final class ResumableCollectionViewCell: DefaultCollectionViewCell {
+final class BlockbusterCollectionViewCell: DefaultCollectionViewCell {
     
     private var viewModel: CollectionViewCellItemViewModel!
     

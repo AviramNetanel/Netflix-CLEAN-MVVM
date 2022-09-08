@@ -1,5 +1,5 @@
 //
-//  RatableTableViewCell.swift
+//  StandardTableViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - RatableTableViewCell class
+// MARK: - StandardTableViewCell class
 
-final class RatableTableViewCell: DefaultTableViewCell<RatableCollectionViewCell> {
+final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCell> {
     
     var dataSource: DefaultCollectionViewDataSource!
     var viewModel: TableViewCellItemViewModel!

@@ -20,8 +20,6 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
         }
     }
     
-    static let reuseIdentifier = String(describing: RatableCollectionViewCell.self)
-    
     private let layerView = UIView()
     private var textLayer = TextLayer()
     private var viewModel: CollectionViewCellItemViewModel!
@@ -34,16 +32,17 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
     deinit {
         textLayer.removeFromSuperlayer()
         layerView.removeFromSuperview()
+        viewModel = nil
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         textLayer.string = nil
+        viewModel = nil
     }
     
     override func configure(with viewModel: CollectionViewCellItemViewModel) {
         self.viewModel = viewModel
-        self.backgroundColor = .black
         placeholderLabel.text = viewModel.title
     }
     

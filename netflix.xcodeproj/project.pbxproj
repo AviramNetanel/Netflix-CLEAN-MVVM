@@ -46,6 +46,14 @@
 		A186921A28CA2EA50087DE3B /* RatableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186921928CA2EA50087DE3B /* RatableCollectionViewCell.swift */; };
 		A186921C28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186921B28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift */; };
 		A186922228CA30700087DE3B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186922128CA30700087DE3B /* CollectionViewCell.swift */; };
+		A186922428CA34620087DE3B /* ResumableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A186922328CA34620087DE3B /* ResumableCollectionViewCell.xib */; };
+		A186922628CA46FD0087DE3B /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186922528CA46FD0087DE3B /* Configurable.swift */; };
+		A186922B28CA49BC0087DE3B /* BlockbusterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186922A28CA49BC0087DE3B /* BlockbusterCollectionViewCell.swift */; };
+		A186922D28CA49C00087DE3B /* BlockbusterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A186922C28CA49C00087DE3B /* BlockbusterCollectionViewCell.xib */; };
+		A186922F28CA49C60087DE3B /* StandardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186922E28CA49C60087DE3B /* StandardCollectionViewCell.swift */; };
+		A186923128CA49CA0087DE3B /* StandardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */; };
+		A186923328CA49DC0087DE3B /* BlockbusterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186923228CA49DC0087DE3B /* BlockbusterTableViewCell.swift */; };
+		A186923528CA49E20087DE3B /* StandardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186923428CA49E20087DE3B /* StandardTableViewCell.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -158,6 +166,14 @@
 		A186921928CA2EA50087DE3B /* RatableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatableCollectionViewCell.swift; sourceTree = "<group>"; };
 		A186921B28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellItemViewModel.swift; sourceTree = "<group>"; };
 		A186922128CA30700087DE3B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		A186922328CA34620087DE3B /* ResumableCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResumableCollectionViewCell.xib; sourceTree = "<group>"; };
+		A186922528CA46FD0087DE3B /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
+		A186922A28CA49BC0087DE3B /* BlockbusterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockbusterCollectionViewCell.swift; sourceTree = "<group>"; };
+		A186922C28CA49C00087DE3B /* BlockbusterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockbusterCollectionViewCell.xib; sourceTree = "<group>"; };
+		A186922E28CA49C60087DE3B /* StandardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardCollectionViewCell.swift; sourceTree = "<group>"; };
+		A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StandardCollectionViewCell.xib; sourceTree = "<group>"; };
+		A186923228CA49DC0087DE3B /* BlockbusterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockbusterTableViewCell.swift; sourceTree = "<group>"; };
+		A186923428CA49E20087DE3B /* StandardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTableViewCell.swift; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -257,6 +273,8 @@
 				A18691FD28C96BB20087DE3B /* TableViewCell.swift */,
 				A186921128CA2A5D0087DE3B /* RatableTableViewCell.swift */,
 				A186921328CA2AD20087DE3B /* ResumableTableViewCell.swift */,
+				A186923228CA49DC0087DE3B /* BlockbusterTableViewCell.swift */,
+				A186923428CA49E20087DE3B /* StandardTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -334,6 +352,8 @@
 				A186922128CA30700087DE3B /* CollectionViewCell.swift */,
 				A186921D28CA2EED0087DE3B /* RatableCollectionViewCell */,
 				A186921E28CA2F3E0087DE3B /* ResumableCollectionViewCell */,
+				A186922928CA496C0087DE3B /* BlockbusterCollectionViewCell */,
+				A186922828CA49690087DE3B /* StandardCollectionViewCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -368,8 +388,27 @@
 			isa = PBXGroup;
 			children = (
 				A186921728CA2E690087DE3B /* ResumableCollectionViewCell.swift */,
+				A186922328CA34620087DE3B /* ResumableCollectionViewCell.xib */,
 			);
 			path = ResumableCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		A186922828CA49690087DE3B /* StandardCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				A186922E28CA49C60087DE3B /* StandardCollectionViewCell.swift */,
+				A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */,
+			);
+			path = StandardCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		A186922928CA496C0087DE3B /* BlockbusterCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				A186922A28CA49BC0087DE3B /* BlockbusterCollectionViewCell.swift */,
+				A186922C28CA49C00087DE3B /* BlockbusterCollectionViewCell.xib */,
+			);
+			path = BlockbusterCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		A18B98EF28BEB62C0077A5A6 = {
@@ -569,6 +608,7 @@
 				A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */,
 				A1B3F9A028C63BC70042DE9F /* Nibable.swift */,
 				A18691E528C936DE0087DE3B /* Valuable.swift */,
+				A186922528CA46FD0087DE3B /* Configurable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -869,8 +909,11 @@
 				A186920E28CA05F10087DE3B /* RatableCollectionViewCell.xib in Resources */,
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
+				A186922428CA34620087DE3B /* ResumableCollectionViewCell.xib in Resources */,
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
+				A186922D28CA49C00087DE3B /* BlockbusterCollectionViewCell.xib in Resources */,
+				A186923128CA49CA0087DE3B /* StandardCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,12 +969,14 @@
 				A18691C928C7B2970087DE3B /* DefaultMoviesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18691E628C936DE0087DE3B /* Valuable.swift in Sources */,
+				A186922628CA46FD0087DE3B /* Configurable.swift in Sources */,
 				A18691F228C958A30087DE3B /* AuthResponse.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				A18691C028C772FA0087DE3B /* UIViewController+SceneDelegate.swift in Sources */,
 				A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */,
 				A18B992F28BEE7C10077A5A6 /* AuthFlowCoordinator.swift in Sources */,
 				A18691E028C8D4640087DE3B /* DefaultSectionsRepository.swift in Sources */,
+				A186923328CA49DC0087DE3B /* BlockbusterTableViewCell.swift in Sources */,
 				A18B999828C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift in Sources */,
 				A18691D628C8423B0087DE3B /* DetailViewController.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
@@ -951,6 +996,7 @@
 				A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */,
 				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
+				A186922B28CA49BC0087DE3B /* BlockbusterCollectionViewCell.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,
 				A186921228CA2A5D0087DE3B /* RatableTableViewCell.swift in Sources */,
 				A186920728C974490087DE3B /* CollectionViewDataSource.swift in Sources */,
@@ -962,6 +1008,7 @@
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18691E428C8D4CA0087DE3B /* SectionsRequestDTO+Mapping.swift in Sources */,
 				A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */,
+				A186923528CA49E20087DE3B /* StandardTableViewCell.swift in Sources */,
 				A18B996F28C00F850077A5A6 /* SeasonsRepository.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
 				A1F56A5E28C679980089BD4F /* UIView+AddGradientLayer.swift in Sources */,
@@ -978,6 +1025,7 @@
 				A18B997328C00F8E0077A5A6 /* UsersRepository.swift in Sources */,
 				A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */,
 				A18691F028C9585D0087DE3B /* MoviesRequest.swift in Sources */,
+				A186922F28CA49C60087DE3B /* StandardCollectionViewCell.swift in Sources */,
 				A18691F628C95A5D0087DE3B /* TVShowsResponse.swift in Sources */,
 				A186921C28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift in Sources */,
 				A18691F428C959810087DE3B /* SectionsResponse.swift in Sources */,

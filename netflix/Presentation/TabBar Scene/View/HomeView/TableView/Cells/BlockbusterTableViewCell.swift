@@ -1,5 +1,5 @@
 //
-//  RatableTableViewCell.swift
+//  BlockbusterTableViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - RatableTableViewCell class
+// MARK: - BlockbusterTableViewCell class
 
-final class RatableTableViewCell: DefaultTableViewCell<RatableCollectionViewCell> {
+final class BlockbusterTableViewCell: DefaultTableViewCell<BlockbusterCollectionViewCell> {
     
     var dataSource: DefaultCollectionViewDataSource!
     var viewModel: TableViewCellItemViewModel!

@@ -1,5 +1,5 @@
 //
-//  ResumableCollectionViewCell.swift
+//  StandardCollectionViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - ResumableCollectionViewCell class
+// MARK: - StandardCollectionViewCell class
 
-final class ResumableCollectionViewCell: DefaultCollectionViewCell {
+final class StandardCollectionViewCell: DefaultCollectionViewCell {
     
     private var viewModel: CollectionViewCellItemViewModel!
     

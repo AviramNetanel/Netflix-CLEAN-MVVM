@@ -49,7 +49,9 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
         super.awakeFromNib()
     }
     
-    func configure(with viewModel: CollectionViewCellItemViewModel) {
-        
-    }
+    func configure(with viewModel: CollectionViewCellItemViewModel) {}
 }
+
+// MARK: - Configurable implementation
+
+extension DefaultCollectionViewCell: Configurable {}

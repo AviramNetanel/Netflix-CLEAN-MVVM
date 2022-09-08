@@ -44,8 +44,8 @@ final class DefaultTableViewDataSource: NSObject {
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
-    private var ratableCell: RatableTableViewCell?
-    private var resumableCell: ResumableTableViewCell?
+    //private var ratableCell: RatableTableViewCell?
+    //private var resumableCell: ResumableTableViewCell?
     
     init(tableView: UITableView,
          state: TableViewDataSourceState,
@@ -71,6 +71,8 @@ extension DefaultTableViewDataSource: TableViewDataSource {
                            forCellReuseIdentifier: RatableTableViewCell.reuseIdentifier)
         tableView.register(ResumableTableViewCell.self,
                            forCellReuseIdentifier: ResumableTableViewCell.reuseIdentifier)
+        tableView.register(StandardTableViewCell.self,
+                           forCellReuseIdentifier: StandardTableViewCell.reuseIdentifier)
         tableView.register(TableViewHeaderFooterView.self,
                            forHeaderFooterViewReuseIdentifier: TableViewHeaderFooterView.reuseIdentifier)
     }
@@ -105,6 +107,11 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
         header.titleLabel.text = title
         header.titleLabel.font = font
         return header
+//        guard let indices = SectionIndices(rawValue: section) else { return nil }
+//        switch indices {
+//        case .ratable: return header
+//        default: return nil
+//        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -127,7 +134,7 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let indices = SectionIndices(rawValue: indexPath.section) else { return .init() }
+        guard let indices = SectionIndices(rawValue: indexPath.section) else { fatalError("") }
         switch indices {
         case .ratable:
             guard let cell = tableView.dequeueReusableCell(
@@ -139,7 +146,26 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
             cell.section = viewModel.sections.value.first!
             cell.configure(with: TableViewCellItemViewModel(section: cell.section))
             return cell
-        default: return .init()
+        case .resumable:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ResumableTableViewCell.reuseIdentifier,
+                for: indexPath) as? ResumableTableViewCell
+            else {
+                fatalError("Cannot dequeue reusable cell \(ResumableTableViewCell.self) with reuseIdentifier: \(ResumableTableViewCell.reuseIdentifier)")
+            }
+            cell.section = viewModel.sections.value.first!
+            cell.configure(with: TableViewCellItemViewModel(section: cell.section))
+            return cell
+        default:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: StandardTableViewCell.reuseIdentifier,
+                for: indexPath) as? StandardTableViewCell
+            else {
+                fatalError("Cannot dequeue reusable cell \(StandardTableViewCell.self) with reuseIdentifier: \(StandardTableViewCell.reuseIdentifier)")
+            }
+            cell.section = viewModel.sections.value.first!
+            cell.configure(with: TableViewCellItemViewModel(section: cell.section))
+            return cell
         }
     }
     
