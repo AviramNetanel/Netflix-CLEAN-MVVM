@@ -30,7 +30,7 @@ protocol HomeViewModelInput {
     func section(at index: Int)
     func randomObject(at section: Section) -> Media?
     func didSelectItem(at index: Int)
-    func title(forHeaderAt index: Int) -> String
+    func titleForHeader(at index: Int) -> String
 }
 
 // MARK: - HomeViewModelOutput protocol
@@ -99,7 +99,7 @@ extension DefaultHomeViewModel {
         
     }
     
-    func title(forHeaderAt index: Int) -> String {
+    func titleForHeader(at index: Int) -> String {
         return "\(sections.value[index].title)"
     }
 }

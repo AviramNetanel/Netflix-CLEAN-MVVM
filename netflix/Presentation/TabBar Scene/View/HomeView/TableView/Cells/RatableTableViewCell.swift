@@ -11,13 +11,13 @@ import UIKit
 
 final class RatableTableViewCell: DefaultTableViewCell<RatableCollectionViewCell> {
     
-    var dataSource: DefaultCollectionViewDataSource!
+    var dataSource: DefaultCollectionViewDataSource<RatableCollectionViewCell>!
     var viewModel: TableViewCellItemViewModel!
     
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel
         
-        dataSource = DefaultCollectionViewDataSource(section: self.section)
+        dataSource = DefaultCollectionViewDataSource(section: section)
         
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource

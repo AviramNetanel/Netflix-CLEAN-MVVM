@@ -58,12 +58,7 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
         
         contentView.addSubview(collectionView)
         
-        collectionView.register(RatableCollectionViewCell.nib,
-                                forCellWithReuseIdentifier: RatableCollectionViewCell.reuseIdentifier)
-        collectionView.register(ResumableCollectionViewCell.nib,
-                                forCellWithReuseIdentifier: ResumableCollectionViewCell.reuseIdentifier)
-        collectionView.register(StandardCollectionViewCell.nib,
-                                forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
+        collectionView.register(Cell.nib, forCellWithReuseIdentifier: Cell.reuseIdentifier)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

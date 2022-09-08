@@ -11,13 +11,13 @@ import UIKit
 
 final class ResumableTableViewCell: DefaultTableViewCell<ResumableCollectionViewCell> {
     
-    var dataSource: DefaultCollectionViewDataSource!
+    var dataSource: DefaultCollectionViewDataSource<ResumableCollectionViewCell>!
     var viewModel: TableViewCellItemViewModel!
     
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel
         
-        dataSource = DefaultCollectionViewDataSource(section: self.section)
+        dataSource = DefaultCollectionViewDataSource(section: section)
         
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource

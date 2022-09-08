@@ -102,16 +102,11 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
                 withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView,
             let indices = SectionIndices(rawValue: section)
         else { return nil }
-        let title = viewModel.title(forHeaderAt: indices.rawValue)
+        let title = viewModel.titleForHeader(at: indices.rawValue)
         let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
         header.titleLabel.text = title
         header.titleLabel.font = font
         return header
-//        guard let indices = SectionIndices(rawValue: section) else { return nil }
-//        switch indices {
-//        case .ratable: return header
-//        default: return nil
-//        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
