@@ -17,6 +17,8 @@ final class HomeViewController: UIViewController {
     
     private var dataSource: DefaultTableViewDataSource!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
@@ -44,10 +46,6 @@ final class HomeViewController: UIViewController {
         setupDataSource()
     }
     
-    private func bind(to viewModel: HomeViewModel) {
-        viewModel.sections.observe(on: self) { [weak self] _ in self?.dataSource.reload() }
-    }
-    
     private func setupDataSource() {
         dataSource = DefaultTableViewDataSource(tableView: tableView,
                                                 state: .tvShows,
@@ -55,5 +53,28 @@ final class HomeViewController: UIViewController {
         tableView.delegate = dataSource
         tableView.dataSource = dataSource
         tableView.prefetchDataSource = dataSource
+    }
+    
+    // MARK: Bindings
+    
+    private func bind(to viewModel: HomeViewModel) {
+        viewModel.sections.observe(on: self) { [weak self] _ in
+            guard let self = self else { return }
+            self.dataSource.reload()
+            self.bind(to: self.dataSource)
+        }
+    }
+    
+    private func bind(to dataSource: DefaultTableViewDataSource) {
+        dataSource.heightForRowAt = { [weak self] indexPath in
+            guard
+                let indices = SectionIndices(rawValue: indexPath.section),
+                let self = self
+            else { return .zero }
+            switch indices {
+            case .display: return self.view.bounds.height * 0.76
+            default: return self.view.bounds.height * 0.18
+            }
+        }
     }
 }
