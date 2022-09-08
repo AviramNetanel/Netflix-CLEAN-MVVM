@@ -7,10 +7,14 @@
 
 import UIKit
 
+// MARK: - TableViewDataSourceState enum
+
 enum TableViewDataSourceState {
     case tvShows
     case movies
 }
+
+// MARK: - TableViewDataSourceInput protocol
 
 protocol TableViewDataSourceInput {
     func didChangeSnapshot()
@@ -18,13 +22,19 @@ protocol TableViewDataSourceInput {
     func reload()
 }
 
+// MARK: - TableViewDataSourceOutput protocol
+
 protocol TableViewDataSourceOutput {
     var tableView: UITableView { get }
     var state: TableViewDataSourceState { get }
     var viewModel: HomeViewModel { get }
 }
 
+// MARK: - TableViewDataSource protocol
+
 protocol TableViewDataSource: TableViewDataSourceInput, TableViewDataSourceOutput {}
+
+// MARK: - DefaultTableViewDataSource class
 
 final class DefaultTableViewDataSource: NSObject {
     
@@ -48,6 +58,8 @@ final class DefaultTableViewDataSource: NSObject {
     }
 }
 
+// MARK: - TableViewDataSource implementation
+
 extension DefaultTableViewDataSource: TableViewDataSource {
     
     func didChangeSnapshot() {
@@ -67,6 +79,8 @@ extension DefaultTableViewDataSource: TableViewDataSource {
         tableView.reloadData()
     }
 }
+
+// MARK: - UITableViewDelegate, UITableViewDataSource and UITableViewDataSourcePrefetching implementation
 
 extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     

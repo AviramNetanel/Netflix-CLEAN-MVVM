@@ -37,7 +37,7 @@ protocol HomeViewModelInput {
 
 protocol HomeViewModelOutput {
     var sections: Observable<[Section]> { get }
-    var items: Observable<[Media]> { get }
+    //var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
 }
 

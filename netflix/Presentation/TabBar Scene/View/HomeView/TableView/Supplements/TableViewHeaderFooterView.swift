@@ -13,11 +13,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     static let reuseIdentifier = String(describing: TableViewHeaderFooterView.self)
     
-    // MARK: Properties
-    
     private(set) var titleLabel = UILabel()
-    
-    // MARK: Initialization
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -29,8 +25,6 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
-    // MARK: Lifecycle
     
     override func layoutSubviews() {
         super.layoutSubviews()
