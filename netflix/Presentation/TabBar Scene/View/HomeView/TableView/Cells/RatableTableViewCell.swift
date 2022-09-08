@@ -12,7 +12,6 @@ import UIKit
 final class RatableTableViewCell: DefaultTableViewCell<RatableCollectionViewCell> {
     
     var dataSource: DefaultCollectionViewDataSource<RatableCollectionViewCell>!
-    var viewModel: TableViewCellItemViewModel!
     
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel

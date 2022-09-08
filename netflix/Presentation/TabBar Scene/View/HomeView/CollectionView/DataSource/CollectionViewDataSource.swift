@@ -66,16 +66,10 @@ final class DefaultCollectionViewDataSource<Cell>: NSObject,
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: Cell.reuseIdentifier,
-            for: indexPath) as? DefaultCollectionViewCell
-        else {
-            fatalError("Could not dequeue cell \(Cell.self) with reuseIdentifier: \(Cell.reuseIdentifier)")
-        }
-        let media = section.tvshows![indexPath.row]
-        let viewModel = CollectionViewCellItemViewModel(media: media)
-        cell.configure(with: viewModel)
-        return cell
+        return DefaultCollectionViewCell.create(collectionView: collectionView,
+                                                section: section,
+                                                reuseIdentifier: Cell.reuseIdentifier,
+                                                at: indexPath)
     }
     
     // MARK: UITableViewDataSourcePrefetching

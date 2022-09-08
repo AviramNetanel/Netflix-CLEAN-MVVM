@@ -11,15 +11,11 @@ import UIKit
 
 final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
-    static let reuseIdentifier = String(describing: TableViewHeaderFooterView.self)
-    
     private(set) var titleLabel = UILabel()
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .white
-        contentView.addSubview(titleLabel)
+        self.setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -34,4 +30,29 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+    
+    static func create(tableView: UITableView,
+                       viewModel: HomeViewModel,
+                       at section: Int) -> TableViewHeaderFooterView {
+        guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
+        else {
+            fatalError("Could not dequeue tableView reusable view of \(TableViewHeaderFooterView.self) with reuseIdentifier: \(TableViewHeaderFooterView.reuseIdentifier)")
+        }
+        let title = viewModel.titleForHeader(at: section)
+        let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
+        header.titleLabel.text = title
+        header.titleLabel.font = font
+        return header
+    }
+    
+    private func setupViews() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .white
+        contentView.addSubview(titleLabel)
+    }
 }
+
+// MARK: - Configurable implementation
+
+extension TableViewHeaderFooterView: Configurable {}

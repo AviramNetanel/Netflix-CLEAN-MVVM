@@ -12,7 +12,6 @@ import UIKit
 final class ResumableTableViewCell: DefaultTableViewCell<ResumableCollectionViewCell> {
     
     var dataSource: DefaultCollectionViewDataSource<ResumableCollectionViewCell>!
-    var viewModel: TableViewCellItemViewModel!
     
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel

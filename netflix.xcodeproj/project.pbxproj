@@ -315,6 +315,7 @@
 		A18691F928C95F9F0087DE3B /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				A186923628CA92620087DE3B /* DataSource */,
 				A18691CC28C7D1200087DE3B /* Cells */,
 				A186920328C970AE0087DE3B /* Supplements */,
 				A186920928C993680087DE3B /* Utils */,
@@ -325,8 +326,8 @@
 		A18691FA28C95FA90087DE3B /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				A186920C28C995490087DE3B /* DataSource */,
 				A186920828C979AA0087DE3B /* Cells */,
-				A186920C28C995490087DE3B /* Utils */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -354,17 +355,16 @@
 			isa = PBXGroup;
 			children = (
 				A186920A28C993770087DE3B /* SectionIndices.swift */,
-				A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		A186920C28C995490087DE3B /* Utils */ = {
+		A186920C28C995490087DE3B /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
 				A186920628C974490087DE3B /* CollectionViewDataSource.swift */,
 			);
-			path = Utils;
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		A186921D28CA2EED0087DE3B /* RatableCollectionViewCell */ = {
@@ -392,6 +392,14 @@
 				A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */,
 			);
 			path = StandardCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		A186923628CA92620087DE3B /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */,
+			);
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		A18B98EF28BEB62C0077A5A6 = {

@@ -22,7 +22,6 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
     
     private let layerView = UIView()
     private var textLayer = TextLayer()
-    private var viewModel: CollectionViewCellItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,18 +31,11 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
     deinit {
         textLayer.removeFromSuperlayer()
         layerView.removeFromSuperview()
-        viewModel = nil
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         textLayer.string = nil
-        viewModel = nil
-    }
-    
-    override func configure(with viewModel: CollectionViewCellItemViewModel) {
-        self.viewModel = viewModel
-        placeholderLabel.text = viewModel.title
     }
     
     private func setupViews() {
@@ -55,5 +47,10 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
             layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
         ])
+    }
+    
+    override func configure(with viewModel: CollectionViewCellItemViewModel) {
+        self.viewModel = viewModel
+        placeholderLabel.text = viewModel.title
     }
 }

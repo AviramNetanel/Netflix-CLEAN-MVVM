@@ -44,9 +44,6 @@ final class DefaultTableViewDataSource: NSObject {
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
-    //private var ratableCell: RatableTableViewCell?
-    //private var resumableCell: ResumableTableViewCell?
-    
     init(tableView: UITableView,
          state: TableViewDataSourceState,
          viewModel: HomeViewModel) {
@@ -97,16 +94,9 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard
-            let header = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView,
-            let indices = SectionIndices(rawValue: section)
-        else { return nil }
-        let title = viewModel.titleForHeader(at: indices.rawValue)
-        let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
-        header.titleLabel.text = title
-        header.titleLabel.font = font
-        return header
+        return TableViewHeaderFooterView.create(tableView: tableView,
+                                                viewModel: viewModel,
+                                                at: section)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

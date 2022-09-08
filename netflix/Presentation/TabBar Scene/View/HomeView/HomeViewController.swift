@@ -13,11 +13,10 @@ final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    var viewModel: HomeViewModel!
-    
-    private var dataSource: DefaultTableViewDataSource!
-    
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    
+    var viewModel: HomeViewModel!
+    private var dataSource: DefaultTableViewDataSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()

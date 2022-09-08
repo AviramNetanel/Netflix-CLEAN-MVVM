@@ -41,12 +41,35 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
     
     var representedIdentifier: NSString?
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
+    var viewModel: CollectionViewCellItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel = nil
+    }
+    
+    deinit {
+        viewModel = nil
+    }
+    
+    static func create(collectionView: UICollectionView,
+                       section: Section,
+                       reuseIdentifier: String,
+                       at indexPath: IndexPath) -> DefaultCollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: reuseIdentifier,
+            for: indexPath) as? DefaultCollectionViewCell
+        else {
+            fatalError("Could not dequeue cell \(reuseIdentifier) with reuseIdentifier: \(reuseIdentifier)")
+        }
+        let media = section.tvshows![indexPath.row]
+        let viewModel = CollectionViewCellItemViewModel(media: media)
+        cell.configure(with: viewModel)
+        return cell
     }
     
     func configure(with viewModel: CollectionViewCellItemViewModel) {}

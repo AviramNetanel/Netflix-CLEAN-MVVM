@@ -12,7 +12,6 @@ import UIKit
 final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCell> {
     
     var dataSource: DefaultCollectionViewDataSource<StandardCollectionViewCell>!
-    var viewModel: TableViewCellItemViewModel!
     
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel

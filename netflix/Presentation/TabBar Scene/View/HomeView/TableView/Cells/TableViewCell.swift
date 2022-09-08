@@ -34,6 +34,8 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
         didSet { setupViews() }
     }
     
+    var viewModel: TableViewCellItemViewModel!
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .black
@@ -43,10 +45,6 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
         fatalError("init(coder:) hasn't been implemented")
     }
     
-    func configure(with viewModel: TableViewCellItemViewModel) {}
-    
-    // MARK: Private
-    
     private func setupViews() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection  = .horizontal
@@ -55,12 +53,11 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
         collectionView.backgroundColor = .black
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(Cell.nib, forCellWithReuseIdentifier: Cell.reuseIdentifier)
         
         contentView.addSubview(collectionView)
         
-        collectionView.register(Cell.nib, forCellWithReuseIdentifier: Cell.reuseIdentifier)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -68,6 +65,8 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
+    func configure(with viewModel: TableViewCellItemViewModel) {}
 }
 
 // MARK: - Configurable implementation
