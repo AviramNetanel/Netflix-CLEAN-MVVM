@@ -15,6 +15,8 @@ final class HomeViewController: UIViewController {
     
     var viewModel: HomeViewModel!
     
+    private var dataSource: DefaultTableViewDataSource!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
@@ -31,10 +33,6 @@ final class HomeViewController: UIViewController {
         return view
     }
     
-    func reload() {
-        tableView.reloadData()
-    }
-    
     // MARK: Private
     
     private func setupBehaviors() {
@@ -43,37 +41,19 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupViews() {
-        
+        setupDataSource()
     }
     
     private func bind(to viewModel: HomeViewModel) {
-        viewModel.sections.observe(on: self) { [weak self] _ in self?.reload() }
-//        viewModel.items.observe(on: self) { [weak self] _ in self?.reload() }
+        viewModel.sections.observe(on: self) { [weak self] _ in self?.dataSource.reload() }
     }
-}
-
-// MARK: - UITableViewDelegate & UITableViewDataSource implementation
-
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections.value.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: StandardItemTableViewCell.reuseIdentifier,
-                                                       for: indexPath) as? StandardItemTableViewCell else {
-            fatalError("Cannot dequeue reusable cell \(StandardItemTableViewCell.self) with reuseIdentifier: \(StandardItemTableViewCell.reuseIdentifier)")
-        }
-        cell.fill(with: .init(section: viewModel.sections.value[indexPath.row]))
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 148.0
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+    
+    private func setupDataSource() {
+        dataSource = DefaultTableViewDataSource(tableView: tableView,
+                                                state: .tvShows,
+                                                viewModel: viewModel)
+        tableView.delegate = dataSource
+        tableView.dataSource = dataSource
+        tableView.prefetchDataSource = dataSource
     }
 }

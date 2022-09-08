@@ -35,6 +35,7 @@
 		A18691F428C959810087DE3B /* SectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691F328C959810087DE3B /* SectionsResponse.swift */; };
 		A18691F628C95A5D0087DE3B /* TVShowsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691F528C95A5D0087DE3B /* TVShowsResponse.swift */; };
 		A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691F728C95ABF0087DE3B /* MoviesResponse.swift */; };
+		A18691FC28C95FB80087DE3B /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -136,6 +137,7 @@
 		A18691F328C959810087DE3B /* SectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsResponse.swift; sourceTree = "<group>"; };
 		A18691F528C95A5D0087DE3B /* TVShowsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowsResponse.swift; sourceTree = "<group>"; };
 		A18691F728C95ABF0087DE3B /* MoviesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesResponse.swift; sourceTree = "<group>"; };
+		A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				A18B992528BEC7920077A5A6 /* HomeViewController.swift */,
+				A18691F928C95F9F0087DE3B /* TableView */,
 				A18691CC28C7D1200087DE3B /* Cells */,
 			);
 			path = HomeView;
@@ -274,6 +277,22 @@
 				A18691F728C95ABF0087DE3B /* MoviesResponse.swift */,
 			);
 			path = Responses;
+			sourceTree = "<group>";
+		};
+		A18691F928C95F9F0087DE3B /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				A18691FA28C95FA90087DE3B /* CollectionView */,
+				A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		A18691FA28C95FA90087DE3B /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 		A18B98EF28BEB62C0077A5A6 = {
@@ -819,6 +838,7 @@
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
 				A18B993628BFC72E0077A5A6 /* UIViewController+AddChild.swift in Sources */,
 				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
+				A18691FC28C95FB80087DE3B /* TableViewDataSource.swift in Sources */,
 				A18691C928C7B2970087DE3B /* DefaultMoviesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18691E628C936DE0087DE3B /* Valuable.swift in Sources */,

@@ -63,11 +63,6 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="XDJ-Xq-Cil" id="eIn-6k-rQW"/>
-                                    <outlet property="delegate" destination="XDJ-Xq-Cil" id="zgt-9f-4DN"/>
-                                    <outlet property="prefetchDataSource" destination="XDJ-Xq-Cil" id="ZxQ-hf-cYi"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="t3a-Eo-3Gq"/>

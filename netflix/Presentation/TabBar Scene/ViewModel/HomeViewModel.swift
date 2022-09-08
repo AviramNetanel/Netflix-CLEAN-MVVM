@@ -25,6 +25,10 @@ protocol HomeViewModelEndpoints {
 
 protocol HomeViewModelInput {
     func viewDidLoad()
+    func filter(sections: [Section])
+    func filter(sections: [Section], at index: Int)
+    func section(at index: Int)
+    func randomObject(at section: Section) -> Media?
     func didSelectItem(at index: Int)
 }
 
@@ -72,6 +76,22 @@ extension DefaultHomeViewModel {
     
     func viewDidLoad() {
         getSections()
+    }
+    
+    func filter(sections: [Section]) {
+        
+    }
+    
+    func filter(sections: [Section], at index: Int) {
+        
+    }
+    
+    func section(at index: Int) {
+        
+    }
+    
+    func randomObject(at section: Section) -> Media? {
+        return nil
     }
     
     func didSelectItem(at index: Int) {
