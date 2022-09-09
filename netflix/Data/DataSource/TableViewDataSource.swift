@@ -54,7 +54,6 @@ extension TableViewSection: Valuable {
     }
 }
 
-
 // MARK: - TableViewDataSourceState enum
 
 enum TableViewDataSourceState {
@@ -158,6 +157,12 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
             fatalError("Unexpected indexPath for section at: \(indexPath.section)")
         }
         switch indices {
+        case .display:
+            tableView.register(UINib(nibName: String(describing: DisplayTableViewCell.self), bundle: nil),
+                               forCellReuseIdentifier: DisplayTableViewCell.reuseIdentifier)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DisplayTableViewCell.self), for: indexPath) as? DisplayTableViewCell else { fatalError("Unable to dequeue \(DisplayTableViewCell.self)") }
+            
+            return cell
         case .ratable:
             return RatableTableViewCell.create(tableView: tableView,
                                                viewModel: viewModel,
