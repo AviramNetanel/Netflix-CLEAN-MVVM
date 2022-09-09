@@ -38,7 +38,7 @@ protocol DataTransferErrorResolver {
 // MARK: - ResponseDecoder protocol
 
 protocol ResponseDecoder {
-    func decode<T: Decodable>(_ data: Data) throws ->T
+    func decode<T: Decodable>(_ data: Data) throws -> T
 }
 
 // MARK: - DataTransferErrorLogger protocol

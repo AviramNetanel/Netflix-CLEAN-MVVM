@@ -12,7 +12,9 @@ import Foundation
 struct CollectionViewCellItemViewModel {
     let title: String
     let posterImagePath: String
-    init(media: Media) {
+    let indexPath: IndexPath
+    init(media: Media, indexPath: IndexPath) {
+        self.indexPath = indexPath
         self.title = media.title
         self.posterImagePath = media.covers.first!
     }

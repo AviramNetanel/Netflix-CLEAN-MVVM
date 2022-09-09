@@ -19,9 +19,7 @@ struct CollectionViewLayoutConfiguration {
 
 // MARK: - CollectionViewLayoutInput protocol
 
-protocol CollectionViewLayoutInput {
-    
-}
+protocol CollectionViewLayoutInput {}
 
 // MARK: - CollectionViewLayoutOutput protocol
 
@@ -82,7 +80,7 @@ final class DefaultCollectionViewLayout: UICollectionViewFlowLayout {
     
     static func createWithDefaultConfiguration(with collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
         return .init(scrollDirection: .horizontal,
-                     minimumLineSpacing: .zero,
+                     minimumLineSpacing: 8.0,
                      minimumInteritemSpacing: .zero,
                      sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
                      itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - (8.0 * CGFloat(3.0)),

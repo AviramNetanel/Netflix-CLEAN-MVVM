@@ -67,8 +67,8 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
             fatalError("Could not dequeue cell \(reuseIdentifier) with reuseIdentifier: \(reuseIdentifier)")
         }
         let media = section.tvshows![indexPath.row]
-        let viewModel = CollectionViewCellItemViewModel(media: media)
-        cell.configure(with: viewModel)
+        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        cell.configure(with: cellViewModel)
         return cell
     }
     

@@ -121,6 +121,7 @@ extension DefaultNetworkService: NetworkService {
 // MARK: - DefaultNetworkSessionManager class
 
 final class DefaultNetworkSessionManager: NetworkSessionManager {
+    
     init() {}
     
     func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
