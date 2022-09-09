@@ -46,10 +46,7 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
     }
     
     private func setupViews() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection  = .horizontal
-        
-        collectionView = .init(frame: bounds, collectionViewLayout: layout)
+        collectionView = .init(frame: bounds, collectionViewLayout: .init())
         collectionView.backgroundColor = .black
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false

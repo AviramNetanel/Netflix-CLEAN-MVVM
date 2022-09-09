@@ -16,6 +16,10 @@ final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCe
     override func configure(with viewModel: TableViewCellItemViewModel) {
         self.viewModel = viewModel
         
+        let configuration = DefaultCollectionViewLayout.createWithDefaultConfiguration(with: collectionView)
+        let layout = DefaultCollectionViewLayout(configuration: configuration)
+        collectionView.setCollectionViewLayout(layout, animated: false)
+        
         dataSource = DefaultCollectionViewDataSource(section: section)
         
         collectionView.delegate = dataSource
