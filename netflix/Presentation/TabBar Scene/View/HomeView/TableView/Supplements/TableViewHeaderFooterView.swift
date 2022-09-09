@@ -34,6 +34,9 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     static func create(tableView: UITableView,
                        viewModel: HomeViewModel,
                        at section: Int) -> TableViewHeaderFooterView {
+        tableView.register(TableViewHeaderFooterView.self,
+                           forHeaderFooterViewReuseIdentifier: TableViewHeaderFooterView.reuseIdentifier)
+        
         guard let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
         else {

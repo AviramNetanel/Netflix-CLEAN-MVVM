@@ -37,7 +37,7 @@
 		A18691FE28C96BB20087DE3B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691FD28C96BB20087DE3B /* TableViewCell.swift */; };
 		A186920528C9711A0087DE3B /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186920428C9711A0087DE3B /* TableViewHeaderFooterView.swift */; };
 		A186920728C974490087DE3B /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186920628C974490087DE3B /* CollectionViewDataSource.swift */; };
-		A186920B28C993770087DE3B /* SectionIndices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186920A28C993770087DE3B /* SectionIndices.swift */; };
+		A186920B28C993770087DE3B /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186920A28C993770087DE3B /* TableViewSection.swift */; };
 		A186920E28CA05F10087DE3B /* RatableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A186920D28CA05F10087DE3B /* RatableCollectionViewCell.xib */; };
 		A186921228CA2A5D0087DE3B /* RatableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186921128CA2A5D0087DE3B /* RatableTableViewCell.swift */; };
 		A186921428CA2AD20087DE3B /* ResumableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186921328CA2AD20087DE3B /* ResumableTableViewCell.swift */; };
@@ -51,6 +51,8 @@
 		A186922F28CA49C60087DE3B /* StandardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186922E28CA49C60087DE3B /* StandardCollectionViewCell.swift */; };
 		A186923128CA49CA0087DE3B /* StandardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */; };
 		A186923528CA49E20087DE3B /* StandardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186923428CA49E20087DE3B /* StandardTableViewCell.swift */; };
+		A186923828CAB3710087DE3B /* UITableView+DequeueReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186923728CAB3710087DE3B /* UITableView+DequeueReusableCell.swift */; };
+		A186923B28CAB7950087DE3B /* CollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186923A28CAB7950087DE3B /* CollectionViewLayout.swift */; };
 		A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */; };
 		A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */; };
 		A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B990428BEB62E0077A5A6 /* Assets.xcassets */; };
@@ -154,7 +156,7 @@
 		A18691FD28C96BB20087DE3B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		A186920428C9711A0087DE3B /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
 		A186920628C974490087DE3B /* CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSource.swift; sourceTree = "<group>"; };
-		A186920A28C993770087DE3B /* SectionIndices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndices.swift; sourceTree = "<group>"; };
+		A186920A28C993770087DE3B /* TableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSection.swift; sourceTree = "<group>"; };
 		A186920D28CA05F10087DE3B /* RatableCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatableCollectionViewCell.xib; sourceTree = "<group>"; };
 		A186921128CA2A5D0087DE3B /* RatableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatableTableViewCell.swift; sourceTree = "<group>"; };
 		A186921328CA2AD20087DE3B /* ResumableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumableTableViewCell.swift; sourceTree = "<group>"; };
@@ -168,6 +170,8 @@
 		A186922E28CA49C60087DE3B /* StandardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardCollectionViewCell.swift; sourceTree = "<group>"; };
 		A186923028CA49CA0087DE3B /* StandardCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StandardCollectionViewCell.xib; sourceTree = "<group>"; };
 		A186923428CA49E20087DE3B /* StandardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTableViewCell.swift; sourceTree = "<group>"; };
+		A186923728CAB3710087DE3B /* UITableView+DequeueReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+DequeueReusableCell.swift"; sourceTree = "<group>"; };
+		A186923A28CAB7950087DE3B /* CollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewLayout.swift; sourceTree = "<group>"; };
 		A18B98F828BEB62C0077A5A6 /* netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A18B98FB28BEB62C0077A5A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A18B98FD28BEB62C0077A5A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -328,6 +332,7 @@
 			children = (
 				A186920C28C995490087DE3B /* DataSource */,
 				A186920828C979AA0087DE3B /* Cells */,
+				A186923928CAB7840087DE3B /* Utils */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -354,7 +359,7 @@
 		A186920928C993680087DE3B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A186920A28C993770087DE3B /* SectionIndices.swift */,
+				A186920A28C993770087DE3B /* TableViewSection.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -400,6 +405,14 @@
 				A18691FB28C95FB80087DE3B /* TableViewDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		A186923928CAB7840087DE3B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A186923A28CAB7950087DE3B /* CollectionViewLayout.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A18B98EF28BEB62C0077A5A6 = {
@@ -578,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				A1F56A6828C68FB10089BD4F /* NSAttributedString+Attributes.swift */,
+				A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */,
 				A1F56A6A28C6934B0089BD4F /* UIButton+SetLayerBorder.swift */,
 				A18691B628C698B50087DE3B /* UIColor+HEXColor.swift */,
 				A18691B828C698BB0087DE3B /* UIColor+RGBColor.swift */,
@@ -587,8 +601,8 @@
 				A18B993E28BFD77F0077A5A6 /* UIViewController+ActivityIndicator.swift */,
 				A18691BF28C772FA0087DE3B /* UIViewController+SceneDelegate.swift */,
 				A1F56A6C28C695D60089BD4F /* UIViewController+SetAttributes.swift */,
+				A186923728CAB3710087DE3B /* UITableView+DequeueReusableCell.swift */,
 				A1F56A6E28C695FC0089BD4F /* UITextField+SetPlaceholderAttributes.swift */,
-				A18691BD28C764600087DE3B /* UIBarButtonItem+AddTarget.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -917,7 +931,7 @@
 				A1B3F9A128C63BC70042DE9F /* Nibable.swift in Sources */,
 				A1F56A6928C68FB10089BD4F /* NSAttributedString+Attributes.swift in Sources */,
 				A18B998A28C040A70077A5A6 /* Cancellable.swift in Sources */,
-				A186920B28C993770087DE3B /* SectionIndices.swift in Sources */,
+				A186920B28C993770087DE3B /* TableViewSection.swift in Sources */,
 				A18691BE28C764600087DE3B /* UIBarButtonItem+AddTarget.swift in Sources */,
 				A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */,
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
@@ -947,6 +961,7 @@
 				A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */,
 				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
 				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
+				A186923828CAB3710087DE3B /* UITableView+DequeueReusableCell.swift in Sources */,
 				A18B999228C0DE710077A5A6 /* APIEndpoint.swift in Sources */,
 				A186922228CA30700087DE3B /* CollectionViewCell.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
@@ -996,6 +1011,7 @@
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18691E428C8D4CA0087DE3B /* SectionsRequestDTO+Mapping.swift in Sources */,
 				A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */,
+				A186923B28CAB7950087DE3B /* CollectionViewLayout.swift in Sources */,
 				A186923528CA49E20087DE3B /* StandardTableViewCell.swift in Sources */,
 				A18B996F28C00F850077A5A6 /* SeasonsRepository.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,

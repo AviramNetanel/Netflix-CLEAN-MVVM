@@ -18,7 +18,6 @@ enum TableViewDataSourceState {
 
 protocol TableViewDataSourceInput {
     func didChangeSnapshot()
-    func didRegisterCells()
     func reload()
 }
 
@@ -51,7 +50,6 @@ final class DefaultTableViewDataSource: NSObject {
         self.state = state
         self.viewModel = viewModel
         super.init()
-        self.didRegisterCells()
     }
 }
 
@@ -61,17 +59,6 @@ extension DefaultTableViewDataSource: TableViewDataSource {
     
     func didChangeSnapshot() {
         
-    }
-    
-    func didRegisterCells() {
-        tableView.register(RatableTableViewCell.self,
-                           forCellReuseIdentifier: RatableTableViewCell.reuseIdentifier)
-        tableView.register(ResumableTableViewCell.self,
-                           forCellReuseIdentifier: ResumableTableViewCell.reuseIdentifier)
-        tableView.register(StandardTableViewCell.self,
-                           forCellReuseIdentifier: StandardTableViewCell.reuseIdentifier)
-        tableView.register(TableViewHeaderFooterView.self,
-                           forHeaderFooterViewReuseIdentifier: TableViewHeaderFooterView.reuseIdentifier)
     }
     
     func reload() {
@@ -100,7 +87,7 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let indices = SectionIndices(rawValue: section) else { return .zero }
+        guard let indices = TableViewSection(rawValue: section) else { return .zero }
         switch indices {
         case .display: return .zero
         case .ratable: return 28.0
@@ -119,38 +106,22 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let indices = SectionIndices(rawValue: indexPath.section) else { fatalError("") }
+        guard let indices = TableViewSection(rawValue: indexPath.section) else {
+            fatalError("Unexpected indexPath for section at: \(indexPath.section)")
+        }
         switch indices {
         case .ratable:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: RatableTableViewCell.reuseIdentifier,
-                for: indexPath) as? RatableTableViewCell
-            else {
-                fatalError("Cannot dequeue reusable cell \(RatableTableViewCell.self) with reuseIdentifier: \(RatableTableViewCell.reuseIdentifier)")
-            }
-            cell.section = viewModel.sections.value.first!
-            cell.configure(with: TableViewCellItemViewModel(section: cell.section))
-            return cell
+            return RatableTableViewCell.create(tableView: tableView,
+                                               viewModel: viewModel,
+                                               at: indexPath)
         case .resumable:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ResumableTableViewCell.reuseIdentifier,
-                for: indexPath) as? ResumableTableViewCell
-            else {
-                fatalError("Cannot dequeue reusable cell \(ResumableTableViewCell.self) with reuseIdentifier: \(ResumableTableViewCell.reuseIdentifier)")
-            }
-            cell.section = viewModel.sections.value.first!
-            cell.configure(with: TableViewCellItemViewModel(section: cell.section))
-            return cell
+            return ResumableTableViewCell.create(tableView: tableView,
+                                                 viewModel: viewModel,
+                                                 at: indexPath)
         default:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: StandardTableViewCell.reuseIdentifier,
-                for: indexPath) as? StandardTableViewCell
-            else {
-                fatalError("Cannot dequeue reusable cell \(StandardTableViewCell.self) with reuseIdentifier: \(StandardTableViewCell.reuseIdentifier)")
-            }
-            cell.section = viewModel.sections.value.first!
-            cell.configure(with: TableViewCellItemViewModel(section: cell.section))
-            return cell
+            return StandardTableViewCell.create(tableView: tableView,
+                                                viewModel: viewModel,
+                                                at: indexPath)
         }
     }
     

@@ -23,4 +23,17 @@ final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCe
         collectionView.prefetchDataSource = dataSource
         collectionView.reloadData()
     }
+    
+    static func create(tableView: UITableView,
+                       viewModel: HomeViewModel,
+                       at indexPath: IndexPath) -> StandardTableViewCell {
+        tableView.register(StandardTableViewCell.self,
+                           forCellReuseIdentifier: StandardTableViewCell.reuseIdentifier)
+        
+        let cell = tableView.dequeueReusableCell(ofType: StandardTableViewCell.self, at: indexPath)
+        cell.section = viewModel.sections.value.first!
+        let cellViewModel = TableViewCellItemViewModel(section: cell.section)
+        cell.configure(with: cellViewModel)
+        return cell
+    }
 }

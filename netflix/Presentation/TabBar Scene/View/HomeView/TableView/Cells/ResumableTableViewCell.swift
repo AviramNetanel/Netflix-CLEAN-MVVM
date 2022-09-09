@@ -23,4 +23,17 @@ final class ResumableTableViewCell: DefaultTableViewCell<ResumableCollectionView
         collectionView.prefetchDataSource = dataSource
         collectionView.reloadData()
     }
+    
+    static func create(tableView: UITableView,
+                       viewModel: HomeViewModel,
+                       at indexPath: IndexPath) -> ResumableTableViewCell {
+        tableView.register(ResumableTableViewCell.self,
+                           forCellReuseIdentifier: ResumableTableViewCell.reuseIdentifier)
+        
+        let cell = tableView.dequeueReusableCell(ofType: ResumableTableViewCell.self, at: indexPath)
+        cell.section = viewModel.sections.value.first!
+        let cellViewModel = TableViewCellItemViewModel(section: cell.section)
+        cell.configure(with: cellViewModel)
+        return cell
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  SectionIndices.swift
+//  TableViewSection.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - SectionIndices enum
+// MARK: - TableViewSection enum
 
-enum SectionIndices: Int, CaseIterable {
+enum TableViewSection: Int, CaseIterable {
     case display
     case ratable
     case resumable
@@ -30,7 +30,7 @@ enum SectionIndices: Int, CaseIterable {
 
 // MARK: - Valuable implementation
 
-extension SectionIndices: Valuable {
+extension TableViewSection: Valuable {
     var stringValue: String {
         switch self {
         case .display,

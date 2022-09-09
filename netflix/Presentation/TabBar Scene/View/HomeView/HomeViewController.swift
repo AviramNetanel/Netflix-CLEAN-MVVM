@@ -67,7 +67,7 @@ final class HomeViewController: UIViewController {
     private func bind(to dataSource: DefaultTableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard
-                let indices = SectionIndices(rawValue: indexPath.section),
+                let indices = TableViewSection(rawValue: indexPath.section),
                 let self = self
             else { return .zero }
             switch indices {
