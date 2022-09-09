@@ -46,6 +46,7 @@
                 </constraints>
             </collectionViewCellContentView>
             <connections>
+                <outlet property="logoBottomConstraint" destination="pVF-gw-qDX" id="cWf-9V-Rn0"/>
                 <outlet property="logoImageView" destination="pPK-YF-fa9" id="5XT-ps-y20"/>
                 <outlet property="placeholderLabel" destination="7tZ-Ld-Ghv" id="duW-0m-Du9"/>
                 <outlet property="posterImageView" destination="qfP-3U-JS5" id="bAB-ZP-KdA"/>

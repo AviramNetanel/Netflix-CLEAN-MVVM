@@ -27,17 +27,10 @@ protocol CollectionViewCell: CollectionViewCellInput, CollectionViewCellOutput {
 
 class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
     
-    fileprivate enum LogoAlignment: String {
-        case top
-        case midTop = "mid-top"
-        case mid
-        case bottomMid = "bottom-mid"
-        case bottom
-    }
-    
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var placeholderLabel: UILabel!
+    @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
     
     var representedIdentifier: NSString?
     
@@ -68,11 +61,45 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
         }
         let media = section.tvshows![indexPath.row]
         let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        cell.representedIdentifier = media.title as NSString
         cell.configure(with: cellViewModel)
         return cell
     }
     
-    func configure(with viewModel: CollectionViewCellItemViewModel) {}
+    func configure(with viewModel: CollectionViewCellItemViewModel) {
+        let posterIdentifier = "poster_\(viewModel.title)" as NSString
+        let path = viewModel.posterImagePath
+        let url = URL(string: path)!
+        AsyncImageFetcher.shared.load(url: url, identifier: posterIdentifier) { [weak self] image in
+            guard self?.representedIdentifier == viewModel.title as NSString? else { return }
+            DispatchQueue.main.async {
+                self?.posterImageView.image = image
+            }
+        }
+        
+        let logoIdentifier = "logo_\(viewModel.title)" as NSString
+        let logoPath = viewModel.logoImagePath
+        let logoURL = URL(string: logoPath)!
+        AsyncImageFetcher.shared.load(url: logoURL, identifier: logoIdentifier) { [weak self] image in
+            guard self?.representedIdentifier == viewModel.title as NSString? else { return }
+            DispatchQueue.main.async {
+                self?.logoImageView.image = image
+            }
+        }
+        
+        switch viewModel.logoPosition {
+        case .top:
+            logoBottomConstraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
+        case .midTop:
+            logoBottomConstraint.constant = 64.0
+        case .mid:
+            logoBottomConstraint.constant = bounds.midY
+        case .midBottom:
+            logoBottomConstraint.constant = 24.0
+        case .bottom:
+            logoBottomConstraint.constant = 8.0
+        }
+    }
 }
 
 // MARK: - Configurable implementation

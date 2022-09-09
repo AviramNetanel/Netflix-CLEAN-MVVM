@@ -50,31 +50,24 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
     }
     
     override func configure(with viewModel: CollectionViewCellItemViewModel) {
+        super.configure(with: viewModel)
+        
         self.viewModel = viewModel
         
         placeholderLabel.text = viewModel.title
         
-        let posterIdentifier = "poster_\(viewModel.title)" as NSString
-        let path = viewModel.posterImagePath
-        let url = URL(string: path)!
-        AsyncImageFetcher.shared.load(url: url, identifier: posterIdentifier) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = image
-            }
-        }
-        
         guard let indexPath = viewModel.indexPath as IndexPath? else { return }
         if indexPath.row == 0 {
             textLayer.frame = CGRect(x: 0.0, y: -30.0,
-                                              width: bounds.width, height: 144.0)
+                                     width: bounds.width, height: 144.0)
         } else {
             textLayer.frame = CGRect(x: -8.0, y: -30.0,
-                                              width: bounds.width, height: 144.0)
+                                     width: bounds.width, height: 144.0)
         }
         
         let index = "\(indexPath.row + 1)"
         let attributedString = NSAttributedString(string: index,
-                                                  attributes: [.font: UIFont.systemFont(ofSize: 96.0, weight: .regular),
+                                                  attributes: [.font: UIFont.systemFont(ofSize: 96.0, weight: .bold),
                                                                .strokeColor: UIColor.white,
                                                                .strokeWidth: -2.5,
                                                                .foregroundColor: UIColor.black.cgColor])

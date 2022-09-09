@@ -38,14 +38,15 @@
                     <constraint firstItem="IYp-0m-auN" firstAttribute="leading" secondItem="Ksh-Sx-Xvy" secondAttribute="leading" constant="8" id="ONa-lk-0BV"/>
                     <constraint firstItem="Akb-Cs-tQs" firstAttribute="centerY" secondItem="Ksh-Sx-Xvy" secondAttribute="centerY" id="Z74-vt-zl2"/>
                     <constraint firstItem="Ksh-Sx-Xvy" firstAttribute="top" secondItem="d5e-hj-cvp" secondAttribute="top" id="dN2-we-jht"/>
+                    <constraint firstAttribute="bottom" secondItem="IYp-0m-auN" secondAttribute="bottom" id="lI1-hb-oQA"/>
                     <constraint firstItem="Ksh-Sx-Xvy" firstAttribute="leading" secondItem="d5e-hj-cvp" secondAttribute="leading" constant="16" id="nWW-cI-MRs"/>
                     <constraint firstAttribute="bottom" secondItem="Ksh-Sx-Xvy" secondAttribute="bottom" id="qXH-4g-1cU"/>
                     <constraint firstAttribute="trailing" secondItem="Ksh-Sx-Xvy" secondAttribute="trailing" id="soC-X7-8dU"/>
                     <constraint firstItem="IYp-0m-auN" firstAttribute="trailing" secondItem="Ksh-Sx-Xvy" secondAttribute="trailing" constant="-8" id="yX1-Lw-KSr"/>
-                    <constraint firstItem="IYp-0m-auN" firstAttribute="bottom" secondItem="Ksh-Sx-Xvy" secondAttribute="bottom" id="z2f-Z6-sCd"/>
                 </constraints>
             </collectionViewCellContentView>
             <connections>
+                <outlet property="logoBottomConstraint" destination="lI1-hb-oQA" id="vTE-kN-07N"/>
                 <outlet property="logoImageView" destination="IYp-0m-auN" id="E5c-LB-SsX"/>
                 <outlet property="placeholderLabel" destination="Akb-Cs-tQs" id="w3h-Kv-orv"/>
                 <outlet property="posterImageView" destination="Ksh-Sx-Xvy" id="lsc-bW-h7c"/>
