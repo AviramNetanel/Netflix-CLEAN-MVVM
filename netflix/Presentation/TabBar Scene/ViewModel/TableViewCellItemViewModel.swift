@@ -10,10 +10,12 @@ import Foundation
 // MARK: - TableViewCellItemViewModel struct
 
 struct TableViewCellItemViewModel {
+    
     let id: Int
     let title: String
     let tvshows: [Media]
     let movies: [Media]
+    
     init(section: Section) {
         self.id = section.id
         self.title = section.title

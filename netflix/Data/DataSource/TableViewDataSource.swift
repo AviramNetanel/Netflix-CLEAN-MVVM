@@ -7,6 +7,54 @@
 
 import UIKit
 
+// MARK: - TableViewSection enum
+
+enum TableViewSection: Int, CaseIterable {
+    case display
+    case ratable
+    case resumable
+    case action
+    case sciFi
+    case blockbuster
+    case myList
+    case crime
+    case thriller
+    case adventure
+    case comedy
+    case drama
+    case horror
+    case anime
+    case familyNchildren
+    case documentary
+}
+
+// MARK: - Valuable implementation
+
+extension TableViewSection: Valuable {
+    var stringValue: String {
+        switch self {
+        case .display,
+                .ratable,
+                .resumable,
+                .myList:
+            return ""
+        case .action: return "Action"
+        case .sciFi: return "Sci-Fi"
+        case .blockbuster: return "Blockbusters"
+        case .crime: return "Crime"
+        case .thriller: return "Thriller"
+        case .adventure: return "Adventure"
+        case .comedy: return "Comedy"
+        case .drama: return "Drama"
+        case .horror: return "Horror"
+        case .anime: return "Anime"
+        case .familyNchildren: return "Family & Children"
+        case .documentary: return "Documentary"
+        }
+    }
+}
+
+
 // MARK: - TableViewDataSourceState enum
 
 enum TableViewDataSourceState {
