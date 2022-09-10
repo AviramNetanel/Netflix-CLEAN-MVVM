@@ -9,10 +9,7 @@ import UIKit
 
 // MARK: - Configurable protocol
 
-protocol Configurable {
-    static var reuseIdentifier: String { get }
-    static var nib: UINib { get }
-}
+protocol Configurable {}
 
 // MARK: - Default implementation
 

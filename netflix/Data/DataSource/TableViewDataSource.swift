@@ -90,6 +90,11 @@ final class DefaultTableViewDataSource: NSObject {
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
+    private var displayCell: DisplayTableViewCell!
+    private var ratableCell: RatableTableViewCell!
+    private var resumableCell: ResumableTableViewCell!
+    private var standardCell: StandardTableViewCell!
+    
     init(tableView: UITableView,
          state: TableViewDataSourceState,
          viewModel: HomeViewModel) {
@@ -158,23 +163,39 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
         }
         switch indices {
         case .display:
-            tableView.register(UINib(nibName: String(describing: DisplayTableViewCell.self), bundle: nil),
-                               forCellReuseIdentifier: DisplayTableViewCell.reuseIdentifier)
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DisplayTableViewCell.self), for: indexPath) as? DisplayTableViewCell else { fatalError("Unable to dequeue \(DisplayTableViewCell.self)") }
-            
-            return cell
-        case .ratable:
-            return RatableTableViewCell.create(tableView: tableView,
+            displayCell = DisplayTableViewCell.create(tableView: tableView,
                                                viewModel: viewModel,
                                                at: indexPath)
+            return displayCell
+        case .ratable:
+            ratableCell = RatableTableViewCell.create(tableView: tableView,
+                                               viewModel: viewModel,
+                                               at: indexPath)
+            return ratableCell
         case .resumable:
-            return ResumableTableViewCell.create(tableView: tableView,
+            resumableCell = ResumableTableViewCell.create(tableView: tableView,
                                                  viewModel: viewModel,
                                                  at: indexPath)
+            return resumableCell
         default:
-            return StandardTableViewCell.create(tableView: tableView,
+            standardCell = StandardTableViewCell.create(tableView: tableView,
                                                 viewModel: viewModel,
                                                 at: indexPath)
+            return standardCell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let indices = TableViewSection(rawValue: indexPath.section) else { return }
+        switch indices {
+        case .display: break
+        case .ratable: ratableCell = nil
+        case .resumable: resumableCell = nil
+        default: standardCell = nil
         }
     }
     

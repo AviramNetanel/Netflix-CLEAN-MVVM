@@ -65,7 +65,3 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: Con
     
     func configure(with viewModel: TableViewCellItemViewModel) {}
 }
-
-// MARK: - Configurable implementation
-
-extension DefaultTableViewCell: Configurable {}
