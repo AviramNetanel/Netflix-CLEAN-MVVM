@@ -54,12 +54,9 @@ class TableViewCell<Cell>: UITableViewCell, Configurable where Cell: UICollectio
         viewModel = nil
     }
     
-    //
-    
-    func configure(_ section: Section? = nil,
+    func configure(section: Section? = nil,
                    with viewModel: DefaultHomeViewModel? = nil) {
-        
-        if let viewModel = viewModel {
+        if let section = section, let viewModel = viewModel {
             self.viewModel = viewModel
             self.section = section
             

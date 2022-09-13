@@ -10,9 +10,5 @@ import Foundation
 // MARK: - Configurable
 
 protocol Configurable {
-    func configure(_ section: Section?, with viewModel: DefaultHomeViewModel?)
-}
-
-extension Configurable {
-    func configure(_ section: Section?, with viewModel: DefaultHomeViewModel?) {}
+    func configure(section: Section?, with viewModel: DefaultHomeViewModel?)
 }

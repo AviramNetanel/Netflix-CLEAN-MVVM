@@ -11,9 +11,19 @@ import UIKit
 
 final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
     
-    // MARK: Identifier
+    static func create(in tableView: UITableView,
+                       for indexPath: IndexPath,
+                       with viewModel: DefaultHomeViewModel) -> StandardTableViewCell {
+        let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)
+        let view = tableView.dequeueReusableCell(withIdentifier: identifier!.stringValue,
+                                                 for: indexPath) as! StandardTableViewCell
+        view.viewModel = viewModel
+        view.configure(section: viewModel.section(at: .init(rawValue: indexPath.section)!),
+                       with: viewModel)
+        return view
+    }
 
-    @objc enum Identifier: Int, CaseIterable {
+    enum Identifier: Int, CaseIterable {
         case action = 3,
              sciFi,
              blockbuster,

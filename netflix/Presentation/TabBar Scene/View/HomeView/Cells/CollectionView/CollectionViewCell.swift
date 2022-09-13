@@ -129,8 +129,6 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
                     DispatchQueue.main.async {
 //                        cell.lengthLabel.text = length
                     }
-                case .detail:
-                    break
                 }
             }
         default: break

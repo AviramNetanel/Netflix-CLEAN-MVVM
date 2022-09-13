@@ -1,5 +1,5 @@
 //
-//  TItleHeaderView.swift
+//  TableViewHeaderFooterView.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,35 +7,52 @@
 
 import UIKit
 
-// MARK: - TitleHeaderView
+// MARK: - TableViewHeaderFooterView
 
-final class TitleHeaderView: UITableViewHeaderFooterView {
+final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
-    // MARK: Properties
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
+        label.font = font
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    private(set) var titleLabel = UILabel()
-    
-    
-    // MARK: Initialization
+    static func create(in tableView: UITableView,
+                       for section: Int,
+                       with viewModel: DefaultHomeViewModel) -> TableViewHeaderFooterView? {
+        guard
+            let view = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
+        else { return nil }
+        let title = String(describing: viewModel.sections.value[section].title)
+        view.titleLabel.text = title
+        view.backgroundView = .init()
+        view.backgroundView!.backgroundColor = .black
+        return view
+    }
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .white
-        contentView.addSubview(titleLabel)
+        self.addSubviews()
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
-    
-    // MARK: Lifecycle
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+        self.constraintSubviews()
+    }
+    
+    private func addSubviews() {
+        contentView.addSubview(titleLabel)
+    }
+    
+    private func constraintSubviews() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8.0),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),

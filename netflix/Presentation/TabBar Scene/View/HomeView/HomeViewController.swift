@@ -17,7 +17,7 @@ final class HomeViewController: UIViewController {
     
     var viewModel: DefaultHomeViewModel!
     
-    private(set) var snapshot: TableViewSnapshot! = nil
+    private(set) var dataSource: TableViewDataSource! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        
+        dataSource = .init(in: tableView, with: viewModel)
     }
     
     // MARK: Bindings
@@ -55,19 +55,12 @@ final class HomeViewController: UIViewController {
     private func bind(to viewModel: DefaultHomeViewModel) {
         viewModel.sections.observe(on: self) { [weak self] _ in
             guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                self.snapshot = TableViewSnapshot(.tvShows, self.tableView, viewModel)
-                self.tableView.delegate = self.snapshot
-                self.tableView.dataSource = self.snapshot
-                self.tableView.prefetchDataSource = self.snapshot
-                self.tableView.reloadData()
-                self.bind(to: self.snapshot)
-            }
+            self.setupDataSource()
+            self.bind(to: self.dataSource)
         }
     }
     
-    private func bind(to dataSource: TableViewSnapshot) {
+    private func bind(to dataSource: TableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard
                 let indices = SectionIndices(rawValue: indexPath.section),
@@ -149,33 +142,22 @@ extension UICollectionViewCell: Reusable {}
 
 extension UITableView {
     
-    func register<T: UITableViewCell>(class cell: T.Type) {
-        self.register(cell, forCellReuseIdentifier: T.reuseIdentifier)
+    func register<T: UITableViewHeaderFooterView>(headerFooter type: T.Type) {
+        register(type, forHeaderFooterViewReuseIdentifier: type.reuseIdentifier)
     }
     
-    func register<T: UITableViewCell>(nib cell: T.Type) {
-        self.register(cell.nib, forCellReuseIdentifier: cell.reuseIdentifier)
+    func register<T: UITableViewCell>(class type: T.Type) {
+        register(type, forCellReuseIdentifier: type.reuseIdentifier)
+    }
+    
+    func register<T: UITableViewCell>(nib type: T.Type) {
+        register(type.nib, forCellReuseIdentifier: type.reuseIdentifier)
     }
     
     func register(_ identifiers: [String]) {
         for identifier in identifiers {
-            self.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
+            register(.init(nibName: identifier, bundle: nil),
+                    forCellReuseIdentifier: identifier)
         }
-    }
-    
-    func register<T: UITableViewHeaderFooterView>(_ headerFooterType: T.Type) {
-        self.register(headerFooterType, forHeaderFooterViewReuseIdentifier: headerFooterType.reuseIdentifier)
-    }
-    
-    
-    func dequeueCell<T>(for cell: T.Type,
-                        as identifier: StandardTableViewCell.Identifier? = nil,
-                        at indexPath: IndexPath) -> UITableViewCell?
-    where T: UITableViewCell {
-        let identifier = identifier != nil ? identifier!.stringValue : cell.reuseIdentifier
-        guard let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? T else {
-            fatalError("Unable to dequeue cell \(cell.reuseIdentifier)")
-        }
-        return cell
     }
 }

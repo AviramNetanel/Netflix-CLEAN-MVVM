@@ -37,10 +37,10 @@ private protocol HomeViewModelInput {
 // MARK: - HomeViewModelOutput protocol
 
 private protocol HomeViewModelOutput {
+    var dataSourceState: TableViewDataSource.State { get }
     var sections: Observable<[Section]> { get }
     var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
-    var dataSourceState: TableViewSnapshot.State { get }
 }
 
 // MARK: - HomeViewModel protocol
@@ -56,10 +56,10 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
-    var sections: Observable<[Section]> = Observable([])
-    var items: Observable<[Media]> = Observable([])
-    var isEmpty: Bool { return items.value.isEmpty }
-    var dataSourceState: TableViewSnapshot.State = .tvShows
+    fileprivate(set) var dataSourceState: TableViewDataSource.State = .tvShows
+    fileprivate(set) var sections: Observable<[Section]> = Observable([])
+    fileprivate var items: Observable<[Media]> = Observable([])
+    fileprivate var isEmpty: Bool { return items.value.isEmpty }
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
