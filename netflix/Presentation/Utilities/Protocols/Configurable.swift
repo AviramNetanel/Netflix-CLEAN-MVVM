@@ -2,22 +2,17 @@
 //  Configurable.swift
 //  netflix
 //
-//  Created by Zach Bazov on 08/09/2022.
+//  Created by Zach Bazov on 13/09/2022.
 //
 
-import UIKit
+import Foundation
 
-// MARK: - Configurable protocol
+// MARK: - Configurable
 
-protocol Configurable {}
-
-// MARK: - Default implementation
+protocol Configurable {
+    func configure(_ section: Section?, with viewModel: DefaultHomeViewModel?)
+}
 
 extension Configurable {
-    static var reuseIdentifier: String {
-        return .init(describing: Self.self)
-    }
-    static var nib: UINib {
-        return .init(nibName: reuseIdentifier, bundle: nil)
-    }
+    func configure(_ section: Section?, with viewModel: DefaultHomeViewModel?) {}
 }

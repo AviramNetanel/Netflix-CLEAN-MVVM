@@ -78,7 +78,7 @@ final class SceneDependencies {
         return HomeViewController.create(with: createHomeViewModel(actions: actions))
     }
     
-    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
+    func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel {
         return DefaultHomeViewModel(homeUseCase: createHomeUseCase(), actions: actions)
     }
 }

@@ -174,7 +174,7 @@ extension MediaDTO {
     func toDomain() -> Media {
         return .init(id: id,
                      title: title,
-                     rating: rating,
+                     rating: Float(rating),
                      description: description,
                      cast: cast,
                      isHD: isHD,

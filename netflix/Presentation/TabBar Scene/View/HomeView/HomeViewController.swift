@@ -15,8 +15,9 @@ final class HomeViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
-    var viewModel: HomeViewModel!
-    private var dataSource: DefaultTableViewDataSource!
+    var viewModel: DefaultHomeViewModel!
+    
+    private(set) var snapshot: TableViewSnapshot! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,7 @@ final class HomeViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
-    static func create(with viewModel: HomeViewModel) -> HomeViewController {
+    static func create(with viewModel: DefaultHomeViewModel) -> HomeViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
                                 bundle: .main)
             .instantiateViewController(withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
@@ -46,28 +47,30 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = DefaultTableViewDataSource(tableView: tableView,
-                                                state: .tvShows,
-                                                viewModel: viewModel)
-        tableView.delegate = dataSource
-        tableView.dataSource = dataSource
-        tableView.prefetchDataSource = dataSource
+        
     }
     
     // MARK: Bindings
     
-    private func bind(to viewModel: HomeViewModel) {
+    private func bind(to viewModel: DefaultHomeViewModel) {
         viewModel.sections.observe(on: self) { [weak self] _ in
             guard let self = self else { return }
-            self.dataSource.reload()
-            self.bind(to: self.dataSource)
+            
+            DispatchQueue.main.async {
+                self.snapshot = TableViewSnapshot(.tvShows, self.tableView, viewModel)
+                self.tableView.delegate = self.snapshot
+                self.tableView.dataSource = self.snapshot
+                self.tableView.prefetchDataSource = self.snapshot
+                self.tableView.reloadData()
+                self.bind(to: self.snapshot)
+            }
         }
     }
     
-    private func bind(to dataSource: DefaultTableViewDataSource) {
+    private func bind(to dataSource: TableViewSnapshot) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard
-                let indices = TableViewSection(rawValue: indexPath.section),
+                let indices = SectionIndices(rawValue: indexPath.section),
                 let self = self
             else { return .zero }
             switch indices {
@@ -75,5 +78,104 @@ final class HomeViewController: UIViewController {
             default: return self.view.bounds.height * 0.18
             }
         }
+    }
+}
+
+// MARK: - SectionIndices
+
+enum SectionIndices: Int, Valuable, CaseIterable {
+    
+    case display,
+         ratable,
+         resumable,
+         action,
+         sciFi,
+         blockbuster,
+         myList,
+         crime,
+         thriller,
+         adventure,
+         comedy,
+         drama,
+         horror,
+         anime,
+         familyNchildren,
+         documentary
+    
+    var stringValue: String {
+        switch self {
+        case .display,
+                .ratable,
+                .resumable,
+                .myList:
+            return ""
+        case .action: return "Action"
+        case .sciFi: return "Sci-Fi"
+        case .blockbuster: return "Blockbusters"
+        case .crime: return "Crime"
+        case .thriller: return "Thriller"
+        case .adventure: return "Adventure"
+        case .comedy: return "Comedy"
+        case .drama: return "Drama"
+        case .horror: return "Horror"
+        case .anime: return "Anime"
+        case .familyNchildren: return "Family & Children"
+        case .documentary: return "Documentary"
+        }
+    }
+}
+
+// MARK: - CGFloat
+
+extension CGFloat {
+    static var hidden = 0.0
+    static var shown = 1.0
+}
+
+
+// MARK: - UITableViewHeaderFooterView
+
+extension UITableViewHeaderFooterView: Reusable {}
+
+// MARK: - UITableViewCell
+
+extension UITableViewCell: Reusable {}
+
+// MARK: - UICollectionViewCell
+
+extension UICollectionViewCell: Reusable {}
+
+// MARK: - UITableView
+
+extension UITableView {
+    
+    func register<T: UITableViewCell>(class cell: T.Type) {
+        self.register(cell, forCellReuseIdentifier: T.reuseIdentifier)
+    }
+    
+    func register<T: UITableViewCell>(nib cell: T.Type) {
+        self.register(cell.nib, forCellReuseIdentifier: cell.reuseIdentifier)
+    }
+    
+    func register(_ identifiers: [String]) {
+        for identifier in identifiers {
+            self.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
+        }
+    }
+    
+    func register<T: UITableViewHeaderFooterView>(_ headerFooterType: T.Type) {
+        self.register(headerFooterType, forHeaderFooterViewReuseIdentifier: headerFooterType.reuseIdentifier)
+    }
+    
+    
+    func dequeueCell<T>(for cell: T.Type,
+                        as identifier: StandardTableViewCell.Identifier? = nil,
+                        at indexPath: IndexPath) -> UITableViewCell?
+    where T: UITableViewCell {
+        let identifier = identifier != nil ? identifier!.stringValue : cell.reuseIdentifier
+        guard let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? T else {
+            fatalError("Unable to dequeue cell \(cell.reuseIdentifier)")
+        }
+        return cell
     }
 }

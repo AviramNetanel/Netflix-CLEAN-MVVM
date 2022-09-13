@@ -36,7 +36,7 @@ final class SignInViewController: UIViewController {
             let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
             let sceneDependencies = appFlowCoordinator?.sceneDependencies
             let actions = HomeViewModelActions(presentMediaDetails: { _ in })
-            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions)
+            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions) as? DefaultHomeViewModel
             appFlowCoordinator?.createHomeSceneFlow()
         }
     }

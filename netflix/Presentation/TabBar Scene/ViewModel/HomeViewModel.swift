@@ -15,7 +15,7 @@ struct HomeViewModelActions {
 
 // MARK: - HomeViewModelEndpoints
 
-protocol HomeViewModelEndpoints {
+private protocol HomeViewModelEndpoints {
     func getSections()
     func getTVShows()
     func getMovies()
@@ -23,27 +23,29 @@ protocol HomeViewModelEndpoints {
 
 // MARK: - HomeViewModelInput protocol
 
-protocol HomeViewModelInput {
+private protocol HomeViewModelInput {
     func viewDidLoad()
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
-    func section(at index: Int)
+    func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
+    func section(at index: SectionIndices) -> Section
     func randomObject(at section: Section) -> Media?
-    func didSelectItem(at index: Int)
     func titleForHeader(at index: Int) -> String
+    func didSelectItem(at index: Int)
 }
 
 // MARK: - HomeViewModelOutput protocol
 
-protocol HomeViewModelOutput {
+private protocol HomeViewModelOutput {
     var sections: Observable<[Section]> { get }
     var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
+    var dataSourceState: TableViewSnapshot.State { get }
 }
 
 // MARK: - HomeViewModel protocol
 
-protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput, HomeViewModelEndpoints {}
+private protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput, HomeViewModelEndpoints {}
 
 // MARK: - HomeViewModel class
 
@@ -52,17 +54,12 @@ final class DefaultHomeViewModel: HomeViewModel {
     private let homeUseCase: HomeUseCase
     private let actions: HomeViewModelActions
     
-    private var task: Cancellable? {
-        willSet {
-            task?.cancel()
-        }
-    }
-    
-    // MARK: Output
+    private var task: Cancellable? { willSet { task?.cancel() } }
     
     var sections: Observable<[Section]> = Observable([])
     var items: Observable<[Media]> = Observable([])
     var isEmpty: Bool { return items.value.isEmpty }
+    var dataSourceState: TableViewSnapshot.State = .tvShows
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -80,42 +77,91 @@ extension DefaultHomeViewModel {
     }
     
     func filter(sections: [Section]) {
-        
+        for i in SectionIndices.allCases {
+            switch i {
+            case .display:
+                break
+            case .ratable,
+                    .resumable:
+                if dataSourceState == .tvShows {
+                    sections[i.rawValue].tvshows = sections.first!.tvshows
+                }
+                sections[i.rawValue].movies = sections.first!.movies
+            case .action,
+                    .sciFi,
+                    .crime,
+                    .thriller,
+                    .adventure,
+                    .comedy,
+                    .drama,
+                    .horror,
+                    .anime,
+                    .familyNchildren,
+                    .documentary:
+                filter(sections: sections, at: i.rawValue)
+            case .blockbuster:
+                filter(sections: sections, at: i.rawValue, withMinimumRating: 7.5)
+            default: break
+            }
+        }
     }
-    
+
     func filter(sections: [Section], at index: Int) {
-        
+        if dataSourceState == .tvShows {
+            return sections[index].tvshows = sections.first!.tvshows!.filter {
+                return $0.genres.contains(sections[index].title)
+            }
+            
+        }
+        sections[index].movies = sections.first!.movies!.filter {
+            return $0.genres.contains(sections[index].title)
+        }
     }
     
-    func section(at index: Int) {
-        
+    func filter(sections: [Section], at index: Int, withMinimumRating value: Float) {
+        if dataSourceState == .tvShows {
+            return sections[index].tvshows = sections.first!.tvshows!.filter {
+                return $0.rating > value
+            }
+            
+        }
+        sections[index].movies = sections.first!.movies!.filter {
+            return $0.rating > value
+        }
+    }
+    
+    func section(at index: SectionIndices) -> Section {
+        return sections.value[index.rawValue]
     }
     
     func randomObject(at section: Section) -> Media? {
-        return nil
+        guard
+            let media = dataSourceState == .tvShows
+                ? section.tvshows!.randomElement()
+                : section.movies!.randomElement()
+        else { return nil }
+        return media
+    }
+    
+    func titleForHeader(at index: Int) -> String {
+        return .init(describing: sections.value[index].title)
     }
     
     func didSelectItem(at index: Int) {
         
     }
-    
-    func titleForHeader(at index: Int) -> String {
-        return "\(sections.value[index].title)"
-    }
 }
 
 // MARK: - HomeViewModelEndpoints implementation
 
-extension DefaultHomeViewModel {
+fileprivate extension DefaultHomeViewModel {
     
     func getSections() {
         task = homeUseCase.executeSections { [weak self] result in
             guard let self = self else { return }
-            switch result {
-            case .success(let response):
+            if case let .success(response) = result {
                 self.sections.value = response.data
-            case .failure(let error):
-                print(error)
+                self.filter(sections: self.sections.value)
             }
         }
     }
@@ -123,24 +169,14 @@ extension DefaultHomeViewModel {
     func getTVShows() {
         task = homeUseCase.executeTVShows { [weak self] result in
             guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.items.value = response.data
-            case .failure(let error):
-                print(error)
-            }
+            if case let .success(response) = result { self.items.value = response.data }
         }
     }
     
     func getMovies() {
         task = homeUseCase.executeMovies { [weak self] result in
             guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.items.value = response.data
-            case .failure(let error):
-                print(error)
-            }
+            if case let .success(response) = result { self.items.value = response.data }
         }
     }
 }

@@ -15,7 +15,7 @@ struct Media {
     
     var id: String?
     var title: String
-    var rating: CGFloat
+    var rating: Float
     var description: String
     var cast: String
     var isHD: Bool
