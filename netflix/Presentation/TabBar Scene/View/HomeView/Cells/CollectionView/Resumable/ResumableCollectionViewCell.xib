@@ -33,7 +33,7 @@
                                     <constraint firstAttribute="height" constant="56" id="9bX-q9-nz2"/>
                                 </constraints>
                             </imageView>
-                            <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IQb-X0-Wac" userLabel="Play Button">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IQb-X0-Wac" userLabel="Play Button">
                                 <rect key="frame" x="40" y="72" width="48" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.65000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>

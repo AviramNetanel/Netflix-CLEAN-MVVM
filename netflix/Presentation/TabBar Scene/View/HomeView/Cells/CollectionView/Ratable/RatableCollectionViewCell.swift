@@ -7,59 +7,71 @@
 
 import UIKit
 
-// MARK: - TextLayerView
-
-final class TextLayerView: CATextLayer {
-    
-    override func draw(in ctx: CGContext) {
-        ctx.saveGState()
-        ctx.translateBy(x: 0.0, y: 0.0)
-        
-        super.draw(in: ctx)
-        
-        ctx.restoreGState()
-    }
-}
-
-
-// MARK: - RatableCollectionViewCell
+// MARK: - RatableCollectionViewCell class
 
 final class RatableCollectionViewCell: DefaultCollectionViewCell {
     
-    // MARK: Properties
+    private final class TextLayer: CATextLayer {
+        override func draw(in ctx: CGContext) {
+            ctx.saveGState()
+            ctx.translateBy(x: .zero, y: .zero)
+            super.draw(in: ctx)
+            ctx.restoreGState()
+        }
+    }
     
-    let layerContainer = UIView()
-    
-    private(set) var textLayerView = TextLayerView()
-    
-    
-    // MARK: Initialization & Deintialization
+    private let layerView = UIView()
+    private var textLayer = TextLayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.contentView.addSubview(layerContainer)
-        self.layerContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(layerView)
+        self.layerView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.layerContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            self.layerContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            self.layerContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            self.layerContainer.heightAnchor.constraint(equalToConstant: bounds.height / 2)
+            self.layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            self.layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            self.layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            self.layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
         ])
     }
     
     deinit {
-        textLayerView.removeFromSuperlayer()
-        layerContainer.removeFromSuperview()
+        textLayer.removeFromSuperlayer()
+        layerView.removeFromSuperview()
     }
-    
-    
-    // MARK: Lifecycle
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        textLayer.string = nil
+    }
+    
+    override func configure(with viewModel: CollectionViewCellItemViewModel) {
+        super.configure(with: viewModel)
         
-        textLayerView.string = nil
+        guard let indexPath = viewModel.indexPath as IndexPath? else { return }
+        
+        textLayer.frame = CGRect(x: -8.0,
+                                 y: -8.0,
+                                 width: bounds.width,
+                                 height: 144.0)
+        if indexPath.row == 0 {
+            textLayer.frame = CGRect(x: 0.0,
+                                     y: -8.0,
+                                     width: bounds.width,
+                                     height: 144.0)
+        }
+        
+        let index = String(describing: indexPath.row + 1)
+        let attributedString = NSAttributedString(
+            string: index,
+            attributes: [.font: UIFont.systemFont(ofSize: 96.0, weight: .bold),
+                         .strokeColor: UIColor.white,
+                         .strokeWidth: -2.5,
+                         .foregroundColor: UIColor.black.cgColor])
+        
+        layerView.layer.insertSublayer(textLayer, at: 1)
+        textLayer.string = attributedString
     }
 }

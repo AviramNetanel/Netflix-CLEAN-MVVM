@@ -774,8 +774,8 @@
 		A1E81D3528D011F100D044EA /* Ratable */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */,
 				A1E81D1D28CFE47700D044EA /* RatableCollectionViewCell.swift */,
+				A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */,
 			);
 			path = Ratable;
 			sourceTree = "<group>";
@@ -783,8 +783,8 @@
 		A1E81D3628D0120000D044EA /* Resumable */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */,
 				A1E81D1F28CFE47B00D044EA /* ResumableCollectionViewCell.swift */,
+				A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */,
 			);
 			path = Resumable;
 			sourceTree = "<group>";
@@ -792,8 +792,8 @@
 		A1E81D3728D0120600D044EA /* Standard */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D3128CFF95300D044EA /* StandardCollectionViewCell.xib */,
 				A1E81D2128CFE47E00D044EA /* StandardCollectionViewCell.swift */,
+				A1E81D3128CFF95300D044EA /* StandardCollectionViewCell.xib */,
 			);
 			path = Standard;
 			sourceTree = "<group>";
