@@ -144,9 +144,7 @@ extension DefaultHomeViewModel {
         return .init(describing: sections.value[index].title)
     }
     
-    func didSelectItem(at index: Int) {
-        
-    }
+    func didSelectItem(at index: Int) {}
 }
 
 // MARK: - HomeViewModelEndpoints implementation

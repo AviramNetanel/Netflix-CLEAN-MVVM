@@ -16,13 +16,12 @@ class TableViewCell<Cell>: UITableViewCell, Configurable where Cell: UICollectio
     var collectionView: UICollectionView!
     var section: Section!
     
-    var dataSet: CollectionViewSnapshotDataSet<Cell>! = nil
-    var snapshot: CollectionViewSnapshot<Cell, CollectionViewSnapshotDataSet<Cell>>! = nil
+    var snapshot: CollectionViewDataSource<Cell>! = nil
     
     var viewModel: DefaultHomeViewModel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: Cell.reuseIdentifier)
         
         self.backgroundColor = .black
         
@@ -62,8 +61,7 @@ class TableViewCell<Cell>: UITableViewCell, Configurable where Cell: UICollectio
             
             let index = TableViewDataSource.Indices(rawValue: self.section.id)
             
-            dataSet = .init(self.section, viewModel: viewModel)
-            snapshot = .init(dataSet, viewModel)
+            snapshot = .init(self.section, viewModel: viewModel)
             
             collectionView.delegate = snapshot
             collectionView.dataSource = snapshot
@@ -82,8 +80,9 @@ class TableViewCell<Cell>: UITableViewCell, Configurable where Cell: UICollectio
             case .myList:
                 break
             default:
-                dataSet = .init(self.section, viewModel: viewModel, standardCell: self)
-                snapshot = .init(dataSet, viewModel)
+                snapshot = .init(self.section,
+                                 viewModel: viewModel,
+                                 standardCell: self)
                 
                 collectionView.delegate = snapshot
                 collectionView.dataSource = snapshot
