@@ -1,5 +1,5 @@
 //
-//  UIView+AddGradientLayer.swift
+//  UIView+Extension.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/09/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - UIView + addGradientLayer
+// MARK: - UIView + Add Gradient Layer
 
 extension UIView {
     

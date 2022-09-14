@@ -11,6 +11,25 @@ import UIKit
 
 final class TableViewDataSource: NSObject {
     
+    enum Indices: Int, Valuable, CaseIterable {
+        case display,
+             ratable,
+             resumable,
+             action,
+             sciFi,
+             blockbuster,
+             myList,
+             crime,
+             thriller,
+             adventure,
+             comedy,
+             drama,
+             horror,
+             anime,
+             familyNchildren,
+             documentary
+    }
+    
     enum State: Int {
         case tvShows
         case movies
@@ -74,7 +93,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let indices = SectionIndices(rawValue: indexPath.section) else { fatalError() }
+        guard let indices = Indices(rawValue: indexPath.section) else { fatalError() }
         switch indices {
         case .display:
             return .init()
@@ -101,13 +120,13 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
         return TableViewHeaderFooterView.create(in: tableView,
-                                      for: section,
-                                      with: viewModel)
+                                                for: section,
+                                                with: viewModel)
     }
     
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        guard let indices = SectionIndices(rawValue: section) else { return .zero }
+        guard let indices = Indices(rawValue: section) else { return .zero }
         switch indices {
         case .display: return 0.0
         case .ratable: return 28.0
@@ -122,4 +141,30 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    didEndDisplaying cell: UITableViewCell,
                    forRowAt indexPath: IndexPath) {}
+}
+
+//
+
+extension TableViewDataSource.Indices {
+    var stringValue: String {
+        switch self {
+        case .display,
+                .ratable,
+                .resumable,
+                .myList:
+            return ""
+        case .action: return "Action"
+        case .sciFi: return "Sci-Fi"
+        case .blockbuster: return "Blockbusters"
+        case .crime: return "Crime"
+        case .thriller: return "Thriller"
+        case .adventure: return "Adventure"
+        case .comedy: return "Comedy"
+        case .drama: return "Drama"
+        case .horror: return "Horror"
+        case .anime: return "Anime"
+        case .familyNchildren: return "Family & Children"
+        case .documentary: return "Documentary"
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  UINib+InstantiateSubview.swift
+//  UINib+Extension.swift
 //  netflix
 //
 //  Created by Zach Bazov on 10/09/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - UINib + InstantiateSubview
+// MARK: - UINib + Instantiate Subview
 
 extension UINib {
     func instantiateSubview(onParent parent: UIView) -> UIView {

@@ -73,17 +73,17 @@ where Cell: UICollectionViewCell {
     // MARK: CollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let indices = SectionIndices(rawValue: self.section.id) else { return .zero }
+        guard let indices = TableViewDataSource.Indices(rawValue: self.section.id) else { return .zero }
         switch indices {
         case .display,
                 .ratable,
                 .resumable:
-            return viewModel.dataSourceState == .tvShows
+            return viewModel.state.value == .tvShows
                 ? viewModel.sections.value.first!.tvshows!.count
                 : viewModel.sections.value.first!.movies!.count
         default:
             guard let standardCell = standardCell else { return .zero }
-            return viewModel.dataSourceState == .tvShows
+            return viewModel.state.value == .tvShows
                 ? standardCell.section.tvshows!.count
                 : standardCell.section.movies!.count
         }
@@ -152,7 +152,7 @@ where Cell: UICollectionViewCell {
         cell.representedIdentifier = media.title as NSString
         
         cell.placeholderLabel.text = media.title
-        cell.placeholderLabel.alpha = .shown
+        cell.placeholderLabel.alpha = 1.0
         
         guard
             let cover = cache.object(forKey: identifier),
@@ -164,7 +164,7 @@ where Cell: UICollectionViewCell {
                 guard cell.representedIdentifier == media.title as NSString else { return }
                 DispatchQueue.main.async {
                     cell.configure(section: self?.section, media: media, cover: image, at: indexPath, with: self?.viewModel)
-                    cell.placeholderLabel.alpha = .hidden
+                    cell.placeholderLabel.alpha = 0.0
                 }
             }
             
@@ -200,7 +200,7 @@ where Cell: UICollectionViewCell {
                 cell.coverImageView.image = cover
                 cell.logoImageView.image = logo
             }
-            cell.placeholderLabel.alpha = .hidden
+            cell.placeholderLabel.alpha = 0.0
         }
     }
     
@@ -209,7 +209,7 @@ where Cell: UICollectionViewCell {
             cell.coverImageView.image = nil
             cell.logoImageView.image = nil
             cell.placeholderLabel.text = nil
-            cell.placeholderLabel.alpha = .hidden
+            cell.placeholderLabel.alpha = 0.0
         }
     }
     
@@ -282,12 +282,12 @@ where Cell: UICollectionViewCell {
     
     private func media(for indexPath: IndexPath) -> Media? {
         if let standardCell = standardCell {
-            return viewModel.dataSourceState == .tvShows
+            return viewModel.state.value == .tvShows
                 ? standardCell.section.tvshows![indexPath.row] as Media?
                 : standardCell.section.movies![indexPath.row] as Media?
         }
         
-        return viewModel.dataSourceState == .tvShows
+        return viewModel.state.value == .tvShows
             ? viewModel.sections.value.first!.tvshows![indexPath.row] as Media?
             : viewModel.sections.value.first!.movies![indexPath.row] as Media?
     }

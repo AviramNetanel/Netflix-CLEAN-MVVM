@@ -28,7 +28,7 @@ private protocol HomeViewModelInput {
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
-    func section(at index: SectionIndices) -> Section
+    func section(at index: TableViewDataSource.Indices) -> Section
     func randomObject(at section: Section) -> Media?
     func titleForHeader(at index: Int) -> String
     func didSelectItem(at index: Int)
@@ -37,7 +37,7 @@ private protocol HomeViewModelInput {
 // MARK: - HomeViewModelOutput protocol
 
 private protocol HomeViewModelOutput {
-    var dataSourceState: TableViewDataSource.State { get }
+    var state: Observable<TableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
     var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
@@ -56,7 +56,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
-    fileprivate(set) var dataSourceState: TableViewDataSource.State = .tvShows
+    fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
     fileprivate var items: Observable<[Media]> = Observable([])
     fileprivate var isEmpty: Bool { return items.value.isEmpty }
@@ -77,15 +77,13 @@ extension DefaultHomeViewModel {
     }
     
     func filter(sections: [Section]) {
-        for i in SectionIndices.allCases {
+        for i in TableViewDataSource.Indices.allCases {
             switch i {
             case .display:
                 break
             case .ratable,
                     .resumable:
-                if dataSourceState == .tvShows {
-                    sections[i.rawValue].tvshows = sections.first!.tvshows
-                }
+                sections[i.rawValue].tvshows = sections.first!.tvshows
                 sections[i.rawValue].movies = sections.first!.movies
             case .action,
                     .sciFi,
@@ -107,11 +105,8 @@ extension DefaultHomeViewModel {
     }
 
     func filter(sections: [Section], at index: Int) {
-        if dataSourceState == .tvShows {
-            return sections[index].tvshows = sections.first!.tvshows!.filter {
-                return $0.genres.contains(sections[index].title)
-            }
-            
+        sections[index].tvshows = sections.first!.tvshows!.filter {
+            return $0.genres.contains(sections[index].title)
         }
         sections[index].movies = sections.first!.movies!.filter {
             return $0.genres.contains(sections[index].title)
@@ -119,24 +114,21 @@ extension DefaultHomeViewModel {
     }
     
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float) {
-        if dataSourceState == .tvShows {
-            return sections[index].tvshows = sections.first!.tvshows!.filter {
-                return $0.rating > value
-            }
-            
+        sections[index].tvshows = sections.first!.tvshows!.filter {
+            return $0.rating > value
         }
         sections[index].movies = sections.first!.movies!.filter {
             return $0.rating > value
         }
     }
     
-    func section(at index: SectionIndices) -> Section {
+    func section(at index: TableViewDataSource.Indices) -> Section {
         return sections.value[index.rawValue]
     }
     
     func randomObject(at section: Section) -> Media? {
         guard
-            let media = dataSourceState == .tvShows
+            let media = state.value == .tvShows
                 ? section.tvshows!.randomElement()
                 : section.movies!.randomElement()
         else { return nil }
@@ -162,6 +154,7 @@ fileprivate extension DefaultHomeViewModel {
             if case let .success(response) = result {
                 self.sections.value = response.data
                 self.filter(sections: self.sections.value)
+                self.state.value = .tvShows
             }
         }
     }

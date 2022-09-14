@@ -1,5 +1,5 @@
 //
-//  NSAttributedString+Attributes.swift
+//  NSAttributedString+Extension.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/09/2022.

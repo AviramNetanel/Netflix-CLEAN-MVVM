@@ -42,6 +42,10 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
     
     //
     
+    func configure(with viewModel: CollectionViewCellItemViewModel) {
+        
+    }
+    
     func configure(section: Section? = nil,
                    media: Media? = nil,
                    cover: UIImage? = nil,
@@ -64,7 +68,7 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
                 
                 switch media?.logoPosition {
                 case "top":
-                    self.logoBottomConstraint?.constant = viewModel?.dataSourceState == .tvShows
+                    self.logoBottomConstraint?.constant = viewModel?.state.value == .tvShows
                     ? self.coverImageView.bounds.maxY - self.logoImageView.bounds.size.height
                     : self.coverImageView.bounds.maxY - self.logoImageView.bounds.size.height - 8.0
                 case "mid-top":
@@ -110,7 +114,7 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
                 
                 self.viewModel = viewModel
                 
-                switch viewModel.dataSourceState {
+                switch viewModel.state.value {
                 case .tvShows:
                     guard
                         let media = media,

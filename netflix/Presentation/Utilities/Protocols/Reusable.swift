@@ -11,7 +11,6 @@ import UIKit
 
 public protocol Reusable {}
 
-
 // MARK: - Reusable Implementation
 
 extension Reusable {

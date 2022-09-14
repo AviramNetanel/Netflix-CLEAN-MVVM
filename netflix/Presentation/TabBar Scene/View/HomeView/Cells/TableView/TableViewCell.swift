@@ -60,7 +60,7 @@ class TableViewCell<Cell>: UITableViewCell, Configurable where Cell: UICollectio
             self.viewModel = viewModel
             self.section = section
             
-            let index = SectionIndices(rawValue: self.section.id)
+            let index = TableViewDataSource.Indices(rawValue: self.section.id)
             
             dataSet = .init(self.section, viewModel: viewModel)
             snapshot = .init(dataSet, viewModel)
