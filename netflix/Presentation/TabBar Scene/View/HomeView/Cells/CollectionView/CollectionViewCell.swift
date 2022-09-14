@@ -21,6 +21,7 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backgroundColor = .black
+        self.placeholderLabel.alpha = 1.0
     }
     
     deinit {
@@ -40,103 +41,62 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
         viewModel = nil
     }
     
-    //
-    
-    func configure(with viewModel: CollectionViewCellItemViewModel) {
-        
+    static func create(in collectionView: UICollectionView,
+                       reuseIdentifier: String,
+                       section: Section,
+                       for indexPath: IndexPath,
+                       with viewModel: DefaultHomeViewModel) -> CollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
+        else { fatalError() }
+        let media = viewModel.state.value == .tvShows
+            ? section.tvshows![indexPath.row]
+            : section.movies![indexPath.row]
+        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        cell.representedIdentifier = media.title as NSString
+        cell.configure(with: cellViewModel)
+        return cell
     }
     
-    func configure(section: Section? = nil,
-                   media: Media? = nil,
-                   cover: UIImage? = nil,
-                   logo: UIImage? = nil,
-                   at indexPath: IndexPath? = nil,
-                   with viewModel: DefaultHomeViewModel? = nil) {
+    static func download(with viewModel: CollectionViewCellItemViewModel) {
+        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
+                                      identifier: viewModel.posterImageIdentifier) { _ in }
+        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
+                                      identifier: viewModel.logoImageIdentifier) { _ in }
+    }
+    
+    func configure(with viewModel: CollectionViewCellItemViewModel) {
+        switch viewModel.logoAlignment {
+        case .top:
+            logoBottomConstraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
+        case .midTop:
+            logoBottomConstraint.constant = 64.0
+        case .mid:
+            logoBottomConstraint.constant = bounds.midY
+        case .midBottom:
+            logoBottomConstraint.constant = 24.0
+        case .bottom:
+            logoBottomConstraint.constant = 8.0
+        }
         
-        if let cover = cover {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+        placeholderLabel.text = viewModel.title
+        
+        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
+                                      identifier: viewModel.posterImageIdentifier) { [weak self] image in
+            guard let self = self else { return }
+            guard self.representedIdentifier == viewModel.title as NSString? else { return }
+            DispatchQueue.main.async {
+                self.coverImageView.image = image
                 self.coverImageView.contentMode = .scaleAspectFill
-                self.coverImageView.image = cover
+                self.placeholderLabel.alpha = 0.0
             }
         }
         
-        if let logo = logo {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.logoImageView.image = logo
-                
-                switch media?.logoPosition {
-                case "top":
-                    self.logoBottomConstraint?.constant = viewModel?.state.value == .tvShows
-                    ? self.coverImageView.bounds.maxY - self.logoImageView.bounds.size.height
-                    : self.coverImageView.bounds.maxY - self.logoImageView.bounds.size.height - 8.0
-                case "mid-top":
-                    self.logoBottomConstraint?.constant = 64.0
-                case "mid":
-                    self.logoBottomConstraint?.constant = 40.0
-                case "mid-bottom":
-                    self.logoBottomConstraint?.constant = 24.0
-                case "bottom":
-                    self.logoBottomConstraint?.constant = 8.0
-                default:
-                    break
-                }
-            }
-        }
-        
-        switch self {
-        case let cell as RatableCollectionViewCell:
-            guard let indexPath = indexPath else { return }
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                
-                if indexPath.row == 0 {
-                    cell.textLayerView.frame = CGRect(x: 0.0, y: -30.0,
-                                                      width: self.bounds.width, height: 144.0)
-                } else {
-                    cell.textLayerView.frame = CGRect(x: -8.0, y: -30.0,
-                                                      width: self.bounds.width, height: 144.0)
-                }
-                
-                let index = "\(indexPath.row + 1)"
-                let attributedString = NSAttributedString(string: index,
-                                                          attributes: [.font: UIFont.systemFont(ofSize: 96.0, weight: .bold),
-                                                                       .strokeColor: UIColor.white,
-                                                                       .strokeWidth: -2.5,
-                                                                       .foregroundColor: UIColor.black.cgColor])
-                
-                cell.layerContainer.layer.insertSublayer(cell.textLayerView, at: 1)
-                cell.textLayerView.string = attributedString
-            }
-        case let cell as ResumableCollectionViewCell:
-            if let viewModel = viewModel as DefaultHomeViewModel? {
-                
-                self.viewModel = viewModel
-                
-                switch viewModel.state.value {
-                case .tvShows:
-                    guard
-                        let media = media,
-                        let duration = media.duration! as String?
-                    else { return }
-                    
-                    DispatchQueue.main.async {
-//                        cell.lengthLabel.text = duration
-                    }
-                case .movies:
-                    guard
-                        let media = media,
-                        let length = media.length! as String?
-                    else { return }
-                    
-                    DispatchQueue.main.async {
-//                        cell.lengthLabel.text = length
-                    }
-                }
-            }
-        default: break
+        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
+                                      identifier: viewModel.logoImageIdentifier) { [weak self] image in
+            guard let self = self else { return }
+            guard self.representedIdentifier == viewModel.title as NSString? else { return }
+            DispatchQueue.main.async { self.logoImageView.image = image }
         }
     }
 }
-
