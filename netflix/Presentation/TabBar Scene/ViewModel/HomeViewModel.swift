@@ -25,6 +25,7 @@ private protocol HomeViewModelEndpoints {
 
 private protocol HomeViewModelInput {
     func viewDidLoad()
+    func dataDidLoad(response: SectionsResponse)
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
@@ -76,11 +77,15 @@ extension DefaultHomeViewModel {
         getSections()
     }
     
+    func dataDidLoad(response: SectionsResponse) {
+        sections.value = response.data
+        filter(sections: sections.value)
+        state.value = .tvShows
+    }
+    
     func filter(sections: [Section]) {
         for i in TableViewDataSource.Indices.allCases {
             switch i {
-            case .display:
-                break
             case .ratable,
                     .resumable:
                 sections[i.rawValue].tvshows = sections.first!.tvshows
@@ -151,11 +156,7 @@ fileprivate extension DefaultHomeViewModel {
     func getSections() {
         task = homeUseCase.executeSections { [weak self] result in
             guard let self = self else { return }
-            if case let .success(response) = result {
-                self.sections.value = response.data
-                self.filter(sections: self.sections.value)
-                self.state.value = .tvShows
-            }
+            if case let .success(response) = result { self.dataDidLoad(response: response) }
         }
     }
     

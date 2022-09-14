@@ -13,11 +13,10 @@ final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     var viewModel: DefaultHomeViewModel!
-    
-    private(set) var dataSource: TableViewDataSource! = nil
+    private(set) var dataSource: TableViewDataSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +33,6 @@ final class HomeViewController: UIViewController {
         view.viewModel = viewModel
         return view
     }
-    
-    // MARK: Private
     
     private func setupBehaviors() {
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
@@ -61,14 +58,11 @@ final class HomeViewController: UIViewController {
     
     private func heightForRowAt(in dataSource: TableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
-            guard
-                let indices = TableViewDataSource.Indices(rawValue: indexPath.section),
-                let self = self
-            else { return .zero }
-            switch indices {
-            case .display: return self.view.bounds.height * 0.76
-            default: return self.view.bounds.height * 0.18
+            guard let self = self else { return .zero }
+            if case .display = TableViewDataSource.Indices(rawValue: indexPath.section) {
+                return self.view.bounds.height * 0.76
             }
+            return self.view.bounds.height * 0.18
         }
     }
 }

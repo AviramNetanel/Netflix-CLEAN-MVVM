@@ -11,7 +11,7 @@ import UIKit
 
 final class TableViewDataSource: NSObject {
     
-    enum Indices: Int, Valuable, CaseIterable {
+    enum Indices: Int, CaseIterable {
         case display,
              ratable,
              resumable,
@@ -47,7 +47,7 @@ final class TableViewDataSource: NSObject {
         self.tableView = tableView
         self.sections = viewModel.sections.value
         super.init()
-        self.setupViews()
+        self.setupSubviews()
     }
     
     deinit {
@@ -55,7 +55,11 @@ final class TableViewDataSource: NSObject {
         viewModel = nil
     }
     
-    private func setupViews() {
+    private func setupSubviews() {
+        setupTableView()
+    }
+    
+    private func setupTableView() {
         viewsDidRegister()
         snapshotDidChange()
     }
@@ -143,19 +147,19 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
                    forRowAt indexPath: IndexPath) {}
 }
 
-//
+// MARK: - Valuable implementation
 
-extension TableViewDataSource.Indices {
+extension TableViewDataSource.Indices: Valuable {
     var stringValue: String {
         switch self {
         case .display,
                 .ratable,
-                .resumable,
-                .myList:
+                .resumable:
             return ""
         case .action: return "Action"
         case .sciFi: return "Sci-Fi"
         case .blockbuster: return "Blockbusters"
+        case .myList: return "My List"
         case .crime: return "Crime"
         case .thriller: return "Thriller"
         case .adventure: return "Adventure"
