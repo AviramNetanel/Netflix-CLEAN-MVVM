@@ -24,7 +24,7 @@ final class TextLayerView: CATextLayer {
 
 // MARK: - RatableCollectionViewCell
 
-final class RatableCollectionViewCell: CollectionViewCell {
+final class RatableCollectionViewCell: DefaultCollectionViewCell {
     
     // MARK: Properties
     

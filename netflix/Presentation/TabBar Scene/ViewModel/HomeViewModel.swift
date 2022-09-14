@@ -40,7 +40,6 @@ private protocol HomeViewModelInput {
 private protocol HomeViewModelOutput {
     var state: Observable<TableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
-    var items: Observable<[Media]> { get }
     var isEmpty: Bool { get }
 }
 
@@ -59,8 +58,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
-    fileprivate var items: Observable<[Media]> = Observable([])
-    fileprivate var isEmpty: Bool { return items.value.isEmpty }
+    fileprivate var isEmpty: Bool { return sections.value.isEmpty }
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -90,16 +88,11 @@ extension DefaultHomeViewModel {
                     .resumable:
                 sections[i.rawValue].tvshows = sections.first!.tvshows
                 sections[i.rawValue].movies = sections.first!.movies
-            case .action,
-                    .sciFi,
-                    .crime,
-                    .thriller,
-                    .adventure,
-                    .comedy,
-                    .drama,
-                    .horror,
-                    .anime,
-                    .familyNchildren,
+            case .action, .sciFi,
+                    .crime, .thriller,
+                    .adventure, .comedy,
+                    .drama, .horror,
+                    .anime, .familyNchildren,
                     .documentary:
                 filter(sections: sections, at: i.rawValue)
             case .blockbuster:
@@ -159,16 +152,10 @@ fileprivate extension DefaultHomeViewModel {
     }
     
     func getTVShows() {
-        task = homeUseCase.executeTVShows { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result { self.items.value = response.data }
-        }
+        task = homeUseCase.executeTVShows { _ in }
     }
     
     func getMovies() {
-        task = homeUseCase.executeMovies { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result { self.items.value = response.data }
-        }
+        task = homeUseCase.executeMovies { _ in }
     }
 }

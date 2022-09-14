@@ -95,14 +95,13 @@
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
 		A1E81BB428CC0CEF00D044EA /* UINib+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */; };
-		A1E81D0528CFE16000D044EA /* Attributable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0428CFE16000D044EA /* Attributable.swift */; };
 		A1E81D0728CFE16500D044EA /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0628CFE16500D044EA /* Configurable.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
 		A1E81D0F28CFE21300D044EA /* ComputableFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0E28CFE21300D044EA /* ComputableFlowLayout.swift */; };
-		A1E81D1428CFE2C900D044EA /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1328CFE2C900D044EA /* CollectionViewCell.swift */; };
-		A1E81D1628CFE2D800D044EA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1528CFE2D800D044EA /* TableViewCell.swift */; };
+		A1E81D1428CFE2C900D044EA /* DefaultCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1328CFE2C900D044EA /* DefaultCollectionViewCell.swift */; };
+		A1E81D1628CFE2D800D044EA /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1528CFE2D800D044EA /* DefaultTableViewCell.swift */; };
 		A1E81D1828CFE45100D044EA /* RatableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1728CFE45100D044EA /* RatableTableViewCell.swift */; };
 		A1E81D1A28CFE45D00D044EA /* ResumableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1928CFE45D00D044EA /* ResumableTableViewCell.swift */; };
 		A1E81D1C28CFE46B00D044EA /* StandardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1B28CFE46B00D044EA /* StandardTableViewCell.swift */; };
@@ -218,14 +217,13 @@
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINib+Extension.swift"; sourceTree = "<group>"; };
-		A1E81D0428CFE16000D044EA /* Attributable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attributable.swift; sourceTree = "<group>"; };
 		A1E81D0628CFE16500D044EA /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		A1E81D0E28CFE21300D044EA /* ComputableFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputableFlowLayout.swift; sourceTree = "<group>"; };
-		A1E81D1328CFE2C900D044EA /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		A1E81D1528CFE2D800D044EA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		A1E81D1328CFE2C900D044EA /* DefaultCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCollectionViewCell.swift; sourceTree = "<group>"; };
+		A1E81D1528CFE2D800D044EA /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
 		A1E81D1728CFE45100D044EA /* RatableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatableTableViewCell.swift; sourceTree = "<group>"; };
 		A1E81D1928CFE45D00D044EA /* ResumableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumableTableViewCell.swift; sourceTree = "<group>"; };
 		A1E81D1B28CFE46B00D044EA /* StandardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTableViewCell.swift; sourceTree = "<group>"; };
@@ -506,7 +504,6 @@
 			children = (
 				A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */,
 				A18691E528C936DE0087DE3B /* Valuable.swift */,
-				A1E81D0428CFE16000D044EA /* Attributable.swift */,
 				A1E81D0628CFE16500D044EA /* Configurable.swift */,
 				A1E81D0828CFE16900D044EA /* Mutable.swift */,
 				A1E81D0A28CFE16E00D044EA /* Orientable.swift */,
@@ -754,7 +751,7 @@
 		A1E81D1128CFE2B900D044EA /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D1328CFE2C900D044EA /* CollectionViewCell.swift */,
+				A1E81D1328CFE2C900D044EA /* DefaultCollectionViewCell.swift */,
 				A1E81D3528D011F100D044EA /* Ratable */,
 				A1E81D3628D0120000D044EA /* Resumable */,
 				A1E81D3728D0120600D044EA /* Standard */,
@@ -765,7 +762,7 @@
 		A1E81D1228CFE2BD00D044EA /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D1528CFE2D800D044EA /* TableViewCell.swift */,
+				A1E81D1528CFE2D800D044EA /* DefaultTableViewCell.swift */,
 				A1E81D1728CFE45100D044EA /* RatableTableViewCell.swift */,
 				A1E81D1928CFE45D00D044EA /* ResumableTableViewCell.swift */,
 				A1E81D1B28CFE46B00D044EA /* StandardTableViewCell.swift */,
@@ -920,7 +917,7 @@
 			files = (
 				A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */,
 				A1F56A6928C68FB10089BD4F /* NSAttributedString+Extension.swift in Sources */,
-				A1E81D1428CFE2C900D044EA /* CollectionViewCell.swift in Sources */,
+				A1E81D1428CFE2C900D044EA /* DefaultCollectionViewCell.swift in Sources */,
 				A18B998A28C040A70077A5A6 /* Cancellable.swift in Sources */,
 				A18691BE28C764600087DE3B /* UIBarButtonItem+Extension.swift in Sources */,
 				A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */,
@@ -976,7 +973,6 @@
 				A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */,
 				A18691CB28C7B6100087DE3B /* TVShowsRequestDTO+Mapping.swift in Sources */,
 				A18691DE28C8C5C40087DE3B /* MoviesResponseDTO+Mapping.swift in Sources */,
-				A1E81D0528CFE16000D044EA /* Attributable.swift in Sources */,
 				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B998D28C0426E0077A5A6 /* RepositoryTask.swift in Sources */,
@@ -1019,7 +1015,7 @@
 				A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */,
 				A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */,
 				A18691F028C9585D0087DE3B /* MoviesRequest.swift in Sources */,
-				A1E81D1628CFE2D800D044EA /* TableViewCell.swift in Sources */,
+				A1E81D1628CFE2D800D044EA /* DefaultTableViewCell.swift in Sources */,
 				A18691F628C95A5D0087DE3B /* TVShowsResponse.swift in Sources */,
 				A186921C28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift in Sources */,
 				A18691F428C959810087DE3B /* SectionsResponse.swift in Sources */,

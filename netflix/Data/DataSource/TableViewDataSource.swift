@@ -38,7 +38,7 @@ final class TableViewDataSource: NSObject {
     private var tableView: UITableView
     private var sections: [Section]
     
-    var viewModel: DefaultHomeViewModel!
+    private var viewModel: DefaultHomeViewModel!
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
@@ -61,7 +61,7 @@ final class TableViewDataSource: NSObject {
     
     private func setupTableView() {
         viewsDidRegister()
-        snapshotDidChange()
+        dataSourceDidChange()
     }
     
     private func viewsDidRegister() {
@@ -75,7 +75,7 @@ final class TableViewDataSource: NSObject {
         }
     }
     
-    private func snapshotDidChange() {
+    private func dataSourceDidChange() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -150,6 +150,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Valuable implementation
 
 extension TableViewDataSource.Indices: Valuable {
+    
     var stringValue: String {
         switch self {
         case .display,

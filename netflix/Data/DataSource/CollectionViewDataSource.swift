@@ -7,66 +7,80 @@
 
 import UIKit
 
-// MARK: - CollectionViewDataSource
+// MARK: - CollectionViewDataSource class
 
 final class CollectionViewDataSource<Cell>: NSObject,
                                             UICollectionViewDelegate,
                                             UICollectionViewDataSource,
                                             UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
     
-    var section: Section
-    var viewModel: DefaultHomeViewModel
+    private weak var collectionView: UICollectionView!
+    private var section: Section
+    private var viewModel: DefaultHomeViewModel
     
-    var standardCell: TableViewCell<Cell>!
+    private var standardCell: DefaultTableViewCell<Cell>!
     
-    var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
+    private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
-    init(_ section: Section, viewModel: DefaultHomeViewModel) {
+    init(collectionView: UICollectionView,
+         section: Section,
+         viewModel: DefaultHomeViewModel) {
+        self.collectionView = collectionView
         self.section = section
         self.viewModel = viewModel
+        super.init()
+        self.setupSubviews()
     }
     
-    convenience init(_ section: Section,
+    convenience init(collectionView: UICollectionView,
+                     section: Section,
                      viewModel: DefaultHomeViewModel,
-                     standardCell: TableViewCell<Cell>) {
-        self.init(section, viewModel: viewModel)
+                     standardCell: DefaultTableViewCell<Cell>) {
+        self.init(collectionView: collectionView, section: section, viewModel: viewModel)
         self.standardCell = standardCell
+        self.setupSubviews()
     }
     
     deinit {
         standardCell = nil
     }
     
-    // MARK: UICollectionViewDataSource
+    func setupSubviews() {
+        setupCollectionView()
+    }
+    
+    private func setupCollectionView() {
+        dataSourceDidChange()
+    }
+    
+    private func dataSourceDidChange() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
+        collectionView.reloadData()
+    }
+    
+    private func media(for indexPath: IndexPath) -> Media? {
+        return viewModel.state.value == .tvShows
+            ? viewModel.sections.value[indexPath.section].tvshows![indexPath.row] as Media?
+            : viewModel.sections.value[indexPath.section].movies![indexPath.row] as Media?
+    }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        guard let indices = TableViewDataSource.Indices(rawValue: self.section.id) else { return .zero }
-        switch indices {
-        case .display,
-                .ratable,
-                .resumable:
-            return viewModel.state.value == .tvShows
-                ? viewModel.sections.value.first!.tvshows!.count
-                : viewModel.sections.value.first!.movies!.count
-        default:
-            guard let standardCell = standardCell else { return .zero }
-            return viewModel.state.value == .tvShows
-                ? standardCell.section.tvshows!.count
-                : standardCell.section.movies!.count
-        }
+        return viewModel.state.value == .tvShows
+            ? viewModel.sections.value[section].tvshows!.count
+            : viewModel.sections.value[section].movies!.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return CollectionViewCell.create(in: collectionView,
+        return DefaultCollectionViewCell.create(in: collectionView,
                                          reuseIdentifier: Cell.reuseIdentifier,
                                          section: section,
                                          for: indexPath,
                                          with: viewModel)
     }
-    
-    // MARK: UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
@@ -79,30 +93,16 @@ final class CollectionViewDataSource<Cell>: NSObject,
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {}
     
-    // MARK: UICollectionViewDataSourcePrefetching
-    
     func collectionView(_ collectionView: UICollectionView,
                         prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             guard let media = media(for: indexPath) else { fatalError() }
             let cellViewModel = CollectionViewCellItemViewModel(media: media,
                                                                 indexPath: indexPath)
-            CollectionViewCell.download(with: cellViewModel)
+            DefaultCollectionViewCell.download(with: cellViewModel)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {}
-    
-    private func media(for indexPath: IndexPath) -> Media? {
-        if let standardCell = standardCell {
-            return viewModel.state.value == .tvShows
-                ? standardCell.section.tvshows![indexPath.row] as Media?
-                : standardCell.section.movies![indexPath.row] as Media?
-        }
-        
-        return viewModel.state.value == .tvShows
-            ? viewModel.sections.value.first!.tvshows![indexPath.row] as Media?
-            : viewModel.sections.value.first!.movies![indexPath.row] as Media?
-    }
 }

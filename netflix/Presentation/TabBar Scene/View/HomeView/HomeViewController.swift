@@ -16,6 +16,7 @@ final class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     var viewModel: DefaultHomeViewModel!
+    
     private(set) var dataSource: TableViewDataSource!
     
     override func viewDidLoad() {

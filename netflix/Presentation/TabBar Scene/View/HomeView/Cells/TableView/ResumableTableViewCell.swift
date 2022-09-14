@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ResumableTableViewCell
 
-final class ResumableTableViewCell: TableViewCell<ResumableCollectionViewCell> {
+final class ResumableTableViewCell: DefaultTableViewCell<ResumableCollectionViewCell> {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,

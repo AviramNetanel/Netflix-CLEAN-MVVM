@@ -9,4 +9,4 @@ import UIKit
 
 // MARK: - StandardCollectionViewCell
 
-final class StandardCollectionViewCell: CollectionViewCell {}
+final class StandardCollectionViewCell: DefaultCollectionViewCell {}

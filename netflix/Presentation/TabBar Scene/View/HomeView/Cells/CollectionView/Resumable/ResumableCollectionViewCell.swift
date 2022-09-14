@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ResumableCollectionViewCell
 
-final class ResumableCollectionViewCell: CollectionViewCell {
+final class ResumableCollectionViewCell: DefaultCollectionViewCell {
     
     // MARK: Properties
     

@@ -1,5 +1,5 @@
 //
-//  CollectionViewCell.swift
+//  DefaultCollectionViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,16 +7,34 @@
 
 import UIKit
 
-class CollectionViewCell: UICollectionViewCell, Attributable {
+// MARK: - CollectionViewCellInput protocol
+
+private protocol CollectionViewCellInput {
+    func configure(with viewModel: CollectionViewCellItemViewModel)
+}
+
+// MARK: - CollectionViewCellOutput protocol
+
+private protocol CollectionViewCellOutput {
+    var representedIdentifier: NSString? { get }
+}
+
+// MARK: - CollectionViewCell protocol
+
+private protocol CollectionViewCell: CollectionViewCellInput, CollectionViewCellOutput {}
+
+// MARK: - DefaultCollectionViewCell class
+
+class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
     
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
     
-    var representedIdentifier: NSString?
+    fileprivate var representedIdentifier: NSString?
     
-    var viewModel: DefaultHomeViewModel!
+    private var viewModel: DefaultHomeViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,9 +63,9 @@ class CollectionViewCell: UICollectionViewCell, Attributable {
                        reuseIdentifier: String,
                        section: Section,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultHomeViewModel) -> CollectionViewCell {
+                       with viewModel: DefaultHomeViewModel) -> DefaultCollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
+            withReuseIdentifier: reuseIdentifier, for: indexPath) as? DefaultCollectionViewCell
         else { fatalError() }
         let media = viewModel.state.value == .tvShows
             ? section.tvshows![indexPath.row]

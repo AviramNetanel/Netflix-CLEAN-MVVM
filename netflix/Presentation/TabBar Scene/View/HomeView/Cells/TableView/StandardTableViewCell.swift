@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - StandardTableViewCell
 
-final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
+final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCell> {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
