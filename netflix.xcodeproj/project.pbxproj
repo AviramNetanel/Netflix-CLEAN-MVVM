@@ -93,6 +93,7 @@
 		A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A628D2A4E900F793B3 /* PanelView.xib */; };
 		A1AD25AD28D3C29600F793B3 /* DefaultPanelItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */; };
 		A1AD25AF28D3C47500F793B3 /* DefaultPanelItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */; };
+		A1AD25B228D3E3D600F793B3 /* ViewInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25B128D3E3D600F793B3 /* ViewInstantiable.swift */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
@@ -221,6 +222,7 @@
 		A1AD25A628D2A4E900F793B3 /* PanelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PanelView.xib; sourceTree = "<group>"; };
 		A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPanelItemView.swift; sourceTree = "<group>"; };
 		A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefaultPanelItemView.xib; sourceTree = "<group>"; };
+		A1AD25B128D3E3D600F793B3 /* ViewInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewInstantiable.swift; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */,
+				A1AD25B128D3E3D600F793B3 /* ViewInstantiable.swift */,
 				A18691E528C936DE0087DE3B /* Valuable.swift */,
 				A1E81D0828CFE16900D044EA /* Mutable.swift */,
 				A1E81D0A28CFE16E00D044EA /* Orientable.swift */,
@@ -1004,6 +1007,7 @@
 				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
 				A18B999228C0DE710077A5A6 /* APIEndpoint.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
+				A1AD25B228D3E3D600F793B3 /* ViewInstantiable.swift in Sources */,
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
 				A1E81D1828CFE45100D044EA /* RatableTableViewCell.swift in Sources */,
