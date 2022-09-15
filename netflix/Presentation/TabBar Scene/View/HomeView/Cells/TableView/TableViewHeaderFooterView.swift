@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - TableViewHeaderFooterView
+// MARK: - TableViewHeaderFooterView class
 
 final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
