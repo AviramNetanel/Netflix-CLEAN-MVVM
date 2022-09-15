@@ -36,7 +36,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        self.addSubviews()
+        self.setupSubviews()
     }
     
     required init?(coder: NSCoder) {
@@ -48,7 +48,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
         self.constraintSubviews()
     }
     
-    private func addSubviews() {
+    private func setupSubviews() {
         contentView.addSubview(titleLabel)
     }
     

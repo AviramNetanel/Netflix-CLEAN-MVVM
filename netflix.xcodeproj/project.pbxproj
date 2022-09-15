@@ -86,6 +86,11 @@
 		A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */; };
 		A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0828C140A300C5D733 /* AnyTransformer.swift */; };
 		A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0B28C1571600C5D733 /* AuthQuery.swift */; };
+		A1AD25A028D2987B00F793B3 /* DisplayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */; };
+		A1AD25A228D29A1000F793B3 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25A128D29A1000F793B3 /* DisplayView.swift */; };
+		A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A328D29A7800F793B3 /* DisplayView.xib */; };
+		A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25A528D2A4E900F793B3 /* PanelView.swift */; };
+		A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A628D2A4E900F793B3 /* PanelView.xib */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
@@ -95,7 +100,6 @@
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
 		A1E81BB428CC0CEF00D044EA /* UINib+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */; };
-		A1E81D0728CFE16500D044EA /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0628CFE16500D044EA /* Configurable.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
@@ -108,8 +112,8 @@
 		A1E81D1E28CFE47700D044EA /* RatableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1D28CFE47700D044EA /* RatableCollectionViewCell.swift */; };
 		A1E81D2028CFE47B00D044EA /* ResumableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D1F28CFE47B00D044EA /* ResumableCollectionViewCell.swift */; };
 		A1E81D2228CFE47E00D044EA /* StandardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2128CFE47E00D044EA /* StandardCollectionViewCell.swift */; };
-		A1E81D2A28CFE4A400D044EA /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2928CFE4A400D044EA /* TableViewDataSource.swift */; };
-		A1E81D2C28CFE4A900D044EA /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2B28CFE4A900D044EA /* CollectionViewDataSource.swift */; };
+		A1E81D2A28CFE4A400D044EA /* DefaultTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2928CFE4A400D044EA /* DefaultTableViewDataSource.swift */; };
+		A1E81D2C28CFE4A900D044EA /* DefaultCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2B28CFE4A900D044EA /* DefaultCollectionViewDataSource.swift */; };
 		A1E81D2E28CFE79400D044EA /* TItleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D2D28CFE79400D044EA /* TItleHeaderView.swift */; };
 		A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */; };
 		A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */; };
@@ -208,6 +212,11 @@
 		A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseEntity+Mapping.swift"; sourceTree = "<group>"; };
 		A196AE0828C140A300C5D733 /* AnyTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTransformer.swift; sourceTree = "<group>"; };
 		A196AE0B28C1571600C5D733 /* AuthQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthQuery.swift; sourceTree = "<group>"; };
+		A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTableViewCell.swift; sourceTree = "<group>"; };
+		A1AD25A128D29A1000F793B3 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		A1AD25A328D29A7800F793B3 /* DisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayView.xib; sourceTree = "<group>"; };
+		A1AD25A528D2A4E900F793B3 /* PanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
+		A1AD25A628D2A4E900F793B3 /* PanelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PanelView.xib; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -217,7 +226,6 @@
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINib+Extension.swift"; sourceTree = "<group>"; };
-		A1E81D0628CFE16500D044EA /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -230,8 +238,8 @@
 		A1E81D1D28CFE47700D044EA /* RatableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatableCollectionViewCell.swift; sourceTree = "<group>"; };
 		A1E81D1F28CFE47B00D044EA /* ResumableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumableCollectionViewCell.swift; sourceTree = "<group>"; };
 		A1E81D2128CFE47E00D044EA /* StandardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardCollectionViewCell.swift; sourceTree = "<group>"; };
-		A1E81D2928CFE4A400D044EA /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
-		A1E81D2B28CFE4A900D044EA /* CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSource.swift; sourceTree = "<group>"; };
+		A1E81D2928CFE4A400D044EA /* DefaultTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewDataSource.swift; sourceTree = "<group>"; };
+		A1E81D2B28CFE4A900D044EA /* DefaultCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		A1E81D2D28CFE79400D044EA /* TItleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TItleHeaderView.swift; sourceTree = "<group>"; };
 		A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatableCollectionViewCell.xib; sourceTree = "<group>"; };
 		A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResumableCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -309,8 +317,8 @@
 		A186923628CA92620087DE3B /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D2928CFE4A400D044EA /* TableViewDataSource.swift */,
-				A1E81D2B28CFE4A900D044EA /* CollectionViewDataSource.swift */,
+				A1E81D2928CFE4A400D044EA /* DefaultTableViewDataSource.swift */,
+				A1E81D2B28CFE4A900D044EA /* DefaultCollectionViewDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -504,7 +512,6 @@
 			children = (
 				A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */,
 				A18691E528C936DE0087DE3B /* Valuable.swift */,
-				A1E81D0628CFE16500D044EA /* Configurable.swift */,
 				A1E81D0828CFE16900D044EA /* Mutable.swift */,
 				A1E81D0A28CFE16E00D044EA /* Orientable.swift */,
 				A1E81D0C28CFE17100D044EA /* Reusable.swift */,
@@ -712,6 +719,34 @@
 			path = Queries;
 			sourceTree = "<group>";
 		};
+		A1AD25A928D2A6AE00F793B3 /* DisplayView */ = {
+			isa = PBXGroup;
+			children = (
+				A1AD25A128D29A1000F793B3 /* DisplayView.swift */,
+				A1AD25A328D29A7800F793B3 /* DisplayView.xib */,
+			);
+			path = DisplayView;
+			sourceTree = "<group>";
+		};
+		A1AD25AA28D2A6B500F793B3 /* PanelView */ = {
+			isa = PBXGroup;
+			children = (
+				A1AD25A528D2A4E900F793B3 /* PanelView.swift */,
+				A1AD25A628D2A4E900F793B3 /* PanelView.xib */,
+			);
+			path = PanelView;
+			sourceTree = "<group>";
+		};
+		A1AD25AB28D2A6C200F793B3 /* DisplayTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */,
+				A1AD25A928D2A6AE00F793B3 /* DisplayView */,
+				A1AD25AA28D2A6B500F793B3 /* PanelView */,
+			);
+			path = DisplayTableViewCell;
+			sourceTree = "<group>";
+		};
 		A1B3F98828C54F160042DE9F /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -762,6 +797,7 @@
 		A1E81D1228CFE2BD00D044EA /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				A1AD25AB28D2A6C200F793B3 /* DisplayTableViewCell */,
 				A1E81D1528CFE2D800D044EA /* DefaultTableViewCell.swift */,
 				A1E81D1728CFE45100D044EA /* RatableTableViewCell.swift */,
 				A1E81D1928CFE45D00D044EA /* ResumableTableViewCell.swift */,
@@ -899,7 +935,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */,
+				A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */,
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
+				A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */,
 				A1E81D3428CFF95300D044EA /* StandardCollectionViewCell.xib in Resources */,
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */,
@@ -917,6 +955,7 @@
 			files = (
 				A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */,
 				A1F56A6928C68FB10089BD4F /* NSAttributedString+Extension.swift in Sources */,
+				A1AD25A028D2987B00F793B3 /* DisplayTableViewCell.swift in Sources */,
 				A1E81D1428CFE2C900D044EA /* DefaultCollectionViewCell.swift in Sources */,
 				A18B998A28C040A70077A5A6 /* Cancellable.swift in Sources */,
 				A18691BE28C764600087DE3B /* UIBarButtonItem+Extension.swift in Sources */,
@@ -935,6 +974,7 @@
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
 				A18691DC28C8C5B50087DE3B /* MoviesRequestDTO+Mapping.swift in Sources */,
+				A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */,
 				A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */,
 				A18B998F28C06A200077A5A6 /* AuthUseCase.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
@@ -943,6 +983,7 @@
 				A18691D828C8C1EE0087DE3B /* HomeTabBarController.swift in Sources */,
 				A1F56A6B28C6934B0089BD4F /* UIButton+Extension.swift in Sources */,
 				A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */,
+				A1AD25A228D29A1000F793B3 /* DisplayView.swift in Sources */,
 				A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */,
 				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
 				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
@@ -977,7 +1018,7 @@
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B998D28C0426E0077A5A6 /* RepositoryTask.swift in Sources */,
 				A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */,
-				A1E81D2C28CFE4A900D044EA /* CollectionViewDataSource.swift in Sources */,
+				A1E81D2C28CFE4A900D044EA /* DefaultCollectionViewDataSource.swift in Sources */,
 				A18691C728C7B2400087DE3B /* DefaultTVShowsRepository.swift in Sources */,
 				A1F56A6F28C695FC0089BD4F /* UITextField+Extension.swift in Sources */,
 				A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */,
@@ -985,7 +1026,6 @@
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
 				A1E81D2E28CFE79400D044EA /* TItleHeaderView.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,
-				A1E81D0728CFE16500D044EA /* Configurable.swift in Sources */,
 				A1E81D2228CFE47E00D044EA /* StandardCollectionViewCell.swift in Sources */,
 				A18B995B28BFFB500077A5A6 /* SeasonDTO+Mapping.swift in Sources */,
 				A18B995928BFF6A20077A5A6 /* MediaDTO+Mapping.swift in Sources */,
@@ -1011,7 +1051,7 @@
 				A18691EC28C957A60087DE3B /* SectionsRequest.swift in Sources */,
 				A18691E228C8D4B10087DE3B /* SectionsResponseDTO+Mapping.swift in Sources */,
 				A18B997328C00F8E0077A5A6 /* UsersRepository.swift in Sources */,
-				A1E81D2A28CFE4A400D044EA /* TableViewDataSource.swift in Sources */,
+				A1E81D2A28CFE4A400D044EA /* DefaultTableViewDataSource.swift in Sources */,
 				A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */,
 				A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */,
 				A18691F028C9585D0087DE3B /* MoviesRequest.swift in Sources */,

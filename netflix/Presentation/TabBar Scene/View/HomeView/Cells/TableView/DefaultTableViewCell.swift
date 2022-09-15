@@ -9,17 +9,17 @@ import UIKit
 
 // MARK: - TableViewCellInput protocol
 
-protocol TableViewCellInput {
+private protocol TableViewCellInput {
     func configure(section: Section, with viewModel: DefaultHomeViewModel)
 }
 
 // MARK: - TableViewCellOutput protocol
 
-protocol TableViewCellOutput {}
+private protocol TableViewCellOutput {}
 
 // MARK: - TableViewCell protocol
 
-protocol TableViewCell: TableViewCellInput, TableViewCellOutput {}
+private protocol TableViewCell: TableViewCellInput, TableViewCellOutput {}
 
 // MARK: - DefaultTableViewCell class
 
@@ -40,22 +40,13 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: UIC
         return collectionView
     }()
     
-    private var dataSource: CollectionViewDataSource<Cell>!
+    private var dataSource: DefaultCollectionViewDataSource<Cell>!
     
     var viewModel: DefaultHomeViewModel!
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Cell.reuseIdentifier)
-        self.backgroundColor = .black
-    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         self.constraintSubviews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
     }
     
     deinit {
@@ -80,30 +71,23 @@ extension DefaultTableViewCell {
     func configure(section: Section, with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
         
-        guard let indices = TableViewDataSource.Indices(rawValue: section.id) else { return }
+        guard let indices = DefaultTableViewDataSource.Indices(rawValue: section.id) else { return }
         
         dataSource = .init(collectionView: collectionView,
                            section: section,
                            viewModel: viewModel)
         
+        guard !(collectionView.collectionViewLayout is ComputableFlowLayout) else { return }
+        
         switch indices {
-        case .display,
-                .myList:
+        case .display:
             break
         case .ratable:
             let layout = ComputableFlowLayout(.ratable)
             collectionView.setCollectionViewLayout(layout, animated: false)
-        case .resumable:
-            let layout = ComputableFlowLayout(.standard)
-            collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            dataSource = .init(collectionView: collectionView,
-                               section: section,
-                               viewModel: viewModel,
-                               standardCell: self)
             let layout = ComputableFlowLayout(.standard)
             collectionView.setCollectionViewLayout(layout, animated: false)
-            return
         }
     }
 }

@@ -17,7 +17,7 @@ final class HomeViewController: UIViewController {
     
     var viewModel: DefaultHomeViewModel!
     
-    private(set) var dataSource: TableViewDataSource!
+    private(set) var dataSource: DefaultTableViewDataSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,10 +57,10 @@ final class HomeViewController: UIViewController {
         viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
     }
     
-    private func heightForRowAt(in dataSource: TableViewDataSource) {
+    private func heightForRowAt(in dataSource: DefaultTableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard let self = self else { return .zero }
-            if case .display = TableViewDataSource.Indices(rawValue: indexPath.section) {
+            if case .display = DefaultTableViewDataSource.Indices(rawValue: indexPath.section) {
                 return self.view.bounds.height * 0.76
             }
             return self.view.bounds.height * 0.18

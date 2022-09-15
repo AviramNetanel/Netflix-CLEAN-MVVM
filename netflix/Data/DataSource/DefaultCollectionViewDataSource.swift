@@ -1,5 +1,5 @@
 //
-//  CollectionViewDataSource.swift
+//  DefaultCollectionViewDataSource.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,19 +7,36 @@
 
 import UIKit
 
+// MARK: - CollectionViewDataSourceInput protocol
+
+private protocol CollectionViewDataSourceInput {
+    var collectionView: UICollectionView! { get }
+    var section: Section { get }
+}
+
+// MARK: - CollectionViewDataSourceOutput protocol
+
+private protocol CollectionViewDataSourceOutput {
+    func dataSourceDidChange()
+    func media(for indexPath: IndexPath) -> Media?
+}
+
+// MARK: - CollectionViewDataSource protocol
+
+private protocol CollectionViewDataSource: CollectionViewDataSourceInput, CollectionViewDataSourceOutput {}
+
 // MARK: - CollectionViewDataSource class
 
-final class CollectionViewDataSource<Cell>: NSObject,
+final class DefaultCollectionViewDataSource<Cell>: NSObject,
+                                            CollectionViewDataSource,
                                             UICollectionViewDelegate,
                                             UICollectionViewDataSource,
                                             UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
     
-    private weak var collectionView: UICollectionView!
-    private var section: Section
+    fileprivate weak var collectionView: UICollectionView!
+    fileprivate var section: Section
+    
     private var viewModel: DefaultHomeViewModel
-    
-    private var standardCell: DefaultTableViewCell<Cell>!
-    
     private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
     init(collectionView: UICollectionView,
@@ -32,20 +49,11 @@ final class CollectionViewDataSource<Cell>: NSObject,
         self.setupSubviews()
     }
     
-    convenience init(collectionView: UICollectionView,
-                     section: Section,
-                     viewModel: DefaultHomeViewModel,
-                     standardCell: DefaultTableViewCell<Cell>) {
-        self.init(collectionView: collectionView, section: section, viewModel: viewModel)
-        self.standardCell = standardCell
-        self.setupSubviews()
-    }
-    
     deinit {
-        standardCell = nil
+        collectionView = nil
     }
     
-    func setupSubviews() {
+    private func setupSubviews() {
         setupCollectionView()
     }
     
@@ -53,24 +61,24 @@ final class CollectionViewDataSource<Cell>: NSObject,
         dataSourceDidChange()
     }
     
-    private func dataSourceDidChange() {
+    fileprivate func dataSourceDidChange() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.reloadData()
     }
     
-    private func media(for indexPath: IndexPath) -> Media? {
+    fileprivate func media(for indexPath: IndexPath) -> Media? {
         return viewModel.state.value == .tvShows
-            ? viewModel.sections.value[indexPath.section].tvshows![indexPath.row] as Media?
-            : viewModel.sections.value[indexPath.section].movies![indexPath.row] as Media?
+            ? section.tvshows![indexPath.row] as Media?
+            : section.movies![indexPath.row] as Media?
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return viewModel.state.value == .tvShows
-            ? viewModel.sections.value[section].tvshows!.count
-            : viewModel.sections.value[section].movies!.count
+            ? self.section.tvshows!.count
+            : self.section.movies!.count
     }
     
     func collectionView(_ collectionView: UICollectionView,

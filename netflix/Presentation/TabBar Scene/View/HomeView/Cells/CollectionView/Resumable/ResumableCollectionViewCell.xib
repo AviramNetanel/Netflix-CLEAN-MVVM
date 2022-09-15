@@ -124,11 +124,6 @@
                     <constraint firstAttribute="bottom" secondItem="c9S-Il-J7A" secondAttribute="bottom" id="jQY-9j-bnb"/>
                     <constraint firstAttribute="trailing" secondItem="8Ln-ld-BKC" secondAttribute="trailing" id="o5f-B9-HhQ"/>
                 </constraints>
-                <userDefinedRuntimeAttributes>
-                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                        <real key="value" value="6"/>
-                    </userDefinedRuntimeAttribute>
-                </userDefinedRuntimeAttributes>
             </collectionViewCellContentView>
             <size key="customSize" width="140" height="201"/>
             <connections>

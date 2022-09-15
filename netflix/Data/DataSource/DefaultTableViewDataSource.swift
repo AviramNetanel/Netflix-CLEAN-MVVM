@@ -1,5 +1,5 @@
 //
-//  TableViewDataSource.swift
+//  DefaultTableViewDataSource.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,9 +7,29 @@
 
 import UIKit
 
-// MARK: - TableViewDataSource
+// MARK: - TableViewDataSourceInput protocol
 
-final class TableViewDataSource: NSObject {
+private protocol TableViewDataSourceInput {
+    var tableView: UITableView { get }
+    var sections: [Section] { get }
+}
+
+// MARK: - TableViewDataSourceOutput protocol
+
+private protocol TableViewDataSourceOutput {
+    func viewsDidRegister()
+    func dataSourceDidChange()
+    
+    var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
+}
+
+// MARK: - TableViewDataSource protocol
+
+private protocol TableViewDataSource: TableViewDataSourceInput, TableViewDataSourceOutput {}
+
+// MARK: - DefaultTableViewDataSource
+
+final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     
     enum Indices: Int, CaseIterable {
         case display,
@@ -35,11 +55,10 @@ final class TableViewDataSource: NSObject {
         case movies
     }
     
-    private var tableView: UITableView
-    private var sections: [Section]
+    fileprivate var tableView: UITableView
+    fileprivate var sections: [Section]
     
     private var viewModel: DefaultHomeViewModel!
-    
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
     init(in tableView: UITableView, with viewModel: DefaultHomeViewModel) {
@@ -64,8 +83,9 @@ final class TableViewDataSource: NSObject {
         dataSourceDidChange()
     }
     
-    private func viewsDidRegister() {
+    fileprivate func viewsDidRegister() {
         tableView.register(headerFooter: TableViewHeaderFooterView.self)
+        tableView.register(class: DisplayTableViewCell.self)
         tableView.register(class: RatableTableViewCell.self)
         tableView.register(class: ResumableTableViewCell.self)
         
@@ -75,7 +95,7 @@ final class TableViewDataSource: NSObject {
         }
     }
     
-    private func dataSourceDidChange() {
+    fileprivate func dataSourceDidChange() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -84,7 +104,7 @@ final class TableViewDataSource: NSObject {
 
 // MARK: - UITableViewDelegate & UITableViewDataSource Implementation
 
-extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
+extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -100,7 +120,9 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
         guard let indices = Indices(rawValue: indexPath.section) else { fatalError() }
         switch indices {
         case .display:
-            return .init()
+            return DisplayTableViewCell.create(in: tableView,
+                                               for: indexPath,
+                                               with: viewModel)
         case .ratable:
             return RatableTableViewCell.create(in: tableView,
                                                for: indexPath,
@@ -149,7 +171,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Valuable implementation
 
-extension TableViewDataSource.Indices: Valuable {
+extension DefaultTableViewDataSource.Indices: Valuable {
     
     var stringValue: String {
         switch self {

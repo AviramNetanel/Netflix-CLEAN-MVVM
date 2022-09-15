@@ -117,8 +117,9 @@ class ComputableFlowLayout: UICollectionViewFlowLayout, Computable {
         
         switch state {
         case .ratable:
+//            minimumLineSpacing = lineSpacing
             itemSize = CGSize(width: width, height: height)
-            sectionInset = UIEdgeInsets(top: 0.0, left: 16.0, bottom: 0.0, right: 0.0)
+            sectionInset = UIEdgeInsets(top: 0.0, left: 15.0, bottom: 0.0, right: 0.0)
         case .resumable:
             minimumLineSpacing = lineSpacing
             sectionInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)

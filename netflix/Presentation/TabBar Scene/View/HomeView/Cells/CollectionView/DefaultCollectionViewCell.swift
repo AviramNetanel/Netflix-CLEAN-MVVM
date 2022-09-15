@@ -40,6 +40,7 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
         super.awakeFromNib()
         self.backgroundColor = .black
         self.placeholderLabel.alpha = 1.0
+        self.coverImageView.layer.cornerRadius = 6.0
     }
     
     deinit {

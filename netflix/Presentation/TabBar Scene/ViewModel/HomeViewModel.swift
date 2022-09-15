@@ -29,7 +29,7 @@ private protocol HomeViewModelInput {
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
-    func section(at index: TableViewDataSource.Indices) -> Section
+    func section(at index: DefaultTableViewDataSource.Indices) -> Section
     func randomObject(at section: Section) -> Media?
     func titleForHeader(at index: Int) -> String
     func didSelectItem(at index: Int)
@@ -38,7 +38,7 @@ private protocol HomeViewModelInput {
 // MARK: - HomeViewModelOutput protocol
 
 private protocol HomeViewModelOutput {
-    var state: Observable<TableViewDataSource.State> { get }
+    var state: Observable<DefaultTableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
     var isEmpty: Bool { get }
 }
@@ -56,7 +56,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
-    fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
+    fileprivate(set) var state: Observable<DefaultTableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
     
@@ -82,7 +82,7 @@ extension DefaultHomeViewModel {
     }
     
     func filter(sections: [Section]) {
-        for i in TableViewDataSource.Indices.allCases {
+        for i in DefaultTableViewDataSource.Indices.allCases {
             switch i {
             case .ratable,
                     .resumable:
@@ -104,23 +104,19 @@ extension DefaultHomeViewModel {
 
     func filter(sections: [Section], at index: Int) {
         sections[index].tvshows = sections.first!.tvshows!.filter {
-            return $0.genres.contains(sections[index].title)
+            $0.genres.contains(sections[index].title)
         }
         sections[index].movies = sections.first!.movies!.filter {
-            return $0.genres.contains(sections[index].title)
+            $0.genres.contains(sections[index].title)
         }
     }
     
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float) {
-        sections[index].tvshows = sections.first!.tvshows!.filter {
-            return $0.rating > value
-        }
-        sections[index].movies = sections.first!.movies!.filter {
-            return $0.rating > value
-        }
+        sections[index].tvshows = sections.first!.tvshows!.filter { $0.rating > value }
+        sections[index].movies = sections.first!.movies!.filter { $0.rating > value }
     }
     
-    func section(at index: TableViewDataSource.Indices) -> Section {
+    func section(at index: DefaultTableViewDataSource.Indices) -> Section {
         return sections.value[index.rawValue]
     }
     
