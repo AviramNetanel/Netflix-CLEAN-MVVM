@@ -7,153 +7,77 @@
 
 import UIKit
 
-// MARK: - Computable
+// MARK: - CollectionViewLayoutConfiguration struct
 
-protocol Computable {
-    var itemsPerLine: Int { get }
-    var width: CGFloat { get }
-    var height: CGFloat { get }
-    var lineSpacing: CGFloat { get }
+struct CollectionViewLayoutConfiguration {
+    let scrollDirection: UICollectionView.ScrollDirection
+    let minimumLineSpacing: CGFloat
+    let minimumInteritemSpacing: CGFloat
+    let sectionInset: UIEdgeInsets
+    let itemSize: CGSize
 }
 
+// MARK: - CollectionViewLayoutInput protocol
 
-// MARK: - ComputableFlowLayout
+private protocol CollectionViewLayoutInput {}
 
-class ComputableFlowLayout: UICollectionViewFlowLayout, Computable {
+// MARK: - CollectionViewLayoutOutput protocol
+
+private protocol CollectionViewLayoutOutput {
+    var configuration: CollectionViewLayoutConfiguration { get }
+}
+
+// MARK: - CollectionViewLayout protocol
+
+private protocol CollectionViewLayout: CollectionViewLayoutInput, CollectionViewLayoutOutput {}
+
+// MARK: - DefaultCollectionViewLayout class
+
+final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionViewLayout {
     
-    // MARK: State
+    fileprivate var configuration: CollectionViewLayoutConfiguration
     
-    enum State {
-        case ratable,
-             resumable,
-             blockbuster,
-             standard,
-             homeOverlay,
-             detail,
-             descriptive,
-             trailer
+    init(configuration: CollectionViewLayoutConfiguration) {
+        self.configuration = configuration
+        super.init()
     }
     
-    
-    // MARK: ScrollDirection
-    
-    enum ScrollDirection {
-        case horizontal, vertical
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) hasn't been implemented")
     }
-    
-    
-    // MARK: Properties
-    
-    private var state: State = .ratable
-    
-    var itemsPerLine = 3
-    var lineSpacing: CGFloat = 8.0
-    
-    static var cellHeight: CGFloat = 0.0
-    
-    var width: CGFloat {
-        get {
-            guard let width = collectionView!.bounds.width as CGFloat? else { return .zero }
-            switch state {
-            case .ratable:
-                return width / CGFloat(itemsPerLine) - 5.0
-            case .detail,
-                    .homeOverlay:
-                return width / CGFloat(itemsPerLine) - (lineSpacing * CGFloat(itemsPerLine - 1))
-            case .descriptive:
-                return width
-            case .trailer:
-                return width
-            default:
-                return width / CGFloat(itemsPerLine) - (lineSpacing * CGFloat(itemsPerLine))
-            }
-        }
-        set {}
-    }
-    
-    var height: CGFloat {
-        get {
-            switch state {
-            case .ratable:
-                ComputableFlowLayout.cellHeight = collectionView!.bounds.height
-                return collectionView!.bounds.height - lineSpacing
-            case .resumable:
-                return collectionView!.bounds.height - lineSpacing
-            case .blockbuster:
-                return collectionView!.bounds.height - lineSpacing
-            case .standard:
-                return collectionView!.bounds.height - lineSpacing
-            case .homeOverlay,
-                    .detail:
-                return ComputableFlowLayout.cellHeight
-            case .descriptive:
-                return 128.0
-            case .trailer:
-                return 224.0
-            }
-        }
-        set {}
-    }
-    
-    
-    // MARK: Initialization
-    
-    convenience init(_ state: State, _ scrollDirection: ScrollDirection? = .horizontal) {
-        self.init()
-        self.state = state
-        self.scrollDirection = scrollDirection == .horizontal ? .horizontal : .vertical
-    }
-    
-    
-    // MARK: Lifecycle
     
     override func prepare() {
         super.prepare()
-        
-        minimumLineSpacing = .zero
-        minimumInteritemSpacing = .zero
-        sectionInset = .zero
-        itemSize = CGSize(width: width, height: height)
-        
-        switch state {
-        case .ratable:
-//            minimumLineSpacing = lineSpacing
-            itemSize = CGSize(width: width, height: height)
-            sectionInset = UIEdgeInsets(top: 0.0, left: 15.0, bottom: 0.0, right: 0.0)
-        case .resumable:
-            minimumLineSpacing = lineSpacing
-            sectionInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
-            itemSize = CGSize(width: width, height: height)
-        case .blockbuster:
-            minimumLineSpacing = lineSpacing
-            sectionInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
-            itemSize = CGSize(width: width, height: height)
-        case .standard:
-            minimumLineSpacing = lineSpacing
-            sectionInset = UIEdgeInsets(top: 0.0, left: 8.0, bottom: 0.0, right: 0.0)
-            itemSize = CGSize(width: width, height: height)
-        case .detail:
-            minimumLineSpacing = lineSpacing
-            sectionInset = UIEdgeInsets(top: 0.0, left: 16.0, bottom: 0.0, right: 16.0)
-            itemSize = CGSize(width: width, height: height)
-        case .homeOverlay:
-            minimumLineSpacing = lineSpacing
-            sectionInset = UIEdgeInsets(top: 0.0, left: 16.0, bottom: 16.0, right: 16.0)
-            itemSize = CGSize(width: width, height: height)
-        case .descriptive:
-            minimumLineSpacing = lineSpacing
-            itemSize = CGSize(width: width, height: height)
-        case .trailer:
-            minimumLineSpacing = lineSpacing
-            itemSize = CGSize(width: width, height: height)
-        }
+        scrollDirection = configuration.scrollDirection
+        minimumLineSpacing = configuration.minimumLineSpacing
+        minimumInteritemSpacing = configuration.minimumInteritemSpacing
+        sectionInset = configuration.sectionInset
+        itemSize = configuration.itemSize
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        if let oldBounds = collectionView!.bounds as CGRect?,
-           oldBounds.size != newBounds.size {
-            return true
-        }
-        return super.shouldInvalidateLayout(forBoundsChange: newBounds)
+        guard
+            let oldBounds = collectionView!.bounds as CGRect?,
+            oldBounds.size != newBounds.size
+        else { return super.shouldInvalidateLayout(forBoundsChange: newBounds) }
+        return true
+    }
+    
+    static func ratableConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
+        return .init(scrollDirection: .horizontal,
+                     minimumLineSpacing: .zero,
+                     minimumInteritemSpacing: .zero,
+                     sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
+                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - 0.0,
+                                     height: collectionView.bounds.height - 8.0))
+    }
+    
+    static func defaultConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
+        return .init(scrollDirection: .horizontal,
+                     minimumLineSpacing: 8.0,
+                     minimumInteritemSpacing: .zero,
+                     sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
+                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - (8.0 * CGFloat(3.0)),
+                                     height: collectionView.bounds.height - 8.0))
     }
 }

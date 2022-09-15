@@ -77,16 +77,18 @@ extension DefaultTableViewCell {
                            section: section,
                            viewModel: viewModel)
         
-        guard !(collectionView.collectionViewLayout is ComputableFlowLayout) else { return }
+        guard !(collectionView.collectionViewLayout is DefaultCollectionViewLayout) else { return }
         
         switch indices {
         case .display:
             break
         case .ratable:
-            let layout = ComputableFlowLayout(.ratable)
+            let configuration = DefaultCollectionViewLayout.ratableConfigurations(for: collectionView)
+            let layout = DefaultCollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            let layout = ComputableFlowLayout(.standard)
+            let configuration = DefaultCollectionViewLayout.defaultConfigurations(for: collectionView)
+            let layout = DefaultCollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }
     }
