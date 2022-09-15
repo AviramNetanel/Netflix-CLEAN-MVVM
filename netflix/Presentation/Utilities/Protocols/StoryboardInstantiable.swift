@@ -15,7 +15,7 @@ protocol StoryboardInstantiable {
     static func instantiateViewController(_ bundle: Bundle?, withIdentifier identifier: String?) -> T
 }
 
-// MARK: - StoryboardInstantiable's default implementation
+// MARK: - Default implementation
 
 extension StoryboardInstantiable where Self: UIViewController {
     

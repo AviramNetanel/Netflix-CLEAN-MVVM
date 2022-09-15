@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - Orientable
+// MARK: - Orientable protocol
 
 protocol Orientable {
     static var orientation: UIInterfaceOrientationMask { get set }

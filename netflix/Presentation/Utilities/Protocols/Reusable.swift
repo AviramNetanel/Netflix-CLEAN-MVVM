@@ -7,11 +7,11 @@
 
 import UIKit
 
-// MARK: - Reusable
+// MARK: - Reusable protocol
 
 public protocol Reusable {}
 
-// MARK: - Reusable Implementation
+// MARK: - Reusable implementation
 
 extension Reusable {
     static var reuseIdentifier: String {

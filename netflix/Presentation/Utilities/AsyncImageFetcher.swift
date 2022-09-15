@@ -17,12 +17,7 @@ final class AsyncImageFetcher {
     private var operations = [NSString: [(UIImage?) -> Void]]()
     private let queue = OS_dispatch_queue_serial(label: "com.netflix.utils.async-image-fetcher")
     
-    private init() {
-//        NotificationCenter.default.addObserver(forName: UIApplication.didReceiveMemoryWarningNotification, object: nil, queue: .main) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.cache.removeAllObjects()
-//        }
-    }
+    private init() {}
     
     static func urlSession() -> URLSession {
         let config = URLSessionConfiguration.ephemeral
@@ -50,13 +45,6 @@ final class AsyncImageFetcher {
             return
         }
         
-//        if operations[identifier] != nil {
-//            operations[identifier]?.append(completion)
-//            return
-//        } else {
-//            operations[identifier] = [completion]
-//        }
-        
         AsyncImageFetcher.urlSession().dataTask(with: url) { [weak self] data, response, error in
             guard
                 error == nil,
@@ -67,17 +55,13 @@ final class AsyncImageFetcher {
                 let image = UIImage(data: data),
                 httpURLResponse.statusCode == 200,
                 mimeType.hasPrefix("image")
-//                let blocks = self.operations[identifier]
             else { return }
             
             self.set(image, forKey: identifier)
             
-//            for block in blocks {
-                self.queue.async {
-                    completion(image)
-//                    return
-                }
-//            }
+            self.queue.async {
+                completion(image)
+            }
         }.resume()
     }
 }

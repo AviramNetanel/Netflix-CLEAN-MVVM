@@ -37,8 +37,6 @@ final class Observable<Value> {
         observers = observers.filter { $0.observer !== observer }
     }
     
-    // MARK: Private
-    
     private func notifyObservers() {
         for observer in observers {
             DispatchQueue.main.async {

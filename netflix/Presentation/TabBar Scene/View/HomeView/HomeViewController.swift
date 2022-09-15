@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController {
     
     static func create(with viewModel: DefaultHomeViewModel) -> HomeViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
-                                bundle: .main)
+                                bundle: nil)
             .instantiateViewController(withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
         view.viewModel = viewModel
         return view
