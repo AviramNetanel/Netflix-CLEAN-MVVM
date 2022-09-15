@@ -67,8 +67,8 @@ final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionV
         return .init(scrollDirection: .horizontal,
                      minimumLineSpacing: .zero,
                      minimumInteritemSpacing: .zero,
-                     sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
-                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - 0.0,
+                     sectionInset: .init(top: .zero, left: 24.0, bottom: .zero, right: .zero),
+                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - 8.0,
                                      height: collectionView.bounds.height - 8.0))
     }
     

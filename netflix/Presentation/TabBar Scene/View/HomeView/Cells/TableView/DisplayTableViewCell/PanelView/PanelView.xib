@@ -7,9 +7,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PanelView" customModule="netflix" customModuleProvider="target">
+            <connections>
+                <outlet property="leadingPanelItemView" destination="70I-o3-bwB" id="vMp-x0-hVB"/>
+                <outlet property="playButton" destination="52y-Zr-EAv" id="v8a-mM-0Ag"/>
+                <outlet property="trailingPanelItemView" destination="bAp-2Z-xgj" id="bDe-rO-fMY"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="n9V-eD-yFJ" customClass="PanelView" customModule="netflix" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="n9V-eD-yFJ" userLabel="Content View">
             <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -19,7 +25,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="IOn-oV-Z3y">
                             <rect key="frame" x="41.5" y="0.0" width="331" height="64"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70I-o3-bwB">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70I-o3-bwB" customClass="DefaultPanelItemView" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="64" id="mj0-jt-koP"/>
@@ -28,15 +34,13 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rJg-ZH-TR9">
                                     <rect key="frame" x="96" y="0.0" width="139" height="64"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52y-Zr-EAv">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52y-Zr-EAv">
                                             <rect key="frame" x="8" y="16" width="123" height="32"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
-                                            <state key="normal" title="Play" image="play.fill" catalog="system">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </state>
+                                            <state key="normal" title="Play" image="play.fill" catalog="system"/>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -46,7 +50,7 @@
                                         <constraint firstItem="52y-Zr-EAv" firstAttribute="top" secondItem="rJg-ZH-TR9" secondAttribute="top" constant="16" id="WQU-aT-Gax"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAp-2Z-xgj">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAp-2Z-xgj" customClass="DefaultPanelItemView" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="267" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="64" id="oug-WS-X0J"/>

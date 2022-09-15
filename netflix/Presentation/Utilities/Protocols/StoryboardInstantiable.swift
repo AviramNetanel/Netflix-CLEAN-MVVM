@@ -33,3 +33,11 @@ extension StoryboardInstantiable where Self: UIViewController {
         return viewController
     }
 }
+
+protocol ViewInstantiable: UIView {}
+extension ViewInstantiable {
+    func nibDidLoad() {
+        let view = Bundle.main.loadNibNamed(String(describing: Self.self), owner: self, options: nil)![0] as! UIView
+        addSubview(view)
+    }
+}

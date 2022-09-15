@@ -91,6 +91,8 @@
 		A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A328D29A7800F793B3 /* DisplayView.xib */; };
 		A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25A528D2A4E900F793B3 /* PanelView.swift */; };
 		A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A628D2A4E900F793B3 /* PanelView.xib */; };
+		A1AD25AD28D3C29600F793B3 /* DefaultPanelItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */; };
+		A1AD25AF28D3C47500F793B3 /* DefaultPanelItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
@@ -217,6 +219,8 @@
 		A1AD25A328D29A7800F793B3 /* DisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayView.xib; sourceTree = "<group>"; };
 		A1AD25A528D2A4E900F793B3 /* PanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
 		A1AD25A628D2A4E900F793B3 /* PanelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PanelView.xib; sourceTree = "<group>"; };
+		A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPanelItemView.swift; sourceTree = "<group>"; };
+		A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefaultPanelItemView.xib; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -733,6 +737,7 @@
 			children = (
 				A1AD25A528D2A4E900F793B3 /* PanelView.swift */,
 				A1AD25A628D2A4E900F793B3 /* PanelView.xib */,
+				A1AD25B028D3E33300F793B3 /* PanelItemView */,
 			);
 			path = PanelView;
 			sourceTree = "<group>";
@@ -745,6 +750,15 @@
 				A1AD25AA28D2A6B500F793B3 /* PanelView */,
 			);
 			path = DisplayTableViewCell;
+			sourceTree = "<group>";
+		};
+		A1AD25B028D3E33300F793B3 /* PanelItemView */ = {
+			isa = PBXGroup;
+			children = (
+				A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */,
+				A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */,
+			);
+			path = PanelItemView;
 			sourceTree = "<group>";
 		};
 		A1B3F98828C54F160042DE9F /* Repositories */ = {
@@ -938,6 +952,7 @@
 				A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */,
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
 				A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */,
+				A1AD25AF28D3C47500F793B3 /* DefaultPanelItemView.xib in Resources */,
 				A1E81D3428CFF95300D044EA /* StandardCollectionViewCell.xib in Resources */,
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */,
@@ -1055,6 +1070,7 @@
 				A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */,
 				A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */,
 				A18691F028C9585D0087DE3B /* MoviesRequest.swift in Sources */,
+				A1AD25AD28D3C29600F793B3 /* DefaultPanelItemView.swift in Sources */,
 				A1E81D1628CFE2D800D044EA /* DefaultTableViewCell.swift in Sources */,
 				A18691F628C95A5D0087DE3B /* TVShowsResponse.swift in Sources */,
 				A186921C28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift in Sources */,

@@ -9,12 +9,17 @@ import UIKit
 
 // MARK: - PanelView class
 
-final class PanelView: UIView, Reusable {
+final class PanelView: UIView, ViewInstantiable {
+    
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var leadingPanelItemView: DefaultPanelItemView!
+    @IBOutlet private weak var trailingPanelItemView: DefaultPanelItemView!
     
     private var viewModel: DefaultHomeViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.nibDidLoad()
         self.setupViews()
     }
     
@@ -22,25 +27,8 @@ final class PanelView: UIView, Reusable {
         viewModel = nil
     }
     
-    static func create(on parent: UIView,
-                       with viewModel: DefaultHomeViewModel) -> PanelView {
-        let view = PanelView.nib.instantiateSubview(onParent: parent) as! PanelView
-        view.viewModel = viewModel
-        view.constraint(to: parent)
-        return view
-    }
-    
-    private func constraint(to parent: UIView) {
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            bottomAnchor.constraint(equalTo: parent.bottomAnchor),
-            leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-            trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            heightAnchor.constraint(equalToConstant: 64.0)
-        ])
-    }
-    
     private func setupViews() {
-        print("setupss panelview")
+        
     }
 }
+
