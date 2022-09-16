@@ -47,7 +47,7 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
         textLayer.string = nil
     }
     
-    override func configure(with viewModel: CollectionViewCellItemViewModel) {
+    override func configure(with viewModel: DefaultCollectionViewCellItemViewModel) {
         super.configure(with: viewModel)
         
         guard let indexPath = viewModel.indexPath as IndexPath? else { return }

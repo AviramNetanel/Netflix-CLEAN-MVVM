@@ -34,6 +34,10 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     private func setupSubviews() {
+        addGradientLayer()
+    }
+    
+    private func addGradientLayer() {
         bottomGradientView.addGradientLayer(frame: bottomGradientView.bounds,
                                             colors: [.clear, .black],
                                             locations: [0.0, 0.66])

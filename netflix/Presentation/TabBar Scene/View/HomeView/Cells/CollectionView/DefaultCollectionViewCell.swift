@@ -10,7 +10,7 @@ import UIKit
 // MARK: - CollectionViewCellInput protocol
 
 private protocol CollectionViewCellInput {
-    func configure(with viewModel: CollectionViewCellItemViewModel)
+    func configure(with viewModel: DefaultCollectionViewCellItemViewModel)
 }
 
 // MARK: - CollectionViewCellOutput protocol
@@ -71,20 +71,20 @@ class DefaultCollectionViewCell: UICollectionViewCell, CollectionViewCell {
         let media = viewModel.state.value == .tvShows
             ? section.tvshows![indexPath.row]
             : section.movies![indexPath.row]
-        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        let cellViewModel = DefaultCollectionViewCellItemViewModel(media: media, indexPath: indexPath)
         cell.representedIdentifier = media.title as NSString
         cell.configure(with: cellViewModel)
         return cell
     }
     
-    static func download(with viewModel: CollectionViewCellItemViewModel) {
+    static func download(with viewModel: DefaultCollectionViewCellItemViewModel) {
         AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
                                       identifier: viewModel.posterImageIdentifier) { _ in }
         AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
                                       identifier: viewModel.logoImageIdentifier) { _ in }
     }
     
-    func configure(with viewModel: CollectionViewCellItemViewModel) {
+    func configure(with viewModel: DefaultCollectionViewCellItemViewModel) {
         switch viewModel.logoAlignment {
         case .top:
             logoBottomConstraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0

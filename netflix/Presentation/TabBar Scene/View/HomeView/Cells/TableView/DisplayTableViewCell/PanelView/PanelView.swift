@@ -20,10 +20,19 @@ final class PanelView: UIView, ViewInstantiable {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.nibDidLoad()
+        self.setupSubviews()
     }
     
     deinit {
         viewModel = nil
+    }
+    
+    private func setupSubviews() {
+        setupPlayButton()
+    }
+    
+    private func setupPlayButton() {
+        playButton.layer.cornerRadius = 4.0
     }
 }
 

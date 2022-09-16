@@ -1,5 +1,5 @@
 //
-//  CollectionViewCellItemViewModel.swift
+//  DefaultCollectionViewCellItemViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -7,9 +7,37 @@
 
 import Foundation
 
-// MARK: - CollectionViewCellItemViewModel struct
+// MARK: - CollectionViewCellItemViewModelInput protocol
 
-struct CollectionViewCellItemViewModel {
+private protocol CollectionViewCellItemViewModelInput {
+    var indexPath: IndexPath { get }
+    var title: String { get }
+    var slug: String { get }
+    var covers: [String] { get }
+    var logos: [String] { get }
+    var logoAlignment: DefaultCollectionViewCellItemViewModel.LogoAlignment { get }
+    var posterImagePath: String { get }
+    var posterImageIdentifier: NSString { get }
+    var posterImageURL: URL! { get }
+    var logoImagePath: String { get }
+    var logoImageIdentifier: NSString { get }
+    var logoImageURL: URL! { get }
+}
+
+// MARK: - CollectionViewCellItemViewModelOutput protocol
+
+private protocol CollectionViewCellItemViewModelOutput {
+    func path<T>(for type: T.Type, with media: Media) -> String?
+}
+
+// MARK: - CollectionViewCellItemViewModel protocol
+
+private protocol CollectionViewCellItemViewModel: CollectionViewCellItemViewModelInput,
+                                                  CollectionViewCellItemViewModelOutput {}
+
+// MARK: - DefaultCollectionViewCellItemViewModel struct
+
+struct DefaultCollectionViewCellItemViewModel: CollectionViewCellItemViewModel {
     
     enum LogoAlignment: String {
         case top
@@ -69,7 +97,7 @@ struct CollectionViewCellItemViewModel {
         self.logoImageURL = URL(string: self.logoImagePath)
     }
     
-    private func path<T>(for type: T.Type, with media: Media) -> String? {
+    fileprivate func path<T>(for type: T.Type, with media: Media) -> String? {
         switch type {
         case is PresentedPoster.Type:
             switch PresentedPoster(rawValue: media.presentedCover!) {
