@@ -57,43 +57,14 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     private func configure(with viewModel: DefaultDisplayViewViewModel) {
-        let posterIdentifier = "displayPoster_\(viewModel.slug)" as NSString
-        let logoIdentifier = "displayLogo_\(viewModel.slug)" as NSString
-        let posterURL = URL(string: viewModel.posterImagePath)!
-        let logoURL = URL(string: viewModel.logoImagePath)!
-        AsyncImageFetcher.shared.load(url: posterURL, identifier: posterIdentifier) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async { self.posterImageView.image = image }
-        }
-        AsyncImageFetcher.shared.load(url: logoURL, identifier: logoIdentifier) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async { self.logoImageView.image = image }
-        }
-        // genres
-        // path func to displayviewviewmodel
-    }
-}
-
-//
-
-private protocol DisplayViewViewModel {
-    var slug: String { get }
-    var posterImagePath: String { get }
-    var logoImagePath: String { get }
-    var genres: [String] { get }
-}
-
-struct DefaultDisplayViewViewModel: DisplayViewViewModel {
-    
-    let slug: String
-    let posterImagePath: String
-    let logoImagePath: String
-    let genres: [String]
-    
-    init(with media: Media) {
-        self.slug = media.slug
-        self.posterImagePath = media.displayCover
-        self.logoImagePath = media.displayLogos!.first!
-        self.genres = media.genres
+        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
+                                      identifier: viewModel.posterImageIdentifier)
+        { [weak self] image in DispatchQueue.main.async { self?.posterImageView.image = image } }
+        
+        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
+                                      identifier: viewModel.logoImageIdentifier)
+        { [weak self] image in DispatchQueue.main.async { self?.logoImageView.image = image } }
+        
+        genresLabel.attributedText = viewModel.attributedGenres
     }
 }

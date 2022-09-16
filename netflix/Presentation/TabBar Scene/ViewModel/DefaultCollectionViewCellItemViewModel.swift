@@ -90,7 +90,6 @@ struct DefaultCollectionViewCellItemViewModel: CollectionViewCellItemViewModel {
         self.logoAlignment = .init(rawValue: media.logoPosition)!
         self.posterImageIdentifier = .init(string: "poster_\(media.slug)")
         self.logoImageIdentifier = .init(string: "logo_\(media.slug)")
-        
         self.posterImagePath = path(for: PresentedPoster.self, with: media)!
         self.logoImagePath = path(for: PresentedLogo.self, with: media)!
         self.posterImageURL = URL(string: self.posterImagePath)
