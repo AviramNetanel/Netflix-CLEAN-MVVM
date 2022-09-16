@@ -16,7 +16,7 @@ final class DisplayView: UIView, ViewInstantiable {
     @IBOutlet private weak var bottomGradientView: UIView!
     @IBOutlet private weak var genresLabel: UILabel!
     @IBOutlet private weak var typeImageView: UIImageView!
-    @IBOutlet private weak var panelView: PanelView!
+    @IBOutlet private(set) weak var panelView: PanelView!
     
     private var viewModel: DefaultHomeViewModel!
     

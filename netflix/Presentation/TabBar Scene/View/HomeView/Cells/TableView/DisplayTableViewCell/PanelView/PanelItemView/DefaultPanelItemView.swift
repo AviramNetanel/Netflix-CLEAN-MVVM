@@ -40,6 +40,12 @@ final class DefaultPanelItemViewConfiguration: NSObject, PanelItemViewConfigurat
         self.itemDidConfigure()
     }
     
+    deinit {
+        item = nil
+        tapRecognizer = nil
+        longPressRecognizer = nil
+    }
+    
     func recognizersDidRegister() {
         if gestureRecognizers.contains(.tap) {
             tapRecognizer = .init(target: self, action: #selector(buttonDidTap))
@@ -97,5 +103,10 @@ final class DefaultPanelItemView: UIView, PanelItemView, ViewInstantiable {
         self.nibDidLoad()
         self.viewModel = .init(with: self)
         self.configuration = .init(item: self, gestureRecognizers: [.tap])
+    }
+    
+    deinit {
+        configuration = nil
+        viewModel = nil
     }
 }

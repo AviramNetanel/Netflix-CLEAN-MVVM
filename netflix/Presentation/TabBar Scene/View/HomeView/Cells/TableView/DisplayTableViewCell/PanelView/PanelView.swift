@@ -15,7 +15,7 @@ final class PanelView: UIView, ViewInstantiable {
     @IBOutlet private weak var leadingPanelItemView: DefaultPanelItemView!
     @IBOutlet private weak var trailingPanelItemView: DefaultPanelItemView!
     
-    private var viewModel: DefaultHomeViewModel!
+    private(set) var viewModel: DefaultHomeViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,7 +32,13 @@ final class PanelView: UIView, ViewInstantiable {
     }
     
     private func setupPlayButton() {
-        playButton.layer.cornerRadius = 4.0
+        playButton.layer.cornerRadius = 6.0
+    }
+    
+    func removeObservers() {
+        print("Removed `PanelView` observers.")
+        leadingPanelItemView.viewModel.removeObservers()
+        trailingPanelItemView.viewModel.removeObservers()
     }
 }
 

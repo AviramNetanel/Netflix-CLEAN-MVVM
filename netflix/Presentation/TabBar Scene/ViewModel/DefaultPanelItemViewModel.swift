@@ -26,9 +26,9 @@ private protocol PanelItemViewModelOutput {
 
 private protocol PanelItemViewModel: PanelItemViewModelInput, PanelItemViewModelOutput {}
 
-// MARK: - DefaultPanelItemViewModel struct
+// MARK: - DefaultPanelItemViewModel class
 
-struct DefaultPanelItemViewModel: PanelItemViewModel {
+final class DefaultPanelItemViewModel: PanelItemViewModel {
     
     let tag: Int
     let isSelected: Observable<Bool>
@@ -52,6 +52,10 @@ struct DefaultPanelItemViewModel: PanelItemViewModel {
     }
     
     fileprivate func bind(on item: DefaultPanelItemView) {
-        isSelected.observe(on: item) { _ in item.configuration?.itemDidConfigure() }
+        isSelected.observe(on: self) { _ in item.configuration?.itemDidConfigure() }
+    }
+    
+    func removeObservers() {
+        isSelected.remove(observer: self)
     }
 }

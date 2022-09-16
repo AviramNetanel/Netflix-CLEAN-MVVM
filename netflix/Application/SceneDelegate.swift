@@ -35,7 +35,9 @@ extension SceneDelegate: UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func sceneDidDisconnect(_ scene: UIScene) {}
+    func sceneDidDisconnect(_ scene: UIScene) {
+        appFlowCoordinator?.homeFlowCoordinator?.sceneDidDisconnect()
+    }
     
     func sceneDidBecomeActive(_ scene: UIScene) {}
     

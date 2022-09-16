@@ -61,6 +61,8 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     private var viewModel: DefaultHomeViewModel!
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
+    var displayCell: DisplayTableViewCell?
+    
     init(in tableView: UITableView, with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
         self.tableView = tableView
@@ -120,9 +122,10 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
         guard let indices = Indices(rawValue: indexPath.section) else { fatalError() }
         switch indices {
         case .display:
-            return DisplayTableViewCell.create(in: tableView,
+            displayCell = DisplayTableViewCell.create(in: tableView,
                                                for: indexPath,
                                                with: viewModel)
+            return displayCell ?? .init()
         case .ratable:
             return RatableTableViewCell.create(in: tableView,
                                                for: indexPath,

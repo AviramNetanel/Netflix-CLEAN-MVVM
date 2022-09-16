@@ -65,6 +65,15 @@ final class DefaultHomeViewModel: HomeViewModel {
         self.homeUseCase = homeUseCase
         self.actions = actions
     }
+    
+    deinit {
+        task = nil
+    }
+    
+    func removeObservers() {
+        print("Removed `DefaultHomeViewModel` observers.")
+        state.remove(observer: self)
+    }
 }
 
 // MARK: - HomeViewModelInput implementation

@@ -11,7 +11,7 @@ import UIKit
 
 final class DisplayTableViewCell: UITableViewCell {
     
-    private var displayView: DisplayView!
+    private(set) var displayView: DisplayView!
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
@@ -22,5 +22,9 @@ final class DisplayTableViewCell: UITableViewCell {
             cell.displayView = DisplayView.create(on: cell.contentView, with: viewModel)
         }
         return cell
+    }
+    
+    deinit {
+        displayView = nil
     }
 }

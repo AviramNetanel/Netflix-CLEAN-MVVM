@@ -54,6 +54,7 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
             let actions = HomeViewModelActions(presentMediaDetails: { _ in })
             homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions) as? DefaultHomeViewModel
             appFlowCoordinator?.createHomeSceneFlow()
+            appFlowCoordinator?.homeFlowCoordinator?.viewController = homeViewController
         }
     }
     

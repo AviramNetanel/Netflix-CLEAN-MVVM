@@ -35,6 +35,11 @@ final class HomeViewController: UIViewController {
         return view
     }
     
+    deinit {
+        viewModel = nil
+        dataSource = nil
+    }
+    
     private func setupBehaviors() {
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])

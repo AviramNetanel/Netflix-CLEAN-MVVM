@@ -19,8 +19,14 @@ final class HomeFlowCoordinator {
     
     private let dependencies: HomeFlowCoordinatorDependencies
     
-    private weak var navigationController: UINavigationController?
-    private weak var viewController: UIViewController?
+    private(set) weak var navigationController: UINavigationController?
+    weak var viewController: UIViewController?
+    
+    lazy var homeViewController: HomeViewController? = {
+        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
+        let viewController = dependencies.createHomeViewController(actions: actions)
+        return viewController
+    }()
     
     init(navigationController: UINavigationController,
          dependencies: HomeFlowCoordinatorDependencies) {
@@ -28,17 +34,21 @@ final class HomeFlowCoordinator {
         self.dependencies = dependencies
     }
     
-    func coordinate() {
-        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
-        let viewController = dependencies.createHomeViewController(actions: actions)
-        
-        self.viewController = viewController
+    func coordinate() {        
+        self.viewController = homeViewController
     }
-    
-    // MARK: Private
     
     private func presentMediaDetails(media: Media) {
         viewController?.performSegue(withIdentifier: String(describing: DetailViewController.self),
                                      sender: viewController)
+    }
+    
+    func sceneDidDisconnect() {
+        
+        //appFlowCoordinator?.homeFlowCoordinator?.viewController = homeViewController
+        let homeViewController = (viewController as? HomeViewController)
+        let panelView = homeViewController?.dataSource?.displayCell?.displayView?.panelView
+        homeViewController?.viewModel?.removeObservers()
+        panelView?.removeObservers()
     }
 }
