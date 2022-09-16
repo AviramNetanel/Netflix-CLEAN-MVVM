@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - DisplayView class
 
-final class DisplayView: UIView {
+final class DisplayView: UIView, ViewInstantiable {
     
     @IBOutlet private weak var posterImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
@@ -27,15 +27,13 @@ final class DisplayView: UIView {
     
     static func create(on parent: UIView,
                        with viewModel: DefaultHomeViewModel) -> DisplayView {
-        let displayView = Bundle.main.loadNibNamed(String(describing: Self.self), owner: self, options: nil)![0] as! DisplayView
-        displayView.frame = parent.bounds
-        parent.addSubview(displayView)
+        let displayView = DisplayView.instantiateSubview(onParent: parent) as! DisplayView
         displayView.viewModel = viewModel
-        displayView.setupViews()
+        displayView.setupSubviews()
         return displayView
     }
     
-    private func setupViews() {
+    private func setupSubviews() {
         bottomGradientView.addGradientLayer(frame: bottomGradientView.bounds,
                                             colors: [.clear, .black],
                                             locations: [0.0, 0.66])

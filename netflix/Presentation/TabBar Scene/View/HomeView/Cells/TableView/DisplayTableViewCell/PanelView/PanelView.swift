@@ -20,15 +20,10 @@ final class PanelView: UIView, ViewInstantiable {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.nibDidLoad()
-        self.setupViews()
     }
     
     deinit {
         viewModel = nil
-    }
-    
-    private func setupViews() {
-        
     }
 }
 

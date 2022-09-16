@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - NSAttributedString Attributes
+// MARK: - NSAttributedString + Attributes
 
 extension NSAttributedString {
     static let placeholderAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .semibold),

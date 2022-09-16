@@ -94,6 +94,11 @@
 		A1AD25AD28D3C29600F793B3 /* DefaultPanelItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */; };
 		A1AD25AF28D3C47500F793B3 /* DefaultPanelItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */; };
 		A1AD25B228D3E3D600F793B3 /* ViewInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25B128D3E3D600F793B3 /* ViewInstantiable.swift */; };
+		A1AD25B428D3F37000F793B3 /* PanelItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25B328D3F37000F793B3 /* PanelItemViewModel.swift */; };
+		A1AD25B628D3FA6D00F793B3 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25B528D3FA6D00F793B3 /* Configurable.swift */; };
+		A1AD25BC28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25BB28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift */; };
+		A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25BD28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift */; };
+		A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
@@ -102,7 +107,6 @@
 		A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99328C575A30042DE9F /* AuthViewModel.swift */; };
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
-		A1E81BB428CC0CEF00D044EA /* UINib+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
@@ -121,8 +125,7 @@
 		A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */; };
 		A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */; };
 		A1E81D3428CFF95300D044EA /* StandardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1E81D3128CFF95300D044EA /* StandardCollectionViewCell.xib */; };
-		A1E81D3B28D15D2E00D044EA /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D3A28D15D2E00D044EA /* UITableView+Extension.swift */; };
-		A1E81D3F28D15ECC00D044EA /* Reusable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D3E28D15ECC00D044EA /* Reusable+Extension.swift */; };
+		A1E81D3B28D15D2E00D044EA /* UITableViewCell+Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D3A28D15D2E00D044EA /* UITableViewCell+Configurable.swift */; };
 		A1E81D4128D15F4500D044EA /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D4028D15F4500D044EA /* UIViewController+Extension.swift */; };
 		A1E81D4328D1600100D044EA /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D4228D1600100D044EA /* UIColor+Extension.swift */; };
 		A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A5B28C668100089BD4F /* AppAppearance.swift */; };
@@ -223,6 +226,11 @@
 		A1AD25AC28D3C29600F793B3 /* DefaultPanelItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPanelItemView.swift; sourceTree = "<group>"; };
 		A1AD25AE28D3C47500F793B3 /* DefaultPanelItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefaultPanelItemView.xib; sourceTree = "<group>"; };
 		A1AD25B128D3E3D600F793B3 /* ViewInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewInstantiable.swift; sourceTree = "<group>"; };
+		A1AD25B328D3F37000F793B3 /* PanelItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelItemViewModel.swift; sourceTree = "<group>"; };
+		A1AD25B528D3FA6D00F793B3 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
+		A1AD25BB28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Configurable.swift"; sourceTree = "<group>"; };
+		A1AD25BD28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewHeaderFooterView+Configurable.swift"; sourceTree = "<group>"; };
+		A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Register.swift"; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -231,7 +239,6 @@
 		A1B3F99328C575A30042DE9F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINib+Extension.swift"; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -250,8 +257,7 @@
 		A1E81D2F28CFF95200D044EA /* RatableCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatableCollectionViewCell.xib; sourceTree = "<group>"; };
 		A1E81D3028CFF95300D044EA /* ResumableCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResumableCollectionViewCell.xib; sourceTree = "<group>"; };
 		A1E81D3128CFF95300D044EA /* StandardCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StandardCollectionViewCell.xib; sourceTree = "<group>"; };
-		A1E81D3A28D15D2E00D044EA /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
-		A1E81D3E28D15ECC00D044EA /* Reusable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reusable+Extension.swift"; sourceTree = "<group>"; };
+		A1E81D3A28D15D2E00D044EA /* UITableViewCell+Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Configurable.swift"; sourceTree = "<group>"; };
 		A1E81D4028D15F4500D044EA /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		A1E81D4228D1600100D044EA /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		A1F56A5B28C668100089BD4F /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -439,6 +445,7 @@
 				A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */,
 				A186921528CA2D100087DE3B /* TableViewCellItemViewModel.swift */,
 				A186921B28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift */,
+				A1AD25B328D3F37000F793B3 /* PanelItemViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -507,8 +514,17 @@
 		A18B993328BFC70D0077A5A6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A1E81D4528D1615900D044EA /* Foundation */,
-				A1E81D4428D1615300D044EA /* UIKit */,
+				A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */,
+				A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */,
+				A1F56A6A28C6934B0089BD4F /* UIButton+Extension.swift */,
+				A1E81D4228D1600100D044EA /* UIColor+Extension.swift */,
+				A1AD25BB28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift */,
+				A1F56A5D28C679980089BD4F /* UIView+Extension.swift */,
+				A1E81D4628D1617E00D044EA /* UIViewController */,
+				A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */,
+				A1E81D3A28D15D2E00D044EA /* UITableViewCell+Configurable.swift */,
+				A1AD25BD28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift */,
+				A1F56A6E28C695FC0089BD4F /* UITextField+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -522,6 +538,7 @@
 				A1E81D0828CFE16900D044EA /* Mutable.swift */,
 				A1E81D0A28CFE16E00D044EA /* Orientable.swift */,
 				A1E81D0C28CFE17100D044EA /* Reusable.swift */,
+				A1AD25B528D3FA6D00F793B3 /* Configurable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -851,30 +868,6 @@
 			path = Standard;
 			sourceTree = "<group>";
 		};
-		A1E81D4428D1615300D044EA /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */,
-				A1F56A6A28C6934B0089BD4F /* UIButton+Extension.swift */,
-				A1E81D4228D1600100D044EA /* UIColor+Extension.swift */,
-				A1E81BB328CC0CEF00D044EA /* UINib+Extension.swift */,
-				A1F56A5D28C679980089BD4F /* UIView+Extension.swift */,
-				A1E81D4628D1617E00D044EA /* UIViewController */,
-				A1E81D3A28D15D2E00D044EA /* UITableView+Extension.swift */,
-				A1F56A6E28C695FC0089BD4F /* UITextField+Extension.swift */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
-		A1E81D4528D1615900D044EA /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */,
-				A1E81D3E28D15ECC00D044EA /* Reusable+Extension.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
 		A1E81D4628D1617E00D044EA /* UIViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -981,6 +974,7 @@
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A18B996728C00F5C0077A5A6 /* TVShowsRepository.swift in Sources */,
 				A18691DA28C8C59D0087DE3B /* TVShowsResponseDTO+Mapping.swift in Sources */,
+				A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
 				A18B996D28C00F7C0077A5A6 /* SectionsRepository.swift in Sources */,
 				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+Mapping.swift in Sources */,
@@ -988,6 +982,7 @@
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */,
 				A186921628CA2D100087DE3B /* TableViewCellItemViewModel.swift in Sources */,
+				A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
@@ -1043,6 +1038,7 @@
 				A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */,
 				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
+				A1AD25B428D3F37000F793B3 /* PanelItemViewModel.swift in Sources */,
 				A1E81D2E28CFE79400D044EA /* TableViewHeaderFooterView.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,
 				A1E81D2228CFE47E00D044EA /* StandardCollectionViewCell.swift in Sources */,
@@ -1051,16 +1047,16 @@
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A1E81D1E28CFE47700D044EA /* RatableCollectionViewCell.swift in Sources */,
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
-				A1E81D3F28D15ECC00D044EA /* Reusable+Extension.swift in Sources */,
 				A18691E428C8D4CA0087DE3B /* SectionsRequestDTO+Mapping.swift in Sources */,
-				A1E81BB428CC0CEF00D044EA /* UINib+Extension.swift in Sources */,
 				A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */,
 				A1E81D2028CFE47B00D044EA /* ResumableCollectionViewCell.swift in Sources */,
 				A18B996F28C00F850077A5A6 /* SeasonsRepository.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
+				A1AD25BC28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift in Sources */,
 				A1F56A5E28C679980089BD4F /* UIView+Extension.swift in Sources */,
 				A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */,
 				A18B994628BFD9D50077A5A6 /* Season.swift in Sources */,
+				A1AD25B628D3FA6D00F793B3 /* Configurable.swift in Sources */,
 				A18691EA28C957220087DE3B /* AuthRequest.swift in Sources */,
 				A18B999C28C0E67D0077A5A6 /* AuthResponseStorage.swift in Sources */,
 				A18B994A28BFD9DD0077A5A6 /* User.swift in Sources */,
@@ -1084,7 +1080,7 @@
 				A18B996228BFFE2B0077A5A6 /* Mediable.swift in Sources */,
 				A1E81D1A28CFE45D00D044EA /* ResumableTableViewCell.swift in Sources */,
 				A18B999628C0DFB90077A5A6 /* AuthRequestDTO+Mapping.swift in Sources */,
-				A1E81D3B28D15D2E00D044EA /* UITableView+Extension.swift in Sources */,
+				A1E81D3B28D15D2E00D044EA /* UITableViewCell+Configurable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

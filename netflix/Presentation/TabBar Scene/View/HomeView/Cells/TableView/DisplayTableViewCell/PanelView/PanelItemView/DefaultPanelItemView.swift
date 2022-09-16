@@ -9,42 +9,72 @@ import UIKit
 
 // MARK: - PanelItemViewConfiguration protocol
 
+@objc
 private protocol PanelItemViewConfiguration {
-    
+    func recognizersDidRegister()
+    func itemDidConfigure()
+    func buttonDidTap()
+    func buttonDidLongPress()
 }
 
-// MARK: - DefaultPanelItemViewConfiguration struct
+// MARK: - DefaultPanelItemViewConfiguration class
 
-struct DefaultPanelItemViewConfiguration {
+final class DefaultPanelItemViewConfiguration: NSObject, PanelItemViewConfiguration {
     
     enum GestureGecognizer {
         case tap
         case longPress
     }
     
-    enum Item: Int {
-        case myList
-        case info
+    private weak var item: DefaultPanelItemView!
+    private let gestureRecognizers: [GestureGecognizer]
+    
+    private var tapRecognizer: UITapGestureRecognizer!
+    private var longPressRecognizer: UILongPressGestureRecognizer!
+    
+    init(item: DefaultPanelItemView, gestureRecognizers: [GestureGecognizer]) {
+        self.item = item
+        self.gestureRecognizers = gestureRecognizers
+        super.init()
+        self.recognizersDidRegister()
+        self.itemDidConfigure()
     }
     
-    let gestureRecognizers: [GestureGecognizer]
-    let items: [Item]
+    func recognizersDidRegister() {
+        if gestureRecognizers.contains(.tap) {
+            tapRecognizer = .init(target: self, action: #selector(buttonDidTap))
+            item.addGestureRecognizer(tapRecognizer)
+        }
+        if gestureRecognizers.contains(.longPress) {
+            longPressRecognizer = .init(target: self, action: #selector(buttonDidLongPress))
+            item.addGestureRecognizer(longPressRecognizer)
+        }
+    }
     
-    var tapRecognizer: UITapGestureRecognizer!
-    var longPressRecognizer: UILongPressGestureRecognizer!
+    func itemDidConfigure() {
+        guard let item = item else { return }
+        item.imageView.image = .init(systemName: item.viewModel.systemImage)
+        item.titleLabel.text = item.viewModel.title
+    }
+    
+    @objc
+    func buttonDidTap() {
+        item.viewModel.isSelected.value.toggle()
+    }
+    
+    @objc
+    func buttonDidLongPress() {}
 }
 
 // MARK: - PanelItemViewInput protocol
 
 private protocol PanelItemViewInput {
-    
+    var isSelected: Bool { get }
 }
 
 // MARK: - PanelItemViewOutput protocol
 
-private protocol PanelItemViewOutput {
-    
-}
+private protocol PanelItemViewOutput {}
 
 // MARK: - PanelItemView protocol
 
@@ -54,16 +84,18 @@ private protocol PanelItemView: PanelItemViewInput, PanelItemViewOutput {}
 
 final class DefaultPanelItemView: UIView, PanelItemView, ViewInstantiable {
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     
-    var configuration: DefaultPanelItemViewConfiguration?
+    var isSelected = false
+    
+    var configuration: DefaultPanelItemViewConfiguration!
+    var viewModel: DefaultPanelItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.nibDidLoad()
-        self.configuration = .init(gestureRecognizers: [.tap, .longPress],
-                                   items: [.myList, .info])
+        self.viewModel = .init(with: self)
+        self.configuration = .init(item: self, gestureRecognizers: [.tap])
     }
 }
-
