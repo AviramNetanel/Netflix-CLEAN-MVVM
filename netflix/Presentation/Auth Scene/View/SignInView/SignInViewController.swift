@@ -15,7 +15,7 @@ final class SignInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     
-    var viewModel: AuthViewModel!
+    var viewModel: DefaultAuthViewModel!
     
     private var credentials: (String?, String?) {
         return (email: emailTextField.text,

@@ -1,5 +1,5 @@
 //
-//  AuthViewModel.swift
+//  DefaultAuthViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/09/2022.
@@ -17,7 +17,7 @@ struct AuthViewModelActions {
 
 // MARK: - AuthViewModelInput protocol
 
-protocol AuthViewModelInput {
+private protocol AuthViewModelInput {
     func viewDidLoad()
     func signUp(query: AuthQuery,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
@@ -28,9 +28,9 @@ protocol AuthViewModelInput {
 
 // MARK: - AuthViewModel protocol
 
-protocol AuthViewModel: AuthViewModelInput {}
+private protocol AuthViewModel: AuthViewModelInput {}
 
-// MARK: - AuthViewModel class
+// MARK: - DefaultAuthViewModel class
 
 final class DefaultAuthViewModel: AuthViewModel {
     

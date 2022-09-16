@@ -17,7 +17,7 @@ final class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordConfirmTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
-    var viewModel: AuthViewModel!
+    var viewModel: DefaultAuthViewModel!
     
     private var credentials: (String?, String?, String?, String?) {
         return (name: nameTextField.text,
@@ -64,7 +64,7 @@ final class SignUpViewController: UIViewController {
     
     @objc
     private func didSignUp() {
-        guard let viewModel = viewModel as? DefaultAuthViewModel else { return }
+        guard let viewModel = viewModel else { return }
         
         let userDTO = UserDTO(name: credentials.0,
                               email: credentials.1,

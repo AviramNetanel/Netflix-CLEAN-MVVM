@@ -67,7 +67,7 @@ final class SceneDependencies {
         return AuthViewController.create(with: createAuthViewModel(actions: actions))
     }
     
-    func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
+    func createAuthViewModel(actions: AuthViewModelActions) -> DefaultAuthViewModel {
         return DefaultAuthViewModel(authUseCase: createAuthUseCase(),
                                     actions: actions)
     }
