@@ -36,7 +36,7 @@ final class PanelView: UIView, ViewInstantiable {
     }
     
     func removeObservers() {
-        print("Removed `PanelView` observers.")
+        printIfDebug("Removed `PanelView` observers.")
         leadingPanelItemView.viewModel.removeObservers()
         trailingPanelItemView.viewModel.removeObservers()
     }

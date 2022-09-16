@@ -67,7 +67,7 @@ extension DefaultAuthViewModel {
                     self.actions?.presentHomeViewController()
                 }
             case .failure(let error):
-                print("Unresolved error \(error)")
+                printIfDebug("Unresolved error \(error)")
             }
         }
     }

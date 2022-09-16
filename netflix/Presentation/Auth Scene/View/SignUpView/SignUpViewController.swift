@@ -81,8 +81,7 @@ final class SignUpViewController: UIViewController {
                                       sender: self)
                 }
             } else {
-                print("failure")
-                // error resolve
+                printIfDebug("failure")
             }
         }
     }

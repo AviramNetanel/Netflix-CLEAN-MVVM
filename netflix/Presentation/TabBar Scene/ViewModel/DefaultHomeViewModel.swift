@@ -71,7 +71,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     }
     
     func removeObservers() {
-        print("Removed `DefaultHomeViewModel` observers.")
+        printIfDebug("Removed `DefaultHomeViewModel` observers.")
         state.remove(observer: self)
     }
 }

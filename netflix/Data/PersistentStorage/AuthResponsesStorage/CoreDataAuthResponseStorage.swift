@@ -61,7 +61,7 @@ extension CoreDataAuthResponseStorage: AuthResponseStorage {
                 
                 try context.save()
             } catch {
-                debugPrint("CoreDataAuthResponseStorage unresolved error \(error), \((error as NSError).userInfo)")
+                printIfDebug("CoreDataAuthResponseStorage unresolved error \(error), \((error as NSError).userInfo)")
             }
         }
     }
@@ -76,7 +76,7 @@ extension CoreDataAuthResponseStorage: AuthResponseStorage {
                 }
             }
         } catch {
-            print("Unresolved error \(error) occured as trying to delete object.")
+            printIfDebug("Unresolved error \(error) occured as trying to delete object.")
         }
     }
 }

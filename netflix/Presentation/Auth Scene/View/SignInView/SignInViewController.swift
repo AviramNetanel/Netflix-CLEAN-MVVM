@@ -71,8 +71,7 @@ final class SignInViewController: UIViewController {
                                       sender: self)
                 }
             } else {
-                print("failure")
-                // error resolve
+                printIfDebug("failure")
             }
         }
     }
