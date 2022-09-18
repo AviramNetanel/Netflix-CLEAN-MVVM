@@ -34,7 +34,7 @@ final class HomeFlowCoordinator {
         self.dependencies = dependencies
     }
     
-    func coordinate() {        
+    func coordinate() {
         self.viewController = homeViewController
     }
     
@@ -44,11 +44,11 @@ final class HomeFlowCoordinator {
     }
     
     func sceneDidDisconnect() {
-        
-        //appFlowCoordinator?.homeFlowCoordinator?.viewController = homeViewController
         let homeViewController = (viewController as? HomeViewController)
         let panelView = homeViewController?.dataSource?.displayCell?.displayView?.panelView
+        let navigationView = homeViewController?.navigationView
         homeViewController?.viewModel?.removeObservers()
         panelView?.removeObservers()
+        navigationView?.viewModel?.removeObservers()
     }
 }

@@ -19,6 +19,8 @@ final class HomeViewController: UIViewController {
     
     private(set) var dataSource: DefaultTableViewDataSource!
     
+    private(set) var navigationView: DefaultNavigationView! = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
@@ -47,6 +49,7 @@ final class HomeViewController: UIViewController {
     
     private func setupSubviews() {
         setupDataSource()
+        setupNavigationView()
     }
     
     private func setupBindings() {
@@ -56,6 +59,10 @@ final class HomeViewController: UIViewController {
     private func setupDataSource() {
         dataSource = .init(in: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
+    }
+    
+    private func setupNavigationView() {
+        navigationView = .create(on: view)
     }
     
     private func state(in viewModel: DefaultHomeViewModel) {

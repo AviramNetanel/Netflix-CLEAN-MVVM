@@ -100,7 +100,12 @@
 		A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25BD28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift */; };
 		A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */; };
 		A1AD25C228D4C61300F793B3 /* DefaultDisplayViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */; };
-		A1AD25C528D4D35700F793B3 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C428D4D35700F793B3 /* NavigationView.swift */; };
+		A1AD25C528D4D35700F793B3 /* DefaultNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */; };
+		A1AD25C728D55DF300F793B3 /* DefaultNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */; };
+		A1AD25C928D56BB100F793B3 /* NavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */; };
+		A1AD25CB28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */; };
+		A1AD25CD28D56BCC00F793B3 /* NavigationItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */; };
+		A1AD25D028D6D31000F793B3 /* DefaultNavigationViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* DefaultHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* DefaultHomeViewModel.swift */; };
 		A1B3F98E28C55E150042DE9F /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */; };
@@ -234,7 +239,12 @@
 		A1AD25BD28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewHeaderFooterView+Configurable.swift"; sourceTree = "<group>"; };
 		A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Register.swift"; sourceTree = "<group>"; };
 		A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDisplayViewViewModel.swift; sourceTree = "<group>"; };
-		A1AD25C428D4D35700F793B3 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
+		A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationView.swift; sourceTree = "<group>"; };
+		A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultNavigationView.xib; sourceTree = "<group>"; };
+		A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemView.swift; sourceTree = "<group>"; };
+		A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationItemViewViewModel.swift; sourceTree = "<group>"; };
+		A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationItemView.xib; sourceTree = "<group>"; };
+		A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationViewViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* DefaultHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98D28C55E150042DE9F /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -452,6 +462,8 @@
 				A186921B28CA2ED20087DE3B /* DefaultCollectionViewCellItemViewModel.swift */,
 				A1AD25B328D3F37000F793B3 /* DefaultPanelItemViewModel.swift */,
 				A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */,
+				A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */,
+				A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -790,9 +802,20 @@
 		A1AD25C328D4D25400F793B3 /* NavigationView */ = {
 			isa = PBXGroup;
 			children = (
-				A1AD25C428D4D35700F793B3 /* NavigationView.swift */,
+				A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */,
+				A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */,
+				A1AD25CE28D56BD100F793B3 /* NavigationItemView */,
 			);
 			path = NavigationView;
+			sourceTree = "<group>";
+		};
+		A1AD25CE28D56BD100F793B3 /* NavigationItemView */ = {
+			isa = PBXGroup;
+			children = (
+				A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */,
+				A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */,
+			);
+			path = NavigationItemView;
 			sourceTree = "<group>";
 		};
 		A1B3F98828C54F160042DE9F /* Repositories */ = {
@@ -960,6 +983,7 @@
 			files = (
 				A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */,
 				A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */,
+				A1AD25C728D55DF300F793B3 /* DefaultNavigationView.xib in Resources */,
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
 				A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */,
 				A1AD25AF28D3C47500F793B3 /* DefaultPanelItemView.xib in Resources */,
@@ -967,6 +991,7 @@
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */,
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
+				A1AD25CD28D56BCC00F793B3 /* NavigationItemView.xib in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -991,6 +1016,7 @@
 				A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
 				A18B996D28C00F7C0077A5A6 /* SectionsRepository.swift in Sources */,
+				A1AD25D028D6D31000F793B3 /* DefaultNavigationViewViewModel.swift in Sources */,
 				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+Mapping.swift in Sources */,
 				A18691EE28C958140087DE3B /* TVShowsRequest.swift in Sources */,
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
@@ -999,8 +1025,9 @@
 				A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
-				A1AD25C528D4D35700F793B3 /* NavigationView.swift in Sources */,
+				A1AD25C528D4D35700F793B3 /* DefaultNavigationView.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
+				A1AD25CB28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift in Sources */,
 				A18691DC28C8C5B50087DE3B /* MoviesRequestDTO+Mapping.swift in Sources */,
 				A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */,
 				A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */,
@@ -1054,6 +1081,7 @@
 				A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */,
 				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
+				A1AD25C928D56BB100F793B3 /* NavigationItemView.swift in Sources */,
 				A1AD25B428D3F37000F793B3 /* DefaultPanelItemViewModel.swift in Sources */,
 				A1E81D2E28CFE79400D044EA /* TableViewHeaderFooterView.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,

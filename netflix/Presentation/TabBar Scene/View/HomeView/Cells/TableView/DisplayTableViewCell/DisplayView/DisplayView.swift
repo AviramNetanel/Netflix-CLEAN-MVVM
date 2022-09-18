@@ -35,7 +35,7 @@ final class DisplayView: UIView, ViewInstantiable {
         return displayView
     }
     
-    static func viewModel(with viewModel: DefaultHomeViewModel) -> DefaultDisplayViewViewModel {
+    private static func viewModel(with viewModel: DefaultHomeViewModel) -> DefaultDisplayViewViewModel {
         let media = viewModel.randomObject(at: viewModel.section(at: .display))!
         let viewModel = DefaultDisplayViewViewModel(with: media)
         return viewModel
