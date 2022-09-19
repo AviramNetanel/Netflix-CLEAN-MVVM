@@ -26,15 +26,13 @@ private protocol NavigationView: NavigationViewInput, NavigationViewOutput {}
 final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
     @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private weak var homeButton: NavigationViewItemView!
-    @IBOutlet private weak var airPlayButton: NavigationViewItemView!
-    @IBOutlet private weak var accountButton: NavigationViewItemView!
-    @IBOutlet private weak var tvShowsItemView: NavigationViewItemView!
-    @IBOutlet private weak var moviesItemView: NavigationViewItemView!
-    @IBOutlet private weak var categoriesItemView: NavigationViewItemView!
+    @IBOutlet private weak var homeButton: NavigationViewItem!
+    @IBOutlet private weak var airPlayButton: NavigationViewItem!
+    @IBOutlet private weak var accountButton: NavigationViewItem!
+    @IBOutlet private weak var tvShowsItemView: NavigationViewItem!
+    @IBOutlet private weak var moviesItemView: NavigationViewItem!
+    @IBOutlet private weak var categoriesItemView: NavigationViewItem!
     @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var stackView: UIStackView!
-    @IBOutlet private weak var stackViewWidthConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: DefaultNavigationViewViewModel!
     
@@ -64,7 +62,7 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
         return view
     }
     
-    private static func viewModel(with items: [NavigationViewItemView],
+    private static func viewModel(with items: [NavigationViewItem],
                                   for state: DefaultNavigationView.State) -> DefaultNavigationViewViewModel {
         return DefaultNavigationViewViewModel(with: items, for: state)
     }

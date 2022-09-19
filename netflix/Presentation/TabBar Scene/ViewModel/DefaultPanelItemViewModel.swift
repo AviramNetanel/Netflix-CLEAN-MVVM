@@ -19,7 +19,7 @@ private protocol PanelItemViewModelInput {
 // MARK: - PanelItemViewModelOutput protocol
 
 private protocol PanelItemViewModelOutput {
-    func bind(on item: DefaultPanelItemView)
+    func bind(on item: DefaultPanelViewItem)
 }
 
 // MARK: - PanelItemViewModel protocol
@@ -45,13 +45,13 @@ final class DefaultPanelItemViewModel: PanelItemViewModel {
         return tag == 0 ? leading : trailing
     }
     
-    init(with item: DefaultPanelItemView) {
+    init(with item: DefaultPanelViewItem) {
         self.tag = item.tag
         self.isSelected = .init(item.isSelected)
         self.bind(on: item)
     }
     
-    fileprivate func bind(on item: DefaultPanelItemView) {
+    fileprivate func bind(on item: DefaultPanelViewItem) {
         isSelected.observe(on: self) { _ in item.configuration?.itemDidConfigure() }
     }
     

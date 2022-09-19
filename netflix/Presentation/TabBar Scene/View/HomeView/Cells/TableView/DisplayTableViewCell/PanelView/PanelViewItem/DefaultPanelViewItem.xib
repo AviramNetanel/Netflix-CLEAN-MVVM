@@ -13,7 +13,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DefaultPanelItemView" customModule="netflix" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DefaultPanelViewItem" customModule="netflix" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="ZQz-d6-PUi" id="w1g-UH-izi"/>
                 <outlet property="titleLabel" destination="auz-tV-ffX" id="7lM-gf-wwR"/>

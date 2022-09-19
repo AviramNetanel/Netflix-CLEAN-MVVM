@@ -25,21 +25,21 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p6X-Bg-Psj" userLabel="Top Container">
                             <rect key="frame" x="0.0" y="54" width="414" height="54"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-Cf-x0R" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-Cf-x0R" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="8" y="7" width="40" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="DM7-xw-fpX"/>
                                         <constraint firstAttribute="width" constant="40" id="Jfb-aQ-bvC"/>
                                     </constraints>
                                 </view>
-                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyM-Yo-6ZJ" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyM-Yo-6ZJ" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="318" y="11" width="32" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="b9r-xf-N2n"/>
                                         <constraint firstAttribute="height" constant="32" id="qTv-RB-h82"/>
                                     </constraints>
                                 </view>
-                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-Ir-7K2" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-Ir-7K2" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="366" y="11" width="32" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="32" id="SQi-b1-LWK"/>
@@ -62,13 +62,13 @@
                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-W1-okM">
                                     <rect key="frame" x="31" y="0.0" width="352" height="54"/>
                                     <subviews>
-                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                             <rect key="frame" x="117.5" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
                                             <rect key="frame" x="235" y="0.0" width="117" height="54"/>
                                         </view>
                                     </subviews>
@@ -114,8 +114,6 @@
                 <outlet property="homeButton" destination="xi4-Cf-x0R" id="ohi-Qq-Xt6"/>
                 <outlet property="itemsCenterXConstraint" destination="e9E-dU-X7G" id="G2z-Ok-RUB"/>
                 <outlet property="moviesItemView" destination="oaQ-J8-Kai" id="7SS-6a-hTL"/>
-                <outlet property="stackView" destination="dtf-W1-okM" id="5MS-wl-BnG"/>
-                <outlet property="stackViewWidthConstraint" destination="zbH-mN-Heg" id="MXy-XC-BDg"/>
                 <outlet property="tvShowsItemView" destination="hup-KA-ylD" id="nc2-82-R2N"/>
             </connections>
             <point key="canvasLocation" x="-45" y="108"/>

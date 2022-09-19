@@ -12,8 +12,8 @@ import UIKit
 final class PanelView: UIView, ViewInstantiable {
     
     @IBOutlet private weak var playButton: UIButton!
-    @IBOutlet private weak var leadingPanelItemView: DefaultPanelItemView!
-    @IBOutlet private weak var trailingPanelItemView: DefaultPanelItemView!
+    @IBOutlet private weak var leadingPanelItemView: DefaultPanelViewItem!
+    @IBOutlet private weak var trailingPanelItemView: DefaultPanelViewItem!
     
     private(set) var viewModel: DefaultHomeViewModel!
     

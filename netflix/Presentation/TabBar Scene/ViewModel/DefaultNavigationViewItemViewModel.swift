@@ -1,5 +1,5 @@
 //
-//  DefaulltNavigationItemViewViewModel.swift
+//  DefaulltNavigationViewItemViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 17/09/2022.
@@ -7,29 +7,29 @@
 
 import Foundation
 
-// MARK: - NavigationItemViewViewModelInput protocol
+// MARK: - NavigationViewItemViewModelInput protocol
 
-private protocol NavigationItemViewViewModelInput {
+private protocol NavigationViewItemViewModelInput {
     var tag: Int { get }
     var title: String! { get }
     var image: String! { get }
 }
 
-// MARK: - NavigationItemViewViewModelOutput protocol
+// MARK: - NavigationViewItemViewModelOutput protocol
 
-private protocol NavigationItemViewViewModelOutput {
+private protocol NavigationViewItemViewModelOutput {
     func title(for tag: Int) -> String?
     func image(for tag: Int) -> String?
 }
 
-// MARK: - NavigationItemViewViewModel protocol
+// MARK: - NavigationViewItemViewModel protocol
 
-private protocol NavigationItemViewViewModel: NavigationItemViewViewModelInput,
-                                              NavigationItemViewViewModelOutput {}
+private protocol NavigationViewItemViewModel: NavigationViewItemViewModelInput,
+                                              NavigationViewItemViewModelOutput {}
 
-// MARK: - DefaultNavigationItemViewViewModel struct
+// MARK: - DefaultNavigationViewItemViewModel struct
 
-struct DefaultNavigationViewItemViewViewModel: NavigationItemViewViewModel {
+struct DefaultNavigationViewItemViewModel: NavigationViewItemViewModel {
     
     let tag: Int
     var title: String!

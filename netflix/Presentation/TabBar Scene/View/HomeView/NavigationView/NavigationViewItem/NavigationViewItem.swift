@@ -1,5 +1,5 @@
 //
-//  NavigationItemView.swift
+//  NavigationViewItem.swift
 //  netflix
 //
 //  Created by Zach Bazov on 17/09/2022.
@@ -11,7 +11,7 @@ import UIKit
 
 @objc
 private protocol NavigationViewItemConfiguration {
-    func itemDidConfigure(item: NavigationViewItemView)
+    func itemDidConfigure(item: NavigationViewItem)
     func _buttonDidTap()
 }
 
@@ -19,7 +19,7 @@ private protocol NavigationViewItemConfiguration {
 
 final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfiguration {
     
-    private weak var item: NavigationViewItemView!
+    private weak var item: NavigationViewItem!
     var buttonDidTap: ((DefaultNavigationView.State) -> Void)?
     
     deinit {
@@ -27,13 +27,13 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
         buttonDidTap = nil
     }
     
-    static func create(with item: NavigationViewItemView) -> DefaultNavigationViewItemConfiguration {
+    static func create(with item: NavigationViewItem) -> DefaultNavigationViewItemConfiguration {
         let configuration = DefaultNavigationViewItemConfiguration()
         configuration.itemDidConfigure(item: item)
         return configuration
     }
     
-    fileprivate func itemDidConfigure(item: NavigationViewItemView) {
+    fileprivate func itemDidConfigure(item: NavigationViewItem) {
         self.item = item
         
         guard let state = DefaultNavigationView.State(rawValue: item.tag) else { return }
@@ -75,14 +75,14 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
     }
 }
 
-// MARK: - NavigationViewItemView class
+// MARK: - NavigationViewItem class
 
-final class NavigationViewItemView: UIView {
+final class NavigationViewItem: UIView {
     
     fileprivate lazy var button: UIButton = { return UIButton(type: .system) }()
     
     private(set) var configuration: DefaultNavigationViewItemConfiguration!
-    fileprivate var viewModel: DefaultNavigationViewItemViewViewModel!
+    fileprivate var viewModel: DefaultNavigationViewItemViewModel!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +23,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="IOn-oV-Z3y">
                             <rect key="frame" x="41.5" y="0.0" width="331" height="64"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70I-o3-bwB" customClass="DefaultPanelItemView" customModule="netflix" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70I-o3-bwB" customClass="DefaultPanelViewItem" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="64" id="mj0-jt-koP"/>
@@ -50,7 +48,7 @@
                                         <constraint firstItem="52y-Zr-EAv" firstAttribute="top" secondItem="rJg-ZH-TR9" secondAttribute="top" constant="16" id="WQU-aT-Gax"/>
                                     </constraints>
                                 </view>
-                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAp-2Z-xgj" customClass="DefaultPanelItemView" customModule="netflix" customModuleProvider="target">
+                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAp-2Z-xgj" customClass="DefaultPanelViewItem" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="267" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="64" id="oug-WS-X0J"/>

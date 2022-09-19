@@ -11,7 +11,7 @@ import Foundation
 
 private protocol NavigationViewViewModelInput {
     var state: Observable<DefaultNavigationView.State> { get }
-    var items: [NavigationViewItemView] { get }
+    var items: [NavigationViewItem] { get }
 }
 
 // MARK - NavigationViewViewModelOutput protocol
@@ -30,11 +30,11 @@ private protocol NavigationViewViewModel: NavigationViewViewModelInput,
 final class DefaultNavigationViewViewModel: NavigationViewViewModel {
     
     fileprivate var state: Observable<DefaultNavigationView.State>
-    fileprivate var items: [NavigationViewItemView]
+    fileprivate var items: [NavigationViewItem]
     
     var stateDidChange: ((DefaultNavigationView.State) -> Void)?
     
-    init(with items: [NavigationViewItemView],
+    init(with items: [NavigationViewItem],
          for state: DefaultNavigationView.State) {
         self.items = items
         self.state = .init(state)
@@ -52,7 +52,7 @@ final class DefaultNavigationViewViewModel: NavigationViewViewModel {
         state.observe(on: self) { [weak self] state in self?._stateDidChange(state: state) }
     }
     
-    private func buttonDidTap(for items: [NavigationViewItemView]) {
+    private func buttonDidTap(for items: [NavigationViewItem]) {
         items.forEach { $0.configuration.buttonDidTap = { [weak self] state in self?.state.value = state } }
     }
     
