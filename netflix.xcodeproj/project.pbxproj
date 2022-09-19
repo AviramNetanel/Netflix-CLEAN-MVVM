@@ -115,6 +115,7 @@
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
 		A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */; };
 		A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */; };
+		A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
@@ -255,6 +256,7 @@
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rendering.swift"; sourceTree = "<group>"; };
 		A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
+		A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 				A1E81D4228D1600100D044EA /* UIColor+Extension.swift */,
 				A1AD25BB28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift */,
 				A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */,
+				A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */,
 				A1F56A5D28C679980089BD4F /* UIView+Extension.swift */,
 				A1E81D4628D1617E00D044EA /* UIViewController */,
 				A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */,
@@ -871,8 +874,8 @@
 		A1E81D1228CFE2BD00D044EA /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				A1AD25AB28D2A6C200F793B3 /* DisplayTableViewCell */,
 				A1E81D1528CFE2D800D044EA /* DefaultTableViewCell.swift */,
+				A1AD25AB28D2A6C200F793B3 /* DisplayTableViewCell */,
 				A1E81D1728CFE45100D044EA /* RatableTableViewCell.swift */,
 				A1E81D1928CFE45D00D044EA /* ResumableTableViewCell.swift */,
 				A1E81D1B28CFE46B00D044EA /* StandardTableViewCell.swift */,
@@ -1052,6 +1055,7 @@
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
 				A18B994828BFD9DA0077A5A6 /* Episode.swift in Sources */,
 				A1E81D1828CFE45100D044EA /* RatableTableViewCell.swift in Sources */,
+				A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */,
 				A18B997128C00F890077A5A6 /* EpisodesRepository.swift in Sources */,
 				A18691C928C7B2970087DE3B /* DefaultMoviesRepository.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,

@@ -126,14 +126,3 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
         }
     }
 }
-
-extension UIView {
-    func animateUsingSpring(withDuration duration: TimeInterval,
-                            withDamping damping: CGFloat,
-                            initialSpringVelocity velocity: CGFloat) {
-        UIView.animate(withDuration: duration,
-                       delay: .zero,
-                       usingSpringWithDamping: damping,
-                       initialSpringVelocity: velocity) { [unowned self] in layoutIfNeeded() }
-    }
-}

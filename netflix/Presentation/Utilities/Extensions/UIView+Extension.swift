@@ -43,4 +43,3 @@ extension UIView {
         alpha = 1.0
     }
 }
-
