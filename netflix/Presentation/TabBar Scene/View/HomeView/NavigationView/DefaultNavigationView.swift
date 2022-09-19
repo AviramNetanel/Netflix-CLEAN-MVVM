@@ -25,6 +25,15 @@ private protocol NavigationView: NavigationViewInput, NavigationViewOutput {}
 
 final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
+    enum State: Int, CaseIterable {
+        case home
+        case airPlay
+        case account
+        case tvShows
+        case movies
+        case categories
+    }
+    
     @IBOutlet private weak var gradientView: UIView!
     @IBOutlet private weak var homeButton: NavigationViewItem!
     @IBOutlet private weak var airPlayButton: NavigationViewItem!
@@ -38,14 +47,7 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
     fileprivate var state: State = .tvShows
     
-    enum State: Int, CaseIterable {
-        case home
-        case airPlay
-        case account
-        case tvShows
-        case movies
-        case categories
-    }
+    var dataSourceDidChange: ((State) -> Void)?
     
     static func create(on parent: UIView) -> DefaultNavigationView {
         let view = DefaultNavigationView.instantiateSubview(onParent: parent) as! DefaultNavigationView
@@ -97,6 +99,9 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     private func stateDidChange(in viewModel: DefaultNavigationViewViewModel) {
         viewModel.stateDidChange = { [weak self] state in
             guard let self = self else { return }
+            
+            self.dataSourceDidChange?(state)
+            
             switch state {
             case .home:
                 self.tvShowsItemView.isHidden(false)
@@ -122,7 +127,8 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
             }
             
             self.animateUsingSpring(withDuration: 0.33,
-                                    withDamping: 0.7,initialSpringVelocity: 0.7)
+                                    withDamping: 0.7,
+                                    initialSpringVelocity: 0.7)
         }
     }
 }

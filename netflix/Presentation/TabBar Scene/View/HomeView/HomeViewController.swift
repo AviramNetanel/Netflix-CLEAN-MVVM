@@ -18,21 +18,21 @@ final class HomeViewController: UIViewController {
     var viewModel: DefaultHomeViewModel!
     
     private(set) var dataSource: DefaultTableViewDataSource!
-    
-    private(set) var navigationView: DefaultNavigationView! = nil
+    private(set) var navigationView: DefaultNavigationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
-        setupBindings()
         setupSubviews()
+        setupBindings()
         viewModel.viewDidLoad()
     }
     
     static func create(with viewModel: DefaultHomeViewModel) -> HomeViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
                                 bundle: nil)
-            .instantiateViewController(withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
+            .instantiateViewController(
+                withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
         view.viewModel = viewModel
         return view
     }
@@ -63,6 +63,7 @@ final class HomeViewController: UIViewController {
     
     private func setupNavigationView() {
         navigationView = .create(on: view)
+        dataSourceDidChange(in: navigationView)
     }
     
     private func state(in viewModel: DefaultHomeViewModel) {
@@ -76,6 +77,19 @@ final class HomeViewController: UIViewController {
                 return self.view.bounds.height * 0.76
             }
             return self.view.bounds.height * 0.18
+        }
+    }
+    
+    func dataSourceDidChange(in navigationView: DefaultNavigationView) {
+        navigationView.dataSourceDidChange = { [weak self] state in
+            guard let self = self else { return }
+            switch state {
+            case .home: return
+            case .tvShows: guard self.viewModel.state.value != .tvShows else { return }
+            case .movies: guard self.viewModel.state.value != .movies else { return }
+            default: return
+            }
+            self.viewModel.state.value = state == .tvShows ? .tvShows : .movies
         }
     }
 }

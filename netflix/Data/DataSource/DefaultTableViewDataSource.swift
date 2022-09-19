@@ -59,6 +59,7 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     fileprivate var sections: [Section]
     
     private var viewModel: DefaultHomeViewModel!
+    
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     
     var displayCell: DisplayTableViewCell?
@@ -72,6 +73,7 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     }
     
     deinit {
+        displayCell = nil
         heightForRowAt = nil
         viewModel = nil
     }
