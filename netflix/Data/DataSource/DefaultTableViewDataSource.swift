@@ -31,7 +31,7 @@ private protocol TableViewDataSource: TableViewDataSourceInput, TableViewDataSou
 
 final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     
-    enum Indices: Int, CaseIterable {
+    enum Index: Int, CaseIterable {
         case display,
              ratable,
              resumable,
@@ -121,13 +121,14 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let indices = Indices(rawValue: indexPath.section) else { fatalError() }
-        switch indices {
+        guard let index = Index(rawValue: indexPath.section) else { fatalError() }
+        switch index {
         case .display:
+            guard displayCell == nil else { return displayCell! }
             displayCell = DisplayTableViewCell.create(in: tableView,
                                                for: indexPath,
                                                with: viewModel)
-            return displayCell ?? .init()
+            return displayCell!
         case .ratable:
             return RatableTableViewCell.create(in: tableView,
                                                for: indexPath,
@@ -157,8 +158,8 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        guard let indices = Indices(rawValue: section) else { return .zero }
-        switch indices {
+        guard let index = Index(rawValue: section) else { return .zero }
+        switch index {
         case .display: return 0.0
         case .ratable: return 28.0
         default: return 24.0
@@ -176,7 +177,7 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
 
 // MARK: - Valuable implementation
 
-extension DefaultTableViewDataSource.Indices: Valuable {
+extension DefaultTableViewDataSource.Index: Valuable {
     
     var stringValue: String {
         switch self {

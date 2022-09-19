@@ -29,8 +29,8 @@ private protocol HomeViewModelInput {
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
-    func section(at index: DefaultTableViewDataSource.Indices) -> Section
-    func randomObject(at section: Section) -> Media?
+    func section(at index: DefaultTableViewDataSource.Index) -> Section
+    func randomObject(at section: Section) -> Media
     func titleForHeader(at index: Int) -> String
     func didSelectItem(at index: Int)
 }
@@ -91,21 +91,21 @@ extension DefaultHomeViewModel {
     }
     
     func filter(sections: [Section]) {
-        for i in DefaultTableViewDataSource.Indices.allCases {
-            switch i {
+        for index in DefaultTableViewDataSource.Index.allCases {
+            switch index {
             case .ratable,
                     .resumable:
-                sections[i.rawValue].tvshows = sections.first!.tvshows
-                sections[i.rawValue].movies = sections.first!.movies
+                sections[index.rawValue].tvshows = sections.first!.tvshows
+                sections[index.rawValue].movies = sections.first!.movies
             case .action, .sciFi,
                     .crime, .thriller,
                     .adventure, .comedy,
                     .drama, .horror,
                     .anime, .familyNchildren,
                     .documentary:
-                filter(sections: sections, at: i.rawValue)
+                filter(sections: sections, at: index.rawValue)
             case .blockbuster:
-                filter(sections: sections, at: i.rawValue, withMinimumRating: 7.5)
+                filter(sections: sections, at: index.rawValue, withMinimumRating: 7.5)
             default: break
             }
         }
@@ -120,22 +120,21 @@ extension DefaultHomeViewModel {
         }
     }
     
-    func filter(sections: [Section], at index: Int, withMinimumRating value: Float) {
+    func filter(sections: [Section],
+                at index: Int,
+                withMinimumRating value: Float) {
         sections[index].tvshows = sections.first!.tvshows!.filter { $0.rating > value }
         sections[index].movies = sections.first!.movies!.filter { $0.rating > value }
     }
     
-    func section(at index: DefaultTableViewDataSource.Indices) -> Section {
+    func section(at index: DefaultTableViewDataSource.Index) -> Section {
         return sections.value[index.rawValue]
     }
     
-    func randomObject(at section: Section) -> Media? {
-        guard
-            let media = state.value == .tvShows
-                ? section.tvshows!.randomElement()
-                : section.movies!.randomElement()
-        else { return nil }
-        return media
+    func randomObject(at section: Section) -> Media {
+        return state.value == .tvShows
+            ? section.tvshows!.randomElement()!
+            : section.movies!.randomElement()!
     }
     
     func titleForHeader(at index: Int) -> String {

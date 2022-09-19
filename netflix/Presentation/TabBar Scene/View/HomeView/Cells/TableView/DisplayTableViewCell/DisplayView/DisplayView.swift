@@ -36,7 +36,7 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     private static func viewModel(with viewModel: DefaultHomeViewModel) -> DefaultDisplayViewViewModel {
-        let media = viewModel.randomObject(at: viewModel.section(at: .display))!
+        let media = viewModel.randomObject(at: viewModel.section(at: .display))
         let viewModel = DefaultDisplayViewViewModel(with: media)
         return viewModel
     }
@@ -56,7 +56,7 @@ final class DisplayView: UIView, ViewInstantiable {
         posterImageView.contentMode = .scaleAspectFill
     }
     
-    private func configure(with viewModel: DefaultDisplayViewViewModel) {
+    func configure(with viewModel: DefaultDisplayViewViewModel) {
         AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
                                       identifier: viewModel.posterImageIdentifier)
         { [weak self] image in DispatchQueue.main.async { self?.posterImageView.image = image } }
@@ -66,5 +66,11 @@ final class DisplayView: UIView, ViewInstantiable {
         { [weak self] image in DispatchQueue.main.async { self?.logoImageView.image = image } }
         
         genresLabel.attributedText = viewModel.attributedGenres
+    }
+    
+    func reconfigure(with viewModel: DefaultHomeViewModel) {
+        let media = viewModel.randomObject(at: viewModel.section(at: .display))
+        let displayViewViewModel = DefaultDisplayViewViewModel(with: media)
+        configure(with: displayViewViewModel)
     }
 }

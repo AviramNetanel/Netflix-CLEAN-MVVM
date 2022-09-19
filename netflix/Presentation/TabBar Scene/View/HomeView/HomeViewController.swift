@@ -73,7 +73,7 @@ final class HomeViewController: UIViewController {
     private func heightForRowAt(in dataSource: DefaultTableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard let self = self else { return .zero }
-            if case .display = DefaultTableViewDataSource.Indices(rawValue: indexPath.section) {
+            if case .display = DefaultTableViewDataSource.Index(rawValue: indexPath.section) {
                 return self.view.bounds.height * 0.76
             }
             return self.view.bounds.height * 0.18

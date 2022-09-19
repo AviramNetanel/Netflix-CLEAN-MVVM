@@ -18,9 +18,11 @@ final class DisplayTableViewCell: UITableViewCell {
                        with viewModel: DefaultHomeViewModel) -> DisplayTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DisplayTableViewCell.reuseIdentifier,
                                                  for: indexPath) as! DisplayTableViewCell
-        if cell.displayView == nil {
-            cell.displayView = DisplayView.create(on: cell.contentView, with: viewModel)
+        guard cell.displayView == nil else {
+            cell.displayView.reconfigure(with: viewModel)
+            return cell
         }
+        cell.displayView = DisplayView.create(on: cell.contentView, with: viewModel)
         return cell
     }
     

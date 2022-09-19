@@ -71,7 +71,7 @@ extension DefaultTableViewCell {
     func configure(section: Section, with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
         
-        guard let indices = DefaultTableViewDataSource.Indices(rawValue: section.id) else { return }
+        guard let indices = DefaultTableViewDataSource.Index(rawValue: section.id) else { return }
         
         dataSource = .init(collectionView: collectionView,
                            section: section,
