@@ -49,34 +49,23 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
     var dataSourceDidChange: ((State) -> Void)?
     
-    static func create(on parent: UIView) -> DefaultNavigationView {
-        let view = DefaultNavigationView.instantiateSubview(onParent: parent) as! DefaultNavigationView
-        view.constraint(to: parent)
-        view.setupSubviews()
-        view.viewModel = viewModel(with: [view.homeButton,
-                                          view.airPlayButton,
-                                          view.accountButton,
-                                          view.tvShowsItemView,
-                                          view.moviesItemView,
-                                          view.categoriesItemView],
-                                   for: view.state)
-        view.setupBindings()
-        return view
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.nibDidLoad()
+        self.setupSubviews()
+        self.viewModel = viewModel(with: [self.homeButton,
+                                          self.airPlayButton,
+                                          self.accountButton,
+                                          self.tvShowsItemView,
+                                          self.moviesItemView,
+                                          self.categoriesItemView],
+                                   for: self.state)
+        self.setupBindings()
     }
     
-    private static func viewModel(with items: [NavigationViewItem],
+    private func viewModel(with items: [NavigationViewItem],
                                   for state: DefaultNavigationView.State) -> DefaultNavigationViewViewModel {
         return DefaultNavigationViewViewModel(with: items, for: state)
-    }
-    
-    private func constraint(to parent: UIView) {
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topAnchor.constraint(equalTo: parent.topAnchor),
-            leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-            trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            heightAnchor.constraint(equalToConstant: 162.0)
-        ])
     }
     
     private func setupSubviews() {
@@ -90,8 +79,8 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     private func addGradientLayer() {
         gradientView.addGradientLayer(frame: gradientView.bounds,
                                       colors:
-                                        [.black.withAlphaComponent(0.75),
-                                         .black.withAlphaComponent(0.5),
+                                        [.black.withAlphaComponent(0.9),
+                                         .black.withAlphaComponent(0.66),
                                          .clear],
                                       locations: [0.0, 0.5, 1.0])
     }
@@ -101,6 +90,7 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
             guard let self = self else { return }
             
             self.dataSourceDidChange?(state)
+            self.categoriesItemView.configure(with: state)
             
             switch state {
             case .home:

@@ -61,6 +61,7 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     private var viewModel: DefaultHomeViewModel!
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
+    var tableViewDidScroll: ((UIScrollView) -> Void)?
     
     var displayCell: DisplayTableViewCell?
     
@@ -173,6 +174,14 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView,
                    didEndDisplaying cell: UITableViewCell,
                    forRowAt indexPath: IndexPath) {}
+}
+
+// MARK: - UIScrollViewDelegate implementation
+
+extension DefaultTableViewDataSource {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        tableViewDidScroll?(scrollView)
+    }
 }
 
 // MARK: - Valuable implementation

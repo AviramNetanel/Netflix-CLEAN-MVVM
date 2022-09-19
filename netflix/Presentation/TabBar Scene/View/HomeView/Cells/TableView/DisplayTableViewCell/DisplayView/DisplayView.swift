@@ -57,6 +57,9 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     func configure(with viewModel: DefaultDisplayViewViewModel) {
+        posterImageView.image = nil
+        logoImageView.image = nil
+        
         AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
                                       identifier: viewModel.posterImageIdentifier)
         { [weak self] image in DispatchQueue.main.async { self?.posterImageView.image = image } }

@@ -79,7 +79,7 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
 
 final class NavigationViewItem: UIView {
     
-    fileprivate lazy var button: UIButton = { return UIButton(type: .system) }()
+    fileprivate(set) lazy var button: UIButton = { return UIButton(type: .system) }()
     
     private(set) var configuration: DefaultNavigationViewItemConfiguration!
     fileprivate var viewModel: DefaultNavigationViewItemViewModel!
@@ -93,5 +93,28 @@ final class NavigationViewItem: UIView {
     deinit {
         configuration = nil
         viewModel = nil
+    }
+    
+    func configure(with state: DefaultNavigationView.State) {
+        switch state {
+        case .home:
+            guard let tag = DefaultNavigationView.State(rawValue: tag) else { return }
+            switch tag {
+            case .categories:
+                button.setTitle(viewModel.title, for: .normal)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+            default: break
+            }
+        case .tvShows,
+                .movies:
+            guard let tag = DefaultNavigationView.State(rawValue: tag) else { return }
+            switch tag {
+            case .categories:
+                button.setTitle("All \(viewModel.title!)", for: .normal)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+            default: break
+            }
+        default: break
+        }
     }
 }

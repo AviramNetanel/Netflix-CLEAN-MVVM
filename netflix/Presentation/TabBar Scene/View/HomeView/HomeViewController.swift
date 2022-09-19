@@ -12,13 +12,15 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
+    @IBOutlet private(set) var navigationView: DefaultNavigationView!
+    @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     var viewModel: DefaultHomeViewModel!
     
     private(set) var dataSource: DefaultTableViewDataSource!
-    private(set) var navigationView: DefaultNavigationView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,12 +61,17 @@ final class HomeViewController: UIViewController {
     private func setupDataSource() {
         dataSource = .init(in: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
+        tableViewDidScroll(in: dataSource)
     }
     
     private func setupNavigationView() {
-        navigationView = .create(on: view)
         dataSourceDidChange(in: navigationView)
     }
+}
+
+// MARK: - Bindings
+
+extension HomeViewController {
     
     private func state(in viewModel: DefaultHomeViewModel) {
         viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
@@ -80,7 +87,7 @@ final class HomeViewController: UIViewController {
         }
     }
     
-    func dataSourceDidChange(in navigationView: DefaultNavigationView) {
+    private func dataSourceDidChange(in navigationView: DefaultNavigationView) {
         navigationView.dataSourceDidChange = { [weak self] state in
             guard let self = self else { return }
             switch state {
@@ -90,6 +97,29 @@ final class HomeViewController: UIViewController {
             default: return
             }
             self.viewModel.state.value = state == .tvShows ? .tvShows : .movies
+        }
+    }
+    
+    private func tableViewDidScroll(in dataSource: DefaultTableViewDataSource) {
+        dataSource.tableViewDidScroll = { [weak self] scrollView in
+            guard
+                let self = self,
+                let translation = scrollView
+                    .panGestureRecognizer
+                    .translation(in: self.view) as CGPoint?
+            else { return }
+            self.view.animateUsingSpring(withDuration: 0.66,
+                                         withDamping: 1.0,
+                                         initialSpringVelocity: 1.0) {
+                guard translation.y < 0 else {
+                    self.navigationViewHeightConstraint.constant = 0.0
+                    self.navigationView.alpha = 1.0
+                    return self.view.layoutIfNeeded()
+                }
+                self.navigationViewHeightConstraint.constant = -162.0
+                self.navigationView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            }
         }
     }
 }

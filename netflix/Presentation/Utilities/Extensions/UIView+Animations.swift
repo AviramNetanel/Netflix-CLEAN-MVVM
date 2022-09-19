@@ -18,4 +18,16 @@ extension UIView {
                        usingSpringWithDamping: damping,
                        initialSpringVelocity: velocity) { [unowned self] in layoutIfNeeded() }
     }
+    
+    func animateUsingSpring(withDuration duration: TimeInterval,
+                            withDamping damping: CGFloat,
+                            initialSpringVelocity velocity: CGFloat,
+                            animations: @escaping () -> Void) {
+        UIView.animate(withDuration: duration,
+                       delay: .zero,
+                       usingSpringWithDamping: damping,
+                       initialSpringVelocity: velocity,
+                       animations: animations,
+                       completion: nil)
+    }
 }
