@@ -11,21 +11,25 @@ import Foundation
 
 private protocol NavigationItemViewViewModelInput {
     var tag: Int { get }
+    var title: String! { get }
+    var image: String! { get }
 }
 
 // MARK: - NavigationItemViewViewModelOutput protocol
 
 private protocol NavigationItemViewViewModelOutput {
     func title(for tag: Int) -> String?
+    func image(for tag: Int) -> String?
 }
 
 // MARK: - NavigationItemViewViewModel protocol
 
-private protocol NavigationItemViewViewModel: NavigationItemViewViewModelInput, NavigationItemViewViewModelOutput {}
+private protocol NavigationItemViewViewModel: NavigationItemViewViewModelInput,
+                                              NavigationItemViewViewModelOutput {}
 
 // MARK: - DefaultNavigationItemViewViewModel struct
 
-struct DefaultNavigationItemViewViewModel: NavigationItemViewViewModel {
+struct DefaultNavigationViewItemViewViewModel: NavigationItemViewViewModel {
     
     let tag: Int
     var title: String!
@@ -49,7 +53,11 @@ struct DefaultNavigationItemViewViewModel: NavigationItemViewViewModel {
     
     fileprivate func image(for tag: Int) -> String? {
         guard let state = DefaultNavigationView.State(rawValue: tag) else { return nil }
-        if case .home = state { return "netflix-logo-sm" }
-        return nil
+        switch state {
+        case .home: return "netflix-logo-sm"
+        case .airPlay: return "airplayvideo"
+        case .account: return "person.circle"
+        default: return nil
+        }
     }
 }

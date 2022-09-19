@@ -102,9 +102,8 @@
 		A1AD25C228D4C61300F793B3 /* DefaultDisplayViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */; };
 		A1AD25C528D4D35700F793B3 /* DefaultNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */; };
 		A1AD25C728D55DF300F793B3 /* DefaultNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */; };
-		A1AD25C928D56BB100F793B3 /* NavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */; };
-		A1AD25CB28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */; };
-		A1AD25CD28D56BCC00F793B3 /* NavigationItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */; };
+		A1AD25C928D56BB100F793B3 /* NavigationViewItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C828D56BB100F793B3 /* NavigationViewItemView.swift */; };
+		A1AD25CB28D56BBA00F793B3 /* DefaultNavigationViewItemViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CA28D56BBA00F793B3 /* DefaultNavigationViewItemViewViewModel.swift */; };
 		A1AD25D028D6D31000F793B3 /* DefaultNavigationViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */; };
 		A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* DefaultHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* DefaultHomeViewModel.swift */; };
@@ -114,6 +113,8 @@
 		A1B3F99428C575A30042DE9F /* DefaultAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99328C575A30042DE9F /* DefaultAuthViewModel.swift */; };
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
+		A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */; };
+		A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
@@ -241,9 +242,8 @@
 		A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDisplayViewViewModel.swift; sourceTree = "<group>"; };
 		A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationView.swift; sourceTree = "<group>"; };
 		A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultNavigationView.xib; sourceTree = "<group>"; };
-		A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemView.swift; sourceTree = "<group>"; };
-		A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationItemViewViewModel.swift; sourceTree = "<group>"; };
-		A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationItemView.xib; sourceTree = "<group>"; };
+		A1AD25C828D56BB100F793B3 /* NavigationViewItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewItemView.swift; sourceTree = "<group>"; };
+		A1AD25CA28D56BBA00F793B3 /* DefaultNavigationViewItemViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationViewItemViewViewModel.swift; sourceTree = "<group>"; };
 		A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationViewViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* DefaultAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* DefaultHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHomeViewModel.swift; sourceTree = "<group>"; };
@@ -253,6 +253,8 @@
 		A1B3F99328C575A30042DE9F /* DefaultAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthViewModel.swift; sourceTree = "<group>"; };
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rendering.swift"; sourceTree = "<group>"; };
+		A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -463,7 +465,7 @@
 				A1AD25B328D3F37000F793B3 /* DefaultPanelItemViewModel.swift */,
 				A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */,
 				A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */,
-				A1AD25CA28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift */,
+				A1AD25CA28D56BBA00F793B3 /* DefaultNavigationViewItemViewViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -532,11 +534,13 @@
 		A18B993328BFC70D0077A5A6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */,
 				A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */,
 				A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */,
 				A1F56A6A28C6934B0089BD4F /* UIButton+Extension.swift */,
 				A1E81D4228D1600100D044EA /* UIColor+Extension.swift */,
 				A1AD25BB28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift */,
+				A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */,
 				A1F56A5D28C679980089BD4F /* UIView+Extension.swift */,
 				A1E81D4628D1617E00D044EA /* UIViewController */,
 				A1AD25BF28D3FC9600F793B3 /* UITableView+Register.swift */,
@@ -804,18 +808,17 @@
 			children = (
 				A1AD25C428D4D35700F793B3 /* DefaultNavigationView.swift */,
 				A1AD25C628D55DF300F793B3 /* DefaultNavigationView.xib */,
-				A1AD25CE28D56BD100F793B3 /* NavigationItemView */,
+				A1AD25CE28D56BD100F793B3 /* NavigationViewItemView */,
 			);
 			path = NavigationView;
 			sourceTree = "<group>";
 		};
-		A1AD25CE28D56BD100F793B3 /* NavigationItemView */ = {
+		A1AD25CE28D56BD100F793B3 /* NavigationViewItemView */ = {
 			isa = PBXGroup;
 			children = (
-				A1AD25C828D56BB100F793B3 /* NavigationItemView.swift */,
-				A1AD25CC28D56BCC00F793B3 /* NavigationItemView.xib */,
+				A1AD25C828D56BB100F793B3 /* NavigationViewItemView.swift */,
 			);
-			path = NavigationItemView;
+			path = NavigationViewItemView;
 			sourceTree = "<group>";
 		};
 		A1B3F98828C54F160042DE9F /* Repositories */ = {
@@ -991,7 +994,6 @@
 				A1B3F99228C5755D0042DE9F /* AuthViewController.storyboard in Resources */,
 				A1E81D3328CFF95300D044EA /* ResumableCollectionViewCell.xib in Resources */,
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
-				A1AD25CD28D56BCC00F793B3 /* NavigationItemView.xib in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1027,7 +1029,7 @@
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
 				A1AD25C528D4D35700F793B3 /* DefaultNavigationView.swift in Sources */,
 				A18B993828BFC7820077A5A6 /* UIViewController+AddBehaviors.swift in Sources */,
-				A1AD25CB28D56BBA00F793B3 /* DefaultNavigationItemViewViewModel.swift in Sources */,
+				A1AD25CB28D56BBA00F793B3 /* DefaultNavigationViewItemViewViewModel.swift in Sources */,
 				A18691DC28C8C5B50087DE3B /* MoviesRequestDTO+Mapping.swift in Sources */,
 				A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */,
 				A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */,
@@ -1044,6 +1046,7 @@
 				A18B996928C00F660077A5A6 /* MoviesRepository.swift in Sources */,
 				A18B998728C03F050077A5A6 /* CoreDataStorage.xcdatamodeld in Sources */,
 				A18B999228C0DE710077A5A6 /* APIEndpoint.swift in Sources */,
+				A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */,
 				A18B992628BEC7920077A5A6 /* HomeViewController.swift in Sources */,
 				A1AD25B228D3E3D600F793B3 /* ViewInstantiable.swift in Sources */,
 				A18B994428BFD9CC0077A5A6 /* Media.swift in Sources */,
@@ -1081,10 +1084,11 @@
 				A18691F828C95ABF0087DE3B /* MoviesResponse.swift in Sources */,
 				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
-				A1AD25C928D56BB100F793B3 /* NavigationItemView.swift in Sources */,
+				A1AD25C928D56BB100F793B3 /* NavigationViewItemView.swift in Sources */,
 				A1AD25B428D3F37000F793B3 /* DefaultPanelItemViewModel.swift in Sources */,
 				A1E81D2E28CFE79400D044EA /* TableViewHeaderFooterView.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* CoreDataAuthResponseStorage.swift in Sources */,
+				A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */,
 				A1E81D2228CFE47E00D044EA /* StandardCollectionViewCell.swift in Sources */,
 				A18B995B28BFFB500077A5A6 /* SeasonDTO+Mapping.swift in Sources */,
 				A18B995928BFF6A20077A5A6 /* MediaDTO+Mapping.swift in Sources */,

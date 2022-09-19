@@ -25,72 +25,65 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p6X-Bg-Psj" userLabel="Top Container">
                             <rect key="frame" x="0.0" y="54" width="414" height="54"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HfV-Q3-wws">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-Cf-x0R" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="8" y="7" width="40" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="HXd-A6-Imk"/>
-                                        <constraint firstAttribute="width" constant="40" id="eqH-QE-qth"/>
+                                        <constraint firstAttribute="height" constant="40" id="DM7-xw-fpX"/>
+                                        <constraint firstAttribute="width" constant="40" id="Jfb-aQ-bvC"/>
                                     </constraints>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="netflix-logo"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToK-db-XsM">
-                                    <rect key="frame" x="366" y="11" width="32" height="32"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="bZn-id-qnW"/>
-                                        <constraint firstAttribute="width" constant="32" id="p9Y-pj-svt"/>
-                                    </constraints>
-                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="person.circle" catalog="system">
-                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="22"/>
-                                    </state>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQa-Q0-iP8">
+                                </view>
+                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyM-Yo-6ZJ" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
                                     <rect key="frame" x="318" y="11" width="32" height="32"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="BaD-Ho-QBu"/>
-                                        <constraint firstAttribute="width" constant="32" id="gqV-8p-ewK"/>
+                                        <constraint firstAttribute="width" constant="32" id="b9r-xf-N2n"/>
+                                        <constraint firstAttribute="height" constant="32" id="qTv-RB-h82"/>
                                     </constraints>
-                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="airplayvideo" catalog="system">
-                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="20"/>
-                                    </state>
-                                </button>
+                                </view>
+                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-Ir-7K2" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                    <rect key="frame" x="366" y="11" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="SQi-b1-LWK"/>
+                                        <constraint firstAttribute="width" constant="32" id="T69-hO-7r8"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="HfV-Q3-wws" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="7py-uu-syc"/>
-                                <constraint firstItem="ToK-db-XsM" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="KVz-D2-Jgt"/>
-                                <constraint firstItem="ToK-db-XsM" firstAttribute="leading" secondItem="FQa-Q0-iP8" secondAttribute="trailing" constant="16" id="KXb-kI-NLW"/>
-                                <constraint firstItem="FQa-Q0-iP8" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="UVm-y3-yqy"/>
-                                <constraint firstAttribute="trailing" secondItem="ToK-db-XsM" secondAttribute="trailing" constant="16" id="ZUJ-rZ-Irx"/>
-                                <constraint firstItem="HfV-Q3-wws" firstAttribute="leading" secondItem="p6X-Bg-Psj" secondAttribute="leading" constant="8" id="wfV-bY-3gs"/>
+                                <constraint firstItem="xi4-Cf-x0R" firstAttribute="leading" secondItem="p6X-Bg-Psj" secondAttribute="leading" constant="8" id="6ZG-uE-dlY"/>
+                                <constraint firstItem="bzF-Ir-7K2" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="GqS-de-3aZ"/>
+                                <constraint firstItem="jyM-Yo-6ZJ" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="RVf-2o-hf3"/>
+                                <constraint firstItem="bzF-Ir-7K2" firstAttribute="leading" secondItem="jyM-Yo-6ZJ" secondAttribute="trailing" constant="16" id="Uix-tu-v9i"/>
+                                <constraint firstAttribute="trailing" secondItem="bzF-Ir-7K2" secondAttribute="trailing" constant="16" id="Uj8-6J-Qlt"/>
+                                <constraint firstItem="xi4-Cf-x0R" firstAttribute="centerY" secondItem="p6X-Bg-Psj" secondAttribute="centerY" id="We7-Qc-p7G"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3MW-2P-t3I" userLabel="Bottom Container">
                             <rect key="frame" x="0.0" y="108" width="414" height="54"/>
                             <subviews>
-                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-W1-okM">
-                                    <rect key="frame" x="41.5" y="0.0" width="331" height="54"/>
+                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-W1-okM">
+                                    <rect key="frame" x="31" y="0.0" width="352" height="54"/>
                                     <subviews>
-                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD" customClass="NavigationItemView" customModule="netflix" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="110.5" height="54"/>
+                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai" customClass="NavigationItemView" customModule="netflix" customModuleProvider="target">
-                                            <rect key="frame" x="110.5" y="0.0" width="110" height="54"/>
+                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                            <rect key="frame" x="117.5" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt" customClass="NavigationItemView" customModule="netflix" customModuleProvider="target">
-                                            <rect key="frame" x="220.5" y="0.0" width="110.5" height="54"/>
+                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt" customClass="NavigationViewItemView" customModule="netflix" customModuleProvider="target">
+                                            <rect key="frame" x="235" y="0.0" width="117" height="54"/>
                                         </view>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="oaQ-J8-Kai" firstAttribute="width" secondItem="hup-KA-ylD" secondAttribute="width" id="0Cf-YS-lDk"/>
+                                        <constraint firstItem="hup-KA-ylD" firstAttribute="width" secondItem="dtf-W1-okM" secondAttribute="width" multiplier="0.333807" id="dZD-4c-6C9"/>
+                                        <constraint firstItem="oaQ-J8-Kai" firstAttribute="height" secondItem="dtf-W1-okM" secondAttribute="height" id="jGm-cj-XzK"/>
+                                    </constraints>
                                 </stackView>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="dtf-W1-okM" firstAttribute="top" secondItem="3MW-2P-t3I" secondAttribute="top" id="3cw-0h-XZD"/>
                                 <constraint firstAttribute="bottom" secondItem="dtf-W1-okM" secondAttribute="bottom" id="R6T-Yv-JAb"/>
                                 <constraint firstItem="dtf-W1-okM" firstAttribute="centerX" secondItem="3MW-2P-t3I" secondAttribute="centerX" id="e9E-dU-X7G"/>
-                                <constraint firstItem="dtf-W1-okM" firstAttribute="width" secondItem="3MW-2P-t3I" secondAttribute="width" multiplier="0.8" id="zbH-mN-Heg"/>
+                                <constraint firstItem="dtf-W1-okM" firstAttribute="width" secondItem="3MW-2P-t3I" secondAttribute="width" multiplier="0.85" id="zbH-mN-Heg"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -114,19 +107,18 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="accountButton" destination="bzF-Ir-7K2" id="nQU-c5-49T"/>
+                <outlet property="airPlayButton" destination="jyM-Yo-6ZJ" id="fGz-O4-QqO"/>
                 <outlet property="categoriesItemView" destination="cNO-pR-kSt" id="Czw-cA-tf4"/>
                 <outlet property="gradientView" destination="f6v-Ra-O22" id="Ex2-Yj-1KJ"/>
-                <outlet property="homeButton" destination="HfV-Q3-wws" id="Zjk-n3-cJc"/>
+                <outlet property="homeButton" destination="xi4-Cf-x0R" id="ohi-Qq-Xt6"/>
                 <outlet property="itemsCenterXConstraint" destination="e9E-dU-X7G" id="G2z-Ok-RUB"/>
                 <outlet property="moviesItemView" destination="oaQ-J8-Kai" id="7SS-6a-hTL"/>
+                <outlet property="stackView" destination="dtf-W1-okM" id="5MS-wl-BnG"/>
+                <outlet property="stackViewWidthConstraint" destination="zbH-mN-Heg" id="MXy-XC-BDg"/>
                 <outlet property="tvShowsItemView" destination="hup-KA-ylD" id="nc2-82-R2N"/>
             </connections>
             <point key="canvasLocation" x="-45" y="108"/>
         </view>
     </objects>
-    <resources>
-        <image name="airplayvideo" catalog="system" width="128" height="98"/>
-        <image name="netflix-logo" width="360" height="360"/>
-        <image name="person.circle" catalog="system" width="128" height="121"/>
-    </resources>
 </document>

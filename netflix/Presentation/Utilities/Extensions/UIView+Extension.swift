@@ -29,3 +29,18 @@ extension UIView {
         self.layer.addSublayer(gradient)
     }
 }
+
+// MARK: - UIView + isHidden
+
+extension UIView {
+    func isHidden(_ hidden: Bool) {
+        guard !hidden else {
+            isHidden = true
+            alpha = 0.0
+            return
+        }
+        isHidden = false
+        alpha = 1.0
+    }
+}
+

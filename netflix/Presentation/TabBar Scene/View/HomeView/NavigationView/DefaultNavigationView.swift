@@ -26,30 +26,36 @@ private protocol NavigationView: NavigationViewInput, NavigationViewOutput {}
 final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
     @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private weak var homeButton: UIButton!
-    @IBOutlet private weak var tvShowsItemView: NavigationItemView!
-    @IBOutlet private weak var moviesItemView: NavigationItemView!
-    @IBOutlet private weak var categoriesItemView: NavigationItemView!
+    @IBOutlet private weak var homeButton: NavigationViewItemView!
+    @IBOutlet private weak var airPlayButton: NavigationViewItemView!
+    @IBOutlet private weak var accountButton: NavigationViewItemView!
+    @IBOutlet private weak var tvShowsItemView: NavigationViewItemView!
+    @IBOutlet private weak var moviesItemView: NavigationViewItemView!
+    @IBOutlet private weak var categoriesItemView: NavigationViewItemView!
     @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var stackViewWidthConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: DefaultNavigationViewViewModel!
     
     fileprivate var state: State = .tvShows
     
     enum State: Int, CaseIterable {
-        case home = 0
-        case tvShows = 3
-        case movies = 4
-        case categories = 5
-//        case tvShowsCategories
-//        case moviesCategories
+        case home
+        case airPlay
+        case account
+        case tvShows
+        case movies
+        case categories
     }
     
     static func create(on parent: UIView) -> DefaultNavigationView {
         let view = DefaultNavigationView.instantiateSubview(onParent: parent) as! DefaultNavigationView
         view.constraint(to: parent)
         view.setupSubviews()
-        view.viewModel = viewModel(with: [//view.homeButton,
+        view.viewModel = viewModel(with: [view.homeButton,
+                                          view.airPlayButton,
+                                          view.accountButton,
                                           view.tvShowsItemView,
                                           view.moviesItemView,
                                           view.categoriesItemView],
@@ -58,10 +64,9 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
         return view
     }
     
-    private static func viewModel(with items: [NavigationItemView],
+    private static func viewModel(with items: [NavigationViewItemView],
                                   for state: DefaultNavigationView.State) -> DefaultNavigationViewViewModel {
-        let viewModel = DefaultNavigationViewViewModel(with: items, for: state)
-        return viewModel
+        return DefaultNavigationViewViewModel(with: items, for: state)
     }
     
     private func constraint(to parent: UIView) {
@@ -96,21 +101,41 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
             guard let self = self else { return }
             switch state {
             case .home:
-                print(11)
-            case .tvShows:
-                self.itemsCenterXConstraint.constant = -32.0
-                self.moviesItemView.isHidden = true
-                self.categoriesItemView.isHidden = true
-            case .movies:
+                self.tvShowsItemView.isHidden(false)
+                self.moviesItemView.isHidden(false)
+                self.categoriesItemView.isHidden(false)
                 self.itemsCenterXConstraint.constant = .zero
-                self.moviesItemView.isHidden = false
-                self.categoriesItemView.isHidden = false
+            case .airPlay:
+                break
+            case .account:
+                break
+            case .tvShows:
+                self.tvShowsItemView.isHidden(false)
+                self.moviesItemView.isHidden(true)
+                self.categoriesItemView.isHidden(false)
+                self.itemsCenterXConstraint.constant = -24.0
+            case .movies:
+                self.tvShowsItemView.isHidden(true)
+                self.moviesItemView.isHidden(false)
+                self.categoriesItemView.isHidden(false)
+                self.itemsCenterXConstraint.constant = -32.0
             case .categories:
                 break
             }
-            UIView.animate(withDuration: 0.33, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7) {
-                self.layoutIfNeeded()
-            }
+            
+            self.animateUsingSpring(withDuration: 0.33,
+                                    withDamping: 0.7,initialSpringVelocity: 0.7)
         }
+    }
+}
+
+extension UIView {
+    func animateUsingSpring(withDuration duration: TimeInterval,
+                            withDamping damping: CGFloat,
+                            initialSpringVelocity velocity: CGFloat) {
+        UIView.animate(withDuration: duration,
+                       delay: .zero,
+                       usingSpringWithDamping: damping,
+                       initialSpringVelocity: velocity) { [unowned self] in layoutIfNeeded() }
     }
 }
