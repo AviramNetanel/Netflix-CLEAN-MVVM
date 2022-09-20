@@ -27,12 +27,10 @@ private protocol HomeViewModelInput {
     func viewDidLoad()
     func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void)
     func filter(sections: [Section])
-    func filter(sections: [Section], at index: Int)
-    func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
+    func filter(sections: [Section], at index: Int, withMinimumRating value: Float?)
     func section(at index: DefaultTableViewDataSource.Index) -> Section
     func randomObject(at section: Section) -> Media
     func titleForHeader(at index: Int) -> String
-    func didSelectItem(at index: Int)
     func presentedDisplayMediaDidChange()
 }
 
@@ -122,19 +120,19 @@ extension DefaultHomeViewModel {
             }
         }
     }
-
-    func filter(sections: [Section], at index: Int) {
-        sections[index].tvshows = sections.first!.tvshows!.filter {
-            $0.genres.contains(sections[index].title)
-        }
-        sections[index].movies = sections.first!.movies!.filter {
-            $0.genres.contains(sections[index].title)
-        }
-    }
     
     func filter(sections: [Section],
                 at index: Int,
-                withMinimumRating value: Float) {
+                withMinimumRating value: Float? = nil) {
+        guard let value = value else {
+            sections[index].tvshows = sections.first!.tvshows!.filter {
+                $0.genres.contains(sections[index].title)
+            }
+            sections[index].movies = sections.first!.movies!.filter {
+                $0.genres.contains(sections[index].title)
+            }
+            return
+        }
         sections[index].tvshows = sections.first!.tvshows!.filter { $0.rating > value }
         sections[index].movies = sections.first!.movies!.filter { $0.rating > value }
     }
@@ -152,8 +150,6 @@ extension DefaultHomeViewModel {
     func titleForHeader(at index: Int) -> String {
         return .init(describing: sections.value[index].title)
     }
-    
-    func didSelectItem(at index: Int) {}
     
     func presentedDisplayMediaDidChange() {
         let media = randomObject(at: section(at: .display))
