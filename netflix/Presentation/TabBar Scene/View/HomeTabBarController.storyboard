@@ -48,6 +48,10 @@
                                     <constraint firstAttribute="height" constant="162" id="vZM-Eo-uVL"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1in-fI-3Js" customClass="DefaultCategoriesOverlayView" customModule="netflix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="t3a-Eo-3Gq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -56,6 +60,10 @@
                             <constraint firstItem="uGu-Ie-jYU" firstAttribute="leading" secondItem="t3a-Eo-3Gq" secondAttribute="leading" id="SBJ-n4-P8o"/>
                             <constraint firstItem="4My-Bp-qqa" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" constant="-162" id="SSs-Pf-MtQ"/>
                             <constraint firstItem="uGu-Ie-jYU" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" id="U3I-dV-hQH"/>
+                            <constraint firstItem="1in-fI-3Js" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" id="W36-VX-D6p"/>
+                            <constraint firstItem="t3a-Eo-3Gq" firstAttribute="bottom" secondItem="1in-fI-3Js" secondAttribute="bottom" id="Wtp-h0-v1b"/>
+                            <constraint firstItem="1in-fI-3Js" firstAttribute="leading" secondItem="t3a-Eo-3Gq" secondAttribute="leading" id="YRg-Vu-dus"/>
+                            <constraint firstItem="t3a-Eo-3Gq" firstAttribute="trailing" secondItem="1in-fI-3Js" secondAttribute="trailing" id="hBH-8D-sAC"/>
                             <constraint firstItem="t3a-Eo-3Gq" firstAttribute="bottom" secondItem="uGu-Ie-jYU" secondAttribute="bottom" id="ioZ-ro-Lpb"/>
                             <constraint firstItem="t3a-Eo-3Gq" firstAttribute="trailing" secondItem="4My-Bp-qqa" secondAttribute="trailing" id="tES-pB-atA"/>
                             <constraint firstItem="t3a-Eo-3Gq" firstAttribute="trailing" secondItem="uGu-Ie-jYU" secondAttribute="trailing" id="yKE-b6-Fyu"/>
@@ -63,6 +71,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="g4D-sf-r5G"/>
                     <connections>
+                        <outlet property="categoriesOverlayView" destination="1in-fI-3Js" id="VYR-wN-iv9"/>
                         <outlet property="navigationView" destination="4My-Bp-qqa" id="QIB-PK-4DN"/>
                         <outlet property="navigationViewHeightConstraint" destination="SSs-Pf-MtQ" id="9oX-hc-csw"/>
                         <outlet property="tableView" destination="uGu-Ie-jYU" id="n1A-En-7Co"/>

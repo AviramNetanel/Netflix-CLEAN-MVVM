@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  DefaultHomeViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/09/2022.
@@ -33,6 +33,7 @@ private protocol HomeViewModelInput {
     func randomObject(at section: Section) -> Media
     func titleForHeader(at index: Int) -> String
     func didSelectItem(at index: Int)
+    func presentedDisplayMediaDidChange()
 }
 
 // MARK: - HomeViewModelOutput protocol
@@ -41,6 +42,8 @@ private protocol HomeViewModelOutput {
     var state: Observable<DefaultTableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
     var isEmpty: Bool { get }
+    var presentedDisplayMedia: Observable<Media?> { get }
+    
     var presentNavigationView: (() -> Void)? { get }
 }
 
@@ -65,6 +68,8 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     var presentNavigationView: (() -> Void)?
     
+    var presentedDisplayMedia: Observable<Media?> = Observable(nil)
+    
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
         self.homeUseCase = homeUseCase
@@ -75,13 +80,9 @@ final class DefaultHomeViewModel: HomeViewModel {
         task = nil
     }
     
-    func removeObservers() {
-        printIfDebug("Removed `DefaultHomeViewModel` observers.")
-        state.remove(observer: self)
-    }
-    
-    private func execute() {
+    private func present() {
         presentNavigationView?()
+        // Main entry-point for tableview
         state.value = .tvShows
     }
 }
@@ -97,6 +98,7 @@ extension DefaultHomeViewModel {
     func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void) {
         sections.value = response.data
         filter(sections: sections.value)
+        
         completion()
     }
     
@@ -152,6 +154,11 @@ extension DefaultHomeViewModel {
     }
     
     func didSelectItem(at index: Int) {}
+    
+    func presentedDisplayMediaDidChange() {
+        let media = randomObject(at: section(at: .display))
+        presentedDisplayMedia.value = media
+    }
 }
 
 // MARK: - HomeViewModelEndpoints implementation
@@ -162,7 +169,7 @@ fileprivate extension DefaultHomeViewModel {
         task = homeUseCase.executeSections { [weak self] result in
             guard let self = self else { return }
             if case let .success(response) = result {
-                self.dataDidLoad(response: response) { [weak self] in self?.execute() }
+                self.dataDidLoad(response: response) { [weak self] in self?.present() }
             }
         }
     }

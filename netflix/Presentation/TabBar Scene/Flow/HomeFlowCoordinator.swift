@@ -47,7 +47,7 @@ final class HomeFlowCoordinator {
         let homeViewController = (viewController as? HomeViewController)
         let panelView = homeViewController?.dataSource?.displayCell?.displayView?.panelView
         let navigationView = homeViewController?.navigationView
-        homeViewController?.viewModel?.removeObservers()
+        homeViewController?.removeObservers()
         panelView?.removeObservers()
         navigationView?.viewModel?.removeObservers()
     }

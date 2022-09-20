@@ -14,6 +14,7 @@ final class HomeViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private(set) var navigationView: DefaultNavigationView!
     @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var categoriesOverlayView: DefaultCategoriesOverlayView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -56,6 +57,7 @@ final class HomeViewController: UIViewController {
     private func setupBindings() {
         state(in: viewModel)
         presentNavigationView(in: viewModel)
+        presentedDisplayMedia(in: viewModel)
     }
     
     private func setupDataSource() {
@@ -67,15 +69,22 @@ final class HomeViewController: UIViewController {
     private func setupNavigationView() {
         dataSourceDidChange(in: navigationView)
     }
+    
+    private func setupSubviewsDependencies() {
+        DefaultOpaqueView.createViewModel(on: categoriesOverlayView.opaqueView,
+                                          with: viewModel)
+    }
+    
+    func removeObservers() {
+        printIfDebug("Removed `DefaultHomeViewModel` observers.")
+        viewModel.state.remove(observer: self)
+        viewModel.presentedDisplayMedia.remove(observer: self)
+    }
 }
 
 // MARK: - Bindings
 
 extension HomeViewController {
-    
-    private func state(in viewModel: DefaultHomeViewModel) {
-        viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
-    }
     
     private func heightForRowAt(in dataSource: DefaultTableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
@@ -132,5 +141,18 @@ extension HomeViewController {
                                          withDamping: 1.0,
                                          initialSpringVelocity: 1.0)
         }
+    }
+}
+
+// MARK: - DefaultHomeViewModel Observers
+
+extension HomeViewController {
+    
+    private func state(in viewModel: DefaultHomeViewModel) {
+        viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
+    }
+    
+    private func presentedDisplayMedia(in viewModel: DefaultHomeViewModel) {
+        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] _ in self?.setupSubviewsDependencies() }
     }
 }

@@ -18,9 +18,12 @@ final class DisplayTableViewCell: UITableViewCell {
                        with viewModel: DefaultHomeViewModel) -> DisplayTableViewCell {
         let view = tableView.dequeueReusableCell(withIdentifier: DisplayTableViewCell.reuseIdentifier,
                                                 for: indexPath) as! DisplayTableViewCell
-        let media = viewModel.randomObject(at: viewModel.section(at: .display))
-        let displayViewViewModel = DefaultDisplayViewViewModel(with: media)
+        
+        viewModel.presentedDisplayMediaDidChange()
+        
+        let displayViewViewModel = DefaultDisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
         view.displayView.viewModel = displayViewViewModel
+        
         return view
     }
 }

@@ -117,6 +117,12 @@
 		A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */; };
 		A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */; };
 		A1BA1DA928D9315E00730EA8 /* DisplayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1BA1DA828D9315E00730EA8 /* DisplayTableViewCell.xib */; };
+		A1BA1DAC28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */; };
+		A1BA1DAE28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */; };
+		A1BA1DB028DA074400730EA8 /* DefaultOpaqueView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1BA1DAF28DA074400730EA8 /* DefaultOpaqueView.xib */; };
+		A1BA1DB528DA205400730EA8 /* DefaultOpaqueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB428DA205400730EA8 /* DefaultOpaqueView.swift */; };
+		A1BA1DB728DA209700730EA8 /* DefaultOpaqueViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB628DA209700730EA8 /* DefaultOpaqueViewViewModel.swift */; };
+		A1BA1DB928DA20CA00730EA8 /* DefaultCategoriesViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB828DA20CA00730EA8 /* DefaultCategoriesViewViewModel.swift */; };
 		A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0828CFE16900D044EA /* Mutable.swift */; };
 		A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0A28CFE16E00D044EA /* Orientable.swift */; };
 		A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D0C28CFE17100D044EA /* Reusable.swift */; };
@@ -259,6 +265,12 @@
 		A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
 		A1BA1DA828D9315E00730EA8 /* DisplayTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisplayTableViewCell.xib; sourceTree = "<group>"; };
+		A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCategoriesOverlayView.swift; sourceTree = "<group>"; };
+		A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultCategoriesOverlayView.xib; sourceTree = "<group>"; };
+		A1BA1DAF28DA074400730EA8 /* DefaultOpaqueView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultOpaqueView.xib; sourceTree = "<group>"; };
+		A1BA1DB428DA205400730EA8 /* DefaultOpaqueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOpaqueView.swift; sourceTree = "<group>"; };
+		A1BA1DB628DA209700730EA8 /* DefaultOpaqueViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOpaqueViewViewModel.swift; sourceTree = "<group>"; };
+		A1BA1DB828DA20CA00730EA8 /* DefaultCategoriesViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCategoriesViewViewModel.swift; sourceTree = "<group>"; };
 		A1E81D0828CFE16900D044EA /* Mutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutable.swift; sourceTree = "<group>"; };
 		A1E81D0A28CFE16E00D044EA /* Orientable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientable.swift; sourceTree = "<group>"; };
 		A1E81D0C28CFE17100D044EA /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -313,6 +325,7 @@
 				A18B992528BEC7920077A5A6 /* HomeViewController.swift */,
 				A1E81D1028CFE2B300D044EA /* Cells */,
 				A1AD25C328D4D25400F793B3 /* NavigationView */,
+				A1BA1DAA28D9D3D500730EA8 /* CategoriesOverlayView */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -470,6 +483,8 @@
 				A1AD25C128D4C61300F793B3 /* DefaultDisplayViewViewModel.swift */,
 				A1AD25CF28D6D31000F793B3 /* DefaultNavigationViewViewModel.swift */,
 				A1AD25CA28D56BBA00F793B3 /* DefaultNavigationViewItemViewModel.swift */,
+				A1BA1DB828DA20CA00730EA8 /* DefaultCategoriesViewViewModel.swift */,
+				A1BA1DB628DA209700730EA8 /* DefaultOpaqueViewViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -854,6 +869,25 @@
 			path = SignInView;
 			sourceTree = "<group>";
 		};
+		A1BA1DAA28D9D3D500730EA8 /* CategoriesOverlayView */ = {
+			isa = PBXGroup;
+			children = (
+				A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */,
+				A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */,
+				A1BA1DB128DA203200730EA8 /* OpaqueView */,
+			);
+			path = CategoriesOverlayView;
+			sourceTree = "<group>";
+		};
+		A1BA1DB128DA203200730EA8 /* OpaqueView */ = {
+			isa = PBXGroup;
+			children = (
+				A1BA1DB428DA205400730EA8 /* DefaultOpaqueView.swift */,
+				A1BA1DAF28DA074400730EA8 /* DefaultOpaqueView.xib */,
+			);
+			path = OpaqueView;
+			sourceTree = "<group>";
+		};
 		A1E81D1028CFE2B300D044EA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -993,6 +1027,7 @@
 				A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */,
 				A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */,
 				A1AD25C728D55DF300F793B3 /* DefaultNavigationView.xib in Resources */,
+				A1BA1DB028DA074400730EA8 /* DefaultOpaqueView.xib in Resources */,
 				A18B990828BEB62E0077A5A6 /* LaunchScreen.storyboard in Resources */,
 				A1AD25A828D2A4E900F793B3 /* PanelView.xib in Resources */,
 				A1AD25AF28D3C47500F793B3 /* DefaultPanelViewItem.xib in Resources */,
@@ -1002,6 +1037,7 @@
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
 				A1BA1DA928D9315E00730EA8 /* DisplayTableViewCell.xib in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
+				A1BA1DAE28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1029,6 +1065,7 @@
 				A18B995D28BFFBF30077A5A6 /* EpisodeDTO+Mapping.swift in Sources */,
 				A18691EE28C958140087DE3B /* TVShowsRequest.swift in Sources */,
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
+				A1BA1DAC28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift in Sources */,
 				A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */,
 				A186921628CA2D100087DE3B /* DefaultTableViewCellItemViewModel.swift in Sources */,
 				A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */,
@@ -1047,6 +1084,7 @@
 				A18691D828C8C1EE0087DE3B /* HomeTabBarController.swift in Sources */,
 				A1F56A6B28C6934B0089BD4F /* UIButton+Extension.swift in Sources */,
 				A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */,
+				A1BA1DB728DA209700730EA8 /* DefaultOpaqueViewViewModel.swift in Sources */,
 				A1AD25A228D29A1000F793B3 /* DisplayView.swift in Sources */,
 				A18B996B28C00F6E0077A5A6 /* AuthRepository.swift in Sources */,
 				A1AD25C228D4C61300F793B3 /* DefaultDisplayViewViewModel.swift in Sources */,
@@ -1079,10 +1117,12 @@
 				A1E81D4128D15F4500D044EA /* UIViewController+Extension.swift in Sources */,
 				A186923D28CAD45A0087DE3B /* AsyncImageFetcher.swift in Sources */,
 				A1B3F98A28C54F510042DE9F /* DefaultAuthRepository.swift in Sources */,
+				A1BA1DB528DA205400730EA8 /* DefaultOpaqueView.swift in Sources */,
 				A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */,
 				A18691CB28C7B6100087DE3B /* TVShowsRequestDTO+Mapping.swift in Sources */,
 				A18691DE28C8C5C40087DE3B /* MoviesResponseDTO+Mapping.swift in Sources */,
 				A18B996028BFFCA80077A5A6 /* Sectionable.swift in Sources */,
+				A1BA1DB928DA20CA00730EA8 /* DefaultCategoriesViewViewModel.swift in Sources */,
 				A18B98FC28BEB62C0077A5A6 /* AppDelegate.swift in Sources */,
 				A18B998D28C0426E0077A5A6 /* RepositoryTask.swift in Sources */,
 				A1B3F98C28C55B500042DE9F /* DefaultHomeViewModel.swift in Sources */,
