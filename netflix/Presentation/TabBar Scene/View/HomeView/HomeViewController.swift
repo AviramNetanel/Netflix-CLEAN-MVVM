@@ -21,7 +21,6 @@ final class HomeViewController: UIViewController {
     
     private(set) var dataSource: DefaultTableViewDataSource!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
@@ -56,6 +55,7 @@ final class HomeViewController: UIViewController {
     
     private func setupBindings() {
         state(in: viewModel)
+        presentNavigationView(in: viewModel)
     }
     
     private func setupDataSource() {
@@ -83,7 +83,7 @@ extension HomeViewController {
             if case .display = DefaultTableViewDataSource.Index(rawValue: indexPath.section) {
                 return self.view.bounds.height * 0.76
             }
-            return self.view.bounds.height * 0.18
+            return self.view.bounds.height * 0.19
         }
     }
     
@@ -120,6 +120,17 @@ extension HomeViewController {
                 self.navigationView.alpha = 0.0
                 self.view.layoutIfNeeded()
             }
+        }
+    }
+    
+    private func presentNavigationView(in viewModel: DefaultHomeViewModel) {
+        viewModel.presentNavigationView = { [weak self] in
+            guard let self = self else { return }
+            self.navigationViewHeightConstraint.constant = 0.0
+            self.navigationView.alpha = 1.0
+            self.view.animateUsingSpring(withDuration: 0.66,
+                                         withDamping: 1.0,
+                                         initialSpringVelocity: 1.0)
         }
     }
 }

@@ -63,7 +63,7 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     var tableViewDidScroll: ((UIScrollView) -> Void)?
     
-    var displayCell: DisplayTableViewCell?
+    private(set) var displayCell: DisplayTableViewCell!
     
     init(in tableView: UITableView, with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
@@ -90,7 +90,7 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     
     fileprivate func viewsDidRegister() {
         tableView.register(headerFooter: TableViewHeaderFooterView.self)
-        tableView.register(class: DisplayTableViewCell.self)
+        tableView.register(nib: DisplayTableViewCell.self)
         tableView.register(class: RatableTableViewCell.self)
         tableView.register(class: ResumableTableViewCell.self)
         
@@ -125,11 +125,11 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         switch index {
         case .display:
-            guard displayCell == nil else { return displayCell! }
-            displayCell = DisplayTableViewCell.create(in: tableView,
-                                               for: indexPath,
-                                               with: viewModel)
-            return displayCell!
+            guard displayCell == nil else { return displayCell }
+            displayCell = .create(in: tableView,
+                                  for: indexPath,
+                                  with: viewModel)
+            return displayCell
         case .ratable:
             return RatableTableViewCell.create(in: tableView,
                                                for: indexPath,

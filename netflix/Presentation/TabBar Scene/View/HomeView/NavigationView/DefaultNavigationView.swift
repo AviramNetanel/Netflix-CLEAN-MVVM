@@ -15,7 +15,9 @@ private protocol NavigationViewInput {
 
 // MARK: - NavigationViewOutput protocol
 
-private protocol NavigationViewOutput {}
+private protocol NavigationViewOutput {
+    var dataSourceDidChange: ((DefaultNavigationView.State) -> Void)? { get }
+}
 
 // MARK: - NavigationView protocol
 
@@ -25,7 +27,7 @@ private protocol NavigationView: NavigationViewInput, NavigationViewOutput {}
 
 final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
-    enum State: Int, CaseIterable {
+    enum State: Int {
         case home
         case airPlay
         case account
@@ -79,8 +81,8 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     private func addGradientLayer() {
         gradientView.addGradientLayer(frame: gradientView.bounds,
                                       colors:
-                                        [.black.withAlphaComponent(0.9),
-                                         .black.withAlphaComponent(0.66),
+                                        [.black.withAlphaComponent(0.75),
+                                         .black.withAlphaComponent(0.5),
                                          .clear],
                                       locations: [0.0, 0.5, 1.0])
     }

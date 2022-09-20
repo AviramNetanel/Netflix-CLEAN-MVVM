@@ -63,7 +63,7 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
                 .whiteRendering(with: symbolConfiguration)
             item.button.setImage(image, for: .normal)
         default:
-            item.button.titleLabel?.tintColor = .white
+            item.button.setTitleColor(.white, for: .normal)
             item.button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
             item.button.setTitle(item.viewModel.title, for: .normal)
         }

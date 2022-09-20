@@ -46,6 +46,7 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: UIC
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.backgroundColor = .black
         self.constraintSubviews()
     }
     

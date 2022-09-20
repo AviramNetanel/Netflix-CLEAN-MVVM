@@ -25,7 +25,7 @@ private protocol HomeViewModelEndpoints {
 
 private protocol HomeViewModelInput {
     func viewDidLoad()
-    func dataDidLoad(response: SectionsResponse)
+    func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void)
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int)
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float)
@@ -41,11 +41,14 @@ private protocol HomeViewModelOutput {
     var state: Observable<DefaultTableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
     var isEmpty: Bool { get }
+    var presentNavigationView: (() -> Void)? { get }
 }
 
 // MARK: - HomeViewModel protocol
 
-private protocol HomeViewModel: HomeViewModelInput, HomeViewModelOutput, HomeViewModelEndpoints {}
+private protocol HomeViewModel: HomeViewModelInput,
+                                HomeViewModelOutput,
+                                HomeViewModelEndpoints {}
 
 // MARK: - HomeViewModel class
 
@@ -59,6 +62,8 @@ final class DefaultHomeViewModel: HomeViewModel {
     fileprivate(set) var state: Observable<DefaultTableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
+    
+    var presentNavigationView: (() -> Void)?
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -74,6 +79,11 @@ final class DefaultHomeViewModel: HomeViewModel {
         printIfDebug("Removed `DefaultHomeViewModel` observers.")
         state.remove(observer: self)
     }
+    
+    private func execute() {
+        presentNavigationView?()
+        state.value = .tvShows
+    }
 }
 
 // MARK: - HomeViewModelInput implementation
@@ -84,10 +94,10 @@ extension DefaultHomeViewModel {
         getSections()
     }
     
-    func dataDidLoad(response: SectionsResponse) {
+    func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void) {
         sections.value = response.data
         filter(sections: sections.value)
-        state.value = .tvShows
+        completion()
     }
     
     func filter(sections: [Section]) {
@@ -151,7 +161,9 @@ fileprivate extension DefaultHomeViewModel {
     func getSections() {
         task = homeUseCase.executeSections { [weak self] result in
             guard let self = self else { return }
-            if case let .success(response) = result { self.dataDidLoad(response: response) }
+            if case let .success(response) = result {
+                self.dataDidLoad(response: response) { [weak self] in self?.execute() }
+            }
         }
     }
     

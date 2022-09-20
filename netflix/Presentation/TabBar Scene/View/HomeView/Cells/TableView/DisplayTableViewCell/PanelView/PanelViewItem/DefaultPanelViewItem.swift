@@ -90,13 +90,13 @@ private protocol PanelViewItem: PanelViewItemInput, PanelViewItemOutput {}
 
 final class DefaultPanelViewItem: UIView, PanelViewItem, ViewInstantiable {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private(set) weak var titleLabel: UILabel!
+    @IBOutlet private(set) weak var imageView: UIImageView!
     
     var isSelected = false
     
-    var configuration: DefaultPanelViewItemConfiguration!
-    var viewModel: DefaultPanelItemViewModel!
+    private(set) var configuration: DefaultPanelViewItemConfiguration!
+    private(set) var viewModel: DefaultPanelItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

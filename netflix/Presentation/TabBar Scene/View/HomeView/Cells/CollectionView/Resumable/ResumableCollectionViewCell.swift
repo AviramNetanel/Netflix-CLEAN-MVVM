@@ -17,6 +17,7 @@ final class ResumableCollectionViewCell: DefaultCollectionViewCell {
     @IBOutlet private(set) weak var lengthLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
     @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var progressView: UIProgressView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,6 +26,7 @@ final class ResumableCollectionViewCell: DefaultCollectionViewCell {
     
     private func setupSubviews() {
         setupPlayButton()
+        setupProgressView()
         setupGradient()
     }
     
@@ -32,6 +34,11 @@ final class ResumableCollectionViewCell: DefaultCollectionViewCell {
         playButton.layer.borderWidth = 2.0
         playButton.layer.borderColor = UIColor.white.cgColor
         playButton.layer.cornerRadius = playButton.bounds.size.height / 2
+    }
+    
+    private func setupProgressView() {
+        progressView.layer.cornerRadius = 2.0
+        progressView.clipsToBounds = true
     }
     
     private func setupGradient() {

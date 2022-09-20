@@ -18,27 +18,17 @@ final class DisplayView: UIView, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelView: PanelView!
     
-    private var viewModel: DefaultDisplayViewViewModel!
+    var viewModel: DefaultDisplayViewViewModel! { didSet { configure(with: viewModel) } }
     
     deinit {
         bottomGradientView = nil
         viewModel = nil
     }
     
-    static func create(on parent: UIView,
-                       with viewModel: DefaultHomeViewModel) -> DisplayView {
-        let displayView = DisplayView.instantiateSubview(onParent: parent) as! DisplayView
-        let displayViewViewModel = self.viewModel(with: viewModel)
-        displayView.viewModel = displayViewViewModel
-        displayView.setupSubviews()
-        displayView.configure(with: displayViewViewModel)
-        return displayView
-    }
-    
-    private static func viewModel(with viewModel: DefaultHomeViewModel) -> DefaultDisplayViewViewModel {
-        let media = viewModel.randomObject(at: viewModel.section(at: .display))
-        let viewModel = DefaultDisplayViewViewModel(with: media)
-        return viewModel
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.nibDidLoad()
+        setupSubviews()
     }
     
     private func setupSubviews() {
@@ -56,9 +46,10 @@ final class DisplayView: UIView, ViewInstantiable {
         posterImageView.contentMode = .scaleAspectFill
     }
     
-    func configure(with viewModel: DefaultDisplayViewViewModel) {
+    private func configure(with viewModel: DefaultDisplayViewViewModel) {
         posterImageView.image = nil
         logoImageView.image = nil
+        genresLabel.attributedText = nil
         
         AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
                                       identifier: viewModel.posterImageIdentifier)
@@ -69,11 +60,5 @@ final class DisplayView: UIView, ViewInstantiable {
         { [weak self] image in DispatchQueue.main.async { self?.logoImageView.image = image } }
         
         genresLabel.attributedText = viewModel.attributedGenres
-    }
-    
-    func reconfigure(with viewModel: DefaultHomeViewModel) {
-        let media = viewModel.randomObject(at: viewModel.section(at: .display))
-        let displayViewViewModel = DefaultDisplayViewViewModel(with: media)
-        configure(with: displayViewViewModel)
     }
 }

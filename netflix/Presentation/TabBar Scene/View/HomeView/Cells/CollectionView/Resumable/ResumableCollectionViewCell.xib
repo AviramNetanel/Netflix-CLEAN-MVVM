@@ -134,6 +134,7 @@
                 <outlet property="logoImageView" destination="WMA-D1-9cD" id="b48-C1-w4E"/>
                 <outlet property="placeholderLabel" destination="5Rz-xs-vlL" id="tO1-bZ-66j"/>
                 <outlet property="playButton" destination="IQb-X0-Wac" id="2E1-M0-0Zc"/>
+                <outlet property="progressView" destination="DFV-z6-B4a" id="jbv-DA-rl5"/>
             </connections>
             <point key="canvasLocation" x="269.56521739130437" y="32.8125"/>
         </collectionViewCell>

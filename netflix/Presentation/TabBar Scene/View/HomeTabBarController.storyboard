@@ -42,8 +42,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa" customClass="DefaultNavigationView" customModule="netflix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="162"/>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa" customClass="DefaultNavigationView" customModule="netflix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="-162" width="414" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="162" id="vZM-Eo-uVL"/>
                                 </constraints>
@@ -54,7 +54,7 @@
                         <constraints>
                             <constraint firstItem="4My-Bp-qqa" firstAttribute="leading" secondItem="t3a-Eo-3Gq" secondAttribute="leading" id="0SR-MW-wD7"/>
                             <constraint firstItem="uGu-Ie-jYU" firstAttribute="leading" secondItem="t3a-Eo-3Gq" secondAttribute="leading" id="SBJ-n4-P8o"/>
-                            <constraint firstItem="4My-Bp-qqa" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" id="SSs-Pf-MtQ"/>
+                            <constraint firstItem="4My-Bp-qqa" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" constant="-162" id="SSs-Pf-MtQ"/>
                             <constraint firstItem="uGu-Ie-jYU" firstAttribute="top" secondItem="KpN-FO-myN" secondAttribute="top" id="U3I-dV-hQH"/>
                             <constraint firstItem="t3a-Eo-3Gq" firstAttribute="bottom" secondItem="uGu-Ie-jYU" secondAttribute="bottom" id="ioZ-ro-Lpb"/>
                             <constraint firstItem="t3a-Eo-3Gq" firstAttribute="trailing" secondItem="4My-Bp-qqa" secondAttribute="trailing" id="tES-pB-atA"/>
