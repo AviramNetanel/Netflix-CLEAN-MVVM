@@ -44,7 +44,7 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView, ViewIns
     
     fileprivate var tableView: UITableView!
     
-    private var viewModel = DefaultCategoriesOverlayViewViewModel()
+    private(set) var viewModel = DefaultCategoriesOverlayViewViewModel()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

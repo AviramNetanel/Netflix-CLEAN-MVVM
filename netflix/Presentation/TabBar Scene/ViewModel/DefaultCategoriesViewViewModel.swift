@@ -30,7 +30,9 @@ final class DefaultCategoriesOverlayViewViewModel: CategoriesOverlayViewViewMode
     
     var isPresented: Observable<Bool> = Observable(false)
     
+    var categoriesDidTap: (() -> Void)?
+    
     func viewDidLoad() {
-        isPresented.value = false
+        //isPresented.value = false
     }
 }

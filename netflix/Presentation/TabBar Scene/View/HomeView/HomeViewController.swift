@@ -52,6 +52,7 @@ final class HomeViewController: UIViewController {
     private func setupSubviews() {
         setupDataSource()
         setupNavigationView()
+        setupCategoriesOverlayView()
     }
     
     private func setupBindings() {
@@ -68,6 +69,10 @@ final class HomeViewController: UIViewController {
     
     private func setupNavigationView() {
         dataSourceDidChange(in: navigationView)
+    }
+    
+    private func setupCategoriesOverlayView() {
+        categoriesDidTap(in: categoriesOverlayView.viewModel)
     }
     
     private func setupSubviewsDependencies() {
@@ -103,6 +108,7 @@ extension HomeViewController {
             case .home: return
             case .tvShows: guard self.viewModel.state.value != .tvShows else { return }
             case .movies: guard self.viewModel.state.value != .movies else { return }
+            case .categories: self.categoriesOverlayView.viewModel.categoriesDidTap?()
             default: return
             }
             self.viewModel.state.value = state == .tvShows ? .tvShows : .movies
@@ -141,6 +147,10 @@ extension HomeViewController {
                                          withDamping: 1.0,
                                          initialSpringVelocity: 1.0)
         }
+    }
+    
+    private func categoriesDidTap(in viewModel: DefaultCategoriesOverlayViewViewModel) {
+        viewModel.categoriesDidTap = { viewModel.isPresented.value = true }
     }
 }
 

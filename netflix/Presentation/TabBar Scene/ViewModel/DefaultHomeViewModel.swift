@@ -33,7 +33,7 @@ private protocol HomeViewModelInput {
     func randomObject(at section: Section) -> Media
     func presentedDisplayMediaDidChange()
     
-    var presentNavigationView: () -> Void { get }
+//    var presentNavigationView: () -> Void { get }
 }
 
 // MARK: - HomeViewModelOutput protocol
@@ -60,7 +60,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
-    var presentNavigationView: () -> Void = {}
+    var presentNavigationView: (() -> Void)?
     
     fileprivate(set) var state: Observable<DefaultTableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
@@ -78,7 +78,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     }
     
     private func present() {
-        presentNavigationView()
+        presentNavigationView?()
         // Main entry-point for tableview
         state.value = .tvShows
     }
