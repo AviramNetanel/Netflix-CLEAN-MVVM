@@ -11,11 +11,11 @@ import UIKit
 
 final class AuthViewController: UIViewController, StoryboardInstantiable {
     
-    @IBOutlet weak var statusBarGradientView: UIView!
-    @IBOutlet weak var topGradientView: UIView!
-    @IBOutlet weak var bottomGradientView: UIView!
-    @IBOutlet weak var signInButton: UIBarButtonItem!
-    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet private weak var statusBarGradientView: UIView!
+    @IBOutlet private weak var topGradientView: UIView!
+    @IBOutlet private weak var bottomGradientView: UIView!
+    @IBOutlet private weak var signInButton: UIBarButtonItem!
+    @IBOutlet private weak var signUpButton: UIButton!
     
     private var viewModel: DefaultAuthViewModel!
     
@@ -45,20 +45,8 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
             
             signUpViewController.viewModel = viewModel
             
-        } else if segue.identifier == String(describing: HomeViewController.self),
-                  let destinationVC = segue.destination as? UITabBarController,
-                  let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
-            
-            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
-            let sceneDependencies = appFlowCoordinator?.sceneDependencies
-            let actions = HomeViewModelActions(presentMediaDetails: { _ in })
-            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions) as? DefaultHomeViewModel
-            appFlowCoordinator?.createHomeSceneFlow()
-            appFlowCoordinator?.homeFlowCoordinator?.viewController = homeViewController
-        }
+        } else { view.alpha = 0.0 }
     }
-    
-    // MARK: Private
     
     private func setupBehaviors() {
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),

@@ -11,11 +11,11 @@ import UIKit
 
 final class SignUpViewController: UIViewController {
     
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var passwordConfirmTextField: UITextField!
-    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet private weak var nameTextField: UITextField!
+    @IBOutlet private weak var emailTextField: UITextField!
+    @IBOutlet private weak var passwordTextField: UITextField!
+    @IBOutlet private weak var passwordConfirmTextField: UITextField!
+    @IBOutlet private weak var signUpButton: UIButton!
     
     var viewModel: DefaultAuthViewModel!
     
@@ -31,21 +31,6 @@ final class SignUpViewController: UIViewController {
         AppAppearance.darkAppearance()
         setupViews()
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == String(describing: HomeViewController.self),
-           let destinationVC = segue.destination as? UITabBarController,
-           let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
-            
-            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
-            let sceneDependencies = appFlowCoordinator?.sceneDependencies
-            let actions = HomeViewModelActions(presentMediaDetails: { _ in })
-            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions) as? DefaultHomeViewModel
-            appFlowCoordinator?.createHomeSceneFlow()
-        }
-    }
-    
-    // MARK: Private
     
     private func setupViews() {
         setAttributes(for: [nameTextField,
@@ -74,15 +59,12 @@ final class SignUpViewController: UIViewController {
         let authQuery = AuthQuery(user: requestDTO.user)
         
         viewModel.signUp(query: authQuery) { [weak self] result in
+            guard let self = self else { return }
             if case .success = result {
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
-                                      sender: self)
-                }
-            } else {
-                printIfDebug("failure")
+                self.viewModel.actions?.presentHomeViewController()
+                return
             }
+            printIfDebug("signUp failed")
         }
     }
 }

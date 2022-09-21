@@ -10,6 +10,7 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
+    let presentNavigationView: () -> Void
     let presentMediaDetails: (Media) -> Void
 }
 
@@ -41,8 +42,6 @@ private protocol HomeViewModelOutput {
     var sections: Observable<[Section]> { get }
     var isEmpty: Bool { get }
     var presentedDisplayMedia: Observable<Media?> { get }
-    
-    var presentNavigationView: (() -> Void)? { get }
 }
 
 // MARK: - HomeViewModel protocol
@@ -56,7 +55,7 @@ private protocol HomeViewModel: HomeViewModelInput,
 final class DefaultHomeViewModel: HomeViewModel {
     
     private let homeUseCase: HomeUseCase
-    private let actions: HomeViewModelActions
+    private(set) var actions: HomeViewModelActions
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
@@ -65,7 +64,6 @@ final class DefaultHomeViewModel: HomeViewModel {
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
     
     var presentNavigationView: (() -> Void)?
-    
     var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     
     init(homeUseCase: HomeUseCase,

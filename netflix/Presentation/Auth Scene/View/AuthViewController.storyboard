@@ -117,7 +117,7 @@
                         <outlet property="topGradientView" destination="BzR-2i-DYB" id="MCH-yH-8f7"/>
                         <segue destination="PCR-Hq-oCg" kind="show" identifier="SignInViewController" id="Y6g-Nm-CRE"/>
                         <segue destination="DPY-tv-6UP" kind="show" identifier="SignUpViewController" id="BoD-g5-Dtp"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="BVQ-LE-MV0"/>
+                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="BVQ-LE-MV0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -332,7 +332,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bva-pn-vyf"/>
+        <segue reference="BVQ-LE-MV0"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>

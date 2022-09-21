@@ -28,21 +28,6 @@ final class SignInViewController: UIViewController {
         setupViews()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == String(describing: HomeViewController.self),
-           let destinationVC = segue.destination as? UITabBarController,
-            let homeViewController = destinationVC.viewControllers?.first as? HomeViewController {
-            
-            let appFlowCoordinator = sceneDelegate?.appFlowCoordinator
-            let sceneDependencies = appFlowCoordinator?.sceneDependencies
-            let actions = HomeViewModelActions(presentMediaDetails: { _ in })
-            homeViewController.viewModel = sceneDependencies?.createHomeViewModel(actions: actions) as? DefaultHomeViewModel
-            appFlowCoordinator?.createHomeSceneFlow()
-        }
-    }
-    
-    // MARK: Private
-    
     private func setupViews() {
         setAttributes(for: [emailTextField,
                             passwordTextField])

@@ -10,7 +10,6 @@ import UIKit
 // MARK: - SceneDelegate class
 
 class SceneDelegate: UIResponder {
-    
     var appFlowCoordinator: AppFlowCoordinator?
     var navigationController: UINavigationController!
     var window: UIWindow?
@@ -29,7 +28,7 @@ extension SceneDelegate: UIWindowSceneDelegate {
         navigationController = UINavigationController()
         
         appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController)
-        appFlowCoordinator?.createAuthSceneFlow()
+        appFlowCoordinator?.create(for: .auth)
         
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

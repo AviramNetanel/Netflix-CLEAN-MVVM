@@ -35,7 +35,7 @@ private protocol AuthViewModel: AuthViewModelInput {}
 final class DefaultAuthViewModel: AuthViewModel {
     
     private let authUseCase: AuthUseCase
-    private let actions: AuthViewModelActions?
+    private(set) var actions: AuthViewModelActions?
     
     private var authorizationTask: Cancellable? {
         willSet {
@@ -63,9 +63,7 @@ extension DefaultAuthViewModel {
             guard let self = self else { return }
             switch result {
             case .success(_):
-                DispatchQueue.main.async {
-                    self.actions?.presentHomeViewController()
-                }
+                DispatchQueue.main.async { self.actions?.presentHomeViewController() }
             case .failure(let error):
                 printIfDebug("Unresolved error \(error)")
             }

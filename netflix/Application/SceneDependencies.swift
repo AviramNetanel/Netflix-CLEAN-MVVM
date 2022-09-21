@@ -61,7 +61,7 @@ final class SceneDependencies {
         return DefaultMoviesRepository(dataTransferService: dependencies.dataTransferService)
     }
     
-    // MARK: Auth
+    // MARK: AuthScene
     
     func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
         return AuthViewController.create(with: createAuthViewModel(actions: actions))
@@ -72,14 +72,15 @@ final class SceneDependencies {
                                     actions: actions)
     }
     
-    // MARK: Home
+    // MARK: HomeScene
     
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
         return HomeViewController.create(with: createHomeViewModel(actions: actions))
     }
     
     func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel {
-        return DefaultHomeViewModel(homeUseCase: createHomeUseCase(), actions: actions)
+        return DefaultHomeViewModel(homeUseCase: createHomeUseCase(),
+                                    actions: actions)
     }
 }
 

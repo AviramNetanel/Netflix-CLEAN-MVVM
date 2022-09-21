@@ -11,6 +11,7 @@ import UIKit
 
 protocol HomeFlowCoordinatorDependencies {
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
+    func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel
 }
 
 // MARK: - HomeFlowCoordinator class
@@ -19,14 +20,8 @@ final class HomeFlowCoordinator {
     
     private let dependencies: HomeFlowCoordinatorDependencies
     
-    private(set) weak var navigationController: UINavigationController?
-    weak var viewController: UIViewController?
-    
-    lazy var homeViewController: HomeViewController? = {
-        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
-        let viewController = dependencies.createHomeViewController(actions: actions)
-        return viewController
-    }()
+    private weak var navigationController: UINavigationController?
+    private(set) weak var viewController: UIViewController?
     
     init(navigationController: UINavigationController,
          dependencies: HomeFlowCoordinatorDependencies) {
@@ -34,21 +29,41 @@ final class HomeFlowCoordinator {
         self.dependencies = dependencies
     }
     
-    func coordinate() {
-        self.viewController = homeViewController
+    func coordinate() -> HomeFlowCoordinator {
+        let actions = HomeViewModelActions(presentNavigationView: presentNavigationView,
+                                           presentMediaDetails: presentMediaDetails)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        let viewController = dependencies.createHomeViewController(actions: actions)
+        self.viewController = viewController
+        
+        return self
     }
     
-    private func presentMediaDetails(media: Media) {
-        viewController?.performSegue(withIdentifier: String(describing: DetailViewController.self),
-                                     sender: viewController)
+    func presentMediaDetails(media: Media) {
+        guard let homeViewController = viewController as? HomeViewController else { return }
+        homeViewController.performSegue(withIdentifier: String(describing: DetailViewController.self),
+                                        sender: viewController)
+    }
+    
+    func presentNavigationView() {
+        guard let homeViewController = viewController as? HomeViewController else { return }
+        homeViewController.navigationViewHeightConstraint.constant = 0.0
+        homeViewController.navigationView.alpha = 1.0
+        homeViewController.view.animateUsingSpring(withDuration: 0.66,
+                                                   withDamping: 1.0,
+                                                   initialSpringVelocity: 1.0)
     }
     
     func sceneDidDisconnect() {
-        let homeViewController = (viewController as? HomeViewController)
-        let panelView = homeViewController?.dataSource?.displayCell?.displayView?.panelView
-        let navigationView = homeViewController?.navigationView
-        homeViewController?.removeObservers()
-        panelView?.removeObservers()
-        navigationView?.viewModel?.removeObservers()
+        guard
+            let homeViewController = viewController as? HomeViewController,
+            let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView,
+            let navigationView = homeViewController.navigationView
+        else { return }
+        homeViewController.removeObservers()
+        panelView.removeObservers()
+        navigationView.viewModel?.removeObservers()
     }
 }

@@ -9,4 +9,23 @@ import UIKit
 
 // MARK: - HomeTabBarController class
 
-final class HomeTabBarController: UITabBarController {}
+final class HomeTabBarController: UITabBarController {
+    
+    private var appFlowCoordinator: AppFlowCoordinator! {
+        sceneDelegate?.appFlowCoordinator
+    }
+    
+    private var sceneDependencies: SceneDependencies! {
+        appFlowCoordinator?.sceneDependencies
+    }
+    
+    private var homeViewController: HomeViewController! {
+        return appFlowCoordinator?.homeFlowCoordinator?.viewController as? HomeViewController
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        appFlowCoordinator?.create(for: .home)
+        setViewControllers([homeViewController], animated: false)
+    }
+}
