@@ -10,7 +10,6 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
-    let presentNavigationView: () -> Void
     let presentMediaDetails: (Media) -> Void
 }
 
@@ -30,9 +29,11 @@ private protocol HomeViewModelInput {
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float?)
     func section(at index: DefaultTableViewDataSource.Index) -> Section
+    func title(forHeaderAt index: Int) -> String
     func randomObject(at section: Section) -> Media
-    func titleForHeader(at index: Int) -> String
     func presentedDisplayMediaDidChange()
+    
+    var presentNavigationView: () -> Void { get }
 }
 
 // MARK: - HomeViewModelOutput protocol
@@ -40,8 +41,8 @@ private protocol HomeViewModelInput {
 private protocol HomeViewModelOutput {
     var state: Observable<DefaultTableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
-    var isEmpty: Bool { get }
     var presentedDisplayMedia: Observable<Media?> { get }
+    var isEmpty: Bool { get }
 }
 
 // MARK: - HomeViewModel protocol
@@ -55,16 +56,16 @@ private protocol HomeViewModel: HomeViewModelInput,
 final class DefaultHomeViewModel: HomeViewModel {
     
     private let homeUseCase: HomeUseCase
-    private(set) var actions: HomeViewModelActions
+    private let actions: HomeViewModelActions
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
+    var presentNavigationView: () -> Void = {}
+    
     fileprivate(set) var state: Observable<DefaultTableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
+    private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
-    
-    var presentNavigationView: (() -> Void)?
-    var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -77,7 +78,7 @@ final class DefaultHomeViewModel: HomeViewModel {
     }
     
     private func present() {
-        presentNavigationView?()
+        presentNavigationView()
         // Main entry-point for tableview
         state.value = .tvShows
     }
@@ -139,14 +140,14 @@ extension DefaultHomeViewModel {
         return sections.value[index.rawValue]
     }
     
+    func title(forHeaderAt index: Int) -> String {
+        return .init(describing: sections.value[index].title)
+    }
+    
     func randomObject(at section: Section) -> Media {
         return state.value == .tvShows
             ? section.tvshows!.randomElement()!
             : section.movies!.randomElement()!
-    }
-    
-    func titleForHeader(at index: Int) -> String {
-        return .init(describing: sections.value[index].title)
     }
     
     func presentedDisplayMediaDidChange() {

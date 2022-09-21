@@ -27,7 +27,6 @@ final class HomeViewController: UIViewController {
         setupBehaviors()
         setupSubviews()
         setupBindings()
-        guard let viewModel = viewModel else { return }
         viewModel.viewDidLoad()
     }
     
@@ -56,14 +55,12 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupBindings() {
-        guard let viewModel = viewModel else { return }
         state(in: viewModel)
         presentNavigationView(in: viewModel)
         presentedDisplayMedia(in: viewModel)
     }
     
     private func setupDataSource() {
-        guard let viewModel = viewModel else { return }
         dataSource = .init(in: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
@@ -136,7 +133,14 @@ extension HomeViewController {
     }
     
     private func presentNavigationView(in viewModel: DefaultHomeViewModel) {
-        viewModel.presentNavigationView = { viewModel.actions.presentNavigationView() }
+        viewModel.presentNavigationView = { [weak self] in
+            guard let self = self else { return }
+            self.navigationViewHeightConstraint.constant = 0.0
+            self.navigationView.alpha = 1.0
+            self.view.animateUsingSpring(withDuration: 0.66,
+                                         withDamping: 1.0,
+                                         initialSpringVelocity: 1.0)
+        }
     }
 }
 

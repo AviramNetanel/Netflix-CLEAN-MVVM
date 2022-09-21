@@ -30,7 +30,7 @@ final class HomeFlowCoordinator {
     }
     
     func coordinate() -> HomeFlowCoordinator {
-        let actions = HomeViewModelActions(presentNavigationView: presentNavigationView,
+        let actions = HomeViewModelActions(//presentNavigationView: presentNavigationView,
                                            presentMediaDetails: presentMediaDetails)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -45,15 +45,6 @@ final class HomeFlowCoordinator {
         guard let homeViewController = viewController as? HomeViewController else { return }
         homeViewController.performSegue(withIdentifier: String(describing: DetailViewController.self),
                                         sender: viewController)
-    }
-    
-    func presentNavigationView() {
-        guard let homeViewController = viewController as? HomeViewController else { return }
-        homeViewController.navigationViewHeightConstraint.constant = 0.0
-        homeViewController.navigationView.alpha = 1.0
-        homeViewController.view.animateUsingSpring(withDuration: 0.66,
-                                                   withDamping: 1.0,
-                                                   initialSpringVelocity: 1.0)
     }
     
     func sceneDidDisconnect() {
