@@ -11,16 +11,12 @@ import UIKit
 
 final class HomeTabBarController: UITabBarController {
     
-    private var appFlowCoordinator: AppFlowCoordinator! {
-        sceneDelegate?.appFlowCoordinator
-    }
+    private var appFlowCoordinator: AppFlowCoordinator! { sceneDelegate?.appFlowCoordinator }
     
-    private var sceneDependencies: SceneDependencies! {
-        appFlowCoordinator?.sceneDependencies
-    }
+    private var sceneDependencies: SceneDependencies! { appFlowCoordinator?.sceneDependencies }
     
     private var homeViewController: HomeViewController! {
-        return appFlowCoordinator?.homeFlowCoordinator?.viewController as? HomeViewController
+        appFlowCoordinator?.homeFlowCoordinator?.viewController as? HomeViewController
     }
     
     required init?(coder: NSCoder) {

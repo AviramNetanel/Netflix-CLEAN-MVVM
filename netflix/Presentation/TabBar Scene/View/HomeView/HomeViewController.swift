@@ -14,13 +14,13 @@ final class HomeViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private(set) var navigationView: DefaultNavigationView!
     @IBOutlet private(set) var navigationViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private(set) var categoriesOverlayView: DefaultCategoriesOverlayView!
     
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-    
-    var viewModel: DefaultHomeViewModel!
+    private var viewModel: DefaultHomeViewModel!
     
     private(set) var dataSource: DefaultTableViewDataSource!
+    private(set) var categoriesOverlayView: DefaultCategoriesOverlayView!
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +72,8 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoriesOverlayView() {
+        categoriesOverlayView = DefaultCategoriesOverlayView.create(on: view)
+        
         categoriesDidTap(in: categoriesOverlayView.viewModel)
     }
     
@@ -109,7 +111,7 @@ extension HomeViewController {
             case .tvShows: guard self.viewModel.state.value != .tvShows else { return }
             case .movies: guard self.viewModel.state.value != .movies else { return }
             case .categories:
-                self.categoriesOverlayView.viewModel.categoriesDidTap?()
+                self.categoriesOverlayView?.viewModel.categoriesDidTap?()
                 return
             default: return
             }

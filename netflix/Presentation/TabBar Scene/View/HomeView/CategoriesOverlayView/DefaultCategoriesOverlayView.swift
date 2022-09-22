@@ -27,9 +27,7 @@ private protocol CategoriesOverlayView: CategoriesOverlayViewInput,
 
 // MARK: - DefaultCategoriesOverlayView class
 
-final class DefaultCategoriesOverlayView: UIView,
-                                          CategoriesOverlayView,
-                                          ViewInstantiable {
+final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView {
     
     enum Category: Int, CaseIterable {
         case home
@@ -78,11 +76,12 @@ final class DefaultCategoriesOverlayView: UIView,
     
     private(set) var viewModel = DefaultCategoriesOverlayViewViewModel()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.nibDidLoad()
-        self.setupBindings()
-        self.viewModel.viewDidLoad()
+    static func create(on parent: UIView) -> DefaultCategoriesOverlayView {
+        let view = DefaultCategoriesOverlayView(frame: UIScreen.main.bounds)
+        parent.addSubview(view)
+        view.setupBindings()
+        view.viewModel.viewDidLoad()
+        return view
     }
     
     private func setupBindings() {

@@ -119,7 +119,6 @@
 		A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */; };
 		A1BA1DA928D9315E00730EA8 /* DisplayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1BA1DA828D9315E00730EA8 /* DisplayTableViewCell.xib */; };
 		A1BA1DAC28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */; };
-		A1BA1DAE28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */; };
 		A1BA1DB528DA205400730EA8 /* DefaultOpaqueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB428DA205400730EA8 /* DefaultOpaqueView.swift */; };
 		A1BA1DB728DA209700730EA8 /* DefaultOpaqueViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB628DA209700730EA8 /* DefaultOpaqueViewViewModel.swift */; };
 		A1BA1DB928DA20CA00730EA8 /* DefaultCategoriesOverlayViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DB828DA20CA00730EA8 /* DefaultCategoriesOverlayViewViewModel.swift */; };
@@ -271,7 +270,6 @@
 		A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
 		A1BA1DA828D9315E00730EA8 /* DisplayTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisplayTableViewCell.xib; sourceTree = "<group>"; };
 		A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCategoriesOverlayView.swift; sourceTree = "<group>"; };
-		A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultCategoriesOverlayView.xib; sourceTree = "<group>"; };
 		A1BA1DB428DA205400730EA8 /* DefaultOpaqueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOpaqueView.swift; sourceTree = "<group>"; };
 		A1BA1DB628DA209700730EA8 /* DefaultOpaqueViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOpaqueViewViewModel.swift; sourceTree = "<group>"; };
 		A1BA1DB828DA20CA00730EA8 /* DefaultCategoriesOverlayViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCategoriesOverlayViewViewModel.swift; sourceTree = "<group>"; };
@@ -884,7 +882,6 @@
 			isa = PBXGroup;
 			children = (
 				A1BA1DAB28D9D42A00730EA8 /* DefaultCategoriesOverlayView.swift */,
-				A1BA1DAD28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib */,
 				A1BA1DB128DA203200730EA8 /* OpaqueView */,
 				A1BA1DC028DCB75600730EA8 /* Cells */,
 			);
@@ -1056,7 +1053,6 @@
 				A18B990528BEB62E0077A5A6 /* Assets.xcassets in Resources */,
 				A1BA1DA928D9315E00730EA8 /* DisplayTableViewCell.xib in Resources */,
 				A1B3F99028C5605B0042DE9F /* HomeTabBarController.storyboard in Resources */,
-				A1BA1DAE28DA065C00730EA8 /* DefaultCategoriesOverlayView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
