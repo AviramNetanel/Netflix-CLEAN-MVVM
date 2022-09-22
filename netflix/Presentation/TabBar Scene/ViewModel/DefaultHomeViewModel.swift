@@ -28,12 +28,14 @@ private protocol HomeViewModelInput {
     func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void)
     func filter(sections: [Section])
     func filter(sections: [Section], at index: Int, withMinimumRating value: Float?)
+    func sort(section: Section)
+    func prefix(section: Section, by length: Int)
     func section(at index: DefaultTableViewDataSource.Index) -> Section
     func title(forHeaderAt index: Int) -> String
     func randomObject(at section: Section) -> Media
     func presentedDisplayMediaDidChange()
     
-//    var presentNavigationView: () -> Void { get }
+    var navigationViewDidAppear: (() -> Void)? { get }
 }
 
 // MARK: - HomeViewModelOutput protocol
@@ -60,12 +62,12 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     
-    var presentNavigationView: (() -> Void)?
-    
     fileprivate(set) var state: Observable<DefaultTableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
     private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
+    
+    var navigationViewDidAppear: (() -> Void)?
     
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
@@ -75,11 +77,12 @@ final class DefaultHomeViewModel: HomeViewModel {
     
     deinit {
         task = nil
+        navigationViewDidAppear = nil
     }
     
     private func present() {
-        presentNavigationView?()
-        // Main entry-point for tableview
+        navigationViewDidAppear?()
+        // Main entry-point for tableview.
         state.value = .tvShows
     }
 }
@@ -102,8 +105,13 @@ extension DefaultHomeViewModel {
     func filter(sections: [Section]) {
         for index in DefaultTableViewDataSource.Index.allCases {
             switch index {
-            case .ratable,
-                    .resumable:
+            case .ratable:
+                sections[index.rawValue].tvshows = sections.first!.tvshows
+                sections[index.rawValue].movies = sections.first!.movies
+                
+                sort(section: sections[index.rawValue])
+                prefix(section: sections[index.rawValue], by: 10)
+            case .resumable:
                 sections[index.rawValue].tvshows = sections.first!.tvshows
                 sections[index.rawValue].movies = sections.first!.movies
             case .action, .sciFi,
@@ -134,6 +142,18 @@ extension DefaultHomeViewModel {
         }
         sections[index].tvshows = sections.first!.tvshows!.filter { $0.rating > value }
         sections[index].movies = sections.first!.movies!.filter { $0.rating > value }
+    }
+    
+    func sort(section: Section) {
+        section.tvshows = section.tvshows?.sorted { $0.rating > $1.rating }
+        section.movies = section.movies?.sorted { $0.rating > $1.rating }
+    }
+    
+    func prefix(section: Section, by length: Int) {
+        let tvShowsSlice = section.tvshows!.prefix(10)
+        let moviesSlice = section.movies!.prefix(10)
+        section.tvshows = Array(tvShowsSlice)
+        section.movies = Array(moviesSlice)
     }
     
     func section(at index: DefaultTableViewDataSource.Index) -> Section {

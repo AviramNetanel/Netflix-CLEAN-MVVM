@@ -27,8 +27,12 @@ private protocol OpaqueViewViewModel: OpaqueViewViewModelInput,
 struct DefaultOpaqueViewViewModel {
     
     let imagePath: String
+    let identifier: NSString
+    let imageURL: URL
     
     init(with media: Media) {
         self.imagePath = media.displayCover
+        self.identifier = "displayPoster_\(media.slug)" as NSString
+        self.imageURL = URL(string: self.imagePath)!
     }
 }

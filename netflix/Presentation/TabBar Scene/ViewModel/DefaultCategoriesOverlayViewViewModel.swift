@@ -1,5 +1,5 @@
 //
-//  DefaultCategoriesViewViewModel.swift
+//  DefaultCategoriesOverlayViewViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/09/2022.
@@ -10,13 +10,14 @@ import Foundation
 // MARK: - CategoriesOverlayViewViewModelInput protocol
 
 private protocol CategoriesOverlayViewViewModelInput {
-    var isPresented: Observable<Bool> { get }
+    func viewDidLoad()
 }
 
 // MARK: - CategoriesOverlayViewViewModelOutput protocol
 
 private protocol CategoriesOverlayViewViewModelOutput {
-    func viewDidLoad()
+    var isPresented: Observable<Bool> { get }
+    var categoriesDidTap: (() -> Void)? { get }
 }
 
 // MARK: - CategoriesOverlayViewViewModel protocol
@@ -32,7 +33,5 @@ final class DefaultCategoriesOverlayViewViewModel: CategoriesOverlayViewViewMode
     
     var categoriesDidTap: (() -> Void)?
     
-    func viewDidLoad() {
-        //isPresented.value = false
-    }
+    func viewDidLoad() {}
 }

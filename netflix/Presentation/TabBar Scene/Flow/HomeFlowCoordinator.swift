@@ -51,10 +51,12 @@ final class HomeFlowCoordinator {
         guard
             let homeViewController = viewController as? HomeViewController,
             let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView,
-            let navigationView = homeViewController.navigationView
+            let navigationView = homeViewController.navigationView,
+            let categoriesOverlayView = homeViewController.categoriesOverlayView
         else { return }
         homeViewController.removeObservers()
         panelView.removeObservers()
         navigationView.viewModel?.removeObservers()
+        categoriesOverlayView.removeObservers()
     }
 }

@@ -33,7 +33,6 @@ final class DefaultNavigationViewViewModel: NavigationViewViewModel {
     fileprivate var items: [NavigationViewItem]
     
     var stateDidChange: ((DefaultNavigationView.State) -> Void)?
-    var presentNavigationView: (() -> Void)?
     
     init(with items: [NavigationViewItem],
          for state: DefaultNavigationView.State) {

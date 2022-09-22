@@ -10,22 +10,28 @@ import UIKit
 // MARK: - CategoriesOverlayViewInput protocol
 
 private protocol CategoriesOverlayViewInput {
-    var tableView: UITableView! { get }
+    func presentOpaqueView()
 }
 
 // MARK: - CategoriesOverlayViewOutput protocol
 
-private protocol CategoriesOverlayViewOutput {}
+private protocol CategoriesOverlayViewOutput {
+    var collectionView: UICollectionView { get }
+    var opaqueView: DefaultOpaqueView! { get }
+}
 
 // MARK: - CategoriesOverlayView protocol
 
-private protocol CategoriesOverlayView: CategoriesOverlayViewInput, CategoriesOverlayViewOutput {}
+private protocol CategoriesOverlayView: CategoriesOverlayViewInput,
+                                        CategoriesOverlayViewOutput {}
 
 // MARK: - DefaultCategoriesOverlayView class
 
-final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView, ViewInstantiable {
+final class DefaultCategoriesOverlayView: UIView,
+                                          CategoriesOverlayView,
+                                          ViewInstantiable {
     
-    enum Category: Int {
+    enum Category: Int, CaseIterable {
         case home
         case myList
         case action
@@ -40,9 +46,35 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView, ViewIns
         case documentary
     }
     
-    @IBOutlet private(set) weak var opaqueView: DefaultOpaqueView!
+    private(set) lazy var opaqueView: DefaultOpaqueView! = { .init(frame: bounds) }()
     
-    fileprivate var tableView: UITableView!
+    private(set) lazy var collectionView: UICollectionView = {
+        let configuration = CollectionViewLayoutConfiguration(
+            scrollDirection: .vertical,
+            minimumLineSpacing: .zero,
+            minimumInteritemSpacing: .zero,
+            sectionInset: .init(top: .zero,
+                                left: bounds.width / 4,
+                                bottom: .zero,
+                                right: bounds.width / 4),
+            itemSize: .init(width: bounds.width / 2,
+                            height: 60.0))
+        let layout = DefaultCollectionViewLayout(configuration: configuration)
+        let collectionView = UICollectionView(frame: UIScreen.main.bounds,
+                                              collectionViewLayout: layout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundView = opaqueView
+        collectionView.register(CategoriesOverlayViewCollectionViewCell.self,
+                                forCellWithReuseIdentifier: CategoriesOverlayViewCollectionViewCell.reuseIdentifier)
+        collectionView.register(CategoriesOverlayViewCollectionViewFooterView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                withReuseIdentifier: CategoriesOverlayViewCollectionViewFooterView.reuseIdentifier)
+        addSubview(collectionView)
+        return collectionView
+    }()
+    
+    private var dataSource: DefaultCategoriesOverlayViewCollectionViewDataSource!
     
     private(set) var viewModel = DefaultCategoriesOverlayViewViewModel()
     
@@ -53,19 +85,37 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView, ViewIns
         self.viewModel.viewDidLoad()
     }
     
-    deinit { tableView = nil }
-    
     private func setupBindings() {
         isPresented(in: viewModel)
     }
     
     private func isPresented(in viewModel: DefaultCategoriesOverlayViewViewModel) {
-        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.setupDataSource() }
+        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.presentOpaqueView() }
     }
     
     private func setupDataSource() {
-        if case true = viewModel.isPresented.value { return isHidden(false) }
+        if dataSource == nil {
+            let items = DefaultCategoriesOverlayView.Category.allCases
+            dataSource = .init(items: items, with: viewModel)
+        }
+        
+        collectionView.delegate = dataSource
+        collectionView.dataSource = dataSource
+        collectionView.reloadData()
+    }
+    
+    fileprivate func presentOpaqueView() {
+        if case true = viewModel.isPresented.value {
+            isHidden(false)
+            collectionView.isHidden(false)
+            setupDataSource()
+            return
+        }
         isHidden(true)
+        collectionView.isHidden(true)
+        
+        collectionView.delegate = nil
+        collectionView.dataSource = nil
     }
     
     func removeObservers() {

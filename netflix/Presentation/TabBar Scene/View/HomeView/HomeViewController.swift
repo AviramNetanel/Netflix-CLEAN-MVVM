@@ -14,7 +14,7 @@ final class HomeViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private(set) var navigationView: DefaultNavigationView!
     @IBOutlet private(set) var navigationViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private var categoriesOverlayView: DefaultCategoriesOverlayView!
+    @IBOutlet private(set) var categoriesOverlayView: DefaultCategoriesOverlayView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -108,7 +108,9 @@ extension HomeViewController {
             case .home: return
             case .tvShows: guard self.viewModel.state.value != .tvShows else { return }
             case .movies: guard self.viewModel.state.value != .movies else { return }
-            case .categories: self.categoriesOverlayView.viewModel.categoriesDidTap?()
+            case .categories:
+                self.categoriesOverlayView.viewModel.categoriesDidTap?()
+                return
             default: return
             }
             self.viewModel.state.value = state == .tvShows ? .tvShows : .movies
@@ -139,7 +141,7 @@ extension HomeViewController {
     }
     
     private func presentNavigationView(in viewModel: DefaultHomeViewModel) {
-        viewModel.presentNavigationView = { [weak self] in
+        viewModel.navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
             self.navigationViewHeightConstraint.constant = 0.0
             self.navigationView.alpha = 1.0
@@ -150,7 +152,13 @@ extension HomeViewController {
     }
     
     private func categoriesDidTap(in viewModel: DefaultCategoriesOverlayViewViewModel) {
-        viewModel.categoriesDidTap = { viewModel.isPresented.value = true }
+        viewModel.categoriesDidTap = { [weak self] in
+            guard let self = self else { return }
+            
+            viewModel.isPresented.value = true
+            
+            self.tabBarController?.tabBar.isHidden(true)
+        }
     }
 }
 
