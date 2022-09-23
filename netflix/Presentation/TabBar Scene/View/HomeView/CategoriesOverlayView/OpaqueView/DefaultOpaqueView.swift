@@ -26,7 +26,7 @@ private protocol OpaqueView: OpaqueViewInput, OpaqueViewOutput {}
 
 // MARK: - DefaultOpaqueView class
 
-final class DefaultOpaqueView: UIView, OpaqueView, ViewInstantiable {
+final class DefaultOpaqueView: UIView, OpaqueView {
     
     fileprivate var imageView: UIImageView!
     fileprivate var blurView: UIVisualEffectView!

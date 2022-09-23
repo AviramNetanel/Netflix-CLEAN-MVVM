@@ -47,19 +47,8 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView {
     private(set) lazy var opaqueView: DefaultOpaqueView! = { .init(frame: bounds) }()
     
     private(set) lazy var collectionView: UICollectionView = {
-        let configuration = CollectionViewLayoutConfiguration(
-            scrollDirection: .vertical,
-            minimumLineSpacing: .zero,
-            minimumInteritemSpacing: .zero,
-            sectionInset: .init(top: .zero,
-                                left: bounds.width / 4,
-                                bottom: .zero,
-                                right: bounds.width / 4),
-            itemSize: .init(width: bounds.width / 2,
-                            height: 60.0))
-        let layout = DefaultCollectionViewLayout(configuration: configuration)
         let collectionView = UICollectionView(frame: UIScreen.main.bounds,
-                                              collectionViewLayout: layout)
+                                              collectionViewLayout: .init())
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundView = opaqueView
@@ -68,6 +57,9 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView {
         collectionView.register(CategoriesOverlayViewCollectionViewFooterView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                 withReuseIdentifier: CategoriesOverlayViewCollectionViewFooterView.reuseIdentifier)
+        let configuration = DefaultCollectionViewLayout.categoriesOverlayConfigurations(for: collectionView)
+        let layout = DefaultCollectionViewLayout(configuration: configuration)
+        collectionView.setCollectionViewLayout(layout, animated: false)
         addSubview(collectionView)
         return collectionView
     }()

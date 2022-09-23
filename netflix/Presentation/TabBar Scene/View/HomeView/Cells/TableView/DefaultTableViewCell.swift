@@ -88,7 +88,7 @@ extension DefaultTableViewCell {
             let layout = DefaultCollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            let configuration = DefaultCollectionViewLayout.defaultConfigurations(for: collectionView)
+            let configuration = DefaultCollectionViewLayout.standardConfigurations(for: collectionView)
             let layout = DefaultCollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }

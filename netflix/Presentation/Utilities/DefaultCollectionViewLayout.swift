@@ -72,12 +72,25 @@ final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionV
                                      height: collectionView.bounds.height - 8.0))
     }
     
-    static func defaultConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
+    static func standardConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
         return .init(scrollDirection: .horizontal,
                      minimumLineSpacing: 8.0,
                      minimumInteritemSpacing: .zero,
                      sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
                      itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - (8.0 * CGFloat(3.0)),
                                      height: collectionView.bounds.height - 8.0))
+    }
+    
+    static func categoriesOverlayConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
+        return .init(
+            scrollDirection: .vertical,
+            minimumLineSpacing: .zero,
+            minimumInteritemSpacing: .zero,
+            sectionInset: .init(top: .zero,
+                                left: collectionView.bounds.width / 4,
+                                bottom: .zero,
+                                right: collectionView.bounds.width / 4),
+            itemSize: .init(width: collectionView.bounds.width / 2,
+                            height: 60.0))
     }
 }
