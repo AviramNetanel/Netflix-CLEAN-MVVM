@@ -13,7 +13,7 @@ final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private(set) var navigationView: DefaultNavigationView!
-    @IBOutlet private(set) var navigationViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
     
     private var viewModel: DefaultHomeViewModel!
     
@@ -40,6 +40,7 @@ final class HomeViewController: UIViewController {
     }
     
     deinit {
+        categoriesOverlayView = nil
         viewModel = nil
         dataSource = nil
     }
@@ -57,7 +58,7 @@ final class HomeViewController: UIViewController {
     
     private func setupBindings() {
         state(in: viewModel)
-        presentNavigationView(in: viewModel)
+        navigationViewDidAppear(in: viewModel)
         presentedDisplayMedia(in: viewModel)
     }
     
@@ -73,8 +74,6 @@ final class HomeViewController: UIViewController {
     
     private func setupCategoriesOverlayView() {
         categoriesOverlayView = DefaultCategoriesOverlayView.create(on: view)
-        
-        categoriesDidTap(in: categoriesOverlayView.viewModel)
     }
     
     private func setupSubviewsDependencies() {
@@ -106,16 +105,36 @@ extension HomeViewController {
     private func dataSourceDidChange(in navigationView: DefaultNavigationView) {
         navigationView.dataSourceDidChange = { [weak self] state in
             guard let self = self else { return }
+            
+            self.categoriesOverlayView.viewModel.state = state
+            
+            if self.categoriesOverlayView.viewModel.dataSource.tabBarController == nil {
+                self.categoriesOverlayView.viewModel.dataSource.tabBarController = self.tabBarController
+            }
+            
             switch state {
-            case .home: return
-            case .tvShows: guard self.viewModel.state.value != .tvShows else { return }
-            case .movies: guard self.viewModel.state.value != .movies else { return }
+            case .home:
+                self.categoriesOverlayView.viewModel.isPresented.value = false
+            case .tvShows:
+                guard self.viewModel.state.value != .tvShows else {
+                    guard navigationView.tvShowsItemView.viewModel.hasInteracted else {
+                        return self.categoriesOverlayView.viewModel.isPresented.value = false
+                    }
+                    return self.categoriesOverlayView.viewModel.isPresented.value = true
+                }
+                self.viewModel.state.value = .tvShows
+            case .movies:
+                guard self.viewModel.state.value != .movies else {
+                    guard navigationView.moviesItemView.viewModel.hasInteracted else {
+                        return self.categoriesOverlayView.viewModel.isPresented.value = false
+                    }
+                    return self.categoriesOverlayView.viewModel.isPresented.value = true
+                }
+                self.viewModel.state.value = .movies
             case .categories:
-                self.categoriesOverlayView?.viewModel.categoriesDidTap?()
-                return
+                self.categoriesOverlayView?.viewModel.isPresented.value = true
             default: return
             }
-            self.viewModel.state.value = state == .tvShows ? .tvShows : .movies
         }
     }
     
@@ -123,9 +142,8 @@ extension HomeViewController {
         dataSource.tableViewDidScroll = { [weak self] scrollView in
             guard
                 let self = self,
-                let translation = scrollView
-                    .panGestureRecognizer
-                    .translation(in: self.view) as CGPoint?
+                let translation = scrollView.panGestureRecognizer
+                                            .translation(in: self.view) as CGPoint?
             else { return }
             self.view.animateUsingSpring(withDuration: 0.66,
                                          withDamping: 1.0,
@@ -142,7 +160,7 @@ extension HomeViewController {
         }
     }
     
-    private func presentNavigationView(in viewModel: DefaultHomeViewModel) {
+    private func navigationViewDidAppear(in viewModel: DefaultHomeViewModel) {
         viewModel.navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
             self.navigationViewHeightConstraint.constant = 0.0
@@ -150,16 +168,6 @@ extension HomeViewController {
             self.view.animateUsingSpring(withDuration: 0.66,
                                          withDamping: 1.0,
                                          initialSpringVelocity: 1.0)
-        }
-    }
-    
-    private func categoriesDidTap(in viewModel: DefaultCategoriesOverlayViewViewModel) {
-        viewModel.categoriesDidTap = { [weak self] in
-            guard let self = self else { return }
-            
-            viewModel.isPresented.value = true
-            
-            self.tabBarController?.tabBar.isHidden(true)
         }
     }
 }

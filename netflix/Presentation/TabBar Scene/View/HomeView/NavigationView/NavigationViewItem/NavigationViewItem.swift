@@ -82,7 +82,7 @@ final class NavigationViewItem: UIView {
     fileprivate(set) lazy var button: UIButton = { return UIButton(type: .system) }()
     
     private(set) var configuration: DefaultNavigationViewItemConfiguration!
-    fileprivate var viewModel: DefaultNavigationViewItemViewModel!
+    var viewModel: DefaultNavigationViewItemViewModel!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

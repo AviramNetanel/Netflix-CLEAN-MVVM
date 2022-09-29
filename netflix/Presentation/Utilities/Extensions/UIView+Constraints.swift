@@ -25,4 +25,14 @@ extension UIView {
             view.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
+    
+    func constraintBottom(toParent view: UIView,
+                          withHeightAnchor anchorValue: CGFloat) {
+        NSLayoutConstraint.activate([
+            bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            heightAnchor.constraint(equalToConstant: anchorValue)
+        ])
+    }
 }

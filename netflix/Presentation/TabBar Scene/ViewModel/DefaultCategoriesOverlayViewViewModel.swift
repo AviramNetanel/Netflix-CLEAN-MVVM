@@ -17,7 +17,9 @@ private protocol CategoriesOverlayViewViewModelInput {
 
 private protocol CategoriesOverlayViewViewModelOutput {
     var isPresented: Observable<Bool> { get }
-    var categoriesDidTap: (() -> Void)? { get }
+    
+    var state: DefaultNavigationView.State { get }
+    var category: DefaultCategoriesOverlayView.Category { get }
 }
 
 // MARK: - CategoriesOverlayViewViewModel protocol
@@ -31,7 +33,13 @@ final class DefaultCategoriesOverlayViewViewModel: CategoriesOverlayViewViewMode
     
     var isPresented: Observable<Bool> = Observable(false)
     
-    var categoriesDidTap: (() -> Void)?
+    var state: DefaultNavigationView.State = .tvShows
     
-    func viewDidLoad() {}
+    var category: DefaultCategoriesOverlayView.Category = .home
+    
+    var dataSource: DefaultCategoriesOverlayViewTableViewDataSource!
+    
+    func viewDidLoad() {
+        dataSource = DefaultCategoriesOverlayViewTableViewDataSource(items: [], with: self)
+    }
 }

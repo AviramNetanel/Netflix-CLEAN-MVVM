@@ -29,7 +29,7 @@ private protocol NavigationViewViewModel: NavigationViewViewModelInput,
 
 final class DefaultNavigationViewViewModel: NavigationViewViewModel {
     
-    fileprivate var state: Observable<DefaultNavigationView.State>
+    fileprivate(set) var state: Observable<DefaultNavigationView.State>
     fileprivate var items: [NavigationViewItem]
     
     var stateDidChange: ((DefaultNavigationView.State) -> Void)?

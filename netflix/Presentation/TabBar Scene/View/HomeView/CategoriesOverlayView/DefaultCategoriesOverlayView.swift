@@ -10,13 +10,13 @@ import UIKit
 // MARK: - CategoriesOverlayViewInput protocol
 
 private protocol CategoriesOverlayViewInput {
-    func presentOpaqueView()
+    func isPresentedDidChange()
 }
 
 // MARK: - CategoriesOverlayViewOutput protocol
 
 private protocol CategoriesOverlayViewOutput {
-    var collectionView: UICollectionView { get }
+    var tableView: UITableView { get }
     var opaqueView: DefaultOpaqueView! { get }
 }
 
@@ -44,69 +44,98 @@ final class DefaultCategoriesOverlayView: UIView, CategoriesOverlayView {
         case documentary
     }
     
-    private(set) lazy var opaqueView: DefaultOpaqueView! = { .init(frame: bounds) }()
-    
-    private(set) lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: UIScreen.main.bounds,
-                                              collectionViewLayout: .init())
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundView = opaqueView
-        collectionView.register(CategoriesOverlayViewCollectionViewCell.self,
-                                forCellWithReuseIdentifier: CategoriesOverlayViewCollectionViewCell.reuseIdentifier)
-        collectionView.register(CategoriesOverlayViewCollectionViewFooterView.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                withReuseIdentifier: CategoriesOverlayViewCollectionViewFooterView.reuseIdentifier)
-        let configuration = DefaultCollectionViewLayout.categoriesOverlayConfigurations(for: collectionView)
-        let layout = DefaultCollectionViewLayout(configuration: configuration)
-        collectionView.setCollectionViewLayout(layout, animated: false)
-        addSubview(collectionView)
-        return collectionView
+    private(set) lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.separatorStyle = .none
+        tableView.backgroundView = opaqueView
+        tableView.register(CategoriesOverlayViewTableViewCell.self,
+                           forCellReuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
+        addSubview(tableView)
+        return tableView
     }()
     
-    private var dataSource: DefaultCategoriesOverlayViewCollectionViewDataSource!
+    private(set) lazy var opaqueView: DefaultOpaqueView! = { .init(frame: UIScreen.main.bounds) }()
     
     private(set) var viewModel = DefaultCategoriesOverlayViewViewModel()
+    
+    private var footer: CategoriesOverlayViewFooterView!
+    
+    deinit { footer = nil }
     
     static func create(on parent: UIView) -> DefaultCategoriesOverlayView {
         let view = DefaultCategoriesOverlayView(frame: UIScreen.main.bounds)
         parent.addSubview(view)
+        view.setupSubviews(parent: parent)
         view.setupBindings()
         view.viewModel.viewDidLoad()
         return view
+    }
+    
+    private func setupSubviews(parent: UIView) {
+        setupFooterView(on: parent)
     }
     
     private func setupBindings() {
         isPresented(in: viewModel)
     }
     
+    private func setupFooterView(on parent: UIView) {
+        footer = CategoriesOverlayViewFooterView.create(on: parent,
+                                                        frame: .zero,
+                                                        with: viewModel)
+    }
+    
     private func isPresented(in viewModel: DefaultCategoriesOverlayViewViewModel) {
-        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.presentOpaqueView() }
+        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
     }
     
     private func setupDataSource() {
-        if dataSource == nil {
-            let items = DefaultCategoriesOverlayView.Category.allCases
-            dataSource = .init(items: items, with: viewModel)
+        let items: [Valuable]
+        
+        switch viewModel.state {
+        case .tvShows,
+                .movies:
+            let slice = DefaultNavigationView.State.allCases[3...5]
+            items = Array(slice)
+            viewModel.dataSource.items = items
+        case .categories:
+            items = DefaultCategoriesOverlayView.Category.allCases
+            viewModel.dataSource.items = items
+        default:
+            break
         }
         
-        collectionView.delegate = dataSource
-        collectionView.dataSource = dataSource
-        collectionView.reloadData()
+        if tableView.delegate == nil {
+            tableView.delegate = viewModel.dataSource
+            tableView.dataSource = viewModel.dataSource
+        }
+        
+        tableView.reloadData()
+        
+        tableView.contentInset = .init(top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 60.0,
+                                       left: .zero,
+                                       bottom: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2,
+                                       right: .zero)
     }
     
-    fileprivate func presentOpaqueView() {
+    fileprivate func isPresentedDidChange() {
         if case true = viewModel.isPresented.value {
             isHidden(false)
-            collectionView.isHidden(false)
+            tableView.isHidden(false)
+            footer.isHidden(false)
+            viewModel.dataSource.tabBarController?.tabBar.isHidden(true)
             setupDataSource()
             return
         }
+        footer.isHidden(true)
         isHidden(true)
-        collectionView.isHidden(true)
+        tableView.isHidden(true)
+        viewModel.dataSource?.tabBarController?.tabBar.isHidden(false)
         
-        collectionView.delegate = nil
-        collectionView.dataSource = nil
+        tableView.delegate = nil
+        tableView.dataSource = nil
     }
     
     func removeObservers() {

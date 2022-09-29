@@ -34,8 +34,10 @@ struct DefaultNavigationViewItemViewModel: NavigationViewItemViewModel {
     let tag: Int
     var title: String!
     var image: String!
+    var hasInteracted: Bool
     
     init(tag: Int) {
+        self.hasInteracted = false
         self.tag = tag
         self.title = title(for: tag)
         self.image = image(for: tag)

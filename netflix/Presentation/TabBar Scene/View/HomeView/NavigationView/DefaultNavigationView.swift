@@ -27,7 +27,7 @@ private protocol NavigationView: NavigationViewInput, NavigationViewOutput {}
 
 final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     
-    enum State: Int {
+    enum State: Int, CaseIterable {
         case home
         case airPlay
         case account
@@ -40,14 +40,16 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     @IBOutlet private weak var homeButton: NavigationViewItem!
     @IBOutlet private weak var airPlayButton: NavigationViewItem!
     @IBOutlet private weak var accountButton: NavigationViewItem!
-    @IBOutlet private weak var tvShowsItemView: NavigationViewItem!
-    @IBOutlet private weak var moviesItemView: NavigationViewItem!
+    @IBOutlet private(set) weak var tvShowsItemView: NavigationViewItem!
+    @IBOutlet private(set) weak var moviesItemView: NavigationViewItem!
     @IBOutlet private weak var categoriesItemView: NavigationViewItem!
     @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: DefaultNavigationViewViewModel!
     
-    fileprivate var state: State = .tvShows
+    fileprivate var state: State = .tvShows {
+        didSet { viewModel.state.value = state }
+    }
     
     var dataSourceDidChange: ((State) -> Void)?
     
@@ -66,7 +68,7 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
     }
     
     private func viewModel(with items: [NavigationViewItem],
-                                  for state: DefaultNavigationView.State) -> DefaultNavigationViewViewModel {
+                           for state: DefaultNavigationView.State) -> DefaultNavigationViewViewModel {
         return DefaultNavigationViewViewModel(with: items, for: state)
     }
     
@@ -100,6 +102,9 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
                 self.moviesItemView.isHidden(false)
                 self.categoriesItemView.isHidden(false)
                 self.itemsCenterXConstraint.constant = .zero
+                
+                self.tvShowsItemView.viewModel.hasInteracted = false
+                self.moviesItemView.viewModel.hasInteracted = false
             case .airPlay:
                 break
             case .account:
@@ -109,11 +114,15 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
                 self.moviesItemView.isHidden(true)
                 self.categoriesItemView.isHidden(false)
                 self.itemsCenterXConstraint.constant = -24.0
+                
+                self.tvShowsItemView.viewModel.hasInteracted = true
             case .movies:
                 self.tvShowsItemView.isHidden(true)
                 self.moviesItemView.isHidden(false)
                 self.categoriesItemView.isHidden(false)
                 self.itemsCenterXConstraint.constant = -32.0
+                
+                self.moviesItemView.viewModel.hasInteracted = true
             case .categories:
                 break
             }
@@ -121,6 +130,20 @@ final class DefaultNavigationView: UIView, NavigationView, ViewInstantiable {
             self.animateUsingSpring(withDuration: 0.33,
                                     withDamping: 0.7,
                                     initialSpringVelocity: 0.7)
+        }
+    }
+}
+
+// MARK: - Valuable implementation
+
+extension DefaultNavigationView.State: Valuable {
+    var stringValue: String {
+        switch self {
+        case .home: return "Home"
+        case .tvShows: return "TV Shows"
+        case .movies: return "Movies"
+        case .categories: return "Categories"
+        default: return .init()
         }
     }
 }
