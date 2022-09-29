@@ -66,11 +66,28 @@
                         <outlet property="navigationView" destination="4My-Bp-qqa" id="QIB-PK-4DN"/>
                         <outlet property="navigationViewHeightConstraint" destination="SSs-Pf-MtQ" id="9oX-hc-csw"/>
                         <outlet property="tableView" destination="uGu-Ie-jYU" id="n1A-En-7Co"/>
+                        <segue destination="y59-iX-ZfB" kind="show" identifier="DetailViewController" id="sR7-o1-ZXS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ihq-Ow-SI9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1031.8840579710145" y="64.955357142857139"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="h2S-kq-Wic">
+            <objects>
+                <viewController id="y59-iX-ZfB" customClass="DetailViewController" customModule="netflix" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GIZ-m2-CJv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="uad-si-zky"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Rrn-fF-D8c"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0u8-ho-fno" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1923" y="65"/>
         </scene>
         <!--AuthViewController-->
         <scene sceneID="5tL-mG-7UF">
@@ -78,7 +95,7 @@
                 <viewControllerPlaceholder storyboardName="AuthViewController" referencedIdentifier="AuthViewController" id="gwy-VR-JEa" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPj-T3-gXR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1760" y="349"/>
+            <point key="canvasLocation" x="1837" y="557"/>
         </scene>
     </scenes>
     <resources>

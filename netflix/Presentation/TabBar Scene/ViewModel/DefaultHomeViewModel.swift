@@ -58,7 +58,7 @@ private protocol HomeViewModel: HomeViewModelInput,
 final class DefaultHomeViewModel: HomeViewModel {
     
     private let homeUseCase: HomeUseCase
-    private let actions: HomeViewModelActions
+    private(set) var actions: HomeViewModelActions
     
     private var task: Cancellable? { willSet { task?.cancel() } }
     

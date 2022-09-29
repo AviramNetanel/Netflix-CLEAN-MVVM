@@ -40,7 +40,7 @@ class DefaultTableViewCell<Cell>: UITableViewCell, TableViewCell where Cell: UIC
         return collectionView
     }()
     
-    private var dataSource: DefaultCollectionViewDataSource<Cell>!
+    private(set) var dataSource: DefaultCollectionViewDataSource<Cell>!
     
     var viewModel: DefaultHomeViewModel!
     

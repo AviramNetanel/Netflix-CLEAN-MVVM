@@ -62,8 +62,10 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     var tableViewDidScroll: ((UIScrollView) -> Void)?
+    var didSelectItem: ((IndexPath) -> Void)?
     
     private(set) var displayCell: DisplayTableViewCell!
+    var ratableCell: RatableTableViewCell!
     
     init(in tableView: UITableView, with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
@@ -131,9 +133,13 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
                                   with: viewModel)
             return displayCell
         case .ratable:
-            return RatableTableViewCell.create(in: tableView,
+            ratableCell = RatableTableViewCell.create(in: tableView,
                                                for: indexPath,
                                                with: viewModel)
+            ratableCell?.dataSource?.didSelectItem = { [weak self] indexPath in
+                self?.didSelectItem?(indexPath)
+            }
+            return ratableCell
         case .resumable:
             return ResumableTableViewCell.create(in: tableView,
                                                  for: indexPath,

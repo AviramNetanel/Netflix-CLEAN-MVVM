@@ -66,6 +66,10 @@ final class HomeViewController: UIViewController {
         dataSource = .init(in: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
+        
+        dataSource.didSelectItem = { [weak self] indexPath in
+            self!.viewModel.actions.presentMediaDetails(self!.viewModel.randomObject(at: self!.viewModel.section(at: .display)))
+        }
     }
     
     private func setupNavigationView() {

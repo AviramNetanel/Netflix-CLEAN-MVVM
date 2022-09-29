@@ -19,11 +19,14 @@ private protocol CollectionViewDataSourceInput {
 private protocol CollectionViewDataSourceOutput {
     func dataSourceDidChange()
     func media(for indexPath: IndexPath) -> Media?
+    
+    var didSelectItem: ((IndexPath) -> Void)? { get }
 }
 
 // MARK: - CollectionViewDataSource protocol
 
-private protocol CollectionViewDataSource: CollectionViewDataSourceInput, CollectionViewDataSourceOutput {}
+private protocol CollectionViewDataSource: CollectionViewDataSourceInput,
+                                           CollectionViewDataSourceOutput {}
 
 // MARK: - CollectionViewDataSource class
 
@@ -39,6 +42,8 @@ final class DefaultCollectionViewDataSource<Cell>: NSObject,
     private var viewModel: DefaultHomeViewModel
     private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
+    var didSelectItem: ((IndexPath) -> Void)?
+    
     init(collectionView: UICollectionView,
          section: Section,
          viewModel: DefaultHomeViewModel) {
@@ -50,6 +55,7 @@ final class DefaultCollectionViewDataSource<Cell>: NSObject,
     }
     
     deinit {
+        didSelectItem = nil
         collectionView = nil
     }
     
@@ -99,7 +105,7 @@ final class DefaultCollectionViewDataSource<Cell>: NSObject,
                         forItemAt indexPath: IndexPath) {}
     
     func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {}
+                        didSelectItemAt indexPath: IndexPath) { didSelectItem?(indexPath) }
     
     func collectionView(_ collectionView: UICollectionView,
                         prefetchItemsAt indexPaths: [IndexPath]) {
