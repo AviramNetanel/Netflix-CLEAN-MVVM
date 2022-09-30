@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailDescriptionView" customModule="netflix" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Zbs-5j-GgS">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNk-V5-pz5" userLabel="Container">
+                    <rect key="frame" x="16" y="0.0" width="382" height="120"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" indicatorStyle="white" text="Description" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rx1-GW-GWt">
+                            <rect key="frame" x="-4" y="0.0" width="386" height="77"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="BL9-4E-LUM">
+                            <rect key="frame" x="0.0" y="89" width="382" height="31"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2s-rK-tCp">
+                                    <rect key="frame" x="0.0" y="0.0" width="382" height="13.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Writers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nBv-Mh-uJn">
+                                    <rect key="frame" x="0.0" y="17.5" width="382" height="13.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" id="0re-et-Jww"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="BL9-4E-LUM" secondAttribute="bottom" id="Mny-1n-6d5"/>
+                        <constraint firstItem="rx1-GW-GWt" firstAttribute="leading" secondItem="pNk-V5-pz5" secondAttribute="leading" constant="-4" id="V2K-pr-fW7"/>
+                        <constraint firstAttribute="trailing" secondItem="rx1-GW-GWt" secondAttribute="trailing" id="cM7-G9-La7"/>
+                        <constraint firstItem="BL9-4E-LUM" firstAttribute="leading" secondItem="pNk-V5-pz5" secondAttribute="leading" id="fK8-zg-hkR"/>
+                        <constraint firstItem="rx1-GW-GWt" firstAttribute="top" secondItem="pNk-V5-pz5" secondAttribute="top" id="nHf-u4-eCF"/>
+                        <constraint firstItem="BL9-4E-LUM" firstAttribute="top" secondItem="rx1-GW-GWt" secondAttribute="bottom" constant="12" id="qTt-dJ-59x"/>
+                        <constraint firstAttribute="trailing" secondItem="BL9-4E-LUM" secondAttribute="trailing" id="z64-Fh-Lt0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="pNk-V5-pz5" secondAttribute="bottom" id="Cav-TX-GX8"/>
+                <constraint firstAttribute="trailing" secondItem="pNk-V5-pz5" secondAttribute="trailing" constant="16" id="Ffo-A8-GHu"/>
+                <constraint firstItem="pNk-V5-pz5" firstAttribute="top" secondItem="Zbs-5j-GgS" secondAttribute="top" id="Y8J-cQ-t3F"/>
+                <constraint firstItem="pNk-V5-pz5" firstAttribute="leading" secondItem="Zbs-5j-GgS" secondAttribute="leading" constant="16" id="bp3-E9-1XE"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="213" y="109"/>
+        </view>
+    </objects>
+</document>

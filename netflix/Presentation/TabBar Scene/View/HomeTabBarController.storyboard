@@ -66,7 +66,6 @@
                         <outlet property="navigationView" destination="4My-Bp-qqa" id="QIB-PK-4DN"/>
                         <outlet property="navigationViewHeightConstraint" destination="SSs-Pf-MtQ" id="9oX-hc-csw"/>
                         <outlet property="tableView" destination="uGu-Ie-jYU" id="n1A-En-7Co"/>
-                        <segue destination="y59-iX-ZfB" kind="show" identifier="DetailViewController" id="sR7-o1-ZXS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ihq-Ow-SI9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -76,14 +75,29 @@
         <!--Detail View Controller-->
         <scene sceneID="h2S-kq-Wic">
             <objects>
-                <viewController id="y59-iX-ZfB" customClass="DetailViewController" customModule="netflix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" id="y59-iX-ZfB" customClass="DetailViewController" customModule="netflix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GIZ-m2-CJv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dY5-bB-N1s">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="uad-si-zky"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uad-si-zky" firstAttribute="trailing" secondItem="dY5-bB-N1s" secondAttribute="trailing" id="Ex3-6X-ZsD"/>
+                            <constraint firstItem="uad-si-zky" firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="JcD-vH-VvN"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="top" secondItem="GIZ-m2-CJv" secondAttribute="top" id="kTc-57-PKt"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="leading" secondItem="uad-si-zky" secondAttribute="leading" id="pw8-Ko-KHA"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rrn-fF-D8c"/>
+                    <connections>
+                        <outlet property="tableView" destination="dY5-bB-N1s" id="wh7-av-8Kf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0u8-ho-fno" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

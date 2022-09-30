@@ -25,7 +25,8 @@ private protocol TableViewDataSourceOutput {
 
 // MARK: - TableViewDataSource protocol
 
-private protocol TableViewDataSource: TableViewDataSourceInput, TableViewDataSourceOutput {}
+private protocol TableViewDataSource: TableViewDataSourceInput,
+                                      TableViewDataSourceOutput {}
 
 // MARK: - DefaultTableViewDataSource
 
@@ -62,12 +63,15 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     var tableViewDidScroll: ((UIScrollView) -> Void)?
-    var didSelectItem: ((IndexPath) -> Void)?
+    var didSelectItem: ((Int, Int) -> Void)?
     
     private(set) var displayCell: DisplayTableViewCell!
     var ratableCell: RatableTableViewCell!
+    var resumableCell: ResumableTableViewCell!
+    var standardCell: StandardTableViewCell!
     
-    init(in tableView: UITableView, with viewModel: DefaultHomeViewModel) {
+    init(in tableView: UITableView,
+         with viewModel: DefaultHomeViewModel) {
         self.viewModel = viewModel
         self.tableView = tableView
         self.sections = viewModel.sections.value
@@ -113,14 +117,10 @@ final class DefaultTableViewDataSource: NSObject, TableViewDataSource {
 
 extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { sections.count }
     
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
+                   numberOfRowsInSection section: Int) -> Int { 1 }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,27 +134,33 @@ extension DefaultTableViewDataSource: UITableViewDelegate, UITableViewDataSource
             return displayCell
         case .ratable:
             ratableCell = RatableTableViewCell.create(in: tableView,
-                                               for: indexPath,
-                                               with: viewModel)
-            ratableCell?.dataSource?.didSelectItem = { [weak self] indexPath in
-                self?.didSelectItem?(indexPath)
+                                                      for: indexPath,
+                                                      with: viewModel)
+            ratableCell?.dataSource?.didSelectItem = { [weak self] row in
+                self?.didSelectItem?(indexPath.section, row)
             }
             return ratableCell
         case .resumable:
-            return ResumableTableViewCell.create(in: tableView,
-                                                 for: indexPath,
-                                                 with: viewModel)
+            resumableCell = ResumableTableViewCell.create(in: tableView,
+                                                          for: indexPath,
+                                                          with: viewModel)
+            resumableCell?.dataSource?.didSelectItem = { [weak self] row in
+                self?.didSelectItem?(indexPath.section, row)
+            }
+            return resumableCell
         default:
-            return StandardTableViewCell.create(in: tableView,
-                                                for: indexPath,
-                                                with: viewModel)
+            standardCell = StandardTableViewCell.create(in: tableView,
+                                                        for: indexPath,
+                                                        with: viewModel)
+            standardCell?.dataSource?.didSelectItem = { [weak self] row in
+                self?.didSelectItem?(indexPath.section, row)
+            }
+            return standardCell
         }
     }
     
     func tableView(_ tableView: UITableView,
-                   heightForRowAt indexPath: IndexPath) -> CGFloat {
-        heightForRowAt!(indexPath)
-    }
+                   heightForRowAt indexPath: IndexPath) -> CGFloat { heightForRowAt!(indexPath) }
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {

@@ -21,7 +21,8 @@ private protocol CollectionViewCellOutput {
 
 // MARK: - CollectionViewCell protocol
 
-private protocol CollectionViewCell: CollectionViewCellInput, CollectionViewCellOutput {}
+private protocol CollectionViewCell: CollectionViewCellInput,
+                                     CollectionViewCellOutput {}
 
 // MARK: - DefaultCollectionViewCell class
 

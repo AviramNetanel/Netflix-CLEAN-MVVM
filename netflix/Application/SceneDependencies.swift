@@ -61,6 +61,8 @@ final class SceneDependencies {
         return DefaultMoviesRepository(dataTransferService: dependencies.dataTransferService)
     }
     
+    // MARK: - Scenes
+    
     // MARK: AuthScene
     
     func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
@@ -72,7 +74,7 @@ final class SceneDependencies {
                                     actions: actions)
     }
     
-    // MARK: HomeScene
+    // MARK: HomeView
     
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
         return HomeViewController.create(with: createHomeViewModel(actions: actions))
@@ -82,6 +84,16 @@ final class SceneDependencies {
         return DefaultHomeViewModel(homeUseCase: createHomeUseCase(),
                                     actions: actions)
     }
+    
+    // MARK: DetailView
+    
+    func createDetailViewController() -> DetailViewController {
+        return DetailViewController.create(with: createDetailViewModel())
+    }
+    
+    func createDetailViewModel() -> DefaultDetailViewModel {
+        return DefaultDetailViewModel()
+    }
 }
 
 // MARK: - SceneDependable implementation
@@ -89,11 +101,13 @@ final class SceneDependencies {
 extension SceneDependencies: SceneDependable {
     
     func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator {
-        return AuthFlowCoordinator(navigationController: navigationController, dependencies: self)
+        return AuthFlowCoordinator(navigationController: navigationController,
+                                   dependencies: self)
     }
     
     func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator {
-        return HomeFlowCoordinator(navigationController: navigationController, dependencies: self)
+        return HomeFlowCoordinator(navigationController: navigationController,
+                                   dependencies: self)
     }
 }
 

@@ -12,6 +12,9 @@ import UIKit
 protocol HomeFlowCoordinatorDependencies {
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
     func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel
+    
+    func createDetailViewController() -> DetailViewController
+    func createDetailViewModel() -> DefaultDetailViewModel
 }
 
 // MARK: - HomeFlowCoordinator class
@@ -42,9 +45,16 @@ final class HomeFlowCoordinator {
     }
     
     func presentMediaDetails(media: Media) {
-        guard let homeViewController = viewController as? HomeViewController else { return }
-        homeViewController.performSegue(withIdentifier: String(describing: DetailViewController.self),
-                                        sender: viewController)
+        guard
+            let homeViewController = viewController as? HomeViewController,
+            let detailViewController = dependencies.createDetailViewController() as DetailViewController?
+        else { return }
+        detailViewController.modalTransitionStyle = .coverVertical
+        detailViewController.modalPresentationStyle = .automatic
+        detailViewController.viewModel.media = media
+        homeViewController.present(detailViewController, animated: true)
+//        homeViewController.performSegue(withIdentifier: String(describing: DetailViewController.self),
+//                                        sender: viewController)
     }
     
     func sceneDidDisconnect() {

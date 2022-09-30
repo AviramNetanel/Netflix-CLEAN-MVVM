@@ -30,6 +30,15 @@ final class HomeViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case String(describing: DetailViewController.self):
+            break
+        default:
+            return
+        }
+    }
+    
     static func create(with viewModel: DefaultHomeViewModel) -> HomeViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
                                 bundle: nil)
@@ -66,10 +75,7 @@ final class HomeViewController: UIViewController {
         dataSource = .init(in: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
-        
-        dataSource.didSelectItem = { [weak self] indexPath in
-            self!.viewModel.actions.presentMediaDetails(self!.viewModel.randomObject(at: self!.viewModel.section(at: .display)))
-        }
+        didSelectItem(in: dataSource)
     }
     
     private func setupNavigationView() {
@@ -106,6 +112,38 @@ extension HomeViewController {
         }
     }
     
+    private func tableViewDidScroll(in dataSource: DefaultTableViewDataSource) {
+        dataSource.tableViewDidScroll = { [weak self] scrollView in
+            guard
+                let self = self,
+                let translation = scrollView.panGestureRecognizer
+                                            .translation(in: self.view) as CGPoint?
+            else { return }
+            self.view.animateUsingSpring(withDuration: 0.66,
+                                         withDamping: 1.0,
+                                         initialSpringVelocity: 1.0) {
+                guard translation.y < 0 else {
+                    self.navigationViewHeightConstraint.constant = 0.0
+                    self.navigationView.alpha = 1.0
+                    return self.view.layoutIfNeeded()
+                }
+                self.navigationViewHeightConstraint.constant = -162.0
+                self.navigationView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    private func didSelectItem(in dataSource: DefaultTableViewDataSource) {
+        dataSource.didSelectItem = { [weak self] section, row in
+            guard let self = self else { return }
+            let media = self.viewModel.state.value == .tvShows
+                ? self.viewModel.sections.value[section].tvshows![row]
+                : self.viewModel.sections.value[section].movies![row]
+            self.viewModel.actions.presentMediaDetails(media)
+        }
+    }
+    
     private func dataSourceDidChange(in navigationView: DefaultNavigationView) {
         navigationView.dataSourceDidChange = { [weak self] state in
             guard let self = self else { return }
@@ -138,28 +176,6 @@ extension HomeViewController {
             case .categories:
                 self.categoriesOverlayView?.viewModel.isPresented.value = true
             default: return
-            }
-        }
-    }
-    
-    private func tableViewDidScroll(in dataSource: DefaultTableViewDataSource) {
-        dataSource.tableViewDidScroll = { [weak self] scrollView in
-            guard
-                let self = self,
-                let translation = scrollView.panGestureRecognizer
-                                            .translation(in: self.view) as CGPoint?
-            else { return }
-            self.view.animateUsingSpring(withDuration: 0.66,
-                                         withDamping: 1.0,
-                                         initialSpringVelocity: 1.0) {
-                guard translation.y < 0 else {
-                    self.navigationViewHeightConstraint.constant = 0.0
-                    self.navigationView.alpha = 1.0
-                    return self.view.layoutIfNeeded()
-                }
-                self.navigationViewHeightConstraint.constant = -162.0
-                self.navigationView.alpha = 0.0
-                self.view.layoutIfNeeded()
             }
         }
     }
