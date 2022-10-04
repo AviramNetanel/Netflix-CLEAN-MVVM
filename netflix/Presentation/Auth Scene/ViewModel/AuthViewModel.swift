@@ -15,9 +15,9 @@ struct AuthViewModelActions {
     let presentHomeViewController: () -> Void
 }
 
-// MARK: - AuthViewModelInput protocol
+// MARK: - ViewModelInput protocol
 
-private protocol AuthViewModelInput {
+private protocol ViewModelInput {
     func viewDidLoad()
     func signUp(query: AuthQuery,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
@@ -36,7 +36,7 @@ private protocol ViewModelOutput {
 
 // MARK: - ViewModel typealias
 
-private typealias ViewModel = AuthViewModelInput & ViewModelOutput
+private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 // MARK: - AuthViewModel class
 

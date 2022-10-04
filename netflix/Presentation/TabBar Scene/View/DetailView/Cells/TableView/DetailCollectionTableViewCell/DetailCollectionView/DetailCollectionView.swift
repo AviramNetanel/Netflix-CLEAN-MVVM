@@ -14,7 +14,8 @@ final class DetailCollectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: .init())
         collectionView.backgroundColor = .black
-        collectionView.register(StandardCollectionViewCell.nib, forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
+        collectionView.register(StandardCollectionViewCell.nib,
+                                forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
         collectionView.isScrollEnabled = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -22,7 +23,7 @@ final class DetailCollectionView: UIView {
         return collectionView
     }()
     
-    private var dataSource: DetailCollectionCollectionViewDataSource!
+    private var dataSource: DetailCollectionViewDataSource!
     
     private var viewModel: DetailViewModel!
     
@@ -42,7 +43,9 @@ final class DetailCollectionView: UIView {
         let media = viewModel.state == .tvShows
             ? viewModel.section!.tvshows!
             : viewModel.section!.movies!
-        dataSource = .init(collectionView: collectionView, media: media, with: viewModel)
+        dataSource = .init(collectionView: collectionView,
+                           media: media,
+                           with: viewModel)
         collectionView.setCollectionViewLayout(layout: .detailCollection)
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource

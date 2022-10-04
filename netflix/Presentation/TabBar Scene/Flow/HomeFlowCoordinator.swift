@@ -35,8 +35,7 @@ final class HomeFlowCoordinator {
     }
     
     func coordinate() -> HomeFlowCoordinator {
-        let actions = HomeViewModelActions(//presentNavigationView: presentNavigationView,
-                                           presentMediaDetails: presentMediaDetails)
+        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         

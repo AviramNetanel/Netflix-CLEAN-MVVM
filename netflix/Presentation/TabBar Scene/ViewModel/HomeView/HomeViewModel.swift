@@ -67,8 +67,6 @@ final class HomeViewModel: ViewModel {
     
     var navigationViewDidAppear: (() -> Void)?
     
-    var selectedSectionIndexPath: IndexPath?
-    
     init(homeUseCase: HomeUseCase,
          actions: HomeViewModelActions) {
         self.homeUseCase = homeUseCase

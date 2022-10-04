@@ -1,5 +1,5 @@
 //
-//  DetailCollectionCollectionViewDataSource.swift
+//  DetailCollectionViewDataSource.swift
 //  netflix
 //
 //  Created by Zach Bazov on 04/10/2022.
@@ -26,13 +26,13 @@ private protocol DataSourceOutput {
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
 
-// MARK: - DetailCollectionCollectionViewDataSource class
+// MARK: - DetailCollectionViewDataSource class
 
-final class DetailCollectionCollectionViewDataSource: NSObject,
-                                                      DataSource,
-                                                      UICollectionViewDelegate,
-                                                      UICollectionViewDataSource,
-                                                      UICollectionViewDataSourcePrefetching {
+final class DetailCollectionViewDataSource: NSObject,
+                                            DataSource,
+                                            UICollectionViewDelegate,
+                                            UICollectionViewDataSource,
+                                            UICollectionViewDataSourcePrefetching {
     
     fileprivate var collectionView: UICollectionView
     fileprivate var media: [Media]
@@ -63,10 +63,10 @@ final class DetailCollectionCollectionViewDataSource: NSObject,
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return CollectionViewCell.create(in: collectionView,
-                                                reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
-                                                section: viewModel.section,
-                                                for: indexPath,
-                                                with: viewModel)
+                                         reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
+                                         section: viewModel.section,
+                                         for: indexPath,
+                                         with: viewModel)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -85,7 +85,7 @@ final class DetailCollectionCollectionViewDataSource: NSObject,
         for indexPath in indexPaths {
             guard let media = media(for: indexPath) else { fatalError() }
             let cellViewModel = CollectionViewCellItemViewModel(media: media,
-                                                                       indexPath: indexPath)
+                                                                indexPath: indexPath)
             CollectionViewCell.download(with: cellViewModel)
         }
     }

@@ -136,7 +136,6 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
                                                       for: indexPath,
                                                       with: viewModel)
             ratableCell?.dataSource?.didSelectItem = { [weak self] row in
-                self?.viewModel.selectedSectionIndexPath = IndexPath(row: row, section: indexPath.section)
                 self?.didSelectItem?(indexPath.section, row)
             }
             return ratableCell
@@ -145,7 +144,6 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
                                                           for: indexPath,
                                                           with: viewModel)
             resumableCell?.dataSource?.didSelectItem = { [weak self] row in
-                self?.viewModel.selectedSectionIndexPath = IndexPath(row: row, section: indexPath.section)
                 self?.didSelectItem?(indexPath.section, row)
             }
             return resumableCell
@@ -154,7 +152,6 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
                                                         for: indexPath,
                                                         with: viewModel)
             standardCell?.dataSource?.didSelectItem = { [weak self] row in
-                self?.viewModel.selectedSectionIndexPath = IndexPath(row: row, section: indexPath.section)
                 self?.didSelectItem?(indexPath.section, row)
             }
             return standardCell
