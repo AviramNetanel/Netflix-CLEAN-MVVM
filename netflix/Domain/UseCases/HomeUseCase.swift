@@ -7,22 +7,34 @@
 
 import Foundation
 
-// MARK: - HomeUseCase protocol
+// MARK: - UseCaseInput protocol
 
-protocol HomeUseCase {
+private protocol UseCaseInput {
     func executeTVShows(completion: @escaping (Result<TVShowsResponse, Error>) -> Void) -> Cancellable?
     func executeMovies(completion: @escaping (Result<MoviesResponse, Error>) -> Void) -> Cancellable?
     func executeSections(completion: @escaping (Result<SectionsResponse, Error>) -> Void) -> Cancellable?
 //    func execute<T, R>(for repository: T, completion: @escaping (Result<R, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - DefaultHomeUseCase class
+// MARK: - UseCaseOutput protocol
 
-final class DefaultHomeUseCase: HomeUseCase {
+private protocol UseCaseOutput {
+    var sectionsRepository: SectionsRepository { get }
+    var tvShowsRepository: TVShowsRepository { get }
+    var moviesRepository: MoviesRepository { get }
+}
+
+// MARK: - UseCase typealias
+
+private typealias UseCase = UseCaseInput & UseCaseOutput
+
+// MARK: - HomeUseCase class
+
+final class HomeUseCase: UseCase {
     
-    private let sectionsRepository: SectionsRepository
-    private let tvShowsRepository: TVShowsRepository
-    private let moviesRepository: MoviesRepository
+    fileprivate let sectionsRepository: SectionsRepository
+    fileprivate let tvShowsRepository: TVShowsRepository
+    fileprivate let moviesRepository: MoviesRepository
     
     init(sectionsRepository: SectionsRepository,
          tvShowsRepository: TVShowsRepository,
@@ -31,8 +43,6 @@ final class DefaultHomeUseCase: HomeUseCase {
         self.tvShowsRepository = tvShowsRepository
         self.moviesRepository = moviesRepository
     }
-    
-    // MARK: Private
     
     private func requestSections(completion: @escaping (Result<SectionsResponse, Error>) -> Void) -> Cancellable? {
         return sectionsRepository.getAll { result in
@@ -68,9 +78,9 @@ final class DefaultHomeUseCase: HomeUseCase {
     }
 }
 
-// MARK: - HomeUseCase implementation
+// MARK: - UseCaseInput implementation
 
-extension DefaultHomeUseCase {
+extension HomeUseCase {
     
     func executeTVShows(completion: @escaping (Result<TVShowsResponse, Error>) -> Void) -> Cancellable? {
         return requestTVShows(completion: completion)

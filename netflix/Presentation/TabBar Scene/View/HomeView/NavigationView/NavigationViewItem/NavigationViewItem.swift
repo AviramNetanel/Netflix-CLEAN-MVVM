@@ -20,7 +20,7 @@ private protocol NavigationViewItemConfiguration {
 final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfiguration {
     
     private weak var item: NavigationViewItem!
-    var buttonDidTap: ((DefaultNavigationView.State) -> Void)?
+    var buttonDidTap: ((NavigationView.State) -> Void)?
     
     deinit {
         item = nil
@@ -36,7 +36,7 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
     fileprivate func itemDidConfigure(item: NavigationViewItem) {
         self.item = item
         
-        guard let state = DefaultNavigationView.State(rawValue: item.tag) else { return }
+        guard let state = NavigationView.State(rawValue: item.tag) else { return }
         
         item.addSubview(item.button)
         item.button.frame = item.bounds
@@ -70,7 +70,7 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
     }
     
     fileprivate func _buttonDidTap() {
-        guard let state = DefaultNavigationView.State(rawValue: item.tag) else { return }
+        guard let state = NavigationView.State(rawValue: item.tag) else { return }
         buttonDidTap?(state)
     }
 }
@@ -82,7 +82,7 @@ final class NavigationViewItem: UIView {
     fileprivate(set) lazy var button: UIButton = { return UIButton(type: .system) }()
     
     private(set) var configuration: DefaultNavigationViewItemConfiguration!
-    var viewModel: DefaultNavigationViewItemViewModel!
+    var viewModel: NavigationViewItemViewModel!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -95,10 +95,10 @@ final class NavigationViewItem: UIView {
         viewModel = nil
     }
     
-    func configure(with state: DefaultNavigationView.State) {
+    func configure(with state: NavigationView.State) {
         switch state {
         case .home:
-            guard let tag = DefaultNavigationView.State(rawValue: tag) else { return }
+            guard let tag = NavigationView.State(rawValue: tag) else { return }
             switch tag {
             case .categories:
                 button.setTitle(viewModel.title, for: .normal)
@@ -107,7 +107,7 @@ final class NavigationViewItem: UIView {
             }
         case .tvShows,
                 .movies:
-            guard let tag = DefaultNavigationView.State(rawValue: tag) else { return }
+            guard let tag = NavigationView.State(rawValue: tag) else { return }
             switch tag {
             case .categories:
                 button.setTitle("All \(viewModel.title!)", for: .normal)

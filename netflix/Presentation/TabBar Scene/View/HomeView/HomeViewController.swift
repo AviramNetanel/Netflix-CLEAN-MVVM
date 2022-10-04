@@ -12,13 +12,13 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
-    @IBOutlet private(set) var navigationView: DefaultNavigationView!
+    @IBOutlet private(set) var navigationView: NavigationView!
     @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
     
-    private var viewModel: DefaultHomeViewModel!
+    private(set) var viewModel: HomeViewModel!
     
-    private(set) var dataSource: DefaultTableViewDataSource!
-    private(set) var categoriesOverlayView: DefaultCategoriesOverlayView!
+    private(set) var dataSource: TableViewDataSource!
+    private(set) var categoriesOverlayView: CategoriesOverlayView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -39,7 +39,7 @@ final class HomeViewController: UIViewController {
         }
     }
     
-    static func create(with viewModel: DefaultHomeViewModel) -> HomeViewController {
+    static func create(with viewModel: HomeViewModel) -> HomeViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
                                 bundle: nil)
             .instantiateViewController(
@@ -83,11 +83,11 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoriesOverlayView() {
-        categoriesOverlayView = DefaultCategoriesOverlayView.create(on: view)
+        categoriesOverlayView = CategoriesOverlayView.create(on: view)
     }
     
     private func setupSubviewsDependencies() {
-        DefaultOpaqueView.createViewModel(on: categoriesOverlayView.opaqueView,
+        OpaqueView.createViewModel(on: categoriesOverlayView.opaqueView,
                                           with: viewModel)
     }
     
@@ -102,17 +102,17 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController {
     
-    private func heightForRowAt(in dataSource: DefaultTableViewDataSource) {
+    private func heightForRowAt(in dataSource: TableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
             guard let self = self else { return .zero }
-            if case .display = DefaultTableViewDataSource.Index(rawValue: indexPath.section) {
+            if case .display = TableViewDataSource.Index(rawValue: indexPath.section) {
                 return self.view.bounds.height * 0.76
             }
             return self.view.bounds.height * 0.19
         }
     }
     
-    private func tableViewDidScroll(in dataSource: DefaultTableViewDataSource) {
+    private func tableViewDidScroll(in dataSource: TableViewDataSource) {
         dataSource.tableViewDidScroll = { [weak self] scrollView in
             guard
                 let self = self,
@@ -134,17 +134,21 @@ extension HomeViewController {
         }
     }
     
-    private func didSelectItem(in dataSource: DefaultTableViewDataSource) {
+    private func didSelectItem(in dataSource: TableViewDataSource) {
         dataSource.didSelectItem = { [weak self] section, row in
             guard let self = self else { return }
+            let section = self.viewModel.state.value == .tvShows
+                ? self.viewModel.sections.value[section]
+                : self.viewModel.sections.value[section]
             let media = self.viewModel.state.value == .tvShows
-                ? self.viewModel.sections.value[section].tvshows![row]
-                : self.viewModel.sections.value[section].movies![row]
-            self.viewModel.actions.presentMediaDetails(media)
+                ? section.tvshows![row]
+                : section.movies![row]
+            
+            self.viewModel.actions.presentMediaDetails(section, media)
         }
     }
     
-    private func dataSourceDidChange(in navigationView: DefaultNavigationView) {
+    private func dataSourceDidChange(in navigationView: NavigationView) {
         navigationView.dataSourceDidChange = { [weak self] state in
             guard let self = self else { return }
             
@@ -180,7 +184,7 @@ extension HomeViewController {
         }
     }
     
-    private func navigationViewDidAppear(in viewModel: DefaultHomeViewModel) {
+    private func navigationViewDidAppear(in viewModel: HomeViewModel) {
         viewModel.navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
             self.navigationViewHeightConstraint.constant = 0.0
@@ -196,11 +200,11 @@ extension HomeViewController {
 
 extension HomeViewController {
     
-    private func state(in viewModel: DefaultHomeViewModel) {
+    private func state(in viewModel: HomeViewModel) {
         viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
     }
     
-    private func presentedDisplayMedia(in viewModel: DefaultHomeViewModel) {
+    private func presentedDisplayMedia(in viewModel: HomeViewModel) {
         viewModel.presentedDisplayMedia.observe(on: self) { [weak self] _ in self?.setupSubviewsDependencies() }
     }
 }

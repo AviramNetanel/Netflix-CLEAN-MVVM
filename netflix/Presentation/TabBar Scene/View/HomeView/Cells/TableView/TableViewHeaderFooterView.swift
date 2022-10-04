@@ -22,7 +22,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     static func create(in tableView: UITableView,
                        for section: Int,
-                       with viewModel: DefaultHomeViewModel) -> TableViewHeaderFooterView? {
+                       with viewModel: HomeViewModel) -> TableViewHeaderFooterView? {
         guard
             let view = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView

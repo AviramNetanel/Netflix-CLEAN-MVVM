@@ -9,11 +9,11 @@ import UIKit
 
 // MARK: - ResumableTableViewCell
 
-final class ResumableTableViewCell: DefaultTableViewCell<ResumableCollectionViewCell> {
+final class ResumableTableViewCell: TableViewCell<ResumableCollectionViewCell> {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultHomeViewModel) -> ResumableTableViewCell {
+                       with viewModel: HomeViewModel) -> ResumableTableViewCell {
         let view = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
                                                  for: indexPath) as! ResumableTableViewCell
         view.viewModel = viewModel

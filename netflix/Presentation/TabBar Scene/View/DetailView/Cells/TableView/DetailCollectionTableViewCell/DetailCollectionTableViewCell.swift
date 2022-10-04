@@ -12,12 +12,14 @@ import UIKit
 final class DetailCollectionTableViewCell: UITableViewCell {
     
     static func create(in tableView: UITableView,
-                       for indexPath: IndexPath) -> DetailCollectionTableViewCell {
+                       for indexPath: IndexPath,
+                       with viewModel: DetailViewModel) -> DetailCollectionTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailCollectionTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailCollectionTableViewCell
         view.backgroundColor = .black
-        let detailCollectionView = DetailCollectionView.create(on: view)
+        view.selectionStyle = .none
+        let detailCollectionView = DetailCollectionView.create(on: view, with: viewModel)
         view.addSubview(detailCollectionView)
         return view
     }

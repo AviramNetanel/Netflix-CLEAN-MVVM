@@ -16,6 +16,8 @@ final class DetailInfoTableViewCell: UITableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailInfoTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailInfoTableViewCell
+        view.backgroundColor = .black
+        view.selectionStyle = .none
         let detailInfoView = DetailInfoView.create(on: view)
         view.addSubview(detailInfoView)
         return view

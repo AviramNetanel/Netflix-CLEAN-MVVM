@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ResumableCollectionViewCell class
 
-final class ResumableCollectionViewCell: DefaultCollectionViewCell {
+final class ResumableCollectionViewCell: CollectionViewCell {
     
     @IBOutlet private weak var actionBoxView: UIView!
     @IBOutlet private weak var optionsButton: UIButton!

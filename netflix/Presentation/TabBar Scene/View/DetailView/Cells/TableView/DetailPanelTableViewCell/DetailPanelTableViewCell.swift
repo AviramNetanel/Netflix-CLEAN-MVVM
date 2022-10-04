@@ -16,6 +16,8 @@ final class DetailPanelTableViewCell: UITableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailPanelTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailPanelTableViewCell
+        view.backgroundColor = .black
+        view.selectionStyle = .none
         let detailPanelView = DetailPanelView.create(on: view)
         view.addSubview(detailPanelView)
         return view

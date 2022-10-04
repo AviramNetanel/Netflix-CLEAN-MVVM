@@ -19,14 +19,14 @@ final class DetailPreviewView: UIView {
     }()
     
     static func create(on parent: UIView,
-                       with viewModel: DefaultDetailViewModel) -> DetailPreviewView {
+                       with viewModel: DetailViewModel) -> DetailPreviewView {
         let view = DetailPreviewView(frame: parent.bounds)
-        let previewViewViewModel = DefaultDetailPreviewViewViewModel(with: viewModel.media)
+        let previewViewViewModel = DetailPreviewViewViewModel(with: viewModel.media)
         view.configure(with: previewViewViewModel)
         return view
     }
     
-    private func configure(with viewModel: DefaultDetailPreviewViewViewModel) {
+    private func configure(with viewModel: DetailPreviewViewViewModel) {
         AsyncImageFetcher.shared.load(url: viewModel.url,
                                       identifier: viewModel.identifier) { image in
             DispatchQueue.main.async { [weak self] in self?.imageView.image = image }

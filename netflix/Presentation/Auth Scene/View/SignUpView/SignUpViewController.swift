@@ -17,7 +17,7 @@ final class SignUpViewController: UIViewController {
     @IBOutlet private weak var passwordConfirmTextField: UITextField!
     @IBOutlet private weak var signUpButton: UIButton!
     
-    var viewModel: DefaultAuthViewModel!
+    var viewModel: AuthViewModel!
     
     private var credentials: (String?, String?, String?, String?) {
         return (name: nameTextField.text,

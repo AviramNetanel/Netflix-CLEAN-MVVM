@@ -9,11 +9,11 @@ import UIKit
 
 // MARK: - StandardTableViewCell
 
-final class StandardTableViewCell: DefaultTableViewCell<StandardCollectionViewCell> {
+final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultHomeViewModel) -> StandardTableViewCell {
+                       with viewModel: HomeViewModel) -> StandardTableViewCell {
         let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)
         let view = tableView.dequeueReusableCell(withIdentifier: identifier!.stringValue,
                                                  for: indexPath) as! StandardTableViewCell

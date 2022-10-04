@@ -16,6 +16,8 @@ final class DetailNavigationTableViewCell: UITableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailNavigationTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailNavigationTableViewCell
+        view.backgroundColor = .black
+        view.selectionStyle = .none
         let detailNavigationView = DetailNavigationView.create(on: view)
         view.addSubview(detailNavigationView)
         return view

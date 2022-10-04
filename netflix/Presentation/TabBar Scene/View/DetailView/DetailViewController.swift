@@ -13,9 +13,9 @@ final class DetailViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
     
-    var viewModel: DefaultDetailViewModel!
+    var viewModel: DetailViewModel!
     
-    private var dataSource: DefaultDetailTableViewDataSource!
+    private var dataSource: DetailTableViewDataSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ final class DetailViewController: UIViewController {
         self.setupBindings()
     }
     
-    static func create(with viewModel: DefaultDetailViewModel) -> DetailViewController {
+    static func create(with viewModel: DetailViewModel) -> DetailViewController {
         let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
                                 bundle: nil)
             .instantiateViewController(withIdentifier: String(describing: DetailViewController.self)) as! DetailViewController
@@ -31,14 +31,21 @@ final class DetailViewController: UIViewController {
         return view
     }
     
-    deinit { viewModel = nil }
+    deinit {
+        dataSource = nil
+        viewModel = nil
+    }
     
     private func setupSubviews() {
         setupDataSource()
     }
     
+    private func setupBindings() {
+        heightForRow(in: dataSource)
+    }
+    
     private func setupDataSource() {
-        dataSource = .init(with: viewModel)
+        dataSource = .init(viewModel: viewModel, tableView: tableView)
         tableView.register(class: DetailPreviewTableViewCell.self)
         tableView.register(class: DetailInfoTableViewCell.self)
         tableView.register(class: DetailDescriptionTableViewCell.self)
@@ -49,25 +56,20 @@ final class DetailViewController: UIViewController {
         tableView.dataSource = dataSource
         tableView.reloadData()
     }
-    
-    private func setupBindings() {
-        heightForRow(in: dataSource)
-    }
 }
 
 // MARK: - Bindings
 
 extension DetailViewController {
     
-    private func heightForRow(in dataSource: DefaultDetailTableViewDataSource) {
+    private func heightForRow(in dataSource: DetailTableViewDataSource) {
         dataSource.heightForRow = { [weak self] indexPath in
             guard
                 let self = self,
-                let index = DefaultDetailTableViewDataSource.Index(rawValue: indexPath.section)
+                let index = DetailTableViewDataSource.Index(rawValue: indexPath.section)
             else { return .zero }
             switch index {
             case .preview:
-                print(22, self.view.bounds.height * 0.279)
                 return self.view.bounds.height * 0.279
             case .info:
                 return 176.0
@@ -78,7 +80,9 @@ extension DetailViewController {
             case .navigation:
                 return 44.0
             case .collection:
-                return 44.0
+                let section = self.viewModel.section!
+                let value = (Float(section.tvshows!.count) / 3.0).rounded(.awayFromZero) * 138.0 + (8.0 * Float(section.tvshows!.count) / 3.0).rounded(.awayFromZero)
+                return CGFloat(value)
             }
         }
     }

@@ -7,16 +7,6 @@
 
 import UIKit
 
-// MARK: - CollectionViewLayoutConfiguration struct
-
-struct CollectionViewLayoutConfiguration {
-    let scrollDirection: UICollectionView.ScrollDirection
-    let minimumLineSpacing: CGFloat
-    let minimumInteritemSpacing: CGFloat
-    let sectionInset: UIEdgeInsets
-    let itemSize: CGSize
-}
-
 // MARK: - CollectionViewLayoutInput protocol
 
 private protocol CollectionViewLayoutInput {}
@@ -24,27 +14,41 @@ private protocol CollectionViewLayoutInput {}
 // MARK: - CollectionViewLayoutOutput protocol
 
 private protocol CollectionViewLayoutOutput {
-    var configuration: CollectionViewLayoutConfiguration { get }
+    var configuration: DefaultCollectionViewLayout.Configuration { get }
 }
 
-// MARK: - CollectionViewLayout protocol
+// MARK: - CollectionViewLayout typealias
 
-private protocol CollectionViewLayout: CollectionViewLayoutInput, CollectionViewLayoutOutput {}
+private typealias CollectionViewLayout = CollectionViewLayoutInput & CollectionViewLayoutOutput
 
 // MARK: - DefaultCollectionViewLayout class
 
 final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionViewLayout {
     
-    fileprivate var configuration: CollectionViewLayoutConfiguration
+    enum Layout {
+        case ratable
+        case resumable
+        case standard
+        case categoriesOverlay
+        case detailCollection
+    }
+
+    struct Configuration {
+        let scrollDirection: UICollectionView.ScrollDirection
+        let minimumLineSpacing: CGFloat
+        let minimumInteritemSpacing: CGFloat
+        let sectionInset: UIEdgeInsets
+        let itemSize: CGSize
+    }
     
-    init(configuration: CollectionViewLayoutConfiguration) {
+    fileprivate var configuration: Configuration
+    
+    init(configuration: Configuration) {
         self.configuration = configuration
         super.init()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) hasn't been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) hasn't been implemented") }
     
     override func prepare() {
         super.prepare()
@@ -63,25 +67,27 @@ final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionV
         return true
     }
     
-    static func ratableConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
-        return .init(scrollDirection: .horizontal,
-                     minimumLineSpacing: .zero,
-                     minimumInteritemSpacing: .zero,
-                     sectionInset: .init(top: .zero, left: 24.0, bottom: .zero, right: .zero),
-                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - 8.0,
-                                     height: collectionView.bounds.height - 8.0))
+    static func ratableConfigurations(for collectionView: UICollectionView) -> Configuration {
+        return .init(
+            scrollDirection: .horizontal,
+            minimumLineSpacing: .zero,
+            minimumInteritemSpacing: .zero,
+            sectionInset: .init(top: .zero, left: 24.0, bottom: .zero, right: .zero),
+            itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - 8.0,
+                            height: collectionView.bounds.height - 8.0))
     }
     
-    static func standardConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
-        return .init(scrollDirection: .horizontal,
-                     minimumLineSpacing: 8.0,
-                     minimumInteritemSpacing: .zero,
-                     sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
-                     itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - (8.0 * CGFloat(3.0)),
-                                     height: collectionView.bounds.height - 8.0))
+    static func standardConfigurations(for collectionView: UICollectionView) -> Configuration {
+        return .init(
+            scrollDirection: .horizontal,
+            minimumLineSpacing: 8.0,
+            minimumInteritemSpacing: .zero,
+            sectionInset: .init(top: .zero, left: 8.0, bottom: .zero, right: .zero),
+            itemSize: .init(width: collectionView.bounds.width / CGFloat(3.0) - (8.0 * CGFloat(3.0)),
+                            height: collectionView.bounds.height - 8.0))
     }
     
-    static func categoriesOverlayConfigurations(for collectionView: UICollectionView) -> CollectionViewLayoutConfiguration {
+    static func categoriesOverlayConfigurations(for collectionView: UICollectionView) -> Configuration {
         return .init(
             scrollDirection: .vertical,
             minimumLineSpacing: .zero,
@@ -92,5 +98,18 @@ final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionV
                                 right: collectionView.bounds.width / 4),
             itemSize: .init(width: collectionView.bounds.width / 2,
                             height: 60.0))
+    }
+    
+    static func detailCollectionConfigurations(for collectionView: UICollectionView) -> Configuration {
+        return .init(
+            scrollDirection: .vertical,
+            minimumLineSpacing: 8.0,
+            minimumInteritemSpacing: .zero,
+            sectionInset: .init(top: .zero,
+                                left: 28.0,
+                                bottom: .zero,
+                                right: 28.0),
+            itemSize: .init(width: collectionView.bounds.width / 3 - (8.0 * 3),
+                            height: 138.0))
     }
 }

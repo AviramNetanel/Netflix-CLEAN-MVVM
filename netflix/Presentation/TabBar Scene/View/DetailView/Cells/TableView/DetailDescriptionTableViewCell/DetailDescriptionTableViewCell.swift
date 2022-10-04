@@ -15,6 +15,8 @@ final class DetailDescriptionTableViewCell: UITableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailDescriptionTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailDescriptionTableViewCell
+        view.backgroundColor = .black
+        view.selectionStyle = .none
         let detailDescriptionView = DetailDescriptionView.create(on: view)
         view.addSubview(detailDescriptionView)
         return view

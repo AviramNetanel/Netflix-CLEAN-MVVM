@@ -42,7 +42,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa" customClass="DefaultNavigationView" customModule="netflix" customModuleProvider="target">
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa" customClass="NavigationView" customModule="netflix" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="-162" width="414" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="162" id="vZM-Eo-uVL"/>
@@ -80,8 +80,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dY5-bB-N1s">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dY5-bB-N1s">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
@@ -89,7 +89,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="uad-si-zky" firstAttribute="trailing" secondItem="dY5-bB-N1s" secondAttribute="trailing" id="Ex3-6X-ZsD"/>
-                            <constraint firstItem="uad-si-zky" firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="JcD-vH-VvN"/>
+                            <constraint firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="JcD-vH-VvN"/>
                             <constraint firstItem="dY5-bB-N1s" firstAttribute="top" secondItem="GIZ-m2-CJv" secondAttribute="top" id="kTc-57-PKt"/>
                             <constraint firstItem="dY5-bB-N1s" firstAttribute="leading" secondItem="uad-si-zky" secondAttribute="leading" id="pw8-Ko-KHA"/>
                         </constraints>

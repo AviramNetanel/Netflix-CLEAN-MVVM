@@ -22,7 +22,7 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultCategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewCell {
+                       with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewCell {
         guard let view = tableView.dequeueReusableCell(
             withIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier,
             for: indexPath) as? CategoriesOverlayViewTableViewCell else { fatalError() }

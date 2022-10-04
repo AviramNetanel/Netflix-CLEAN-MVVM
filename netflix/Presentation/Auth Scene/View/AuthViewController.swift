@@ -17,7 +17,7 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     @IBOutlet private weak var signInButton: UIBarButtonItem!
     @IBOutlet private weak var signUpButton: UIButton!
     
-    private var viewModel: DefaultAuthViewModel!
+    private var viewModel: AuthViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
         viewModel.viewDidLoad()
     }
     
-    static func create(with viewModel: DefaultAuthViewModel) -> AuthViewController {
+    static func create(with viewModel: AuthViewModel) -> AuthViewController {
         let view = AuthViewController.instantiateViewController()
         view.viewModel = viewModel
         return view

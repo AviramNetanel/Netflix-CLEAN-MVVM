@@ -18,7 +18,7 @@ final class DisplayView: UIView, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelView: PanelView!
     
-    var viewModel: DefaultDisplayViewViewModel! { didSet { configure(with: viewModel) } }
+    var viewModel: DisplayViewViewModel! { didSet { configure(with: viewModel) } }
     
     deinit {
         bottomGradientView = nil
@@ -46,7 +46,7 @@ final class DisplayView: UIView, ViewInstantiable {
         posterImageView.contentMode = .scaleAspectFill
     }
     
-    private func configure(with viewModel: DefaultDisplayViewViewModel) {
+    private func configure(with viewModel: DisplayViewViewModel) {
         posterImageView.image = nil
         logoImageView.image = nil
         genresLabel.attributedText = nil

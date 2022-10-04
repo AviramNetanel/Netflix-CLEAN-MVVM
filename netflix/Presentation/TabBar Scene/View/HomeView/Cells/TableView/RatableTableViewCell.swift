@@ -9,11 +9,11 @@ import UIKit
 
 // MARK: - RatableTableViewCell
 
-final class RatableTableViewCell: DefaultTableViewCell<RatableCollectionViewCell> {
+final class RatableTableViewCell: TableViewCell<RatableCollectionViewCell> {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultHomeViewModel) -> RatableTableViewCell {
+                       with viewModel: HomeViewModel) -> RatableTableViewCell {
         let view = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
                                                  for: indexPath) as! RatableTableViewCell
         view.viewModel = viewModel

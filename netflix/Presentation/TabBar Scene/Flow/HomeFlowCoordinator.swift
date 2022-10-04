@@ -11,10 +11,10 @@ import UIKit
 
 protocol HomeFlowCoordinatorDependencies {
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
-    func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel
+    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel
     
     func createDetailViewController() -> DetailViewController
-    func createDetailViewModel() -> DefaultDetailViewModel
+    func createDetailViewModel() -> DetailViewModel
 }
 
 // MARK: - HomeFlowCoordinator class
@@ -25,6 +25,8 @@ final class HomeFlowCoordinator {
     
     private weak var navigationController: UINavigationController?
     private(set) weak var viewController: UIViewController?
+    
+    weak var detailViewController: DetailViewController?
     
     init(navigationController: UINavigationController,
          dependencies: HomeFlowCoordinatorDependencies) {
@@ -44,17 +46,16 @@ final class HomeFlowCoordinator {
         return self
     }
     
-    func presentMediaDetails(media: Media) {
-        guard
-            let homeViewController = viewController as? HomeViewController,
-            let detailViewController = dependencies.createDetailViewController() as DetailViewController?
-        else { return }
-        detailViewController.modalTransitionStyle = .coverVertical
-        detailViewController.modalPresentationStyle = .automatic
-        detailViewController.viewModel.media = media
-        homeViewController.present(detailViewController, animated: true)
-//        homeViewController.performSegue(withIdentifier: String(describing: DetailViewController.self),
-//                                        sender: viewController)
+    func presentMediaDetails(section: Section, media: Media) {
+        guard let homeViewController = viewController as? HomeViewController else { return }
+        detailViewController = dependencies.createDetailViewController()
+        detailViewController?.modalPresentationCapturesStatusBarAppearance = true
+        detailViewController?.modalTransitionStyle = .coverVertical
+        detailViewController?.modalPresentationStyle = .automatic
+        detailViewController?.viewModel.section = section
+        detailViewController?.viewModel.media = media
+        detailViewController?.viewModel.state = homeViewController.viewModel.state.value
+        homeViewController.present(detailViewController!, animated: true)
     }
     
     func sceneDidDisconnect() {

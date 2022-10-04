@@ -7,19 +7,29 @@
 
 import Foundation
 
-// MARK: - AuthUseCase protocol
+// MARK: - UseCaseInput protocol
 
-protocol AuthUseCase {
+private protocol UseCaseInput {
     func execute(requestValue: AuthUseCaseRequestValue,
                  cached: @escaping (AuthResponseDTO?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - DefaultAuthUseCase class
+// MARK: - UseCaseOutput protocol
 
-final class DefaultAuthUseCase: AuthUseCase {
+private protocol UseCaseOutput {
+    var authRepository: AuthRepository { get }
+}
+
+// MARK: - UseCase typealias
+
+private typealias UseCase = UseCaseInput & UseCaseOutput
+
+// MARK: - AuthUseCase class
+
+final class AuthUseCase: UseCase {
     
-    private let authRepository: AuthRepository
+    fileprivate let authRepository: AuthRepository
     
     init(authRepository: AuthRepository) {
         self.authRepository = authRepository
@@ -30,8 +40,6 @@ final class DefaultAuthUseCase: AuthUseCase {
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         return request(requestValue: requestValue, cached: cached, completion: completion)
     }
-    
-    // MARK: Private
     
     private func request(requestValue: AuthUseCaseRequestValue,
                          cached: @escaping (AuthResponseDTO?) -> Void,

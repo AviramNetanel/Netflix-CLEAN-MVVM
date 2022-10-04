@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - RatableCollectionViewCell class
 
-final class RatableCollectionViewCell: DefaultCollectionViewCell {
+final class RatableCollectionViewCell: CollectionViewCell {
     
     private final class TextLayer: CATextLayer {
         override func draw(in ctx: CGContext) {
@@ -47,7 +47,7 @@ final class RatableCollectionViewCell: DefaultCollectionViewCell {
         textLayer.string = nil
     }
     
-    override func configure(with viewModel: DefaultCollectionViewCellItemViewModel) {
+    override func configure(with viewModel: CollectionViewCellItemViewModel) {
         super.configure(with: viewModel)
         
         guard let indexPath = viewModel.indexPath as IndexPath? else { return }

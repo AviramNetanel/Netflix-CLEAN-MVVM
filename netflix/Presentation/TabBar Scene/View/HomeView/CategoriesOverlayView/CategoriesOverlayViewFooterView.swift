@@ -11,7 +11,7 @@ import UIKit
 
 final class CategoriesOverlayViewFooterView: UIView {
     
-    private var viewModel: DefaultCategoriesOverlayViewViewModel!
+    private var viewModel: CategoriesOverlayViewViewModel!
     
     private lazy var button: UIButton = {
         let button = UIButton(type: .system)
@@ -28,7 +28,7 @@ final class CategoriesOverlayViewFooterView: UIView {
     
     static func create(on parent: UIView,
                        frame: CGRect,
-                       with viewModel: DefaultCategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView {
+                       with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView {
         let view = CategoriesOverlayViewFooterView(frame: frame)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear

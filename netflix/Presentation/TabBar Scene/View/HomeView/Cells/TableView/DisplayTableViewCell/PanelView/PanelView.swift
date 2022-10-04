@@ -12,10 +12,10 @@ import UIKit
 final class PanelView: UIView, ViewInstantiable {
     
     @IBOutlet private weak var playButton: UIButton!
-    @IBOutlet private weak var leadingPanelItemView: DefaultPanelViewItem!
-    @IBOutlet private weak var trailingPanelItemView: DefaultPanelViewItem!
+    @IBOutlet private weak var leadingPanelItemView: PanelViewItem!
+    @IBOutlet private weak var trailingPanelItemView: PanelViewItem!
     
-    private(set) var viewModel: DefaultHomeViewModel!
+    private(set) var viewModel: HomeViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

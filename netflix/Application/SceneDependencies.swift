@@ -24,7 +24,7 @@ final class SceneDependencies {
     
     private let dependencies: Dependencies
     
-    lazy var authResponseCache: AuthResponseStorage = CoreDataAuthResponseStorage()
+    lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage()
     
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -33,11 +33,11 @@ final class SceneDependencies {
     // MARK: UseCases
     
     func createAuthUseCase() -> AuthUseCase {
-        return DefaultAuthUseCase(authRepository: createAuthRepository())
+        return AuthUseCase(authRepository: createAuthRepository())
     }
     
     func createHomeUseCase() -> HomeUseCase {
-        return DefaultHomeUseCase(sectionsRepository: createSectionsRepository(),
+        return HomeUseCase(sectionsRepository: createSectionsRepository(),
                                   tvShowsRepository: createTVShowsRepository(),
                                   moviesRepository: createMoviesRepository())
     }
@@ -45,20 +45,20 @@ final class SceneDependencies {
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
-        return DefaultAuthRepository(dataTransferService: dependencies.dataTransferService,
+        return AuthRepository(dataTransferService: dependencies.dataTransferService,
                                      cache: authResponseCache)
     }
     
     func createSectionsRepository() -> SectionsRepository {
-        return DefaultSectionsRepository(dataTransferService: dependencies.dataTransferService)
+        return SectionsRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     func createTVShowsRepository() -> TVShowsRepository {
-        return DefaultTVShowsRepository(dataTransferService: dependencies.dataTransferService)
+        return TVShowsRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     func createMoviesRepository() -> MoviesRepository {
-        return DefaultMoviesRepository(dataTransferService: dependencies.dataTransferService)
+        return MoviesRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     // MARK: - Scenes
@@ -69,8 +69,8 @@ final class SceneDependencies {
         return AuthViewController.create(with: createAuthViewModel(actions: actions))
     }
     
-    func createAuthViewModel(actions: AuthViewModelActions) -> DefaultAuthViewModel {
-        return DefaultAuthViewModel(authUseCase: createAuthUseCase(),
+    func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
+        return AuthViewModel(authUseCase: createAuthUseCase(),
                                     actions: actions)
     }
     
@@ -80,8 +80,8 @@ final class SceneDependencies {
         return HomeViewController.create(with: createHomeViewModel(actions: actions))
     }
     
-    func createHomeViewModel(actions: HomeViewModelActions) -> DefaultHomeViewModel {
-        return DefaultHomeViewModel(homeUseCase: createHomeUseCase(),
+    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
+        return HomeViewModel(homeUseCase: createHomeUseCase(),
                                     actions: actions)
     }
     
@@ -91,8 +91,8 @@ final class SceneDependencies {
         return DetailViewController.create(with: createDetailViewModel())
     }
     
-    func createDetailViewModel() -> DefaultDetailViewModel {
-        return DefaultDetailViewModel()
+    func createDetailViewModel() -> DetailViewModel {
+        return DetailViewModel()
     }
 }
 

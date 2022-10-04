@@ -15,13 +15,13 @@ final class DisplayTableViewCell: UITableViewCell {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DefaultHomeViewModel) -> DisplayTableViewCell {
+                       with viewModel: HomeViewModel) -> DisplayTableViewCell {
         let view = tableView.dequeueReusableCell(withIdentifier: DisplayTableViewCell.reuseIdentifier,
                                                 for: indexPath) as! DisplayTableViewCell
         
         viewModel.presentedDisplayMediaDidChange()
         
-        let displayViewViewModel = DefaultDisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
+        let displayViewViewModel = DisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
         view.displayView.viewModel = displayViewViewModel
         
         return view
