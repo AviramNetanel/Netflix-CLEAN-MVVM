@@ -78,18 +78,18 @@ extension TableViewCell {
                            section: section,
                            viewModel: viewModel)
         
-        guard !(collectionView.collectionViewLayout is DefaultCollectionViewLayout) else { return }
+        guard !(collectionView.collectionViewLayout is CollectionViewLayout) else { return }
         
         switch indices {
         case .display:
             break
         case .ratable:
-            let configuration = DefaultCollectionViewLayout.ratableConfigurations(for: collectionView)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.ratableConfigurations(for: collectionView)
+            let layout = CollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            let configuration = DefaultCollectionViewLayout.standardConfigurations(for: collectionView)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.standardConfigurations(for: collectionView)
+            let layout = CollectionViewLayout(configuration: configuration)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }
     }

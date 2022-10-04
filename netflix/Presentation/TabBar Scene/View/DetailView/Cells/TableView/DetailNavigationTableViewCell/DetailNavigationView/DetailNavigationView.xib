@@ -7,35 +7,41 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailNavigationView" customModule="netflix" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailNavigationView" customModule="netflix" customModuleProvider="target">
+            <connections>
+                <outlet property="centerViewContainer" destination="oM0-Eq-h5q" id="rgk-iu-cNe"/>
+                <outlet property="leadingViewContainer" destination="FoB-jf-PJF" id="IFB-d2-gDG"/>
+                <outlet property="trailingViewContrainer" destination="Zxi-Zu-ErP" id="4H2-Ag-WhA"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="3PV-Ei-Gm8">
             <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="cFl-PJ-5TQ">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                    <rect key="frame" x="16" y="16" width="382" height="48"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FoB-jf-PJF">
-                            <rect key="frame" x="0.0" y="0.0" width="70" height="64"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FoB-jf-PJF" userLabel="Leading Container">
+                            <rect key="frame" x="0.0" y="0.0" width="70" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="70" id="vvt-En-J2L"/>
                             </constraints>
                         </view>
-                        <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oM0-Eq-h5q">
-                            <rect key="frame" x="94" y="0.0" width="70" height="64"/>
+                        <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oM0-Eq-h5q" userLabel="Center Container">
+                            <rect key="frame" x="94" y="0.0" width="70" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="70" id="Uwg-Wu-9XO"/>
                             </constraints>
                         </view>
-                        <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zxi-Zu-ErP">
-                            <rect key="frame" x="188" y="0.0" width="114" height="64"/>
+                        <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zxi-Zu-ErP" userLabel="Trailing Container">
+                            <rect key="frame" x="188" y="0.0" width="114" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="114" id="MiQ-V1-wVG"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yk-Ln-0vA">
-                            <rect key="frame" x="326" y="0.0" width="88" height="64"/>
+                        <view tag="-1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yk-Ln-0vA" userLabel="Dummy Container">
+                            <rect key="frame" x="326" y="0.0" width="56" height="48"/>
                         </view>
                     </subviews>
                     <constraints>
@@ -53,9 +59,9 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="cFl-PJ-5TQ" secondAttribute="bottom" id="59M-Sf-w6R"/>
-                <constraint firstItem="cFl-PJ-5TQ" firstAttribute="leading" secondItem="3PV-Ei-Gm8" secondAttribute="leading" id="PfX-dv-KuX"/>
-                <constraint firstAttribute="trailing" secondItem="cFl-PJ-5TQ" secondAttribute="trailing" id="RkY-Ro-qvA"/>
-                <constraint firstItem="cFl-PJ-5TQ" firstAttribute="top" secondItem="3PV-Ei-Gm8" secondAttribute="top" id="iJg-c8-jrg"/>
+                <constraint firstItem="cFl-PJ-5TQ" firstAttribute="leading" secondItem="3PV-Ei-Gm8" secondAttribute="leading" constant="16" id="PfX-dv-KuX"/>
+                <constraint firstAttribute="trailing" secondItem="cFl-PJ-5TQ" secondAttribute="trailing" constant="16" id="RkY-Ro-qvA"/>
+                <constraint firstItem="cFl-PJ-5TQ" firstAttribute="top" secondItem="3PV-Ei-Gm8" secondAttribute="top" constant="16" id="iJg-c8-jrg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-55" y="146"/>

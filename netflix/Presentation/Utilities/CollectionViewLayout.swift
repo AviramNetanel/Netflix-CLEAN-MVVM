@@ -1,5 +1,5 @@
 //
-//  DefaultCollectionViewLayout.swift
+//  CollectionViewLayout.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,23 +7,23 @@
 
 import UIKit
 
-// MARK: - CollectionViewLayoutInput protocol
+// MARK: - LayoutInput protocol
 
-private protocol CollectionViewLayoutInput {}
+private protocol LayoutInput {}
 
-// MARK: - CollectionViewLayoutOutput protocol
+// MARK: - LayoutOutput protocol
 
-private protocol CollectionViewLayoutOutput {
-    var configuration: DefaultCollectionViewLayout.Configuration { get }
+private protocol LayoutOutput {
+    var configuration: CollectionViewLayout.Configuration { get }
 }
 
-// MARK: - CollectionViewLayout typealias
+// MARK: - Layout typealias
 
-private typealias CollectionViewLayout = CollectionViewLayoutInput & CollectionViewLayoutOutput
+private typealias Layout = LayoutInput & LayoutOutput
 
-// MARK: - DefaultCollectionViewLayout class
+// MARK: - CollectionViewLayout class
 
-final class DefaultCollectionViewLayout: UICollectionViewFlowLayout, CollectionViewLayout {
+final class CollectionViewLayout: UICollectionViewFlowLayout, Layout {
     
     enum Layout {
         case ratable

@@ -7,17 +7,17 @@
 
 import UIKit
 
-// MARK: - NavigationViewItemConfiguration protocol
+// MARK: - ItemConfiguration protocol
 
 @objc
-private protocol NavigationViewItemConfiguration {
+private protocol ItemConfiguration {
     func itemDidConfigure(item: NavigationViewItem)
     func _buttonDidTap()
 }
 
-// MARK: - DefaultNavigationViewItemConfiguration class
+// MARK: - NavigationViewItemConfiguration class
 
-final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfiguration {
+final class NavigationViewItemConfiguration: ItemConfiguration {
     
     private weak var item: NavigationViewItem!
     var buttonDidTap: ((NavigationView.State) -> Void)?
@@ -27,8 +27,8 @@ final class DefaultNavigationViewItemConfiguration: NavigationViewItemConfigurat
         buttonDidTap = nil
     }
     
-    static func create(with item: NavigationViewItem) -> DefaultNavigationViewItemConfiguration {
-        let configuration = DefaultNavigationViewItemConfiguration()
+    static func create(with item: NavigationViewItem) -> NavigationViewItemConfiguration {
+        let configuration = NavigationViewItemConfiguration()
         configuration.itemDidConfigure(item: item)
         return configuration
     }
@@ -81,7 +81,7 @@ final class NavigationViewItem: UIView {
     
     fileprivate(set) lazy var button: UIButton = { return UIButton(type: .system) }()
     
-    private(set) var configuration: DefaultNavigationViewItemConfiguration!
+    private(set) var configuration: NavigationViewItemConfiguration!
     var viewModel: NavigationViewItemViewModel!
     
     required init?(coder: NSCoder) {

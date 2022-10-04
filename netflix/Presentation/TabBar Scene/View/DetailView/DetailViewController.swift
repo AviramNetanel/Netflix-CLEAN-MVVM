@@ -76,12 +76,23 @@ extension DetailViewController {
             case .description:
                 return 112.0
             case .panel:
-                return 48.0
+                return 64.0
             case .navigation:
-                return 44.0
+                return 64.0
             case .collection:
                 let section = self.viewModel.section!
-                let value = (Float(section.tvshows!.count) / 3.0).rounded(.awayFromZero) * 138.0 + (8.0 * Float(section.tvshows!.count) / 3.0).rounded(.awayFromZero)
+                let cellHeight = CGFloat(138.0)
+                let lineSpacing = CGFloat(8.0)
+                let itemsPerLine = Double(3.0)
+                let topContentInset = CGFloat(16.0)
+                let itemsCount = self.viewModel.state == .tvShows
+                    ? Double(section.tvshows!.count)
+                    : Double(section.movies!.count)
+                let roundedItemsOutput = (itemsCount / itemsPerLine).rounded(.awayFromZero)
+                let value =
+                    roundedItemsOutput * cellHeight
+                    + lineSpacing * roundedItemsOutput
+                    + topContentInset
                 return CGFloat(value)
             }
         }

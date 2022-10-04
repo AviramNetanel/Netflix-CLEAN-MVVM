@@ -12,13 +12,19 @@ import UIKit
 final class DetailCollectionView: UIView {
     
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: .init())
+        let collectionView = UICollectionView(frame: bounds,
+                                              collectionViewLayout: .init())
         collectionView.backgroundColor = .black
-        collectionView.register(StandardCollectionViewCell.nib,
-                                forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
+        collectionView.register(
+            StandardCollectionViewCell.nib,
+            forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
         collectionView.isScrollEnabled = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = .init(top: 16.0,
+                                            left: .zero,
+                                            bottom: .zero,
+                                            right: .zero)
         addSubview(collectionView)
         return collectionView
     }()

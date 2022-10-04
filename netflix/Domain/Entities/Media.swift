@@ -28,6 +28,7 @@ struct Media {
     var presentedCover: String?
     var presentedLogo: String?
     var presentedDisplayLogo: String?
+    var isNetflixExclusive: Bool?
     
     var displayLogos: [String]?
     var logos: [String]
@@ -40,7 +41,6 @@ struct Media {
     var duration: String?
     var seasonCount: Int?
     var episodeCount: Int?
-    var isNetflixExclusive: Bool?
     
     // MARK: Movie's Properties
     

@@ -81,11 +81,13 @@ final class DetailTableViewDataSource: NSObject,
             return previewCell
         case .info:
             infoCell = DetailInfoTableViewCell.create(in: tableView,
-                                                      for: indexPath)
+                                                      for: indexPath,
+                                                      with: viewModel)
             return infoCell
         case .description:
             descriptionCell = DetailDescriptionTableViewCell.create(in: tableView,
-                                                                    for: indexPath)
+                                                                    for: indexPath,
+                                                                    with: viewModel)
             return descriptionCell
         case .panel:
             panelCell = DetailPanelTableViewCell.create(in: tableView,

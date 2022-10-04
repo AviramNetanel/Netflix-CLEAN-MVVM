@@ -10,27 +10,27 @@ import UIKit
 // MARK: - UICollectionView + Layout
 
 extension UICollectionView {
-    func setCollectionViewLayout(layout: DefaultCollectionViewLayout.Layout) {
+    func setCollectionViewLayout(layout: CollectionViewLayout.Layout) {
         switch layout {
         case .ratable:
-            let configuration = DefaultCollectionViewLayout.ratableConfigurations(for: self)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.ratableConfigurations(for: self)
+            let layout = CollectionViewLayout(configuration: configuration)
             setCollectionViewLayout(layout, animated: false)
         case .resumable:
-            let configuration = DefaultCollectionViewLayout.standardConfigurations(for: self)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.standardConfigurations(for: self)
+            let layout = CollectionViewLayout(configuration: configuration)
             setCollectionViewLayout(layout, animated: false)
         case .standard:
-            let configuration = DefaultCollectionViewLayout.standardConfigurations(for: self)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.standardConfigurations(for: self)
+            let layout = CollectionViewLayout(configuration: configuration)
             setCollectionViewLayout(layout, animated: false)
         case .categoriesOverlay:
-            let configuration = DefaultCollectionViewLayout.categoriesOverlayConfigurations(for: self)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.categoriesOverlayConfigurations(for: self)
+            let layout = CollectionViewLayout(configuration: configuration)
             setCollectionViewLayout(layout, animated: false)
         case .detailCollection:
-            let configuration = DefaultCollectionViewLayout.detailCollectionConfigurations(for: self)
-            let layout = DefaultCollectionViewLayout(configuration: configuration)
+            let configuration = CollectionViewLayout.detailCollectionConfigurations(for: self)
+            let layout = CollectionViewLayout(configuration: configuration)
             setCollectionViewLayout(layout, animated: false)
         }
     }

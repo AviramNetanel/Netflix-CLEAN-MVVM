@@ -11,13 +11,16 @@ import UIKit
 
 final class DetailDescriptionTableViewCell: UITableViewCell {
     
-    static func create(in tableView: UITableView, for indexPath: IndexPath) -> DetailDescriptionTableViewCell {
+    static func create(in tableView: UITableView,
+                       for indexPath: IndexPath,
+                       with viewModel: DetailViewModel) -> DetailDescriptionTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailDescriptionTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailDescriptionTableViewCell
         view.backgroundColor = .black
         view.selectionStyle = .none
-        let detailDescriptionView = DetailDescriptionView.create(on: view)
+        let detailDescriptionView = DetailDescriptionView.create(on: view,
+                                                                 with: viewModel)
         view.addSubview(detailDescriptionView)
         return view
     }
