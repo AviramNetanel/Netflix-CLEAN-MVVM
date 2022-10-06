@@ -23,6 +23,14 @@ final class DetailPreviewView: UIView {
         let view = DetailPreviewView(frame: parent.bounds)
         let previewViewViewModel = DetailPreviewViewViewModel(with: viewModel.media)
         view.configure(with: previewViewViewModel)
+        let mediaPlayerView = MediaPlayerView.create(on: parent,
+                                                     with: viewModel)
+        mediaPlayerView.prepareToPlay = { isPlaying in
+            isPlaying ? view.imageView.isHidden(true) : view.imageView.isHidden(false)
+        }
+        mediaPlayerView.replace(item: mediaPlayerView.viewModel.item)
+        mediaPlayerView.play()
+        parent.addSubview(mediaPlayerView)
         return view
     }
     
