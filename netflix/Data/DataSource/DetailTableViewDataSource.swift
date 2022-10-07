@@ -75,29 +75,35 @@ final class DetailTableViewDataSource: NSObject,
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         switch index {
         case .preview:
+            guard previewCell == nil else { return previewCell }
             previewCell = DetailPreviewTableViewCell.create(in: tableView,
                                                             for: indexPath,
                                                             with: viewModel)
             return previewCell
         case .info:
+            guard infoCell == nil else { return infoCell }
             infoCell = DetailInfoTableViewCell.create(in: tableView,
                                                       for: indexPath,
                                                       with: viewModel)
             return infoCell
         case .description:
+            guard descriptionCell == nil else { return descriptionCell }
             descriptionCell = DetailDescriptionTableViewCell.create(in: tableView,
                                                                     for: indexPath,
                                                                     with: viewModel)
             return descriptionCell
         case .panel:
+            guard panelCell == nil else { return panelCell }
             panelCell = DetailPanelTableViewCell.create(in: tableView,
                                                         for: indexPath)
             return panelCell
         case .navigation:
+            guard navigationCell == nil else { return navigationCell }
             navigationCell = DetailNavigationTableViewCell.create(in: tableView,
                                                                   for: indexPath)
             return navigationCell
         case .collection:
+            guard collectionCell == nil else { return collectionCell }
             collectionCell = DetailCollectionTableViewCell.create(in: tableView,
                                                                   for: indexPath,
                                                                   with: viewModel)

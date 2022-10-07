@@ -16,7 +16,7 @@ final class MediaPlayerViewItem: AVPlayerItem {
     }
     
     convenience init(with media: Media) {
-        let url = URL(string: media.previewURL ?? "")!
+        let url = URL(string: media.previewURL ?? media.trailers.first!)!
         self.init(asset: AVAsset(url: url),
                   automaticallyLoadedAssetKeys: nil)
     }

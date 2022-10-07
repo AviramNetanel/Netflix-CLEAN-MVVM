@@ -23,7 +23,7 @@ final class DetailPreviewView: UIView {
         let view = DetailPreviewView(frame: parent.bounds)
         let previewViewViewModel = DetailPreviewViewViewModel(with: viewModel.media)
         view.configure(with: previewViewViewModel)
-        let mediaPlayerView = MediaPlayerView.create(on: parent,
+        let mediaPlayerView = MediaPlayerView.create(on: view,
                                                      with: viewModel)
         mediaPlayerView.prepareToPlay = { isPlaying in
             isPlaying ? view.imageView.isHidden(true) : view.imageView.isHidden(false)

@@ -1,5 +1,5 @@
 //
-//  AVPlayerView.swift
+//  MediaPlayerLayer.swift
 //  netflix
 //
 //  Created by Zach Bazov on 06/10/2022.
@@ -7,9 +7,9 @@
 
 import AVKit
 
-// MARK: - AVPlayerView class
+// MARK: - MediaPlayerLayer class
 
-final class AVPlayerView: UIView {
+final class MediaPlayerLayer: UIView {
     
     override class var layerClass: AnyClass { AVPlayerLayer.self }
     

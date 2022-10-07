@@ -7,59 +7,21 @@
 
 import AVKit
 
-// MARK: - ConfigurationInput protocol
-
-private protocol ConfigurationInput {
-    func recognizerDidRegister()
-}
-
-// MARK: - ConfigurationOutput protocol
-
-private protocol ConfigurationOutput {
-    var tapRecognizer: UITapGestureRecognizer { get }
-    var durationThreshold: CGFloat { get }
-}
-
-// MARK: - Configuration typealias
-
-private typealias Configuration = ConfigurationInput & ConfigurationOutput
-
-// MARK: - MediaPlayerViewConfiguration
-
-struct MediaPlayerViewConfiguration: Configuration {
-    
-    let tapRecognizer: UITapGestureRecognizer
-    let durationThreshold: CGFloat
-    
-    private weak var mediaPlayerView: MediaPlayerView?
-    
-    init(tapRecognizer: UITapGestureRecognizer,
-         durationThreshold: CGFloat,
-         with mediaPlayerView: MediaPlayerView) {
-        self.tapRecognizer = tapRecognizer
-        self.durationThreshold = durationThreshold
-        self.mediaPlayerView = mediaPlayerView
-    }
-    
-    func recognizerDidRegister() {
-        mediaPlayerView?.addGestureRecognizer(tapRecognizer)
-    }
-}
-
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
     func configure()
     func verifyUrl(url: URL) -> Bool
+    func recognizer(on parent: UIView)
+    func stop()
     func replace(item: MediaPlayerViewItem?)
     func play()
-    func stop()
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var playerView: AVPlayerView! { get }
+    var mediaPlayerLayer: MediaPlayerLayer! { get }
     var prepareToPlay: ((Bool) -> Void)? { get }
 }
 
@@ -71,10 +33,8 @@ private typealias View = ViewInput & ViewOutput
 
 final class MediaPlayerView: UIView, View {
     
-    fileprivate var playerView: AVPlayerView!
-    
-    private var configuration: MediaPlayerViewConfiguration!
-    
+    fileprivate(set) var mediaPlayerLayer: MediaPlayerLayer!
+    private var mediaPlayerOverlayView: MediaPlayerOverlayView!
     private(set) var viewModel: MediaPlayerViewViewModel!
     
     var prepareToPlay: ((Bool) -> Void)?
@@ -82,46 +42,66 @@ final class MediaPlayerView: UIView, View {
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> MediaPlayerView {
         let view = MediaPlayerView(frame: parent.bounds)
-        let tapRecognizer = UITapGestureRecognizer(target: view,
-                                                   action: #selector(view.x))
-        view.configuration = .init(tapRecognizer: tapRecognizer,
-                                   durationThreshold: 3.0,
-                                   with: view)
         view.viewModel = .init(with: viewModel)
-        view.playerView = .init(frame: view.bounds)
-        parent.addSubview(view.playerView)
+        view.mediaPlayerLayer = .init(frame: view.bounds)
+        parent.addSubview(view.mediaPlayerLayer)
         view.configure()
+        view.mediaPlayerOverlayView = MediaPlayerOverlayView.create(on: view,
+                                                                    mediaPlayerView: view,
+                                                                    with: view.viewModel)
+        parent.addSubview(view.mediaPlayerOverlayView)
+        view.recognizer(on: parent)
+        
+//        view.mediaPlayerOverlayView._viewWillAppear = {
+//            let interval = CMTime(value: 1, timescale: 1)
+//            view.mediaPlayerLayer.player.addPeriodicTimeObserver(
+//                forInterval: interval,
+//                queue: .main) { time in
+//                    let timeElapsed = Float(time.seconds)
+//                    let duration = Float(view.mediaPlayerLayer.player.currentItem?.duration.seconds ?? .zero).rounded()
+//                    view.mediaPlayerOverlayView.progressView.progress = timeElapsed / duration
+//                    view.mediaPlayerOverlayView.trackingSlider.value = timeElapsed
+//            }
+//        }
+        
+        
         return view
     }
     
+    deinit {
+        print("deinitMediaPlayerView")
+        mediaPlayerLayer = nil
+        mediaPlayerOverlayView = nil
+        viewModel = nil
+        prepareToPlay = nil
+    }
+    
     fileprivate func configure() {
-        playerView.player = AVPlayer()
-        playerView.playerLayer.frame = playerView.bounds
-        playerView.playerLayer.videoGravity = .resizeAspectFill
+        mediaPlayerLayer.player = AVPlayer()
+        mediaPlayerLayer.playerLayer.frame = mediaPlayerLayer.bounds
+        mediaPlayerLayer.playerLayer.videoGravity = .resizeAspectFill
     }
     
     fileprivate func verifyUrl(url: URL) -> Bool { UIApplication.shared.canOpenURL(url) }
     
+    fileprivate func recognizer(on parent: UIView) {
+        let tapRecognizer = UITapGestureRecognizer(target: mediaPlayerOverlayView,
+                                                   action: #selector(mediaPlayerOverlayView.didSelect))
+        parent.addGestureRecognizer(tapRecognizer)
+    }
+    
+    fileprivate func stop() {
+        viewModel.isPlaying = false
+        mediaPlayerLayer.player.replaceCurrentItem(with: nil)
+    }
+    
     func replace(item: MediaPlayerViewItem? = nil) {
-        playerView.player.replaceCurrentItem(with: item == nil ? viewModel.item : item!)
+        mediaPlayerLayer.player.replaceCurrentItem(with: item == nil ? viewModel.item : item!)
     }
     
     func play() {
         viewModel.isPlaying = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            guard let self = self else { return }
-            self.prepareToPlay?(self.viewModel.isPlaying)
-            self.playerView.player.play()
-        }
-    }
-    
-    func stop() {
-        viewModel.isPlaying = false
-        playerView.player.replaceCurrentItem(with: nil)
-    }
-    
-    @objc
-    func x() {
-        
+        prepareToPlay?(viewModel.isPlaying)
+        mediaPlayerLayer.player.play()
     }
 }

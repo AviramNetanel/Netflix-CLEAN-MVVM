@@ -38,9 +38,12 @@
 		A1741D4E28EC74D100F3C46B /* DetailPanelViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D4D28EC74D100F3C46B /* DetailPanelViewItemViewModel.swift */; };
 		A1741D5028EC774700F3C46B /* DetailNavigationViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D4F28EC774700F3C46B /* DetailNavigationViewItemViewModel.swift */; };
 		A1741D5228ECC77400F3C46B /* MediaPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5128ECC77400F3C46B /* MediaPlayerView.swift */; };
-		A1741D5528EE5A7000F3C46B /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5428EE5A7000F3C46B /* AVPlayerView.swift */; };
+		A1741D5528EE5A7000F3C46B /* MediaPlayerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5428EE5A7000F3C46B /* MediaPlayerLayer.swift */; };
 		A1741D5828EE5CB400F3C46B /* MediaPlayerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5728EE5CB400F3C46B /* MediaPlayerViewViewModel.swift */; };
 		A1741D5A28EE5CB800F3C46B /* MediaPlayerViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5928EE5CB800F3C46B /* MediaPlayerViewItem.swift */; };
+		A1741D5E28EE61E700F3C46B /* MediaPlayerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D5D28EE61E700F3C46B /* MediaPlayerOverlayView.swift */; };
+		A1741D6028EE61F600F3C46B /* MediaPlayerOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1741D5F28EE61F600F3C46B /* MediaPlayerOverlayView.xib */; };
+		A1741D6228EF716000F3C46B /* ScheduledTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1741D6128EF716000F3C46B /* ScheduledTimer.swift */; };
 		A18691BC28C6ED070087DE3B /* HomeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */; };
 		A18691BE28C764600087DE3B /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */; };
 		A18691C528C7B0B20087DE3B /* HomeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18691C428C7B0B20087DE3B /* HomeUseCase.swift */; };
@@ -212,9 +215,12 @@
 		A1741D4D28EC74D100F3C46B /* DetailPanelViewItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPanelViewItemViewModel.swift; sourceTree = "<group>"; };
 		A1741D4F28EC774700F3C46B /* DetailNavigationViewItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNavigationViewItemViewModel.swift; sourceTree = "<group>"; };
 		A1741D5128ECC77400F3C46B /* MediaPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerView.swift; sourceTree = "<group>"; };
-		A1741D5428EE5A7000F3C46B /* AVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		A1741D5428EE5A7000F3C46B /* MediaPlayerLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerLayer.swift; sourceTree = "<group>"; };
 		A1741D5728EE5CB400F3C46B /* MediaPlayerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerViewViewModel.swift; sourceTree = "<group>"; };
 		A1741D5928EE5CB800F3C46B /* MediaPlayerViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerViewItem.swift; sourceTree = "<group>"; };
+		A1741D5D28EE61E700F3C46B /* MediaPlayerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerOverlayView.swift; sourceTree = "<group>"; };
+		A1741D5F28EE61F600F3C46B /* MediaPlayerOverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaPlayerOverlayView.xib; sourceTree = "<group>"; };
+		A1741D6128EF716000F3C46B /* ScheduledTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledTimer.swift; sourceTree = "<group>"; };
 		A18691BB28C6ED070087DE3B /* HomeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowCoordinator.swift; sourceTree = "<group>"; };
 		A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		A18691C428C7B0B20087DE3B /* HomeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUseCase.swift; sourceTree = "<group>"; };
@@ -575,6 +581,7 @@
 			children = (
 				A1741D5128ECC77400F3C46B /* MediaPlayerView.swift */,
 				A1741D5B28EE5DDF00F3C46B /* MediaPlayerViewItem */,
+				A1741D5C28EE61C000F3C46B /* MediaPlayerOverlayView */,
 			);
 			path = MediaPlayerView;
 			sourceTree = "<group>";
@@ -585,6 +592,15 @@
 				A1741D5928EE5CB800F3C46B /* MediaPlayerViewItem.swift */,
 			);
 			path = MediaPlayerViewItem;
+			sourceTree = "<group>";
+		};
+		A1741D5C28EE61C000F3C46B /* MediaPlayerOverlayView */ = {
+			isa = PBXGroup;
+			children = (
+				A1741D5D28EE61E700F3C46B /* MediaPlayerOverlayView.swift */,
+				A1741D5F28EE61F600F3C46B /* MediaPlayerOverlayView.xib */,
+			);
+			path = MediaPlayerOverlayView;
 			sourceTree = "<group>";
 		};
 		A18691BA28C6ECFF0087DE3B /* Flow */ = {
@@ -816,7 +832,8 @@
 				A18B997D28C03BB10077A5A6 /* Observable.swift */,
 				A186923C28CAD45A0087DE3B /* AsyncImageFetcher.swift */,
 				A1E81D0E28CFE21300D044EA /* CollectionViewLayout.swift */,
-				A1741D5428EE5A7000F3C46B /* AVPlayerView.swift */,
+				A1741D5428EE5A7000F3C46B /* MediaPlayerLayer.swift */,
+				A1741D6128EF716000F3C46B /* ScheduledTimer.swift */,
 				A18B993428BFC7130077A5A6 /* Protocols */,
 				A18B993328BFC70D0077A5A6 /* Extensions */,
 			);
@@ -1292,6 +1309,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1741D6028EE61F600F3C46B /* MediaPlayerOverlayView.xib in Resources */,
 				A1E81D3228CFF95300D044EA /* RatableCollectionViewCell.xib in Resources */,
 				A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */,
 				A1AD25C728D55DF300F793B3 /* NavigationView.xib in Resources */,
@@ -1379,6 +1397,7 @@
 				A1741D2428E67CEB00F3C46B /* DetailDescriptionView.swift in Sources */,
 				A1741D2628E67CF200F3C46B /* DetailPanelView.swift in Sources */,
 				A18691C928C7B2970087DE3B /* MoviesRepository.swift in Sources */,
+				A1741D5E28EE61E700F3C46B /* MediaPlayerOverlayView.swift in Sources */,
 				A1BA1DBD28DCB69100730EA8 /* CategoriesOverlayViewTableViewCell.swift in Sources */,
 				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
 				A18691E628C936DE0087DE3B /* Valuable.swift in Sources */,
@@ -1434,8 +1453,9 @@
 				A18B995928BFF6A20077A5A6 /* MediaDTO+Mapping.swift in Sources */,
 				A18B993128BEE9320077A5A6 /* SceneDependencies.swift in Sources */,
 				A1E81D1E28CFE47700D044EA /* RatableCollectionViewCell.swift in Sources */,
+				A1741D6228EF716000F3C46B /* ScheduledTimer.swift in Sources */,
 				A1741D3828EB8AA800F3C46B /* UICollectionView+Layout.swift in Sources */,
-				A1741D5528EE5A7000F3C46B /* AVPlayerView.swift in Sources */,
+				A1741D5528EE5A7000F3C46B /* MediaPlayerLayer.swift in Sources */,
 				A18B992D28BEE7990077A5A6 /* AuthViewController.swift in Sources */,
 				A18691E428C8D4CA0087DE3B /* SectionsRequestDTO+Mapping.swift in Sources */,
 				A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */,
