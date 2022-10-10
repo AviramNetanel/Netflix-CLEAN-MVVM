@@ -99,9 +99,8 @@ final class TableViewDataSource: NSObject, DataSource {
         tableView.register(class: RatableTableViewCell.self)
         tableView.register(class: ResumableTableViewCell.self)
         
-        for identifier in StandardTableViewCell.Identifier.allCases {
-            tableView.register(StandardTableViewCell.self,
-                               forCellReuseIdentifier: identifier.stringValue)
+        StandardTableViewCell.Identifier.allCases.forEach {
+            tableView.register(StandardTableViewCell.self, forCellReuseIdentifier: $0.stringValue)
         }
     }
     

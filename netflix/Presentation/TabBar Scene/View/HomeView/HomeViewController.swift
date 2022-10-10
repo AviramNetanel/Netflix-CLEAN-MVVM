@@ -20,6 +20,8 @@ final class HomeViewController: UIViewController {
     private(set) var dataSource: TableViewDataSource!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
     
+    private weak var detailViewController: DetailViewController!
+    
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
@@ -28,15 +30,6 @@ final class HomeViewController: UIViewController {
         setupSubviews()
         setupBindings()
         viewModel.viewDidLoad()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case String(describing: DetailViewController.self):
-            break
-        default:
-            return
-        }
     }
     
     static func create(with viewModel: HomeViewModel) -> HomeViewController {
@@ -143,7 +136,6 @@ extension HomeViewController {
             let media = self.viewModel.state.value == .tvShows
                 ? section.tvshows![row]
                 : section.movies![row]
-            
             self.viewModel.actions.presentMediaDetails(section, media)
         }
     }

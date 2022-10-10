@@ -12,6 +12,7 @@ import UIKit
 final class DetailViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var previewContainer: UIView!
     
     var viewModel: DetailViewModel!
     
@@ -38,11 +39,18 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupSubviews() {
+        setupPreviewView()
         setupDataSource()
     }
     
     private func setupBindings() {
         heightForRow(in: dataSource)
+    }
+    
+    private func setupPreviewView() {
+        let previewView = DetailPreviewView.create(on: previewContainer, with: viewModel)
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        previewView.constraintToSuperview(previewContainer)
     }
     
     private func setupDataSource() {
@@ -70,7 +78,6 @@ extension DetailViewController {
                 let index = DetailTableViewDataSource.Index(rawValue: indexPath.section)
             else { return .zero }
             switch index {
-            case .preview: return self.view.bounds.height * 0.279
             case .info: return self.view.bounds.height * 0.21
             case .description: return self.view.bounds.height * 0.135
             case .panel: return self.view.bounds.height * 0.0764

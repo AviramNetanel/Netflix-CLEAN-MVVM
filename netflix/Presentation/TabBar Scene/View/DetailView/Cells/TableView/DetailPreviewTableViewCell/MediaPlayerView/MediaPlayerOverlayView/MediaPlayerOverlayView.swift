@@ -10,10 +10,7 @@ import Combine
 
 // MARK: - ObserverInput protocol
 
-private protocol ObserverInput {
-    func remove(observer: Any!, in player: AVPlayer)
-    func remove(observer: NSKeyValueObservation!)
-}
+private protocol ObserverInput {}
 
 // MARK: - ObserverOutput protocol
 
@@ -146,13 +143,13 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     }
     
     private func setupSubviews() {
-        gradientView.backgroundColor = .black.withAlphaComponent(0.5)
         setupTargets(for: airPlayButton,
                      rotateButton,
                      backwardButton,
                      playButton,
                      forwardButton,
                      muteButton)
+        
         viewDidConfigure()
     }
     
@@ -167,15 +164,12 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     }
     
     func viewDidConfigure() {
+        gradientView.backgroundColor = .black.withAlphaComponent(0.5)
         titleLabel.text = viewModel.media.title
         viewWillAppear()
     }
     
-    func viewDidRegisterObservers() {}
-    
-    func viewWillAppear() {
-        startTimer(target: self, selector: #selector(viewWillDisappear))
-        
+    func viewDidRegisterObservers() {
         let interval = CMTime(value: 1, timescale: 1)
         observers?.timeObserverToken = mediaPlayerView.mediaPlayerLayer.player.addPeriodicTimeObserver(
             forInterval: interval,
@@ -186,6 +180,10 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
                 self.progressView.progress = timeElapsed / duration
                 self.trackingSlider.value = timeElapsed
         }
+    }
+    
+    func viewWillAppear() {
+        startTimer(target: self, selector: #selector(viewWillDisappear))
         
         progressView.isHidden(true)
         gradientView.isHidden(false)
@@ -221,15 +219,60 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
         timeSeparatorLabel.isHidden(true)
     }
     
-    func stateDidChange(with view: UIButton) {
+    func buttonDidTap(_ view: UIButton) {
         guard let state = State(rawValue: view.tag) else { return }
         switch state {
-        case .airPlay: print(state.rawValue)
-        case .rotate: print(state.rawValue)
-        case .backward: print(state.rawValue)
-        case .play: print(state.rawValue)
-        case .forward: print(state.rawValue)
-        case .mute: print(state.rawValue)
+        case .airPlay:
+            print(state.rawValue)
+        case .rotate:
+            if UIDevice.current.orientation == .portrait
+                || UIDevice.current.orientation == .unknown {
+                AppDelegate.orientation = .landscapeRight
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue,
+                                          forKey: "orientation")
+                return
+            }
+            if UIDevice.current.orientation == .landscapeLeft
+                || UIDevice.current.orientation == .landscapeRight {
+                AppDelegate.orientation = .portrait
+                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue,
+                                          forKey: "orientation")
+            }
+        case .backward:
+            if mediaPlayerView.mediaPlayerLayer.player.currentItem?.currentTime() == .zero {
+                if let player = mediaPlayerView.mediaPlayerLayer.player,
+                   let duration = player.currentItem?.duration {
+                    player.currentItem?.seek(to: duration, completionHandler: nil)
+                }
+            }
+            let time = CMTime(value: 15, timescale: 1)
+            DispatchQueue.main.async { [weak self] in
+                guard
+                    let self = self,
+                    let player = self.mediaPlayerView.mediaPlayerLayer.player
+                else { return }
+                player.seek(to: player.currentTime() - time)
+                let progress = Float(player.currentTime().seconds)
+                    / Float(player.currentItem?.duration.seconds ?? .zero) - 10.0
+                    / Float(player.currentItem?.duration.seconds ?? .zero)
+                self.progressView.progress = progress
+            }
+        case .play:
+            let player = mediaPlayerView.mediaPlayerLayer.player
+            player?.timeControlStatus == .playing ? player?.pause() : player?.play()
+        case .forward:
+            let player = mediaPlayerView.mediaPlayerLayer.player
+            if player?.currentItem?.currentTime() == player?.currentItem?.duration {
+                player?.currentItem?.seek(to: .zero, completionHandler: nil)
+            }
+            let time = CMTime(value: 15, timescale: 1)
+            player?.seek(to: player!.currentTime() + time)
+            let progress = Float(player!.currentTime().seconds)
+                / Float(player?.currentItem?.duration.seconds ?? .zero) + 10.0
+                / Float(player?.currentItem?.duration.seconds ?? .zero)
+            self.progressView.progress = progress
+        case .mute:
+            print(state.rawValue)
         }
     }
     
@@ -237,7 +280,7 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     func didSelect(view: Any) {
         viewWillAppear()
         guard let view = view as? UIView else { return }
-        if case let view as UIButton = view { stateDidChange(with: view) }
+        if case let view as UIButton = view { buttonDidTap(view) }
     }
     
     func startTimer(target: Any, selector: Selector) {

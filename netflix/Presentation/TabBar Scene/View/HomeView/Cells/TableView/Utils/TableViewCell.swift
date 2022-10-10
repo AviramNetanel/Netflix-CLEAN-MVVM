@@ -15,7 +15,12 @@ private protocol CellInput {
 
 // MARK: - CellOutput protocol
 
-private protocol CellOutput {}
+private protocol CellOutput {
+    associatedtype T: UICollectionViewCell
+    var collectionView: UICollectionView { get }
+    var dataSource: CollectionViewDataSource<T>! { get }
+    var layout: CollectionViewLayout! { get }
+}
 
 // MARK: - Cell typealias
 
@@ -29,7 +34,7 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         case rating
     }
     
-    private lazy var collectionView: UICollectionView = {
+    fileprivate lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: .init())
         collectionView.backgroundColor = .black
         collectionView.showsVerticalScrollIndicator = false
@@ -37,39 +42,24 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(T.nib, forCellWithReuseIdentifier: T.reuseIdentifier)
         contentView.addSubview(collectionView)
+        collectionView.constraintToSuperview(contentView)
         return collectionView
     }()
     
-    private(set) var dataSource: CollectionViewDataSource<T>!
+    fileprivate(set) var dataSource: CollectionViewDataSource<T>!
+    fileprivate var layout: CollectionViewLayout!
     
     var viewModel: HomeViewModel!
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.backgroundColor = .black
-        self.constraintSubviews()
-    }
-    
     deinit {
+        layout = nil
         dataSource = nil
         viewModel = nil
     }
     
-    private func constraintSubviews() {
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-    }
-}
-
-// MARK: - CellInput implementation
-
-extension TableViewCell {
-    
     func configure(section: Section, with viewModel: HomeViewModel) {
+        backgroundColor = .black
+        
         self.viewModel = viewModel
         
         guard let indices = TableViewDataSource.Index(rawValue: section.id) else { return }
@@ -78,18 +68,14 @@ extension TableViewCell {
                            section: section,
                            viewModel: viewModel)
         
-        guard !(collectionView.collectionViewLayout is CollectionViewLayout) else { return }
-        
         switch indices {
         case .display:
             break
         case .ratable:
-            let configuration = CollectionViewLayout.ratableConfigurations(for: collectionView)
-            let layout = CollectionViewLayout(configuration: configuration)
+            layout = CollectionViewLayout(layout: .ratable)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            let configuration = CollectionViewLayout.standardConfigurations(for: collectionView)
-            let layout = CollectionViewLayout(configuration: configuration)
+            layout = CollectionViewLayout(layout: .standard)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }
     }

@@ -18,9 +18,11 @@ final class DetailPreviewView: UIView {
         return imageView
     }()
     
+    @discardableResult
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> DetailPreviewView {
-        let view = DetailPreviewView(frame: parent.bounds)
+        let view = DetailPreviewView(frame: .zero)
+        parent.addSubview(view)
         let previewViewViewModel = DetailPreviewViewViewModel(with: viewModel.media)
         view.configure(with: previewViewViewModel)
         let mediaPlayerView = MediaPlayerView.create(on: view,
@@ -31,7 +33,18 @@ final class DetailPreviewView: UIView {
         mediaPlayerView.replace(item: mediaPlayerView.viewModel.item)
         mediaPlayerView.play()
         parent.addSubview(mediaPlayerView)
+        mediaPlayerView.translatesAutoresizingMaskIntoConstraints = false
+        mediaPlayerView.constraintToSuperview(parent)
         return view
+    }
+    
+    private func constraint(view: UIView, to parent: UIView) {
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: parent.topAnchor),
+            view.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: parent.bottomAnchor)
+        ])
     }
     
     private func configure(with viewModel: DetailPreviewViewViewModel) {

@@ -36,6 +36,8 @@ class CollectionViewCell: UICollectionViewCell, Cell {
     
     private var viewModel: HomeViewModel!
     
+    private var cell: CollectionViewCell!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backgroundColor = .black

@@ -62,6 +62,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="g4D-sf-r5G"/>
+                    <navigationItem key="navigationItem" id="bCF-aS-6la"/>
                     <connections>
                         <outlet property="navigationView" destination="4My-Bp-qqa" id="QIB-PK-4DN"/>
                         <outlet property="navigationViewHeightConstraint" destination="SSs-Pf-MtQ" id="9oX-hc-csw"/>
@@ -80,22 +81,96 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dY5-bB-N1s">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g4p-Yw-MQh" userLabel="Detail Preview View">
+                                <rect key="frame" x="0.0" y="44" width="414" height="233"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="g4p-Yw-MQh" secondAttribute="height" multiplier="16:9" id="v5n-WC-bev"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="v5n-WC-bev"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="v5n-WC-bev"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dY5-bB-N1s">
+                                <rect key="frame" x="0.0" y="277" width="414" height="619"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="uad-si-zky"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="uad-si-zky" firstAttribute="trailing" secondItem="dY5-bB-N1s" secondAttribute="trailing" id="Ex3-6X-ZsD"/>
-                            <constraint firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="JcD-vH-VvN"/>
-                            <constraint firstItem="dY5-bB-N1s" firstAttribute="top" secondItem="GIZ-m2-CJv" secondAttribute="top" id="kTc-57-PKt"/>
-                            <constraint firstItem="dY5-bB-N1s" firstAttribute="leading" secondItem="uad-si-zky" secondAttribute="leading" id="pw8-Ko-KHA"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="top" secondItem="g4p-Yw-MQh" secondAttribute="bottom" id="0Hs-j8-4Yi"/>
+                            <constraint firstItem="g4p-Yw-MQh" firstAttribute="leading" secondItem="uad-si-zky" secondAttribute="leading" id="0ZU-i6-AZv"/>
+                            <constraint firstItem="uad-si-zky" firstAttribute="trailing" secondItem="g4p-Yw-MQh" secondAttribute="trailing" id="3q4-1c-bEn"/>
+                            <constraint firstItem="g4p-Yw-MQh" firstAttribute="leading" secondItem="uad-si-zky" secondAttribute="leading" id="5Bf-QT-Zqr"/>
+                            <constraint firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="5pz-hU-Hzr"/>
+                            <constraint firstItem="g4p-Yw-MQh" firstAttribute="top" secondItem="uad-si-zky" secondAttribute="top" id="675-Ke-9Nd"/>
+                            <constraint firstAttribute="bottom" secondItem="dY5-bB-N1s" secondAttribute="bottom" id="8om-ED-Joq"/>
+                            <constraint firstAttribute="trailing" secondItem="dY5-bB-N1s" secondAttribute="trailing" id="A8y-IA-JpE"/>
+                            <constraint firstAttribute="trailing" secondItem="dY5-bB-N1s" secondAttribute="trailing" id="ITV-xE-1EC"/>
+                            <constraint firstItem="g4p-Yw-MQh" firstAttribute="top" secondItem="uad-si-zky" secondAttribute="top" id="TUq-MK-rvC"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="top" secondItem="g4p-Yw-MQh" secondAttribute="bottom" id="gUV-IM-HtC"/>
+                            <constraint firstItem="uad-si-zky" firstAttribute="trailing" secondItem="g4p-Yw-MQh" secondAttribute="trailing" id="j6i-W2-85W"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="leading" secondItem="GIZ-m2-CJv" secondAttribute="leading" id="jkd-yh-wb2"/>
+                            <constraint firstItem="dY5-bB-N1s" firstAttribute="leading" secondItem="GIZ-m2-CJv" secondAttribute="leading" id="tgD-5Q-S2i"/>
+                            <constraint firstAttribute="bottom" secondItem="g4p-Yw-MQh" secondAttribute="bottom" id="vTV-zc-6jq"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="3q4-1c-bEn"/>
+                                <exclude reference="j6i-W2-85W"/>
+                                <exclude reference="0ZU-i6-AZv"/>
+                                <exclude reference="5Bf-QT-Zqr"/>
+                                <exclude reference="675-Ke-9Nd"/>
+                                <exclude reference="TUq-MK-rvC"/>
+                                <exclude reference="vTV-zc-6jq"/>
+                                <exclude reference="0Hs-j8-4Yi"/>
+                                <exclude reference="5pz-hU-Hzr"/>
+                                <exclude reference="8om-ED-Joq"/>
+                                <exclude reference="A8y-IA-JpE"/>
+                                <exclude reference="ITV-xE-1EC"/>
+                                <exclude reference="gUV-IM-HtC"/>
+                                <exclude reference="jkd-yh-wb2"/>
+                                <exclude reference="tgD-5Q-S2i"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="3q4-1c-bEn"/>
+                                <include reference="0ZU-i6-AZv"/>
+                                <include reference="675-Ke-9Nd"/>
+                                <include reference="vTV-zc-6jq"/>
+                                <include reference="0Hs-j8-4Yi"/>
+                                <include reference="5pz-hU-Hzr"/>
+                                <include reference="ITV-xE-1EC"/>
+                                <include reference="jkd-yh-wb2"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular">
+                            <mask key="constraints">
+                                <include reference="j6i-W2-85W"/>
+                                <include reference="5Bf-QT-Zqr"/>
+                                <include reference="TUq-MK-rvC"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="8om-ED-Joq"/>
+                                <include reference="A8y-IA-JpE"/>
+                                <include reference="gUV-IM-HtC"/>
+                                <include reference="tgD-5Q-S2i"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Rrn-fF-D8c"/>
                     <connections>
+                        <outlet property="previewContainer" destination="g4p-Yw-MQh" id="k7I-jK-Jqk"/>
                         <outlet property="tableView" destination="dY5-bB-N1s" id="wh7-av-8Kf"/>
                     </connections>
                 </viewController>

@@ -41,31 +41,30 @@ final class MediaPlayerView: UIView, View {
     
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> MediaPlayerView {
-        let view = MediaPlayerView(frame: parent.bounds)
+        let view = MediaPlayerView(frame: .zero)
         view.viewModel = .init(with: viewModel)
-        view.mediaPlayerLayer = .init(frame: view.bounds)
-        parent.addSubview(view.mediaPlayerLayer)
+        view.mediaPlayerLayer = .init(frame: .zero)
+        view.addSubview(view.mediaPlayerLayer)
         view.configure()
         view.mediaPlayerOverlayView = MediaPlayerOverlayView.create(on: view,
                                                                     mediaPlayerView: view,
                                                                     with: view.viewModel)
-        parent.addSubview(view.mediaPlayerOverlayView)
-        view.recognizer(on: parent)
-        
-//        view.mediaPlayerOverlayView._viewWillAppear = {
-//            let interval = CMTime(value: 1, timescale: 1)
-//            view.mediaPlayerLayer.player.addPeriodicTimeObserver(
-//                forInterval: interval,
-//                queue: .main) { time in
-//                    let timeElapsed = Float(time.seconds)
-//                    let duration = Float(view.mediaPlayerLayer.player.currentItem?.duration.seconds ?? .zero).rounded()
-//                    view.mediaPlayerOverlayView.progressView.progress = timeElapsed / duration
-//                    view.mediaPlayerOverlayView.trackingSlider.value = timeElapsed
-//            }
-//        }
-        
-        
+        view.addSubview(view.mediaPlayerOverlayView)
+        view.recognizer(on: view)
+        view.mediaPlayerOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        view.mediaPlayerLayer.translatesAutoresizingMaskIntoConstraints = false
+        view.mediaPlayerLayer.constraintToSuperview(view)
+        view.mediaPlayerOverlayView.constraintToSuperview(view)
         return view
+    }
+    
+    private func constraint(view: UIView, to parent: UIView) {
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: parent.topAnchor),
+            view.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: parent.bottomAnchor)
+        ])
     }
     
     deinit {

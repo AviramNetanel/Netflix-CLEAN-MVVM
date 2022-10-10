@@ -16,6 +16,7 @@ final class RatableTableViewCell: TableViewCell<RatableCollectionViewCell> {
                        with viewModel: HomeViewModel) -> RatableTableViewCell {
         let view = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
                                                  for: indexPath) as! RatableTableViewCell
+        view.backgroundColor = .black
         view.viewModel = viewModel
         view.configure(section: viewModel.section(at: .init(rawValue: indexPath.section)!),
                        with: viewModel)

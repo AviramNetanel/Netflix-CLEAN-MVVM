@@ -17,6 +17,7 @@ final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
         let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)
         let view = tableView.dequeueReusableCell(withIdentifier: identifier!.stringValue,
                                                  for: indexPath) as! StandardTableViewCell
+        view.backgroundColor = .black
         view.viewModel = viewModel
         view.configure(section: viewModel.section(at: .init(rawValue: indexPath.section)!),
                        with: viewModel)

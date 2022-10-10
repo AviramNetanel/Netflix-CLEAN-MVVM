@@ -110,8 +110,7 @@ final class CollectionViewDataSource<Cell>: NSObject,
                         prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             guard let media = media(for: indexPath) else { fatalError() }
-            let cellViewModel = CollectionViewCellItemViewModel(media: media,
-                                                                indexPath: indexPath)
+            let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
             CollectionViewCell.download(with: cellViewModel)
         }
     }

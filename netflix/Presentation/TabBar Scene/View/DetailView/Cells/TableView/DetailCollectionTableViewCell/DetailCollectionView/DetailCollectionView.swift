@@ -35,9 +35,14 @@ final class DetailCollectionView: UIView {
     
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> DetailCollectionView {
-        let view = DetailCollectionView(frame: parent.bounds)
+        let view = DetailCollectionView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
         view.viewModel = viewModel
         view.setupSubviews()
+        view.collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.collectionView.constraintToSuperview(view)
         return view
     }
     
@@ -52,9 +57,11 @@ final class DetailCollectionView: UIView {
         dataSource = .init(collectionView: collectionView,
                            media: media,
                            with: viewModel)
-        collectionView.setCollectionViewLayout(layout: .detailCollection)
+        let layout = CollectionViewLayout(layout: .detail, scrollDirection: .vertical)
+        collectionView.setCollectionViewLayout(layout, animated: false)
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource
+        collectionView.prefetchDataSource = dataSource
         collectionView.reloadData()
     }
 }

@@ -16,7 +16,6 @@ private protocol DataSourceInput {
 // MARK: - DataSourceOutput protocol
 
 private protocol DataSourceOutput {
-    var previewCell: DetailPreviewTableViewCell! { get }
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
     var panelCell: DetailPanelTableViewCell! { get }
@@ -36,7 +35,6 @@ final class DetailTableViewDataSource: NSObject,
                                        UITableViewDataSource {
     
     enum Index: Int, CaseIterable {
-        case preview
         case info
         case description
         case panel
@@ -50,7 +48,6 @@ final class DetailTableViewDataSource: NSObject,
     
     var heightForRow: ((IndexPath) -> CGFloat)? { didSet { reload() } }
     
-    fileprivate var previewCell: DetailPreviewTableViewCell!
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
     fileprivate var panelCell: DetailPanelTableViewCell!
@@ -74,12 +71,6 @@ final class DetailTableViewDataSource: NSObject,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         switch index {
-        case .preview:
-            guard previewCell == nil else { return previewCell }
-            previewCell = DetailPreviewTableViewCell.create(in: tableView,
-                                                            for: indexPath,
-                                                            with: viewModel)
-            return previewCell
         case .info:
             guard infoCell == nil else { return infoCell }
             infoCell = DetailInfoTableViewCell.create(in: tableView,

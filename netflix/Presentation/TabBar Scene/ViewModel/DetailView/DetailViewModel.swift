@@ -34,7 +34,7 @@ struct DetailViewModel: ViewModel {
     var state: TableViewDataSource.State!
     
     func contentSize(for section: Section) -> Float {
-        let cellHeight = Float(138.0)
+        let cellHeight = Float(146.0)
         let lineSpacing = Float(8.0)
         let itemsPerLine = Float(3.0)
         let topContentInset = Float(16.0)
