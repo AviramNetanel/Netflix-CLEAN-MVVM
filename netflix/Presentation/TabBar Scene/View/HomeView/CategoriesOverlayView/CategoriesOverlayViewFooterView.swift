@@ -7,6 +7,20 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func buttonDidTap()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - CategoriesOverlayViewFooterView class
 
 final class CategoriesOverlayViewFooterView: UIView {
@@ -41,6 +55,8 @@ final class CategoriesOverlayViewFooterView: UIView {
         return view
     }
     
+    deinit { viewModel = nil }
+    
     @objc
-    private func buttonDidTap() { viewModel.isPresented.value = false }
+    fileprivate func buttonDidTap() { viewModel.isPresented.value = false }
 }

@@ -7,24 +7,25 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
+// MARK: - DataSourcingInput protocol
 
-private protocol DataSourceInput {}
+private protocol DataSourcingInput {}
 
-// MARK: - DataSourceOutput protocol
+// MARK: - DataSourcingOutput protocol
 
-private protocol DataSourceOutput {
+private protocol DataSourcingOutput {
     associatedtype T
     var items: [T] { get }
 }
 
-// MARK: - DataSource typealias
+// MARK: - DataSourcing typealias
 
-private typealias DataSource = DataSourceInput & DataSourceOutput
+private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 
 // MARK: - CategoriesOverlayViewTableViewDataSource class
 
 final class CategoriesOverlayViewTableViewDataSource: NSObject,
+                                                      DataSourcing,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
     
@@ -32,8 +33,6 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     
     var items: [T]
     private var viewModel: CategoriesOverlayViewViewModel
-    
-    var tabBarController: UITabBarController?
     
     init(items: [T],
          with viewModel: CategoriesOverlayViewViewModel) {
@@ -54,5 +53,7 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     }
     
     func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) { viewModel.isPresented.value = false }
+                   didSelectRowAt indexPath: IndexPath) {
+        viewModel.isPresented.value = false
+    }
 }

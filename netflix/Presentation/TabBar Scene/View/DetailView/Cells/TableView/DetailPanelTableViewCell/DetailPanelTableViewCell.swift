@@ -11,6 +11,8 @@ import UIKit
 
 final class DetailPanelTableViewCell: UITableViewCell {
     
+    private(set) var panelView: DetailPanelView!
+    
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath) -> DetailPanelTableViewCell {
         let view = tableView.dequeueReusableCell(
@@ -18,8 +20,10 @@ final class DetailPanelTableViewCell: UITableViewCell {
             for: indexPath) as! DetailPanelTableViewCell
         view.backgroundColor = .black
         view.selectionStyle = .none
-        let detailPanelView = DetailPanelView.create(on: view)
-        view.addSubview(detailPanelView)
+        view.panelView = DetailPanelView.create(on: view)
+        view.addSubview(view.panelView)
         return view
     }
+    
+    deinit { panelView = nil }
 }

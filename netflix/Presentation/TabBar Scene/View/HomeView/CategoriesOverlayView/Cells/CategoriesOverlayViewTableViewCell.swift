@@ -7,12 +7,29 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - CategoriesOverlayViewTableViewCell class
 
 final class CategoriesOverlayViewTableViewCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
-        let label = UILabel(frame: .init(x: .zero, y: .zero, width: UIScreen.main.bounds.width, height: 44.0))
+        let label = UILabel(frame: .init(x: .zero,
+                                         y: .zero,
+                                         width: UIScreen.main.bounds.width,
+                                         height: 44.0))
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
@@ -30,9 +47,11 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
         view.selectionStyle = .none
         let model = viewModel.dataSource.items[indexPath.row]
         let cellViewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
-        view.configure(with: cellViewModel)
+        view.viewDidConfigure(with: cellViewModel)
         return view
     }
     
-    private func configure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) { titleLabel.text = viewModel.title }
+    fileprivate func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
+        titleLabel.text = viewModel.title
+    }
 }

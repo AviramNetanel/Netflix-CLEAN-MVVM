@@ -19,8 +19,7 @@ final class DetailDescriptionTableViewCell: UITableViewCell {
             for: indexPath) as! DetailDescriptionTableViewCell
         view.backgroundColor = .black
         view.selectionStyle = .none
-        let detailDescriptionView = DetailDescriptionView.create(on: view,
-                                                                 with: viewModel)
+        let detailDescriptionView = DetailDescriptionView.create(on: view, with: viewModel)
         view.addSubview(detailDescriptionView)
         return view
     }

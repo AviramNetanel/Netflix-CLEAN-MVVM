@@ -25,16 +25,7 @@ final class RatableCollectionViewCell: CollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.contentView.addSubview(layerView)
-        self.layerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            self.layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            self.layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            self.layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
-        ])
+        self.viewDidLoad()
     }
     
     deinit {
@@ -47,8 +38,19 @@ final class RatableCollectionViewCell: CollectionViewCell {
         textLayer.string = nil
     }
     
-    override func configure(with viewModel: CollectionViewCellItemViewModel) {
-        super.configure(with: viewModel)
+    private func viewDidLoad() {
+        contentView.addSubview(layerView)
+        layerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
+        ])
+    }
+    
+    override func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel) {
+        super.viewDidConfigure(with: viewModel)
         
         guard let indexPath = viewModel.indexPath as IndexPath? else { return }
         

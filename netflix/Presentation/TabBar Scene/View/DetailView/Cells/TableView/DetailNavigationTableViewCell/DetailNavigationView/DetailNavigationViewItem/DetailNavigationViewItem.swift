@@ -7,40 +7,55 @@
 
 import UIKit
 
-// MARK: - ItemConfiguration protocol
+// MARK: - ConfigurationInput protocol
 
 @objc
-private protocol ItemConfiguration {
-    func itemDidConfigure(item: DetailNavigationViewItem)
+private protocol ConfigurationInput {
     func buttonDidTap()
 }
 
+// MARK: - ConfigurationOutput protocol
+
+private protocol ConfigurationOutput {
+    var view: DetailNavigationViewItem! { get }
+    var navigationView: DetailNavigationView! { get }
+}
+
+// MARK: - Configuration typealias
+
+private typealias Configuration = ConfigurationInput & ConfigurationOutput
+
 // MARK: - DetailNavigationViewItemConfiguration class
 
-final class DetailNavigationViewItemConfiguration: ItemConfiguration {
+final class DetailNavigationViewItemConfiguration: Configuration {
     
-    private weak var item: DetailNavigationViewItem!
+    fileprivate weak var view: DetailNavigationViewItem!
+    fileprivate weak var navigationView: DetailNavigationView!
     
-    init(item: DetailNavigationViewItem) {
-        self.item = item
-        self.itemDidConfigure(item: self.item)
+    init(view: DetailNavigationViewItem,
+         with navigationView: DetailNavigationView) {
+        self.view = view
+        self.navigationView = navigationView
+        self.view.button.addTarget(self,
+                                   action: #selector(self.buttonDidTap),
+                                   for: .touchUpInside)
     }
     
-    deinit { item = nil }
-    
-    func itemDidConfigure(item: DetailNavigationViewItem) {
-        item.button.addTarget(self,
-                              action: #selector(buttonDidTap),
-                              for: .touchUpInside)
+    deinit {
+        view = nil
+        navigationView = nil
     }
     
     func buttonDidTap() {
-        guard let tag = DetailNavigationViewItem.Item(rawValue: item.tag) else { fatalError() }
-        switch tag {
-        case .episodes: print("episodes")
-        case .trailers: print("trailers")
-        case .similarContent: print("similarContent")
+        if view.isSelected {
+            view.widthConstraint?.constant = view.bounds.width
+        } else {
+            view.widthConstraint?.constant = .zero
         }
+        
+        view.isSelected.toggle()
+        
+        navigationView.stateDidChange(view: view)
     }
 }
 
@@ -54,9 +69,8 @@ final class DetailNavigationViewItem: UIView {
         case similarContent
     }
     
-    private var configuration: DetailNavigationViewItemConfiguration!
-    
-    private var viewModel: DetailNavigationViewItemViewModel!
+    private(set) var configuration: DetailNavigationViewItemConfiguration!
+    private(set) var viewModel: DetailNavigationViewItemViewModel!
     
     private lazy var indicatorView: UIView = {
         let view = UIView()
@@ -76,29 +90,35 @@ final class DetailNavigationViewItem: UIView {
         return view
     }()
     
-    static func create(on parent: UIView) -> DetailNavigationViewItem {
+    var isSelected = false
+    var widthConstraint: NSLayoutConstraint!
+    
+    static func create(on parent: UIView,
+                       navigationView: DetailNavigationView) -> DetailNavigationViewItem {
         let view = DetailNavigationViewItem(frame: parent.bounds)
         view.tag = parent.tag
-        view.viewModel = .init(tag: view.tag)
-        view.configuration = .init(item: view)
+        view.viewModel = .init(with: view)
+        view.configuration = .init(view: view, with: navigationView)
         view.setupSubviews()
         return view
     }
     
     deinit {
+        widthConstraint = nil
         configuration = nil
         viewModel = nil
     }
     
     private func setupSubviews() {
+        widthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: bounds.width)
         NSLayoutConstraint.activate([
             indicatorView.topAnchor.constraint(equalTo: topAnchor, constant: 4.0),
             indicatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            indicatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            widthConstraint,
             indicatorView.heightAnchor.constraint(equalToConstant: 3.0),
             button.topAnchor.constraint(equalTo: indicatorView.bottomAnchor),
-            button.leadingAnchor.constraint(equalTo: indicatorView.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: indicatorView.trailingAnchor),
+            button.leadingAnchor.constraint(equalTo: leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor),
             button.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }

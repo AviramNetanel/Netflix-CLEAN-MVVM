@@ -66,7 +66,10 @@ final class HomeFlowCoordinator {
         else { return }
         homeViewController.removeObservers()
         panelView.removeObservers()
-        navigationView.viewModel?.removeObservers()
+        navigationView.removeObservers()
         categoriesOverlayView.removeObservers()
+        
+        guard let detailViewController = detailViewController else { return }
+        detailViewController.removeObservers()
     }
 }

@@ -7,29 +7,47 @@
 
 import UIKit
 
-// MARK: - AsyncImageFetcher
+// MARK: - FetcherInput protocol
 
-final class AsyncImageFetcher {
+private protocol FetcherInput {
+    init()
+    static func urlSession() -> URLSession
+    func set(_ image: UIImage, forKey identifier: NSString)
+    func remove(for identifier: NSString)
+    func object(for identifier: NSString) -> UIImage?
+    func load(url: URL, identifier: NSString, completion: @escaping (UIImage?) -> Void)
+}
+
+// MARK: - FetcherOutput protocol
+
+private protocol FetcherOutput {
+    static var shared: AsyncImageFetcher { get }
+    var cache: NSCache<NSString, UIImage> { get }
+    var queue: OS_dispatch_queue_serial { get }
+}
+
+// MARK: - Fetcher typealias
+
+private typealias Fetcher = FetcherInput & FetcherOutput
+
+// MARK: - AsyncImageFetcher class
+
+final class AsyncImageFetcher: Fetcher {
     
     static var shared = AsyncImageFetcher()
     
-    private(set) var cache = NSCache<NSString, UIImage>()
-    private var operations = [NSString: [(UIImage?) -> Void]]()
-    private let queue = OS_dispatch_queue_serial(label: "com.netflix.utils.async-image-fetcher")
+    fileprivate(set) var cache = NSCache<NSString, UIImage>()
+    fileprivate let queue = OS_dispatch_queue_serial(label: "com.netflix.utils.async-image-fetcher")
     
-    private init() {}
+    internal required init() {}
     
-    static func urlSession() -> URLSession {
+    fileprivate static func urlSession() -> URLSession {
         let config = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = 30
         return URLSession(configuration: config)
     }
     
-    func object(for identifier: NSString) -> UIImage? {
-        return cache.object(forKey: identifier)
-    }
-    
-    func set(_ image: UIImage, forKey identifier: NSString) {
+    fileprivate func set(_ image: UIImage, forKey identifier: NSString) {
         cache.setObject(image, forKey: identifier)
     }
     
@@ -37,12 +55,13 @@ final class AsyncImageFetcher {
         cache.removeObject(forKey: identifier)
     }
     
+    func object(for identifier: NSString) -> UIImage? {
+        return cache.object(forKey: identifier)
+    }
+    
     func load(url: URL, identifier: NSString, completion: @escaping (UIImage?) -> Void) {
         if let cachedImage = object(for: identifier) {
-            queue.async {
-                completion(cachedImage)
-            }
-            return
+            return queue.async { completion(cachedImage) }
         }
         
         AsyncImageFetcher.urlSession().dataTask(with: url) { [weak self] data, response, error in
@@ -56,12 +75,8 @@ final class AsyncImageFetcher {
                 httpURLResponse.statusCode == 200,
                 mimeType.hasPrefix("image")
             else { return }
-            
             self.set(image, forKey: identifier)
-            
-            self.queue.async {
-                completion(image)
-            }
+            self.queue.async { completion(image) }
         }.resume()
     }
 }

@@ -23,24 +23,15 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     static func create(in tableView: UITableView,
                        for section: Int,
                        with viewModel: HomeViewModel) -> TableViewHeaderFooterView? {
-        guard
-            let view = tableView.dequeueReusableHeaderFooterView(
+        guard let view = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
         else { return nil }
         let title = String(describing: viewModel.sections.value[section].title)
+        view.setupSubviews()
         view.titleLabel.text = title
         view.backgroundView = .init()
         view.backgroundView!.backgroundColor = .black
         return view
-    }
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        self.setupSubviews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
     }
     
     override func layoutSubviews() {

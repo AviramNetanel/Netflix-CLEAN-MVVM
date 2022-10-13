@@ -10,10 +10,10 @@ import Foundation
 // MARK: - UseCaseInput protocol
 
 private protocol UseCaseInput {
-    func executeTVShows(completion: @escaping (Result<TVShowsResponse, Error>) -> Void) -> Cancellable?
-    func executeMovies(completion: @escaping (Result<MoviesResponse, Error>) -> Void) -> Cancellable?
-    func executeSections(completion: @escaping (Result<SectionsResponse, Error>) -> Void) -> Cancellable?
-//    func execute<T, R>(for repository: T, completion: @escaping (Result<R, Error>) -> Void) -> Cancellable?
+    func request<T>(for response: T.Type,
+                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
+    func execute<T>(for response: T.Type,
+                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - UseCaseOutput protocol
@@ -44,53 +44,42 @@ final class HomeUseCase: UseCase {
         self.moviesRepository = moviesRepository
     }
     
-    private func requestSections(completion: @escaping (Result<SectionsResponse, Error>) -> Void) -> Cancellable? {
-        return sectionsRepository.getAll { result in
-            switch result {
-            case .success(let response):
-                completion(.success(response.toDomain()))
-            case .failure(let error):
-                completion(.failure(error))
+    fileprivate func request<T>(for response: T.Type,
+                                completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
+        switch response {
+        case is TVShowsResponse.Type:
+            return tvShowsRepository.getAll { result in
+                switch result {
+                case .success(let response):
+                    completion(.success(response.toDomain() as! T))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
+        case is MoviesResponse.Type:
+            return moviesRepository.getAll { result in
+                switch result {
+                case .success(let response):
+                    completion(.success(response.toDomain() as! T))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        case is SectionsResponse.Type:
+            return sectionsRepository.getAll { result in
+                switch result {
+                case .success(let response):
+                    completion(.success(response.toDomain() as! T))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        default: return nil
         }
     }
     
-    private func requestTVShows(completion: @escaping (Result<TVShowsResponse, Error>) -> Void) -> Cancellable? {
-        return tvShowsRepository.getAll { result in
-            switch result {
-            case .success(let response):
-                completion(.success(response.toDomain()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    private func requestMovies(completion: @escaping (Result<MoviesResponse, Error>) -> Void) -> Cancellable? {
-        return moviesRepository.getAll { result in
-            switch result {
-            case .success(let response):
-                completion(.success(response.toDomain()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-}
-
-// MARK: - UseCaseInput implementation
-
-extension HomeUseCase {
-    
-    func executeTVShows(completion: @escaping (Result<TVShowsResponse, Error>) -> Void) -> Cancellable? {
-        return requestTVShows(completion: completion)
-    }
-    
-    func executeMovies(completion: @escaping (Result<MoviesResponse, Error>) -> Void) -> Cancellable? {
-        return requestMovies(completion: completion)
-    }
-    
-    func executeSections(completion: @escaping (Result<SectionsResponse, Error>) -> Void) -> Cancellable? {
-        return requestSections(completion: completion)
+    func execute<T>(for response: T.Type,
+                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
+        return request(for: response, completion: completion)
     }
 }

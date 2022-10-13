@@ -21,10 +21,10 @@ final class ResumableCollectionViewCell: CollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.setupSubviews()
+        self.viewDidLoad()
     }
     
-    private func setupSubviews() {
+    private func viewDidLoad() {
         setupPlayButton()
         setupProgressView()
         setupGradient()
@@ -50,11 +50,7 @@ final class ResumableCollectionViewCell: CollectionViewCell {
     
     @IBAction func buttonDidTap(_ sender: UIButton) {
         switch sender.tag {
-        case 0:
-            break
-//            guard let homeViewController = homeViewController else { return }
-//            homeViewController.segue.current = .detail
-//            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+        case 0: break
         default: return
         }
     }

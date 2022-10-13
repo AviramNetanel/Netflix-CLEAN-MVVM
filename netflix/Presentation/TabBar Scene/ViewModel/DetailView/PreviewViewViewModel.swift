@@ -1,5 +1,5 @@
 //
-//  DetailPreviewViewViewModel.swift
+//  PreviewViewViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 30/09/2022.
@@ -13,15 +13,21 @@ private protocol ViewModelInput {}
 
 // MARK: - ViewModelOutput protocol
 
-private protocol ViewModelOutput {}
+private protocol ViewModelOutput {
+    var title: String { get }
+    var slug: String { get }
+    var posterImagePath: String { get }
+    var identifier: NSString { get }
+    var url: URL { get }
+}
 
 // MARK: - ViewModel typealias
 
 private typealias ViewModel = ViewModelInput & ViewModelOutput
 
-// MARK: - DetailPreviewViewViewModel struct
+// MARK: - PreviewViewViewModel struct
 
-struct DetailPreviewViewViewModel: ViewModel {
+struct PreviewViewViewModel: ViewModel {
     
     let title: String
     let slug: String

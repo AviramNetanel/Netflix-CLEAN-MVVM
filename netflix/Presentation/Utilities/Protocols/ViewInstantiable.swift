@@ -24,7 +24,5 @@ extension ViewInstantiable {
         addSubview(view)
         view.frame = bounds
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
     }
 }
-

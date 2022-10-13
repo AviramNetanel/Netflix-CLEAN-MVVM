@@ -7,6 +7,6 @@
 
 import Foundation
 
-// MARK: - Configurable protocol
+// MARK: - Configurable typealias
 
 typealias Configurable = Reusable & ViewInstantiable

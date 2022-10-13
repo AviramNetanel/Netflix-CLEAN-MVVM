@@ -16,7 +16,10 @@ final class Section {
     var tvshows: [Media]?
     var movies: [Media]?
     
-    init(id: Int, title: String, tvshows: [Media]?, movies: [Media]?) {
+    init(id: Int,
+         title: String,
+         tvshows: [Media]?,
+         movies: [Media]?) {
         self.id = id
         self.title = title
         self.tvshows = tvshows ?? []

@@ -7,66 +7,68 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
+// MARK: - DataSourcingInput protocol
 
-private protocol DataSourceInput {
-    func media(for indexPath: IndexPath) -> Media?
-}
+private protocol DataSourcingInput {}
 
-// MARK: - DataSourceOutput protocol
+// MARK: - DataSourcingOutput protocol
 
-private protocol DataSourceOutput {
+private protocol DataSourcingOutput {
     var collectionView: UICollectionView { get }
-    var media: [Media] { get }
     var viewModel: DetailViewModel { get }
     var numberOfSections: Int { get }
 }
 
-// MARK: - DataSource typealias
+// MARK: - DataSourcing typealias
 
-private typealias DataSource = DataSourceInput & DataSourceOutput
+private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 
 // MARK: - DetailCollectionViewDataSource class
 
-final class DetailCollectionViewDataSource: NSObject,
-                                            DataSource,
-                                            UICollectionViewDelegate,
-                                            UICollectionViewDataSource,
-                                            UICollectionViewDataSourcePrefetching {
+final class DetailCollectionViewDataSource<T>: NSObject,
+                                               DataSourcing,
+                                               UICollectionViewDelegate,
+                                               UICollectionViewDataSource,
+                                               UICollectionViewDataSourcePrefetching {
     
     fileprivate var collectionView: UICollectionView
-    fileprivate var media: [Media]
+    fileprivate(set) var items: [T]
     fileprivate var viewModel: DetailViewModel
     fileprivate let numberOfSections = 1
     
     private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
     init(collectionView: UICollectionView,
-         media: [Media],
+         items: [T],
          with viewModel: DetailViewModel) {
         self.collectionView = collectionView
-        self.media = media
+        self.items = items
         self.viewModel = viewModel
-    }
-    
-    fileprivate func media(for indexPath: IndexPath) -> Media? {
-        return viewModel.state == .tvShows
-            ? viewModel.section.tvshows![indexPath.row] as Media?
-            : viewModel.section.movies![indexPath.row] as Media?
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { numberOfSections }
     
     func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int { media.count }
+                        numberOfItemsInSection section: Int) -> Int { items.count }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return CollectionViewCell.create(in: collectionView,
-                                         reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
-                                         section: viewModel.section,
-                                         for: indexPath,
-                                         with: viewModel)
+        switch viewModel.navigationViewState.value {
+        case .episodes:
+            return EpisodeCollectionViewCell.create(in: collectionView,
+                                                    for: indexPath,
+                                                    with: viewModel)
+        case .trailers:
+            return TrailerCollectionViewCell.create(in: collectionView,
+                                                    for: indexPath,
+                                                    with: viewModel.media)
+        default:
+            return CollectionViewCell.create(in: collectionView,
+                                             reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
+                                             section: viewModel.section,
+                                             for: indexPath,
+                                             with: viewModel.state)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -81,12 +83,5 @@ final class DetailCollectionViewDataSource: NSObject,
                         didSelectItemAt indexPath: IndexPath) {}
     
     func collectionView(_ collectionView: UICollectionView,
-                        prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            guard let media = media(for: indexPath) else { fatalError() }
-            let cellViewModel = CollectionViewCellItemViewModel(media: media,
-                                                                indexPath: indexPath)
-            CollectionViewCell.download(with: cellViewModel)
-        }
-    }
+                        prefetchItemsAt indexPaths: [IndexPath]) {}
 }

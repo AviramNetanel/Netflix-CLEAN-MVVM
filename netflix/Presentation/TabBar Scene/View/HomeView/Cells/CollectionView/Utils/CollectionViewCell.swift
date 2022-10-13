@@ -1,5 +1,5 @@
 //
-//  DefaultCollectionViewCell.swift
+//  CollectionViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -10,7 +10,13 @@ import UIKit
 // MARK: - CellInput protocol
 
 private protocol CellInput {
-    func configure(with viewModel: CollectionViewCellItemViewModel)
+    func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
+                         completion: (() -> Void)?)
+    func viewDidLoad(media: Media,
+                     with viewModel: CollectionViewCellItemViewModel)
+    func logoDidAlign(_ constraint: NSLayoutConstraint,
+                      with viewModel: CollectionViewCellItemViewModel)
+    func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel)
 }
 
 // MARK: - CellOutput protocol
@@ -27,31 +33,12 @@ private typealias Cell = CellInput & CellOutput
 
 class CollectionViewCell: UICollectionViewCell, Cell {
     
-    @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var logoImageView: UIImageView!
-    @IBOutlet weak var placeholderLabel: UILabel!
-    @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var coverImageView: UIImageView!
+    @IBOutlet private weak var logoImageView: UIImageView!
+    @IBOutlet private weak var placeholderLabel: UILabel!
+    @IBOutlet private weak var logoBottomConstraint: NSLayoutConstraint!
     
     fileprivate var representedIdentifier: NSString?
-    
-    private var viewModel: HomeViewModel!
-    
-    private var cell: CollectionViewCell!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.backgroundColor = .black
-        self.placeholderLabel.alpha = 1.0
-        self.coverImageView.layer.cornerRadius = 6.0
-    }
-    
-    deinit {
-        coverImageView.image = nil
-        logoImageView.image = nil
-        placeholderLabel.text = nil
-        representedIdentifier = nil
-        viewModel = nil
-    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -59,82 +46,74 @@ class CollectionViewCell: UICollectionViewCell, Cell {
         logoImageView.image = nil
         placeholderLabel.text = nil
         representedIdentifier = nil
-        viewModel = nil
     }
     
     static func create(in collectionView: UICollectionView,
                        reuseIdentifier: String,
                        section: Section,
                        for indexPath: IndexPath,
-                       with viewModel: HomeViewModel) -> CollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
+                       with state: TableViewDataSource.State) -> CollectionViewCell {
+        guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
-        let media = viewModel.state.value == .tvShows
+        let media = state == .tvShows
             ? section.tvshows![indexPath.row]
             : section.movies![indexPath.row]
         let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
-        cell.representedIdentifier = media.title as NSString
-        cell.configure(with: cellViewModel)
-        return cell
+        view.viewDidLoad(media: media, with: cellViewModel)
+        return view
     }
     
-    static func create(in collectionView: UICollectionView,
-                       reuseIdentifier: String,
-                       section: Section,
-                       for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> CollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
-        else { fatalError() }
-        let media = viewModel.state == .tvShows
-            ? section.tvshows![indexPath.row]
-            : section.movies![indexPath.row]
-        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
-        cell.representedIdentifier = media.title as NSString
-        cell.configure(with: cellViewModel)
-        return cell
-    }
+    deinit { representedIdentifier = nil }
     
-    static func download(with viewModel: CollectionViewCellItemViewModel) {
-        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
-                                      identifier: viewModel.posterImageIdentifier) { _ in }
-        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
-                                      identifier: viewModel.logoImageIdentifier) { _ in }
-    }
-    
-    func configure(with viewModel: CollectionViewCellItemViewModel) {
-        switch viewModel.logoAlignment {
-        case .top:
-            logoBottomConstraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
-        case .midTop:
-            logoBottomConstraint.constant = 64.0
-        case .mid:
-            logoBottomConstraint.constant = bounds.midY
-        case .midBottom:
-            logoBottomConstraint.constant = 24.0
-        case .bottom:
-            logoBottomConstraint.constant = 8.0
-        }
-        
-        placeholderLabel.text = viewModel.title
-        
-        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
-                                      identifier: viewModel.posterImageIdentifier) { [weak self] image in
-            guard let self = self else { return }
-            guard self.representedIdentifier == viewModel.title as NSString? else { return }
-            DispatchQueue.main.async {
-                self.coverImageView.image = image
-                self.coverImageView.contentMode = .scaleAspectFill
-                self.placeholderLabel.alpha = 0.0
+    fileprivate func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
+                                     completion: (() -> Void)?) {
+        AsyncImageFetcher.shared.load(
+            url: viewModel.posterImageURL,
+            identifier: viewModel.posterImageIdentifier) { _ in
+                DispatchQueue.main.async { completion?() }
             }
-        }
+        AsyncImageFetcher.shared.load(
+            url: viewModel.logoImageURL,
+            identifier: viewModel.logoImageIdentifier) { _ in
+                DispatchQueue.main.async { completion?() }
+            }
+    }
+    
+    fileprivate func viewDidLoad(media: Media,
+                                 with viewModel: CollectionViewCellItemViewModel) {
+        backgroundColor = .black
+        placeholderLabel.alpha = 1.0
+        coverImageView.layer.cornerRadius = 6.0
+        coverImageView.contentMode = .scaleAspectFill
         
-        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
-                                      identifier: viewModel.logoImageIdentifier) { [weak self] image in
-            guard let self = self else { return }
-            guard self.representedIdentifier == viewModel.title as NSString? else { return }
-            DispatchQueue.main.async { self.logoImageView.image = image }
+        dataDidDownload(with: viewModel) { [weak self] in self?.viewDidConfigure(with: viewModel) }
+        
+        representedIdentifier = media.slug as NSString
+        placeholderLabel.text = viewModel.title
+    }
+    
+    fileprivate func logoDidAlign(_ constraint: NSLayoutConstraint,
+                                  with viewModel: CollectionViewCellItemViewModel) {
+        switch viewModel.logoAlignment {
+        case .top: constraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
+        case .midTop: constraint.constant = 64.0
+        case .mid: constraint.constant = bounds.midY
+        case .midBottom: constraint.constant = 24.0
+        case .bottom: constraint.constant = 8.0
         }
+    }
+    
+    public func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel) {
+        guard representedIdentifier == viewModel.slug as NSString? else { return }
+        
+        let posterImage = AsyncImageFetcher.shared.object(for: viewModel.posterImageIdentifier)
+        let logoImage = AsyncImageFetcher.shared.object(for: viewModel.logoImageIdentifier)
+        coverImageView.image = posterImage
+        logoImageView.image = logoImage
+
+        placeholderLabel.alpha = 0.0
+        
+        logoDidAlign(logoBottomConstraint, with: viewModel)
     }
 }

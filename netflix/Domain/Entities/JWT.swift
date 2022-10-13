@@ -9,6 +9,6 @@ import Foundation
 
 // MARK: - JWT struct
 
-//struct JWT {
-//    let token: String
-//}
+struct JWT {
+    let token: String
+}

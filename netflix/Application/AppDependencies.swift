@@ -11,13 +11,13 @@ import Foundation
 
 final class AppDependencies {
     
-    lazy var configuration = AppConfiguration()
+    private lazy var configuration = AppConfiguration()
     
-    lazy var dataTransferService: DataTransferService = {
+    private lazy var dataTransferService: DataTransferService = {
         let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
         let config = NetworkConfig(baseURL: url)
-        let defaultNetworkService = DefaultNetworkService(config: config)
-        return DefaultDataTransferService(with: defaultNetworkService)
+        let networkService = NetworkService(config: config)
+        return DataTransferService(with: networkService)
     }()
     
     func createSceneDependencies() -> SceneDependencies {

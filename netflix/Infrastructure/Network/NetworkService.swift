@@ -23,53 +23,54 @@ protocol NetworkCancellable {
     func cancel()
 }
 
-// MARK: - URLSessionTask's NetworkCancellable implementation
+// MARK: - URLSessionTask: NetworkCancellable implementation
 
 extension URLSessionTask: NetworkCancellable {}
 
-// MARK: - NetworkService protocol
+// MARK: - NetworkServiceInput protocol
 
-protocol NetworkService {
+protocol NetworkServiceInput {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
     
-    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable?
+    func request(endpoint: Requestable,
+                 completion: @escaping CompletionHandler) -> NetworkCancellable?
 }
 
-// MARK: - NetworkSessionManager protocol
+// MARK: - NetworkSessionManagerInput protocol
 
-protocol NetworkSessionManager {
+protocol NetworkSessionManagerInput {
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
-    func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable
+    func request(_ request: URLRequest,
+                 completion: @escaping CompletionHandler) -> NetworkCancellable
 }
 
-// MARK: - NetworkErrorLogger protocol
+// MARK: - NetworkErrorLoggerInput protocol
 
-protocol NetworkErrorLogger {
+private protocol NetworkErrorLoggerInput {
     func log(request: URLRequest)
     func log(responseData data: Data?, response: URLResponse?)
     func log(error: Error)
 }
 
-// MARK: - DefaultNetworkService class
+// MARK: - DefaultNetworkService struct
 
-final class DefaultNetworkService {
+struct NetworkService {
     
     private let config: NetworkConfigurable
     private let sessionManager: NetworkSessionManager
     private let logger: NetworkErrorLogger
     
     init(config: NetworkConfigurable,
-         sessionManager: NetworkSessionManager = DefaultNetworkSessionManager(),
-         logger: NetworkErrorLogger = DefaultNetworkErrorLogger()) {
+         sessionManager: NetworkSessionManager = NetworkSessionManager(),
+         logger: NetworkErrorLogger = NetworkErrorLogger()) {
         self.config = config
         self.sessionManager = sessionManager
         self.logger = logger
     }
     
-    // MARK: Private
-    
-    private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
+    private func request(request: URLRequest,
+                         completion: @escaping CompletionHandler) -> NetworkCancellable {
         let sessionDataTask = sessionManager.request(request) { data, response, requestError in
             if let requestError = requestError {
                 var error: NetworkError
@@ -104,10 +105,11 @@ final class DefaultNetworkService {
     }
 }
 
-// MARK: - DefaultNetworkService's NetworkService implementation
+// MARK: - NetworkService's NetworkServiceInput implementation
 
-extension DefaultNetworkService: NetworkService {
-    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable? {
+extension NetworkService: NetworkServiceInput {
+    func request(endpoint: Requestable,
+                 completion: @escaping CompletionHandler) -> NetworkCancellable? {
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
             return request(request: urlRequest, completion: completion)
@@ -118,30 +120,30 @@ extension DefaultNetworkService: NetworkService {
     }
 }
 
-// MARK: - DefaultNetworkSessionManager class
+// MARK: - NetworkSessionManager struct
 
-final class DefaultNetworkSessionManager: NetworkSessionManager {
+struct NetworkSessionManager: NetworkSessionManagerInput {
     
-    init() {}
-    
-    func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
+    func request(_ request: URLRequest,
+                 completion: @escaping CompletionHandler) -> NetworkCancellable {
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
         task.resume()
         return task
     }
 }
 
-// MARK: - DefaultNetworkErrorLogger class
+// MARK: - NetworkErrorLogger struct
 
-final class DefaultNetworkErrorLogger: NetworkErrorLogger {
-    init() {}
+struct NetworkErrorLogger: NetworkErrorLoggerInput {
     
     func log(request: URLRequest) {
         printIfDebug("-------------")
         printIfDebug("request: \(request.url!)")
         printIfDebug("headers: \(request.allHTTPHeaderFields!)")
         printIfDebug("method: \(request.httpMethod!)")
-        if let httpBody = request.httpBody, let result = ((try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject]) as [String: AnyObject]??) {
+        if let httpBody = request.httpBody,
+           let json = (try? JSONSerialization.jsonObject(with: httpBody, options: []) as? [String: AnyObject]),
+           let result = json as [String: AnyObject]? {
             printIfDebug("body: \(String(describing: result))")
         } else if let httpBody = request.httpBody, let resultString = String(data: httpBody, encoding: .utf8) {
             printIfDebug("body: \(String(describing: resultString))")
@@ -149,22 +151,13 @@ final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     }
     
     func log(responseData data: Data?, response: URLResponse?) {
-//        guard let data = data else { return }
+        guard let data = data else { return }
         
-//        if let dataDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+        if let dataDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
 //            printIfDebug("responseData: \(String(describing: dataDict))")
-//        }
+            printIfDebug("response: \(dataDict["status"]!)")
+        }
     }
     
-    func log(error: Error) {
-        printIfDebug("\(error)")
-    }
-}
-
-// MARK: -
-
-func printIfDebug(_ string: String) {
-    #if DEBUG
-    print(string)
-    #endif
+    func log(error: Error) { printIfDebug("\(error)") }
 }

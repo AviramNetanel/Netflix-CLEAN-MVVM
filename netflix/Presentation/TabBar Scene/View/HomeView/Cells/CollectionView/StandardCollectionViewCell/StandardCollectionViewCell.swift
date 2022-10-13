@@ -7,6 +7,6 @@
 
 import UIKit
 
-// MARK: - StandardCollectionViewCell
+// MARK: - StandardCollectionViewCell class
 
 final class StandardCollectionViewCell: CollectionViewCell {}

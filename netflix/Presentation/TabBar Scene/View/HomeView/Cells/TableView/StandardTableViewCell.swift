@@ -7,20 +7,19 @@
 
 import UIKit
 
-// MARK: - StandardTableViewCell
+// MARK: - StandardTableViewCell class
 
 final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
     
-    static func create(in tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with viewModel: HomeViewModel) -> StandardTableViewCell {
+    override class func create(in tableView: UITableView,
+                               for indexPath: IndexPath,
+                               with viewModel: HomeViewModel) -> StandardTableViewCell {
         let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)
-        let view = tableView.dequeueReusableCell(withIdentifier: identifier!.stringValue,
-                                                 for: indexPath) as! StandardTableViewCell
-        view.backgroundColor = .black
-        view.viewModel = viewModel
-        view.configure(section: viewModel.section(at: .init(rawValue: indexPath.section)!),
-                       with: viewModel)
+        let view = tableView.dequeueReusableCell(
+            withIdentifier: identifier!.stringValue,
+            for: indexPath) as! StandardTableViewCell
+        let section = viewModel.section(at: .init(rawValue: indexPath.section)!)
+        view.viewDidConfigure(section: section, with: viewModel)
         return view
     }
 

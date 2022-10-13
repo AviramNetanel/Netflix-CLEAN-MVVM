@@ -1,5 +1,5 @@
 //
-//  MediaDTO+DataMapping.swift
+//  MediaDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -11,7 +11,7 @@ import UIKit
 
 struct MediaDTO: Codable {
     
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id,
              title,
              rating,
@@ -168,7 +168,7 @@ struct MediaDTO: Codable {
     }
 }
 
-// MARK: - DataMapping
+// MARK: - Mapping
 
 extension MediaDTO {
     func toDomain() -> Media {

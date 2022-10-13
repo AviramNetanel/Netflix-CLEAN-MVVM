@@ -14,6 +14,6 @@ protocol Sectionable {
     var title: String { get }
 }
 
-// MARK: - Section's sectionable implementation
+// MARK: - Section: Sectionable implementation
 
 extension Section: Sectionable {}

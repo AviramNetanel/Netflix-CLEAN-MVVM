@@ -7,7 +7,28 @@
 
 import UIKit
 
-final class CollectionViewLayout: UICollectionViewFlowLayout {
+// MARK: - LayoutInput protocol
+
+private protocol LayoutInput {}
+
+// MARK: - LayoutOutput protocol
+
+private protocol LayoutOutput {
+    var layout: CollectionViewLayout.Layout! { get }
+    var itemsPerLine: CGFloat { get }
+    var lineSpacing: CGFloat { get }
+    var width: CGFloat { get }
+    var height: CGFloat { get }
+    
+}
+
+// MARK: - Layout typealias
+
+private typealias Layout = LayoutInput & LayoutOutput
+
+// MARK: - CollectionViewLayout class
+
+final class CollectionViewLayout: UICollectionViewFlowLayout, Layout {
     
     enum Layout {
         case ratable,
@@ -19,11 +40,11 @@ final class CollectionViewLayout: UICollectionViewFlowLayout {
              trailer
     }
     
-    private var layout: Layout!
-    private var itemsPerLine: CGFloat = 3.0
-    private var lineSpacing: CGFloat = 8.0
+    fileprivate var layout: Layout!
+    fileprivate var itemsPerLine: CGFloat = 3.0
+    fileprivate var lineSpacing: CGFloat = 8.0
     
-    var width: CGFloat {
+    fileprivate var width: CGFloat {
         get {
             guard let width = super.collectionView!.bounds.width as CGFloat? else { return .zero }
             switch layout {
@@ -38,7 +59,7 @@ final class CollectionViewLayout: UICollectionViewFlowLayout {
         set {}
     }
     
-    var height: CGFloat {
+    fileprivate var height: CGFloat {
         get {
             switch layout {
             case .ratable: return super.collectionView!.bounds.height - lineSpacing

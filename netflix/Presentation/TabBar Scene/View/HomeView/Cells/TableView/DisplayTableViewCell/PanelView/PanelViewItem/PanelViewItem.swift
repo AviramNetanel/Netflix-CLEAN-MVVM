@@ -65,6 +65,7 @@ final class PanelViewItemConfiguration: NSObject, ItemConfiguration {
     
     @objc
     func buttonDidTap() {
+        item.setAlphaAnimation(using: item.gestureRecognizers!.first)
         item.viewModel.isSelected.value.toggle()
     }
     
@@ -96,7 +97,7 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
     var isSelected = false
     
     private(set) var configuration: PanelViewItemConfiguration!
-    private(set) var viewModel: PanelItemViewModel!
+    private(set) var viewModel: PanelViewItemViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

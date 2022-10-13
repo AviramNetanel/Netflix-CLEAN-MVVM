@@ -1,5 +1,5 @@
 //
-//  MoviesRequestDTO.swift
+//  MoviesRequestDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 07/09/2022.

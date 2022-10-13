@@ -1,5 +1,5 @@
 //
-//  SectionDTO+DataMapping.swift
+//  SectionDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -16,7 +16,7 @@ struct SectionDTO: Decodable {
     var movies: [MediaDTO]
 }
 
-// MARK: - DataMapping
+// MARK: - Mapping
 
 extension SectionDTO {
     func toDomain() -> Section {

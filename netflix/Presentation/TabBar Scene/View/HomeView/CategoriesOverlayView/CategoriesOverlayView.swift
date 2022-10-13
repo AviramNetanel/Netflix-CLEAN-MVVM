@@ -17,7 +17,8 @@ private protocol ViewInput {
 
 private protocol ViewOutput {
     var tableView: UITableView { get }
-    var opaqueView: OpaqueView! { get }
+    var opaqueView: OpaqueView { get }
+    var _isPresentedDidChange: (() -> Void)? { get }
 }
 
 // MARK: - View typealias
@@ -49,25 +50,27 @@ final class CategoriesOverlayView: UIView, View {
         tableView.showsHorizontalScrollIndicator = false
         tableView.separatorStyle = .none
         tableView.backgroundView = opaqueView
-        tableView.register(CategoriesOverlayViewTableViewCell.self,
-                           forCellReuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
+        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
         addSubview(tableView)
         return tableView
     }()
     
-    private(set) lazy var opaqueView: OpaqueView! = { .init(frame: UIScreen.main.bounds) }()
+    private(set) lazy var opaqueView: OpaqueView = { .init(frame: UIScreen.main.bounds) }()
+    private var footerView: CategoriesOverlayViewFooterView!
+    private(set) var viewModel: CategoriesOverlayViewViewModel = .init()
     
-    private(set) var viewModel = CategoriesOverlayViewViewModel()
+    var _isPresentedDidChange: (() -> Void)?
     
-    private var footer: CategoriesOverlayViewFooterView!
-    
-    deinit { footer = nil }
+    deinit {
+        footerView = nil
+        _isPresentedDidChange = nil
+    }
     
     static func create(on parent: UIView) -> CategoriesOverlayView {
         let view = CategoriesOverlayView(frame: UIScreen.main.bounds)
         parent.addSubview(view)
         view.setupSubviews(parent: parent)
-        view.setupBindings()
+        view.setupObservers()
         view.viewModel.viewDidLoad()
         return view
     }
@@ -76,18 +79,14 @@ final class CategoriesOverlayView: UIView, View {
         setupFooterView(on: parent)
     }
     
-    private func setupBindings() {
+    private func setupObservers() {
         isPresented(in: viewModel)
     }
     
     private func setupFooterView(on parent: UIView) {
-        footer = CategoriesOverlayViewFooterView.create(on: parent,
-                                                        frame: .zero,
-                                                        with: viewModel)
-    }
-    
-    private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
-        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
+        footerView = CategoriesOverlayViewFooterView.create(on: parent,
+                                                            frame: .zero,
+                                                            with: viewModel)
     }
     
     private func setupDataSource() {
@@ -113,25 +112,26 @@ final class CategoriesOverlayView: UIView, View {
         
         tableView.reloadData()
         
-        tableView.contentInset = .init(top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 60.0,
-                                       left: .zero,
-                                       bottom: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2,
-                                       right: .zero)
+        tableView.contentInset = .init(
+            top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 60.0,
+            left: .zero,
+            bottom: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2,
+            right: .zero)
     }
     
     fileprivate func isPresentedDidChange() {
         if case true = viewModel.isPresented.value {
             isHidden(false)
             tableView.isHidden(false)
-            footer.isHidden(false)
-            viewModel.dataSource.tabBarController?.tabBar.isHidden(true)
+            footerView.isHidden(false)
+            _isPresentedDidChange?()
             setupDataSource()
             return
         }
-        footer.isHidden(true)
+        footerView.isHidden(true)
         isHidden(true)
         tableView.isHidden(true)
-        viewModel.dataSource?.tabBarController?.tabBar.isHidden(false)
+        _isPresentedDidChange?()
         
         tableView.delegate = nil
         tableView.dataSource = nil
@@ -140,6 +140,17 @@ final class CategoriesOverlayView: UIView, View {
     func removeObservers() {
         printIfDebug("Removed `DefaultCategoriesOverlayView` observers.")
         viewModel.isPresented.remove(observer: self)
+    }
+}
+
+// MARK: - Observers implementation
+
+extension CategoriesOverlayView {
+    
+    // MARK: CategoriesOverlayViewViewModel observers
+    
+    private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
+        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
     }
 }
 

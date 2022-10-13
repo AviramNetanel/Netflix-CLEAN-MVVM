@@ -18,3 +18,7 @@ struct Episode {
     var episode: Int
     var url: String
 }
+
+// MARK: - Mediable implementation
+
+extension Episode: Mediable {}

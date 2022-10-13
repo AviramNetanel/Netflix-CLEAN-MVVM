@@ -7,30 +7,31 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
+// MARK: - DataSourcingInput protocol
 
-private protocol DataSourceInput {
-    var heightForRow: ((IndexPath) -> CGFloat)? { get }
+private protocol DataSourcingInput {
+    func reload()
 }
 
-// MARK: - DataSourceOutput protocol
+// MARK: - DataSourcingOutput protocol
 
-private protocol DataSourceOutput {
+private protocol DataSourcingOutput {
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
     var panelCell: DetailPanelTableViewCell! { get }
     var navigationCell: DetailNavigationTableViewCell! { get }
     var collectionCell: DetailCollectionTableViewCell! { get }
+    var heightForRow: ((IndexPath) -> CGFloat)? { get }
 }
 
-// MARK: - DataSource typealias
+// MARK: - DataSourcing typealias
 
-private typealias DataSource = DataSourceInput & DataSourceOutput
+private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 
 // MARK: - DetailTableViewDataSource class
 
 final class DetailTableViewDataSource: NSObject,
-                                       DataSource,
+                                       DataSourcing,
                                        UITableViewDelegate,
                                        UITableViewDataSource {
     
@@ -42,22 +43,30 @@ final class DetailTableViewDataSource: NSObject,
         case collection
     }
     
-    private var viewModel: DetailViewModel
-    
     private var tableView: UITableView
-    
-    var heightForRow: ((IndexPath) -> CGFloat)? { didSet { reload() } }
+    private var viewModel: DetailViewModel
     
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
-    fileprivate var panelCell: DetailPanelTableViewCell!
-    fileprivate var navigationCell: DetailNavigationTableViewCell!
+    fileprivate(set) var panelCell: DetailPanelTableViewCell!
+    fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    init(viewModel: DetailViewModel,
-         tableView: UITableView) {
-        self.viewModel = viewModel
+    var heightForRow: ((IndexPath) -> CGFloat)? { didSet { reload() } }
+    
+    init(tableView: UITableView,
+         viewModel: DetailViewModel) {
         self.tableView = tableView
+        self.viewModel = viewModel
+    }
+    
+    deinit {
+        infoCell = nil
+        descriptionCell = nil
+        panelCell = nil
+        navigationCell = nil
+        collectionCell = nil
+        heightForRow = nil
     }
     
     func reload() { tableView.reloadData() }
@@ -92,6 +101,9 @@ final class DetailTableViewDataSource: NSObject,
             guard navigationCell == nil else { return navigationCell }
             navigationCell = DetailNavigationTableViewCell.create(in: tableView,
                                                                   for: indexPath)
+            navigationCell.navigationView._stateDidChange = { [weak self] state in
+                self?.viewModel.navigationViewState.value = state
+            }
             return navigationCell
         case .collection:
             guard collectionCell == nil else { return collectionCell }

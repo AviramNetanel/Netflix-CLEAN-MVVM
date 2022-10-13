@@ -1,5 +1,5 @@
 //
-//  PanelItemViewModel.swift
+//  PanelViewItemViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 16/09/2022.
@@ -26,9 +26,9 @@ private protocol ViewModelOutput {
 
 private typealias ViewModel = ViewModelInput & ViewModelOutput
 
-// MARK: - PanelItemViewModel class
+// MARK: - PanelViewItemViewModel class
 
-final class PanelItemViewModel: ViewModel {
+final class PanelViewItemViewModel: ViewModel {
     
     let tag: Int
     let isSelected: Observable<Bool>

@@ -16,22 +16,26 @@ enum DataTransferError: Error {
     case resolvedNetworlFailure(Error)
 }
 
-// MARK: - DataTransferService protocol
+// MARK: - DataTransferServiceInput protocol
 
-protocol DataTransferService {
+protocol DataTransferServiceInput {
     
     typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
     
     @discardableResult
-    func request<T: Decodable, E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T
+    func request<T: Decodable, E: ResponseRequestable>(
+        with endpoint: E,
+        completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T
     
     @discardableResult
-    func request<E: ResponseRequestable>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E.Response == Void
+    func request<E: ResponseRequestable>(
+        with endpoint: E,
+        completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E.Response == Void
 }
 
-// MARK: - DataTransferErrorResolver protocol
+// MARK: - DataTransferErrorResolverInput protocol
 
-protocol DataTransferErrorResolver {
+protocol DataTransferErrorResolverInput {
     func resolve(error: NetworkError) -> Error
 }
 
@@ -41,32 +45,32 @@ protocol ResponseDecoder {
     func decode<T: Decodable>(_ data: Data) throws -> T
 }
 
-// MARK: - DataTransferErrorLogger protocol
+// MARK: - DataTransferErrorLoggerInput protocol
 
-protocol DataTransferErrorLogger {
+protocol DataTransferErrorLoggerInput {
     func log(error: Error)
 }
 
-// MARK: - DefaultDataTransferService class
+// MARK: - DataTransferService struct
 
-final class DefaultDataTransferService {
+struct DataTransferService {
     
     private let networkService: NetworkService
     private let errorResolver: DataTransferErrorResolver
     private let errorLogger: DataTransferErrorLogger
     
     init(with networkService: NetworkService,
-         errorResolver: DataTransferErrorResolver = DefaultDataTransferErrorResolver(),
-         errorLogger: DataTransferErrorLogger = DefaultDataTransferErrorLogger()) {
+         errorResolver: DataTransferErrorResolver = DataTransferErrorResolver(),
+         errorLogger: DataTransferErrorLogger = DataTransferErrorLogger()) {
         self.networkService = networkService
         self.errorResolver = errorResolver
         self.errorLogger = errorLogger
     }
 }
 
-// MARK: DefaultDataTransferService's DataTransferService implementation
+// MARK: - DataTransferService - DataTransferService implementation
 
-extension DefaultDataTransferService: DataTransferService {
+extension DataTransferService: DataTransferServiceInput {
     
     func request<T, E>(with endpoint: E,
                        completion: @escaping CompletionHandler<T>) -> NetworkCancellable?
@@ -74,7 +78,8 @@ extension DefaultDataTransferService: DataTransferService {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
-                let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
+                let result: Result<T, DataTransferError> = self.decode(data: data,
+                                                                       decoder: endpoint.responseDecoder)
                 DispatchQueue.main.async {
                     return completion(result)
                 }
@@ -107,9 +112,8 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    // MARK: Private
-    
-    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> Result<T, DataTransferError> {
+    private func decode<T: Decodable>(data: Data?,
+                                      decoder: ResponseDecoder) -> Result<T, DataTransferError> {
         do {
             guard let data = data else { return .failure(.noResponse) }
             
@@ -127,10 +131,9 @@ extension DefaultDataTransferService: DataTransferService {
     }
 }
 
-// MARK: - DefaultDataTransferErrorLogger class
+// MARK: - DataTransferErrorLogger struct
 
-final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
-    init() {}
+struct DataTransferErrorLogger: DataTransferErrorLoggerInput {
     
     func log(error: Error) {
         printIfDebug("------------")
@@ -138,44 +141,22 @@ final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     }
 }
 
-// MARK: - DefaultDataTransferErrorResolver class
+// MARK: - DataTransferErrorResolver struct
 
-final class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
-    init() {}
+struct DataTransferErrorResolver: DataTransferErrorResolverInput {
     
-    func resolve(error: NetworkError) -> Error {
-        return error
-    }
+    func resolve(error: NetworkError) -> Error { error }
 }
 
 // MARK: - JSONResponseDecoder class
 
 final class JSONResponseDecoder: ResponseDecoder {
+    
     private let decoder = JSONDecoder()
     
     init() {}
     
     func decode<T>(_ data: Data) throws -> T where T: Decodable {
         return try decoder.decode(T.self, from: data)
-    }
-}
-
-// MARK: - RawDataResponseDecoder class
-
-final class RawDataResponseDecoder: ResponseDecoder {
-    
-    enum CodingKeys: String, CodingKey {
-        case `default` = ""
-    }
-    
-    init() {}
-    
-    func decode<T>(_ data: Data) throws -> T where T : Decodable {
-        if T.self is Data.Type, let data = data as? T {
-            return data
-        } else {
-            let context = DecodingError.Context(codingPath: [CodingKeys.default], debugDescription: "Expected Data type.")
-            throw DecodingError.typeMismatch(T.self, context)
-        }
     }
 }

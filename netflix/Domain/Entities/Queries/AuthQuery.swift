@@ -11,6 +11,7 @@ import Foundation
 
 @objc
 final class AuthQuery: NSObject {
+    
     let user: UserDTO
     
     init(user: UserDTO) {

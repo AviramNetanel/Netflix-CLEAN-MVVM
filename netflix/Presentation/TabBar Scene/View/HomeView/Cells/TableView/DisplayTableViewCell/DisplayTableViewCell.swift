@@ -23,7 +23,6 @@ final class DisplayTableViewCell: UITableViewCell {
         
         let displayViewViewModel = DisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
         view.displayView.viewModel = displayViewViewModel
-        
         return view
     }
 }

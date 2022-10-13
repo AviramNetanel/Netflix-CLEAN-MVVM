@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func configure(with viewModel: OpaqueViewViewModel)
+    func viewDidConfigure(with viewModel: OpaqueViewViewModel)
 }
 
 // MARK: - ViewOutput protocol
@@ -33,22 +33,22 @@ final class OpaqueView: UIView, View {
     
     private var viewModel: OpaqueViewViewModel!
     
+    @discardableResult
+    static func createViewModel(on view: OpaqueView,
+                                with viewModel: HomeViewModel) -> OpaqueViewViewModel? {
+        guard let presentedDisplayMedia = viewModel.presentedDisplayMedia.value as Media? else { return nil }
+        view.viewModel = .init(with: presentedDisplayMedia)
+        view.viewDidConfigure(with: view.viewModel)
+        return view.viewModel
+    }
+    
     deinit {
         imageView = nil
         blurView = nil
         viewModel = nil
     }
     
-    @discardableResult
-    static func createViewModel(on view: OpaqueView,
-                                with viewModel: HomeViewModel) -> OpaqueViewViewModel? {
-        guard let presentedDisplayMedia = viewModel.presentedDisplayMedia.value as Media? else { return nil }
-        view.viewModel = OpaqueViewViewModel(with: presentedDisplayMedia)
-        view.configure(with: view.viewModel)
-        return view.viewModel
-    }
-    
-    fileprivate func configure(with viewModel: OpaqueViewViewModel) {
+    fileprivate func viewDidConfigure(with viewModel: OpaqueViewViewModel) {
         imageView?.removeFromSuperview()
         blurView?.removeFromSuperview()
         
@@ -62,9 +62,10 @@ final class OpaqueView: UIView, View {
         insertSubview(imageView, at: 0)
         insertSubview(blurView, at: 1)
         
-        AsyncImageFetcher.shared.load(url: viewModel.imageURL,
-                                      identifier: viewModel.identifier) { [weak self] image in
-            DispatchQueue.main.async { self?.imageView.image = image }
-        }
+        AsyncImageFetcher.shared.load(
+            url: viewModel.imageURL,
+            identifier: viewModel.identifier) { [weak self] image in
+                DispatchQueue.main.async { self?.imageView.image = image }
+            }
     }
 }

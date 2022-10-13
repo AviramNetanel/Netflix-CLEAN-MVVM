@@ -1,5 +1,5 @@
 //
-//  TVShowsRequestDTO.swift
+//  TVShowsRequestDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 06/09/2022.

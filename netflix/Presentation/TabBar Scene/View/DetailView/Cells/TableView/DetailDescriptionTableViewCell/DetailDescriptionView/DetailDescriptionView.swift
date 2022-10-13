@@ -7,9 +7,23 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailDescriptionView class
 
-final class DetailDescriptionView: UIView, ViewInstantiable {
+final class DetailDescriptionView: UIView, View, ViewInstantiable {
     
     @IBOutlet private weak var descriptionTextView: UITextView!
     @IBOutlet private weak var castLabel: UILabel!
@@ -21,11 +35,11 @@ final class DetailDescriptionView: UIView, ViewInstantiable {
         view.nibDidLoad()
         view.backgroundColor = .black
         let viewModel = DetailDescriptionViewViewModel(with: viewModel.media)
-        view.configure(with: viewModel)
+        view.viewDidConfigure(with: viewModel)
         return view
     }
     
-    private func configure(with viewModel: DetailDescriptionViewViewModel) {
+    fileprivate func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel) {
         descriptionTextView.text = viewModel.description
         castLabel.text = viewModel.cast
         writersLabel.text = viewModel.writers

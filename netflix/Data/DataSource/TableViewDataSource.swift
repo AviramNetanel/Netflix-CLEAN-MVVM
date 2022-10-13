@@ -7,29 +7,30 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
+// MARK: - DataSourcingInput protocol
 
-private protocol DataSourceInput {
-    var tableView: UITableView { get }
-    var sections: [Section] { get }
-}
-
-// MARK: - DataSourceOutput protocol
-
-private protocol DataSourceOutput {
+private protocol DataSourcingInput {
     func viewsDidRegister()
     func dataSourceDidChange()
-    
-    var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
 }
 
-// MARK: - DataSource protocol
+// MARK: - DataSourcingOutput protocol
 
-private typealias DataSource = DataSourceInput & DataSourceOutput
+private protocol DataSourcingOutput {
+    var tableView: UITableView { get }
+    var sections: [Section] { get }
+    var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
+    var tableViewDidScroll: ((UIScrollView) -> Void)? { get }
+    var didSelectItem: ((Int, Int) -> Void)? { get }
+}
+
+// MARK: - DataSourcing protocol
+
+private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 
 // MARK: - TableViewDataSource
 
-final class TableViewDataSource: NSObject, DataSource {
+final class TableViewDataSource: NSObject, DataSourcing {
     
     enum Index: Int, CaseIterable {
         case display,
@@ -80,7 +81,12 @@ final class TableViewDataSource: NSObject, DataSource {
     
     deinit {
         displayCell = nil
+        ratableCell = nil
+        resumableCell = nil
+        standardCell = nil
         heightForRowAt = nil
+        tableViewDidScroll = nil
+        didSelectItem = nil
         viewModel = nil
     }
     
@@ -133,7 +139,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
         case .ratable:
             ratableCell = RatableTableViewCell.create(in: tableView,
                                                       for: indexPath,
-                                                      with: viewModel)
+                                                      with: viewModel) as? RatableTableViewCell
             ratableCell?.dataSource?.didSelectItem = { [weak self] row in
                 self?.didSelectItem?(indexPath.section, row)
             }
@@ -141,7 +147,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
         case .resumable:
             resumableCell = ResumableTableViewCell.create(in: tableView,
                                                           for: indexPath,
-                                                          with: viewModel)
+                                                          with: viewModel) as? ResumableTableViewCell
             resumableCell?.dataSource?.didSelectItem = { [weak self] row in
                 self?.didSelectItem?(indexPath.section, row)
             }
@@ -158,7 +164,9 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                   heightForRowAt indexPath: IndexPath) -> CGFloat { heightForRowAt!(indexPath) }
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        heightForRowAt!(indexPath)
+    }
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - Media class
+// MARK: - Media struct
 
 struct Media {
     
@@ -53,15 +53,11 @@ struct Media {
 // MARK: - Equatable implementation
 
 extension Media: Equatable {
-    static func ==(lhs: Media, rhs: Media) -> Bool {
-        return lhs.id == rhs.id
-    }
+    static func ==(lhs: Media, rhs: Media) -> Bool { return lhs.id == rhs.id }
 }
 
 // MARK: - Hashable implementation
 
 extension Media: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }

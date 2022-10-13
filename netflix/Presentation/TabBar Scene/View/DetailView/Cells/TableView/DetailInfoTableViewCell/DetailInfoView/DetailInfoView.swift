@@ -7,9 +7,23 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidConfigure(with viewModel: DetailInfoViewViewModel)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailInfoView class
 
-final class DetailInfoView: UIView, ViewInstantiable {
+final class DetailInfoView: UIView, View, ViewInstantiable {
     
     @IBOutlet private weak var mediaTypeLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
@@ -21,17 +35,17 @@ final class DetailInfoView: UIView, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    private var detailViewModel: DetailViewModel!
+    private var viewModel: DetailViewModel!
     
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> DetailInfoView {
         let view = DetailInfoView(frame: parent.bounds)
         view.nibDidLoad()
         view.backgroundColor = .black
-        view.detailViewModel = viewModel
+        view.viewModel = viewModel
         view.setupSubviews()
         let viewModel = DetailInfoViewViewModel(with: viewModel)
-        view.configure(with: viewModel)
+        view.viewDidConfigure(with: viewModel)
         return view
     }
     
@@ -61,7 +75,7 @@ final class DetailInfoView: UIView, ViewInstantiable {
                                       locations: [0.3, 1.0])
     }
     
-    private func configure(with viewModel: DetailInfoViewViewModel) {
+    fileprivate func viewDidConfigure(with viewModel: DetailInfoViewViewModel) {
         mediaTypeLabel.text = viewModel.mediaType
         titlelabel.text = viewModel.title
         downloadButton.setTitle(viewModel.downloadButtonTitle, for: .normal)

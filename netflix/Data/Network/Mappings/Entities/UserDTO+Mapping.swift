@@ -1,5 +1,5 @@
 //
-//  UserDTO+DataMapping.swift
+//  UserDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -12,9 +12,7 @@ import CoreData
 @objc(UserDTO)
 public final class UserDTO: NSObject, Codable, NSSecureCoding {
     
-    // MARK: CodingKeys
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case name,
              email,
              password,
@@ -23,16 +21,12 @@ public final class UserDTO: NSObject, Codable, NSSecureCoding {
              active
     }
     
-    // MARK: Properties
-    
     var name: String?
     var email: String?
     var password: String?
     var passwordConfirm: String?
     var role: String?
     var active: Bool?
-    
-    // MARK: Lifecycle
     
     init(name: String? = nil,
          email: String? = nil,
@@ -100,7 +94,7 @@ public final class UserDTO: NSObject, Codable, NSSecureCoding {
     }
 }
 
-// MARK: - DataMapping
+// MARK: - Mapping
 
 extension UserDTO {
     func toDomain() -> User {

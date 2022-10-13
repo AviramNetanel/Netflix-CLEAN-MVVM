@@ -17,8 +17,6 @@ struct HomeViewModelActions {
 
 private protocol HomeViewModelEndpoints {
     func getSections()
-    func getTVShows()
-    func getMovies()
 }
 
 // MARK: - ViewModelInput protocol
@@ -55,7 +53,7 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput & HomeViewModelEn
 
 final class HomeViewModel: ViewModel {
     
-    private let homeUseCase: HomeUseCase
+    private(set) var homeUseCase: HomeUseCase
     private(set) var actions: HomeViewModelActions
     
     private var task: Cancellable? { willSet { task?.cancel() } }
@@ -179,19 +177,11 @@ extension HomeViewModel {
 fileprivate extension HomeViewModel {
     
     func getSections() {
-        task = homeUseCase.executeSections { [weak self] result in
+        task = homeUseCase.execute(for: SectionsResponse.self) { [weak self] result in
             guard let self = self else { return }
             if case let .success(response) = result {
                 self.dataDidLoad(response: response) { [weak self] in self?.present() }
             }
         }
-    }
-    
-    func getTVShows() {
-        task = homeUseCase.executeTVShows { _ in }
-    }
-    
-    func getMovies() {
-        task = homeUseCase.executeMovies { _ in }
     }
 }

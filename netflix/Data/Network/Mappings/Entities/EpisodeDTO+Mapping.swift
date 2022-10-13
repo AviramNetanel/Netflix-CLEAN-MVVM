@@ -1,5 +1,5 @@
 //
-//  EpisodeDTO+DataMapping.swift
+//  EpisodeDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -12,8 +12,7 @@ import Foundation
 struct EpisodeDTO: Decodable {
     
     enum CodingKeys: String, CodingKey {
-        case id,
-             tvShow,
+        case tvShow,
              title,
              slug,
              season,
@@ -21,7 +20,6 @@ struct EpisodeDTO: Decodable {
              url
     }
     
-    let id: String
     let tvShow: String
     let title: String
     let slug: String
@@ -31,7 +29,6 @@ struct EpisodeDTO: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let id = try container.decode(String.self, forKey: .id)
         let tvShow = try container.decode(String.self, forKey: .tvShow)
         let title = try container.decode(String.self, forKey: .title)
         let slug = try container.decode(String.self, forKey: .slug)
@@ -39,7 +36,6 @@ struct EpisodeDTO: Decodable {
         let episode = try container.decode(Int.self, forKey: .episode)
         let url = try container.decode(String.self, forKey: .url)
         
-        self.id = id
         self.tvShow = tvShow
         self.title = title
         self.slug = slug
@@ -49,12 +45,11 @@ struct EpisodeDTO: Decodable {
     }
 }
 
-// MARK: - DataMapping
+// MARK: - Mapping
 
 extension EpisodeDTO {
     func toDomain() -> Episode {
-        return .init(id: id,
-                     tvShow: tvShow,
+        return .init(tvShow: tvShow,
                      title: title,
                      slug: slug,
                      season: season,

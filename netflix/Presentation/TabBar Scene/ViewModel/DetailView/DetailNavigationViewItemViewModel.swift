@@ -9,25 +9,26 @@ import Foundation
 
 // MARK: - ViewModelInput protocol
 
-private protocol ViewModelInput {
-    
-}
+private protocol ViewModelInput {}
 
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
     var tag: Int { get }
+    var isSelected: Bool { get }
+    var title: String { get }
 }
 
 // MARK: - ViewModel typealias
 
 private typealias ViewModel = ViewModelInput & ViewModelOutput
 
-// MARK: - DetailNavigationViewItemViewModel struct
+// MARK: - DetailNavigationViewItemViewModel class
 
-struct DetailNavigationViewItemViewModel: ViewModel {
+final class DetailNavigationViewItemViewModel: ViewModel {
     
-    let tag: Int
+    fileprivate let tag: Int
+    fileprivate var isSelected: Bool
     
     var title: String {
         guard let tag = DetailNavigationViewItem.Item(rawValue: tag) else { fatalError() }
@@ -36,5 +37,10 @@ struct DetailNavigationViewItemViewModel: ViewModel {
         case .trailers: return "Trailers"
         case .similarContent: return "Similar Content"
         }
+    }
+    
+    init(with item: DetailNavigationViewItem) {
+        self.tag = item.tag
+        self.isSelected = item.isSelected
     }
 }

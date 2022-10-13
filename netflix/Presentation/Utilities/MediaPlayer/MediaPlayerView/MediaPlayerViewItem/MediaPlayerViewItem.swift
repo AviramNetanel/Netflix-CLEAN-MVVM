@@ -11,8 +11,10 @@ import AVKit
 
 final class MediaPlayerViewItem: AVPlayerItem {
     
-    override init(asset: AVAsset, automaticallyLoadedAssetKeys: [String]?) {
-        super.init(asset: asset, automaticallyLoadedAssetKeys: automaticallyLoadedAssetKeys)
+    override init(asset: AVAsset,
+                  automaticallyLoadedAssetKeys: [String]?) {
+        super.init(asset: asset,
+                   automaticallyLoadedAssetKeys: automaticallyLoadedAssetKeys)
     }
     
     convenience init?(with media: Media) {

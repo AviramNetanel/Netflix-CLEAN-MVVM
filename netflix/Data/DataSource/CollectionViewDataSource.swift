@@ -7,38 +7,37 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
+// MARK: - DataSourcingInput protocol
 
-private protocol DataSourceInput {
-    var collectionView: UICollectionView! { get }
-    var section: Section { get }
-}
-
-// MARK: - DataSourceOutput protocol
-
-private protocol DataSourceOutput {
+private protocol DataSourcingInput {
     func dataSourceDidChange()
     func media(for indexPath: IndexPath) -> Media?
-    
+}
+
+// MARK: - DataSourcingOutput protocol
+
+private protocol DataSourcingOutput {
+    var collectionView: UICollectionView! { get }
+    var section: Section { get }
     var didSelectItem: ((IndexPath.Element) -> Void)? { get }
 }
 
-// MARK: - DataSource protocol
+// MARK: - DataSourcing protocol
 
-private typealias DataSource = DataSourceInput & DataSourceOutput
+private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 
 // MARK: - CollectionViewDataSource class
 
 final class CollectionViewDataSource<Cell>: NSObject,
-                                            DataSource,
+                                            DataSourcing,
                                             UICollectionViewDelegate,
                                             UICollectionViewDataSource,
                                             UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
     
     fileprivate weak var collectionView: UICollectionView!
     fileprivate(set) var section: Section
-    
     private var viewModel: HomeViewModel
+    
     private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
     var didSelectItem: ((Int) -> Void)?
@@ -92,7 +91,7 @@ final class CollectionViewDataSource<Cell>: NSObject,
                                          reuseIdentifier: Cell.reuseIdentifier,
                                          section: section,
                                          for: indexPath,
-                                         with: viewModel)
+                                         with: viewModel.state.value)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -104,16 +103,12 @@ final class CollectionViewDataSource<Cell>: NSObject,
                         forItemAt indexPath: IndexPath) {}
     
     func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) { didSelectItem?(indexPath.row) }
+                        didSelectItemAt indexPath: IndexPath) {
+        didSelectItem?(indexPath.row)
+    }
     
     func collectionView(_ collectionView: UICollectionView,
-                        prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            guard let media = media(for: indexPath) else { fatalError() }
-            let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
-            CollectionViewCell.download(with: cellViewModel)
-        }
-    }
+                        prefetchItemsAt indexPaths: [IndexPath]) {}
     
     func collectionView(_ collectionView: UICollectionView,
                         cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {}

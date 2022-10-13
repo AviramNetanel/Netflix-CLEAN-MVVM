@@ -11,6 +11,8 @@ import UIKit
 
 final class DetailNavigationTableViewCell: UITableViewCell {
     
+    private(set) var navigationView: DetailNavigationView!
+    
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath) -> DetailNavigationTableViewCell {
         let view = tableView.dequeueReusableCell(
@@ -18,8 +20,10 @@ final class DetailNavigationTableViewCell: UITableViewCell {
             for: indexPath) as! DetailNavigationTableViewCell
         view.backgroundColor = .black
         view.selectionStyle = .none
-        let detailNavigationView = DetailNavigationView.create(on: view)
-        view.addSubview(detailNavigationView)
+        view.navigationView = DetailNavigationView.create(on: view)
+        view.addSubview(view.navigationView)
         return view
     }
+    
+    deinit { navigationView = nil }
 }

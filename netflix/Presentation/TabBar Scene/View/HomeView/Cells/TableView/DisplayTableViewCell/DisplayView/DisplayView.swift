@@ -7,6 +7,21 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+    func viewDidConfigure(with viewModel: DisplayViewViewModel)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DisplayView class
 
 final class DisplayView: UIView, ViewInstantiable {
@@ -18,46 +33,41 @@ final class DisplayView: UIView, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelView: PanelView!
     
-    var viewModel: DisplayViewViewModel! { didSet { configure(with: viewModel) } }
-    
-    deinit {
-        bottomGradientView = nil
-        viewModel = nil
-    }
+    var viewModel: DisplayViewViewModel! { didSet { viewDidConfigure(with: viewModel) } }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.nibDidLoad()
-        setupSubviews()
+        self.viewDidLoad()
     }
     
-    private func setupSubviews() {
-        addGradientLayer()
-        configureImageView()
-    }
+    deinit { viewModel = nil }
     
-    private func addGradientLayer() {
-        bottomGradientView.addGradientLayer(frame: bottomGradientView.bounds,
-                                            colors: [.clear, .black],
-                                            locations: [0.0, 0.66])
-    }
-    
-    private func configureImageView() {
+    fileprivate func viewDidLoad() {
+        bottomGradientView.addGradientLayer(
+            frame: bottomGradientView.bounds,
+            colors: [.clear, .black],
+            locations: [0.0, 0.66])
+        
         posterImageView.contentMode = .scaleAspectFill
     }
     
-    private func configure(with viewModel: DisplayViewViewModel) {
+    fileprivate func viewDidConfigure(with viewModel: DisplayViewViewModel) {
         posterImageView.image = nil
         logoImageView.image = nil
         genresLabel.attributedText = nil
         
-        AsyncImageFetcher.shared.load(url: viewModel.posterImageURL,
-                                      identifier: viewModel.posterImageIdentifier)
-        { [weak self] image in DispatchQueue.main.async { self?.posterImageView.image = image } }
+        AsyncImageFetcher.shared.load(
+            url: viewModel.posterImageURL,
+            identifier: viewModel.posterImageIdentifier) { [weak self] image in
+                DispatchQueue.main.async { self?.posterImageView.image = image }
+            }
         
-        AsyncImageFetcher.shared.load(url: viewModel.logoImageURL,
-                                      identifier: viewModel.logoImageIdentifier)
-        { [weak self] image in DispatchQueue.main.async { self?.logoImageView.image = image } }
+        AsyncImageFetcher.shared.load(
+            url: viewModel.logoImageURL,
+            identifier: viewModel.logoImageIdentifier) { [weak self] image in
+                DispatchQueue.main.async { self?.logoImageView.image = image }
+            }
         
         genresLabel.attributedText = viewModel.attributedGenres
     }

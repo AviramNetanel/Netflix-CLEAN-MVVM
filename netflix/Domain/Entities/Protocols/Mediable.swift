@@ -13,6 +13,6 @@ protocol Mediable {
     var id: String? { get }
 }
 
-// MARK: - Media's mediable implementation
+// MARK: - Media: Mediable implementation
 
 extension Media: Mediable {}

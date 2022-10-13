@@ -7,6 +7,20 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - PanelView class
 
 final class PanelView: UIView, ViewInstantiable {
@@ -15,23 +29,17 @@ final class PanelView: UIView, ViewInstantiable {
     @IBOutlet private weak var leadingPanelItemView: PanelViewItem!
     @IBOutlet private weak var trailingPanelItemView: PanelViewItem!
     
-    private(set) var viewModel: HomeViewModel!
+    private var viewModel: HomeViewModel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.nibDidLoad()
-        self.setupSubviews()
+        self.viewDidLoad()
     }
     
-    deinit {
-        viewModel = nil
-    }
+    deinit { viewModel = nil }
     
-    private func setupSubviews() {
-        setupPlayButton()
-    }
-    
-    private func setupPlayButton() {
+    fileprivate func viewDidLoad() {
         playButton.layer.cornerRadius = 6.0
     }
     

@@ -10,13 +10,13 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    var state: NavigationView.State { get }
+    func viewDidLoad()
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var dataSourceDidChange: ((NavigationView.State) -> Void)? { get }
+    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)? { get }
 }
 
 // MARK: - View typelias
@@ -47,29 +47,25 @@ final class NavigationView: UIView, View, ViewInstantiable {
     
     private(set) var viewModel: NavigationViewViewModel!
     
-    fileprivate var state: State = .tvShows {
-        didSet { viewModel.state.value = state }
-    }
-    
-    var dataSourceDidChange: ((State) -> Void)?
+    var stateDidChangeDidBindToHomeViewController: ((State) -> Void)?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.nibDidLoad()
         self.setupSubviews()
-        self.viewModel = viewModel(with: [self.homeButton,
-                                          self.airPlayButton,
-                                          self.accountButton,
-                                          self.tvShowsItemView,
-                                          self.moviesItemView,
-                                          self.categoriesItemView],
-                                   for: self.state)
-        self.setupBindings()
+        let items: [NavigationViewItem] = [self.homeButton,
+                                           self.airPlayButton,
+                                           self.accountButton,
+                                           self.tvShowsItemView,
+                                           self.moviesItemView,
+                                           self.categoriesItemView]
+        self.viewModel = .init(items: items)
+        self.viewDidLoad()
     }
     
-    private func viewModel(with items: [NavigationViewItem],
-                           for state: NavigationView.State) -> NavigationViewViewModel {
-        return NavigationViewViewModel(with: items, for: state)
+    deinit {
+        stateDidChangeDidBindToHomeViewController = nil
+        viewModel = nil
     }
     
     private func setupSubviews() {
@@ -78,23 +74,48 @@ final class NavigationView: UIView, View, ViewInstantiable {
     
     private func setupBindings() {
         stateDidChange(in: viewModel)
+        buttonDidTap(for: viewModel.items)
+    }
+    
+    private func setupObservers() {
+        viewModel.state.observe(on: self) { [weak self] state in
+            self?.viewModel.stateDidChangeDidBindToViewModel?(state)
+        }
     }
     
     private func addGradientLayer() {
         gradientView.addGradientLayer(frame: gradientView.bounds,
                                       colors:
-                                        [.black.withAlphaComponent(0.75),
-                                         .black.withAlphaComponent(0.5),
+                                        [.black.withAlphaComponent(0.8),
+                                         .black.withAlphaComponent(0.6),
                                          .clear],
                                       locations: [0.0, 0.5, 1.0])
     }
     
+    fileprivate func viewDidLoad() {
+        setupBindings()
+        setupObservers()
+    }
+    
+    func removeObservers() {
+        printIfDebug("Removed `NavigationView` observers.")
+        viewModel.state.remove(observer: self)
+    }
+}
+
+// MARK: - Bindings
+
+extension NavigationView {
+    
+    // MARK: NavigationViewViewModel bindings
+    
     private func stateDidChange(in viewModel: NavigationViewViewModel) {
-        viewModel.stateDidChange = { [weak self] state in
+        viewModel.stateDidChangeDidBindToViewModel = { [weak self] state in
             guard let self = self else { return }
             
-            self.dataSourceDidChange?(state)
-            self.categoriesItemView.configure(with: state)
+            self.stateDidChangeDidBindToHomeViewController?(state)
+            
+            self.categoriesItemView.viewDidConfigure(with: state)
             
             switch state {
             case .home:
@@ -130,6 +151,16 @@ final class NavigationView: UIView, View, ViewInstantiable {
             self.animateUsingSpring(withDuration: 0.33,
                                     withDamping: 0.7,
                                     initialSpringVelocity: 0.7)
+        }
+    }
+    
+    // MARK: NavigationViewItem bindings
+    
+    private func buttonDidTap(for items: [NavigationViewItem]) {
+        items.forEach {
+            $0.configuration._buttonDidTap = { [weak self] state in
+                self?.viewModel.state.value = state
+            }
         }
     }
 }

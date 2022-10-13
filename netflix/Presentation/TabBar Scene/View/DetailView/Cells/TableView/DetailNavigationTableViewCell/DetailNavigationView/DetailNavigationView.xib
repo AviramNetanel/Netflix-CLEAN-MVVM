@@ -29,19 +29,19 @@
                             </constraints>
                         </view>
                         <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oM0-Eq-h5q" userLabel="Center Container">
-                            <rect key="frame" x="94" y="0.0" width="70" height="48"/>
+                            <rect key="frame" x="94" y="0.0" width="62" height="48"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="70" id="Uwg-Wu-9XO"/>
+                                <constraint firstAttribute="width" constant="62" id="Uwg-Wu-9XO"/>
                             </constraints>
                         </view>
                         <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zxi-Zu-ErP" userLabel="Trailing Container">
-                            <rect key="frame" x="188" y="0.0" width="114" height="48"/>
+                            <rect key="frame" x="180" y="0.0" width="114" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="114" id="MiQ-V1-wVG"/>
                             </constraints>
                         </view>
                         <view tag="-1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yk-Ln-0vA" userLabel="Dummy Container">
-                            <rect key="frame" x="326" y="0.0" width="56" height="48"/>
+                            <rect key="frame" x="318" y="0.0" width="64" height="48"/>
                         </view>
                     </subviews>
                     <constraints>

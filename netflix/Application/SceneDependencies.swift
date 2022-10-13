@@ -38,15 +38,19 @@ final class SceneDependencies {
     
     func createHomeUseCase() -> HomeUseCase {
         return HomeUseCase(sectionsRepository: createSectionsRepository(),
-                                  tvShowsRepository: createTVShowsRepository(),
-                                  moviesRepository: createMoviesRepository())
+                           tvShowsRepository: createTVShowsRepository(),
+                           moviesRepository: createMoviesRepository())
+    }
+    
+    func createDetailUseCase() -> DetailUseCase {
+        return DetailUseCase(seasonsRepository: createSeasonsRepoistory())
     }
     
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
         return AuthRepository(dataTransferService: dependencies.dataTransferService,
-                                     cache: authResponseCache)
+                              cache: authResponseCache)
     }
     
     func createSectionsRepository() -> SectionsRepository {
@@ -61,6 +65,10 @@ final class SceneDependencies {
         return MoviesRepository(dataTransferService: dependencies.dataTransferService)
     }
     
+    func createSeasonsRepoistory() -> SeasonsRepository {
+        return SeasonsRepository(dataTransferService: dependencies.dataTransferService)
+    }
+    
     // MARK: - Scenes
     
     // MARK: AuthScene
@@ -71,7 +79,7 @@ final class SceneDependencies {
     
     func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
         return AuthViewModel(authUseCase: createAuthUseCase(),
-                                    actions: actions)
+                             actions: actions)
     }
     
     // MARK: HomeView
@@ -82,7 +90,7 @@ final class SceneDependencies {
     
     func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
         return HomeViewModel(homeUseCase: createHomeUseCase(),
-                                    actions: actions)
+                             actions: actions)
     }
     
     // MARK: DetailView
@@ -92,7 +100,7 @@ final class SceneDependencies {
     }
     
     func createDetailViewModel() -> DetailViewModel {
-        return DetailViewModel()
+        return DetailViewModel(detailUseCase: createDetailUseCase())
     }
 }
 

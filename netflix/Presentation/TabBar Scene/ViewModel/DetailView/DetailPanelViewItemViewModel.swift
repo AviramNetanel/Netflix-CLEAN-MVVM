@@ -15,7 +15,7 @@ private protocol ViewModelInput {}
 
 private protocol ViewModelOutput {
     var tag: Int { get }
-    var isSelected: Bool { get }
+    var isSelected: Observable<Bool> { get }
     var systemImage: String { get }
     var title: String { get }
 }
@@ -24,19 +24,18 @@ private protocol ViewModelOutput {
 
 private typealias ViewModel = ViewModelInput & ViewModelOutput
 
-// MARK: - DetailPanelViewItemViewModel struct
+// MARK: - DetailPanelViewItemViewModel class
 
-struct DetailPanelViewItemViewModel: ViewModel {
+final class DetailPanelViewItemViewModel: ViewModel {
     
     let tag: Int
-    
-    private(set) var isSelected = false
+    var isSelected: Observable<Bool>
     
     var systemImage: String {
         guard let tag = DetailPanelViewItemConfiguration.Item(rawValue: tag) else { fatalError() }
         switch tag {
-        case .myList: return isSelected ? "checkmark" : "plus"
-        case .rate: return isSelected ? "hand.thumbsup.fill" : "hand.thumbsup"
+        case .myList: return isSelected.value ? "checkmark" : "plus"
+        case .rate: return isSelected.value ? "hand.thumbsup.fill" : "hand.thumbsup"
         case .share: return "square.and.arrow.up"
         }
     }
@@ -48,5 +47,19 @@ struct DetailPanelViewItemViewModel: ViewModel {
         case .rate: return "Rate"
         case .share: return "Share"
         }
+    }
+    
+    init(with item: DetailPanelViewItem) {
+        self.tag = item.tag
+        self.isSelected = .init(item.isSelected)
+        self.bind(on: item)
+    }
+    
+    private func bind(on item: DetailPanelViewItem) {
+        isSelected.observe(on: self) { _ in item.configuration?.viewDidConfigure() }
+    }
+    
+    func removeObservers() {
+        isSelected.remove(observer: self)
     }
 }

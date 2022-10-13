@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - AuthViewController class
 
-final class AuthViewController: UIViewController, StoryboardInstantiable {
+final class AuthViewController: UIViewController {
     
     @IBOutlet private weak var statusBarGradientView: UIView!
     @IBOutlet private weak var topGradientView: UIView!
@@ -27,7 +27,9 @@ final class AuthViewController: UIViewController, StoryboardInstantiable {
     }
     
     static func create(with viewModel: AuthViewModel) -> AuthViewController {
-        let view = AuthViewController.instantiateViewController()
+        let view = Storyboard(withOwner: AuthViewController.self,
+                              launchingViewController: AuthViewController.self)
+            .instantiate() as! AuthViewController
         view.viewModel = viewModel
         return view
     }

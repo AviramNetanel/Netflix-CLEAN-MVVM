@@ -7,17 +7,25 @@
 
 import UIKit
 
-// MARK: - ItemConfiguration protocol
+// MARK: - ConfigurationInput protocol
 
 @objc
-private protocol ItemConfiguration {
-    func itemDidConfigure(item: DetailPanelViewItem)
+private protocol ConfigurationInput {
+    func viewDidConfigure()
     func buttonDidTap()
 }
 
+// MARK: - ConfigurationOutput protocol
+
+private protocol ConfigurationOutput {}
+
+// MARK: - Configuration typealias
+
+private typealias Configuration = ConfigurationInput & ConfigurationOutput
+
 // MARK: - DetailPanelViewItemConfiguration class
 
-final class DetailPanelViewItemConfiguration: ItemConfiguration {
+final class DetailPanelViewItemConfiguration: Configuration {
     
     enum Item: Int {
         case myList
@@ -25,35 +33,36 @@ final class DetailPanelViewItemConfiguration: ItemConfiguration {
         case share
     }
     
-    private weak var item: DetailPanelViewItem!
+    private weak var view: DetailPanelViewItem!
     
-    init(item: DetailPanelViewItem) { self.item = item }
+    init(view: DetailPanelViewItem) { self.view = view }
     
-    deinit { item = nil }
+    deinit { view = nil }
     
     static func create(with item: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
-        let configuration = DetailPanelViewItemConfiguration(item: item)
-        configuration.itemDidConfigure(item: item)
+        let configuration = DetailPanelViewItemConfiguration(view: item)
+        configuration.viewDidConfigure()
+        let tapRecognizer = UITapGestureRecognizer(target: configuration,
+                                                   action: #selector(configuration.buttonDidTap))
+        item.addGestureRecognizer(tapRecognizer)
         return configuration
     }
     
-    func itemDidConfigure(item: DetailPanelViewItem) {
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(buttonDidTap))
-        item.addGestureRecognizer(tapRecognizer)
-        item.imageView.image = UIImage(systemName: item.viewModel.systemImage)?.whiteRendering()
-        item.label.text = item.viewModel.title
+    func viewDidConfigure() {
+        view.imageView.image = UIImage(systemName: view.viewModel.systemImage)?.whiteRendering()
+        view.label.text = view.viewModel.title
     }
     
     func buttonDidTap() {
-        guard let tag = Item(rawValue: item.tag) else { return }
+        guard let tag = Item(rawValue: view.tag) else { return }
+        
+        view.setAlphaAnimation(using: view.gestureRecognizers!.first)
+        view.viewModel.isSelected.value.toggle()
+        
         switch tag {
-        case .myList:
-            print("mylist")
-        case .rate:
-            print("rate")
-        case .share:
-            print("share")
+        case .myList: print("mylist")
+        case .rate: print("rate")
+        case .share: print("share")
         }
     }
 }
@@ -62,9 +71,8 @@ final class DetailPanelViewItemConfiguration: ItemConfiguration {
 
 final class DetailPanelViewItem: UIView {
     
-    private var configuration: DetailPanelViewItemConfiguration?
-    
-    private(set) var viewModel: DetailPanelViewItemViewModel!
+    private(set) var configuration: DetailPanelViewItemConfiguration?
+    var viewModel: DetailPanelViewItemViewModel!
     
     fileprivate lazy var imageView: UIImageView = {
         let image = UIImage()
@@ -85,10 +93,12 @@ final class DetailPanelViewItem: UIView {
         return label
     }()
     
+    var isSelected = false
+    
     static func create(on parent: UIView) -> DetailPanelViewItem {
         let view = DetailPanelViewItem(frame: parent.bounds)
         view.tag = parent.tag
-        view.viewModel = DetailPanelViewItemViewModel(tag: view.tag)
+        view.viewModel = DetailPanelViewItemViewModel(with: view)
         view.configuration = .create(with: view)
         view.setupSubviews()
         return view

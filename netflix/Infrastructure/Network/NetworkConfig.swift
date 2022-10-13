@@ -18,9 +18,10 @@ protocol NetworkConfigurable {
 // MARK: - NetworkConfig struct
 
 struct NetworkConfig: NetworkConfigurable {
+    
     let baseURL: URL
-    let headers: [String : String]
-    let queryParameters: [String : String]
+    let headers: [String: String]
+    let queryParameters: [String: String]
     
     init(baseURL: URL,
          headers: [String: String] = [:],

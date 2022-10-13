@@ -1,5 +1,5 @@
 //
-//  AuthRequestDTO.swift
+//  AuthRequestDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 01/09/2022.

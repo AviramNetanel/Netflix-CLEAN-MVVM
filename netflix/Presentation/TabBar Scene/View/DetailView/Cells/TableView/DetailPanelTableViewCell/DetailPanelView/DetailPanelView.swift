@@ -7,13 +7,29 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailPanelView class
 
-final class DetailPanelView: UIView, ViewInstantiable {
+final class DetailPanelView: UIView, View, ViewInstantiable {
     
     @IBOutlet private weak var leadingViewContainer: UIView!
     @IBOutlet private weak var centerViewContainer: UIView!
     @IBOutlet private weak var trailingViewContainer: UIView!
+    
+    private(set) var leadingItem: DetailPanelViewItem!
+    private(set) var centerItem: DetailPanelViewItem!
+    private(set) var trailingItem: DetailPanelViewItem!
     
     static func create(on parent: UIView) -> DetailPanelView {
         let view = DetailPanelView(frame: parent.bounds)
@@ -30,17 +46,17 @@ final class DetailPanelView: UIView, ViewInstantiable {
     }
     
     private func setupLeadingView() {
-        let view = DetailPanelViewItem.create(on: leadingViewContainer)
-        leadingViewContainer.addSubview(view)
+        leadingItem = DetailPanelViewItem.create(on: leadingViewContainer)
+        leadingViewContainer.addSubview(leadingItem)
     }
     
     private func setupCenterView() {
-        let view = DetailPanelViewItem.create(on: centerViewContainer)
-        centerViewContainer.addSubview(view)
+        centerItem = DetailPanelViewItem.create(on: centerViewContainer)
+        centerViewContainer.addSubview(centerItem)
     }
     
     private func setupTrailingView() {
-        let view = DetailPanelViewItem.create(on: trailingViewContainer)
-        trailingViewContainer.addSubview(view)
+        trailingItem = DetailPanelViewItem.create(on: trailingViewContainer)
+        trailingViewContainer.addSubview(trailingItem)
     }
 }

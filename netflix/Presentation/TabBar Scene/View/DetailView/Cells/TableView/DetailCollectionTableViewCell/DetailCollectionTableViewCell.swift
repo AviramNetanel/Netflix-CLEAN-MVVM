@@ -11,6 +11,8 @@ import UIKit
 
 final class DetailCollectionTableViewCell: UITableViewCell {
     
+    private(set) var detailCollectionView: DetailCollectionView!
+    
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
                        with viewModel: DetailViewModel) -> DetailCollectionTableViewCell {
@@ -19,8 +21,10 @@ final class DetailCollectionTableViewCell: UITableViewCell {
             for: indexPath) as! DetailCollectionTableViewCell
         view.backgroundColor = .black
         view.selectionStyle = .none
-        let detailCollectionView = DetailCollectionView.create(on: view, with: viewModel)
-        view.addSubview(detailCollectionView)
+        view.detailCollectionView = DetailCollectionView.create(on: view, with: viewModel)
+        view.addSubview(view.detailCollectionView)
         return view
     }
+    
+    deinit { detailCollectionView = nil }
 }

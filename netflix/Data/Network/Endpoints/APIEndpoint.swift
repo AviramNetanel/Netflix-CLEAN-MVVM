@@ -54,5 +54,13 @@ struct APIEndpoint {
                         method: .get,
                         queryParameters: ["sort": "id"])
     }
+    
+    // MARK: SeasonsRepository endpoints
+    
+    static func getSeason(with viewModel: EpisodeCollectionViewCellViewModel,
+                          season: Int? = 1) -> Endpoint<SeasonResponseDTO> {
+        return Endpoint(path: "api/v1/tvshows/\(viewModel.media.slug)/seasons/\(season!)",
+                        method: .get)
+    }
 }
 

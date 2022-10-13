@@ -7,79 +7,106 @@
 
 import UIKit
 
-// MARK: - ItemConfiguration protocol
+// MARK: - ConfigurationInput protocol
 
 @objc
-private protocol ItemConfiguration {
-    func itemDidConfigure(item: NavigationViewItem)
-    func _buttonDidTap()
+private protocol ConfigurationInput {
+    func viewDidConfigure(view: NavigationViewItem)
+    func buttonDidTap()
 }
+
+// MARK: - ConfigurationOutput protocol
+
+private protocol ConfigurationOutput {
+    var view: NavigationViewItem! { get }
+    var _buttonDidTap: ((NavigationView.State) -> Void)? { get }
+}
+
+// MARK: - Configuration typealias
+
+private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
 // MARK: - NavigationViewItemConfiguration class
 
-final class NavigationViewItemConfiguration: ItemConfiguration {
+final class NavigationViewItemConfiguration: Configuration {
     
-    private weak var item: NavigationViewItem!
-    var buttonDidTap: ((NavigationView.State) -> Void)?
+    fileprivate weak var view: NavigationViewItem!
+    var _buttonDidTap: ((NavigationView.State) -> Void)?
     
-    deinit {
-        item = nil
-        buttonDidTap = nil
-    }
-    
-    static func create(with item: NavigationViewItem) -> NavigationViewItemConfiguration {
+    static func create(with view: NavigationViewItem) -> NavigationViewItemConfiguration {
         let configuration = NavigationViewItemConfiguration()
-        configuration.itemDidConfigure(item: item)
+        configuration.viewDidConfigure(view: view)
         return configuration
     }
     
-    fileprivate func itemDidConfigure(item: NavigationViewItem) {
-        self.item = item
+    deinit {
+        view = nil
+        _buttonDidTap = nil
+    }
+    
+    fileprivate func viewDidConfigure(view: NavigationViewItem) {
+        self.view = view
         
-        guard let state = NavigationView.State(rawValue: item.tag) else { return }
+        guard let state = NavigationView.State(rawValue: view.tag) else { return }
         
-        item.addSubview(item.button)
-        item.button.frame = item.bounds
-        item.button.layer.shadow(.black, radius: 3.0, opacity: 0.4)
-        item.button.addTarget(self,
-                              action: #selector(_buttonDidTap),
+        view.addSubview(view.button)
+        view.button.frame = view.bounds
+        view.button.layer.shadow(.black, radius: 3.0, opacity: 0.4)
+        view.button.addTarget(self,
+                              action: #selector(buttonDidTap),
                               for: .touchUpInside)
         
         let image: UIImage!
         let symbolConfiguration: UIImage.SymbolConfiguration!
         switch state {
         case .home:
-            image = UIImage(named: item.viewModel.image)?
+            image = UIImage(named: view.viewModel.image)?
                 .withRenderingMode(.alwaysOriginal)
-            item.button.setImage(image, for: .normal)
+            view.button.setImage(image, for: .normal)
         case .airPlay:
             symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 16.0)
-            image = UIImage(systemName: item.viewModel.image)?
+            image = UIImage(systemName: view.viewModel.image)?
                 .whiteRendering(with: symbolConfiguration)
-            item.button.setImage(image, for: .normal)
+            view.button.setImage(image, for: .normal)
         case .account:
             symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 17.0)
-            image = UIImage(systemName: item.viewModel.image)?
+            image = UIImage(systemName: view.viewModel.image)?
                 .whiteRendering(with: symbolConfiguration)
-            item.button.setImage(image, for: .normal)
+            view.button.setImage(image, for: .normal)
         default:
-            item.button.setTitleColor(.white, for: .normal)
-            item.button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
-            item.button.setTitle(item.viewModel.title, for: .normal)
+            view.button.setTitleColor(.white, for: .normal)
+            view.button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+            view.button.setTitle(view.viewModel.title, for: .normal)
         }
     }
     
-    fileprivate func _buttonDidTap() {
-        guard let state = NavigationView.State(rawValue: item.tag) else { return }
-        buttonDidTap?(state)
+    fileprivate func buttonDidTap() {
+        guard let state = NavigationView.State(rawValue: view.tag) else { return }
+        _buttonDidTap?(state)
     }
 }
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidConfigure(with state: NavigationView.State)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var configuration: NavigationViewItemConfiguration! { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - NavigationViewItem class
 
-final class NavigationViewItem: UIView {
+final class NavigationViewItem: UIView, View {
     
-    fileprivate(set) lazy var button: UIButton = { return UIButton(type: .system) }()
+    fileprivate(set) lazy var button: UIButton = { UIButton(type: .system) }()
     
     private(set) var configuration: NavigationViewItemConfiguration!
     var viewModel: NavigationViewItemViewModel!
@@ -95,7 +122,7 @@ final class NavigationViewItem: UIView {
         viewModel = nil
     }
     
-    func configure(with state: NavigationView.State) {
+    func viewDidConfigure(with state: NavigationView.State) {
         switch state {
         case .home:
             guard let tag = NavigationView.State(rawValue: tag) else { return }
@@ -108,11 +135,9 @@ final class NavigationViewItem: UIView {
         case .tvShows,
                 .movies:
             guard let tag = NavigationView.State(rawValue: tag) else { return }
-            switch tag {
-            case .categories:
+            if case .categories = tag {
                 button.setTitle("All \(viewModel.title!)", for: .normal)
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-            default: break
             }
         default: break
         }

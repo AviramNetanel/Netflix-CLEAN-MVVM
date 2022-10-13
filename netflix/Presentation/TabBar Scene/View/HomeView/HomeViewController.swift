@@ -16,11 +16,8 @@ final class HomeViewController: UIViewController {
     @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: HomeViewModel!
-    
     private(set) var dataSource: TableViewDataSource!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
-    
-    private weak var detailViewController: DetailViewController!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -33,10 +30,9 @@ final class HomeViewController: UIViewController {
     }
     
     static func create(with viewModel: HomeViewModel) -> HomeViewController {
-        let view = UIStoryboard(name: String(describing: HomeTabBarController.self),
-                                bundle: nil)
-            .instantiateViewController(
-                withIdentifier: String(describing: HomeViewController.self)) as! HomeViewController
+        let view = Storyboard(withOwner: HomeTabBarController.self,
+                              launchingViewController: HomeViewController.self)
+            .instantiate() as! HomeViewController
         view.viewModel = viewModel
         return view
     }
@@ -72,28 +68,46 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupNavigationView() {
-        dataSourceDidChange(in: navigationView)
+        stateDidChange(in: navigationView)
     }
     
     private func setupCategoriesOverlayView() {
         categoriesOverlayView = CategoriesOverlayView.create(on: view)
+        isPresentedDidChange(in: categoriesOverlayView)
     }
     
     private func setupSubviewsDependencies() {
         OpaqueView.createViewModel(on: categoriesOverlayView.opaqueView,
-                                          with: viewModel)
+                                   with: viewModel)
     }
     
     func removeObservers() {
-        printIfDebug("Removed `DefaultHomeViewModel` observers.")
-        viewModel.state.remove(observer: self)
-        viewModel.presentedDisplayMedia.remove(observer: self)
+        if let viewModel = viewModel {
+            printIfDebug("Removed `HomeViewModel` observers.")
+            viewModel.state.remove(observer: self)
+            viewModel.presentedDisplayMedia.remove(observer: self)
+        }
     }
 }
 
 // MARK: - Bindings
 
 extension HomeViewController {
+    
+    // MARK: HomeViewModel bindings
+    
+    private func navigationViewDidAppear(in viewModel: HomeViewModel) {
+        viewModel.navigationViewDidAppear = { [weak self] in
+            guard let self = self else { return }
+            self.navigationViewHeightConstraint.constant = 0.0
+            self.navigationView.alpha = 1.0
+            self.view.animateUsingSpring(withDuration: 0.66,
+                                         withDamping: 1.0,
+                                         initialSpringVelocity: 1.0)
+        }
+    }
+    
+    // MARK: TableViewDataSource bindings
     
     private func heightForRowAt(in dataSource: TableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
@@ -140,15 +154,15 @@ extension HomeViewController {
         }
     }
     
-    private func dataSourceDidChange(in navigationView: NavigationView) {
-        navigationView.dataSourceDidChange = { [weak self] state in
-            guard let self = self else { return }
+    // MARK: NavigationView bindings
+    
+    private func stateDidChange(in navigationView: NavigationView) {
+        navigationView.stateDidChangeDidBindToHomeViewController = { [weak self] state in
+            guard
+                let self = self
+            else { return }
             
             self.categoriesOverlayView.viewModel.state = state
-            
-            if self.categoriesOverlayView.viewModel.dataSource.tabBarController == nil {
-                self.categoriesOverlayView.viewModel.dataSource.tabBarController = self.tabBarController
-            }
             
             switch state {
             case .home:
@@ -160,6 +174,7 @@ extension HomeViewController {
                     }
                     return self.categoriesOverlayView.viewModel.isPresented.value = true
                 }
+                
                 self.viewModel.state.value = .tvShows
             case .movies:
                 guard self.viewModel.state.value != .movies else {
@@ -168,6 +183,7 @@ extension HomeViewController {
                     }
                     return self.categoriesOverlayView.viewModel.isPresented.value = true
                 }
+                
                 self.viewModel.state.value = .movies
             case .categories:
                 self.categoriesOverlayView?.viewModel.isPresented.value = true
@@ -176,27 +192,32 @@ extension HomeViewController {
         }
     }
     
-    private func navigationViewDidAppear(in viewModel: HomeViewModel) {
-        viewModel.navigationViewDidAppear = { [weak self] in
-            guard let self = self else { return }
-            self.navigationViewHeightConstraint.constant = 0.0
-            self.navigationView.alpha = 1.0
-            self.view.animateUsingSpring(withDuration: 0.66,
-                                         withDamping: 1.0,
-                                         initialSpringVelocity: 1.0)
+    // MARK: CategoriesOverlayView bindings
+    
+    private func isPresentedDidChange(in categoriesOverlayView: CategoriesOverlayView) {
+        categoriesOverlayView._isPresentedDidChange = { [weak self] in
+            self?.categoriesOverlayView?.viewModel.isPresented.value == true
+                ? self?.tabBarController?.tabBar.isHidden(true)
+                : self?.tabBarController?.tabBar.isHidden(false)
         }
     }
 }
 
-// MARK: - DefaultHomeViewModel Observers
+// MARK: - Observers
 
 extension HomeViewController {
     
+    // MARK: HomeViewModel observers
+    
     private func state(in viewModel: HomeViewModel) {
-        viewModel.state.observe(on: self) { [weak self] _ in self?.setupDataSource() }
+        viewModel.state.observe(on: self) { [weak self] _ in
+            self?.setupDataSource()
+        }
     }
     
     private func presentedDisplayMedia(in viewModel: HomeViewModel) {
-        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] _ in self?.setupSubviewsDependencies() }
+        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] _ in
+            self?.setupSubviewsDependencies()
+        }
     }
 }

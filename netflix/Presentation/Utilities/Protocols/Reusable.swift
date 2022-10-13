@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Reusable protocol
 
-public protocol Reusable {}
+protocol Reusable {}
 
 // MARK: - Default implementation
 

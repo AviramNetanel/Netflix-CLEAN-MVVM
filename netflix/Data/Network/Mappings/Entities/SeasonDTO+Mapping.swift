@@ -1,5 +1,5 @@
 //
-//  SeasonDTO+DataMapping.swift
+//  SeasonDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -41,7 +41,7 @@ struct SeasonDTO: Decodable {
     }
 }
 
-// MARK: - DataMapping
+// MARK: - Mapping
 
 extension SeasonDTO {
     func toDomain() -> Season {

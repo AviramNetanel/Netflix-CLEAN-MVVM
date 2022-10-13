@@ -7,19 +7,6 @@
 
 import UIKit
 
-// MARK: - ResumableTableViewCell
+// MARK: - ResumableTableViewCell class
 
-final class ResumableTableViewCell: TableViewCell<ResumableCollectionViewCell> {
-    
-    static func create(in tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with viewModel: HomeViewModel) -> ResumableTableViewCell {
-        let view = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
-                                                 for: indexPath) as! ResumableTableViewCell
-        view.backgroundColor = .black
-        view.viewModel = viewModel
-        view.configure(section: viewModel.section(at: .init(rawValue: indexPath.section)!),
-                       with: viewModel)
-        return view
-    }
-}
+final class ResumableTableViewCell: TableViewCell<ResumableCollectionViewCell> {}

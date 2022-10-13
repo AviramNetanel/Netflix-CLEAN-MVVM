@@ -15,13 +15,33 @@ enum CoreDataStorageError: Error {
     case deleteError(Error)
 }
 
+// MARK: - StorageInput protocol
+
+private protocol StorageInput {
+    init()
+    func url(for container: NSPersistentContainer) -> URL?
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void)
+    func saveContext()
+}
+
+// MARK: - StorageOutput protocol
+
+private protocol StorageOutput {
+    static var shared: CoreDataStorage { get }
+    var persistentContainer: NSPersistentContainer { get }
+}
+
+// MARK: - Storage typealias
+
+private typealias Storage = StorageInput & StorageOutput
+
 // MARK: - CoreDataStorage class
 
-final class CoreDataStorage {
+final class CoreDataStorage: Storage {
     
     static let shared = CoreDataStorage()
     
-    private lazy var persistentContainer: NSPersistentContainer = {
+    fileprivate lazy var persistentContainer: NSPersistentContainer = {
         ValueTransformer.setValueTransformer(AnyTransformer(), forName: .userToDataTransformer)
 
         let container = NSPersistentContainer(name: "CoreDataStorage")
@@ -33,7 +53,18 @@ final class CoreDataStorage {
         return container
     }()
     
-    private init() {}
+    fileprivate init() {}
+    
+    fileprivate func url(for container: NSPersistentContainer) -> URL? {
+        let persistentStore = container.persistentStoreCoordinator.persistentStores.first!
+        let url = container.persistentStoreCoordinator.url(for: persistentStore)
+        printIfDebug("persistentStore url \(url)")
+        return url
+    }
+    
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        persistentContainer.performBackgroundTask(block)
+    }
     
     func saveContext() {
         let context = persistentContainer.viewContext
@@ -45,16 +76,5 @@ final class CoreDataStorage {
         } catch {
             assertionFailure("CoreDataStorage unresolved error \(error), \((error as NSError).userInfo)")
         }
-    }
-    
-    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        persistentContainer.performBackgroundTask(block)
-    }
-    
-    private func url(for container: NSPersistentContainer) -> URL? {
-        let persistentStore = container.persistentStoreCoordinator.persistentStores.first!
-        let url = container.persistentStoreCoordinator.url(for: persistentStore)
-        printIfDebug("persistentStore url \(url)")
-        return url
     }
 }

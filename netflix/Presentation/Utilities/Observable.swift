@@ -7,41 +7,58 @@
 
 import Foundation
 
+// MARK: - ObservingInput protocol
+
+private protocol ObservingInput {
+    associatedtype Value
+    init(_ value: Value)
+    func observe(on observer: AnyObject,
+                 observerBlock: @escaping (Value) -> Void)
+    func remove(observer: AnyObject)
+    func notifyObservers()
+}
+
+// MARK: - ObservingOutput protocol
+
+private protocol ObservingOutput: ObservingInput {
+    var observers: [Observable<Value>.Observer<Value>] { get }
+    var value: Value { get }
+}
+
+// MARK: - Observing typealias
+
+private typealias Observing = ObservingInput & ObservingOutput
+
 // MARK: - Observable class
 
-final class Observable<Value> {
+final class Observable<Value>: Observing {
     
-    struct Observer<Value> {
-        weak var observer: AnyObject?
+    fileprivate struct Observer<Value> {
+        private(set) weak var observer: AnyObject?
         let block: (Value) -> Void
     }
     
-    private var observers = [Observer<Value>]()
+    fileprivate var observers = [Observer<Value>]()
     
-    var value: Value {
-        didSet {
-            notifyObservers()
+    var value: Value { didSet { notifyObservers() } }
+    
+    init(_ value: Value) { self.value = value }
+    
+    fileprivate func notifyObservers() {
+        for observer in observers {
+            DispatchQueue.main.async {
+                observer.block(self.value)
+            }
         }
     }
     
-    init(_ value: Value) {
-        self.value = value
-    }
-    
-    func observe(on observer: AnyObject, observerBlock: @escaping (Value) -> Void) {
+    func observe(on observer: AnyObject,
+                 observerBlock: @escaping (Value) -> Void) {
         observers.append(Observer(observer: observer, block: observerBlock))
         observerBlock(self.value)
     }
     
     func remove(observer: AnyObject) {
         observers = observers.filter { $0.observer !== observer }
-    }
-    
-    private func notifyObservers() {
-        for observer in observers {
-            DispatchQueue.main.async {
-                observer.block(self.value)
-            }
-        }
     }
 }

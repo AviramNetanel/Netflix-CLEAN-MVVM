@@ -1,5 +1,5 @@
 //
-//  SectionsResponseDTO.swift
+//  SectionsResponseDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 07/09/2022.
@@ -20,11 +20,6 @@ struct SectionsResponseDTO: Decodable {
     let status: String
     let results: Int
     let data: [SectionDTO]
-    
-//    init(token: String, data: UserDTO?) {
-//        self.token = token
-//        self.data = data
-//    }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
