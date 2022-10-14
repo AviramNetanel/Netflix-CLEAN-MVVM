@@ -7,6 +7,15 @@
 
 import AVKit
 
+// MARK: - MediaPlayerDelegate protocol
+
+protocol MediaPlayerDelegate: AnyObject {
+    func playerDidPlay(_ mediaPlayer: MediaPlayer)
+    func playerDidStop(_ mediaPlayer: MediaPlayer)
+    func player(_ mediaPlayer: MediaPlayer, willReplaceItem item: AVPlayerItem?)
+    func player(_ mediaPlayer: MediaPlayer, willVerifyUrl url: URL) -> Bool
+}
+
 // MARK: - MediaPlayerOutput protocol
 
 private protocol MediaPlayerOutput {
@@ -14,9 +23,13 @@ private protocol MediaPlayerOutput {
     var mediaPlayerLayer: MediaPlayerLayer! { get }
 }
 
+// MARK: - MediaPlaying typealias
+
+private typealias MediaPlaying = MediaPlayerOutput
+
 // MARK: - MediaPlayer struct
 
-struct MediaPlayer: MediaPlayerOutput {
+struct MediaPlayer: MediaPlaying {
     
     let player = AVPlayer()
     var mediaPlayerLayer: MediaPlayerLayer!

@@ -12,10 +12,6 @@ import AVKit
 private protocol ViewInput {
     func viewDidLoad()
     func viewDidRegisterRecognizers(on parent: UIView)
-    func verifyUrl(url: URL) -> Bool
-    func stop()
-    func replace(item: AVPlayerItem?)
-    func play()
     var prepareToPlay: ((Bool) -> Void)? { get }
 }
 
@@ -41,17 +37,21 @@ final class MediaPlayerView: UIView, View {
     
     var prepareToPlay: ((Bool) -> Void)?
     
+    weak var delegate: MediaPlayerDelegate?
+    
     deinit {
         removeObservers()
         mediaPlayer = nil
         overlayView = nil
         viewModel = nil
         prepareToPlay = nil
+        delegate = nil
     }
     
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> MediaPlayerView {
         let view = MediaPlayerView(frame: .zero)
+        view.delegate = view
         createViewModel(on: view, with: viewModel)
         createMediaPlayer(on: view)
         view.viewDidLoad()
@@ -84,30 +84,40 @@ final class MediaPlayerView: UIView, View {
         mediaPlayer.mediaPlayerLayer.playerLayer.videoGravity = .resizeAspectFill
     }
     
-    fileprivate func verifyUrl(url: URL) -> Bool { UIApplication.shared.canOpenURL(url) }
-    
     fileprivate func viewDidRegisterRecognizers(on parent: UIView) {
         let tapRecognizer = UITapGestureRecognizer(target: overlayView,
                                                    action: #selector(overlayView.didSelect))
         parent.addGestureRecognizer(tapRecognizer)
     }
     
-    fileprivate func stop() {
-        viewModel.isPlaying = false
-        mediaPlayer.player.replaceCurrentItem(with: nil)
+    func removeObservers() {
+        if let timeObserverToken = overlayView.configuration.observers.timeObserverToken {
+            print("Removed `MediaPlayerView` observers.")
+            mediaPlayer?.player.removeTimeObserver(timeObserverToken)
+        }
     }
+}
+
+// MARK: - MediaPlayerView: MediaPlayerDelegate implementation
+
+extension MediaPlayerView: MediaPlayerDelegate {
     
-    func replace(item: AVPlayerItem? = nil) {
-        mediaPlayer.player.replaceCurrentItem(with: item == nil ? viewModel.item : item!)
-    }
-    
-    func play() {
+    func playerDidPlay(_ mediaPlayer: MediaPlayer) {
         viewModel.isPlaying = true
         prepareToPlay?(viewModel.isPlaying)
         mediaPlayer.player.play()
     }
     
-    func removeObservers() {
-        mediaPlayer?.player.removeTimeObserver(overlayView!.observers.timeObserverToken!)
+    func playerDidStop(_ mediaPlayer: MediaPlayer) {
+        viewModel.isPlaying = false
+        mediaPlayer.player.replaceCurrentItem(with: nil)
     }
+    
+    func player(_ mediaPlayer: MediaPlayer,
+                willReplaceItem item: AVPlayerItem? = nil) {
+        mediaPlayer.player.replaceCurrentItem(with: item == nil ? viewModel.item : item!)
+    }
+    
+    func player(_ mediaPlayer: MediaPlayer,
+                willVerifyUrl url: URL) -> Bool { UIApplication.shared.canOpenURL(url) }
 }

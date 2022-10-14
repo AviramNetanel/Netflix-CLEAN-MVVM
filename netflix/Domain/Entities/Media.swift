@@ -50,13 +50,13 @@ struct Media {
     var previewURL: String?
 }
 
-// MARK: - Equatable implementation
+// MARK: - Media: Equatable implementation
 
 extension Media: Equatable {
     static func ==(lhs: Media, rhs: Media) -> Bool { return lhs.id == rhs.id }
 }
 
-// MARK: - Hashable implementation
+// MARK: - Media: Hashable implementation
 
 extension Media: Hashable {
     func hash(into hasher: inout Hasher) { hasher.combine(id) }

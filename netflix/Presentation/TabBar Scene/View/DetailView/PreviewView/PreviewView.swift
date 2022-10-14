@@ -65,8 +65,9 @@ final class PreviewView: UIView, View {
         mediaPlayerView.prepareToPlay = { isPlaying in
             isPlaying ? view.imageView.isHidden(true) : view.imageView.isHidden(false)
         }
-        mediaPlayerView.replace(item: mediaPlayerView.viewModel.item)
-        mediaPlayerView.play()
+        mediaPlayerView.delegate?.player(mediaPlayerView.mediaPlayer,
+                                         willReplaceItem: mediaPlayerView.viewModel.item)
+        mediaPlayerView.delegate?.playerDidPlay(mediaPlayerView.mediaPlayer)
         parent.addSubview(mediaPlayerView)
         mediaPlayerView.constraintToSuperview(parent)
         return mediaPlayerView

@@ -11,6 +11,7 @@ import UIKit
 
 private protocol DataSourcingInput {
     func reload()
+    var heightForRow: ((IndexPath) -> CGFloat)? { get }
 }
 
 // MARK: - DataSourcingOutput protocol
@@ -21,7 +22,7 @@ private protocol DataSourcingOutput {
     var panelCell: DetailPanelTableViewCell! { get }
     var navigationCell: DetailNavigationTableViewCell! { get }
     var collectionCell: DetailCollectionTableViewCell! { get }
-    var heightForRow: ((IndexPath) -> CGFloat)? { get }
+    var numberOfRows: Int { get }
 }
 
 // MARK: - DataSourcing typealias
@@ -54,6 +55,8 @@ final class DetailTableViewDataSource: NSObject,
     
     var heightForRow: ((IndexPath) -> CGFloat)? { didSet { reload() } }
     
+    fileprivate let numberOfRows: Int = 1
+    
     init(tableView: UITableView,
          viewModel: DetailViewModel) {
         self.tableView = tableView
@@ -74,7 +77,7 @@ final class DetailTableViewDataSource: NSObject,
     func numberOfSections(in tableView: UITableView) -> Int { Index.allCases.count }
     
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int { 1 }
+                   numberOfRowsInSection section: Int) -> Int { numberOfRows }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -67,7 +67,7 @@ final class CollectionViewLayout: UICollectionViewFlowLayout, Layout {
             case .standard: return super.collectionView!.bounds.height - lineSpacing
             case .homeOverlay,
                     .detail: return 146.0
-            case .descriptive: return 128.0
+            case .descriptive: return 156.0
             case .trailer: return 224.0
             default: return .zero
             }

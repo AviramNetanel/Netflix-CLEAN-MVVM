@@ -16,6 +16,7 @@ private protocol DataSourcingInput {}
 private protocol DataSourcingOutput {
     associatedtype T
     var items: [T] { get }
+    var numberOfSections: Int { get }
 }
 
 // MARK: - DataSourcing typealias
@@ -33,6 +34,7 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     
     var items: [T]
     private var viewModel: CategoriesOverlayViewViewModel
+    fileprivate let numberOfSections: Int = 1
     
     init(items: [T],
          with viewModel: CategoriesOverlayViewViewModel) {
@@ -40,7 +42,7 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
         self.viewModel = viewModel
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    func numberOfSections(in tableView: UITableView) -> Int { numberOfSections }
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int { items.count }

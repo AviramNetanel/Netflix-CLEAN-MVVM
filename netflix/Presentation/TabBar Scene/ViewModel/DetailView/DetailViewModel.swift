@@ -71,13 +71,17 @@ final class DetailViewModel: ViewModel {
         switch state {
         case .episodes:
             guard let season = season.value as Season? else { return .zero }
-            let value = 156.0 * (Float(season.media.count - 1))
+            let cellHeight = Float(156.0)
+            let lineSpacing = Float(8.0)
+            let itemsCount = Float(season.media.count)
+            let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
             return Float(value)
         case .trailers:
             guard let trailers = media.trailers as [String]? else { return .zero }
-            let value = trailers.count == 1
-                ? 192.0 + 32.0
-                : 192.0 * (Float(trailers.count + 1)) + (8.0 * (Float(trailers.count)))
+            let cellHeight = Float(224.0)
+            let lineSpacing = Float(8.0)
+            let itemsCount = Float(trailers.count)
+            let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
             return Float(value)
         default:
             let cellHeight = Float(146.0)

@@ -12,6 +12,7 @@ import UIKit
 private protocol DataSourcingInput {
     func dataSourceDidChange()
     func media(for indexPath: IndexPath) -> Media?
+    var didSelectItem: ((IndexPath.Element) -> Void)? { get }
 }
 
 // MARK: - DataSourcingOutput protocol
@@ -19,7 +20,6 @@ private protocol DataSourcingInput {
 private protocol DataSourcingOutput {
     var collectionView: UICollectionView! { get }
     var section: Section { get }
-    var didSelectItem: ((IndexPath.Element) -> Void)? { get }
 }
 
 // MARK: - DataSourcing protocol

@@ -12,6 +12,9 @@ import UIKit
 private protocol DataSourcingInput {
     func viewsDidRegister()
     func dataSourceDidChange()
+    var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
+    var tableViewDidScroll: ((UIScrollView) -> Void)? { get }
+    var didSelectItem: ((Int, Int) -> Void)? { get }
 }
 
 // MARK: - DataSourcingOutput protocol
@@ -19,9 +22,12 @@ private protocol DataSourcingInput {
 private protocol DataSourcingOutput {
     var tableView: UITableView { get }
     var sections: [Section] { get }
-    var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
-    var tableViewDidScroll: ((UIScrollView) -> Void)? { get }
-    var didSelectItem: ((Int, Int) -> Void)? { get }
+    var numberOfRows: Int { get }
+    var displayCell: DisplayTableViewCell! { get }
+    var ratableCell: RatableTableViewCell! { get }
+    var resumableCell: ResumableTableViewCell! { get }
+    var standardCell: StandardTableViewCell! { get }
+    var viewModel: HomeViewModel! { get }
 }
 
 // MARK: - DataSourcing protocol
@@ -59,16 +65,18 @@ final class TableViewDataSource: NSObject, DataSourcing {
     fileprivate var tableView: UITableView
     fileprivate var sections: [Section]
     
-    private var viewModel: HomeViewModel!
+    fileprivate var viewModel: HomeViewModel!
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     var tableViewDidScroll: ((UIScrollView) -> Void)?
     var didSelectItem: ((Int, Int) -> Void)?
     
-    private(set) var displayCell: DisplayTableViewCell!
-    var ratableCell: RatableTableViewCell!
-    var resumableCell: ResumableTableViewCell!
-    var standardCell: StandardTableViewCell!
+    fileprivate(set) var displayCell: DisplayTableViewCell!
+    fileprivate var ratableCell: RatableTableViewCell!
+    fileprivate var resumableCell: ResumableTableViewCell!
+    fileprivate var standardCell: StandardTableViewCell!
+    
+    fileprivate let numberOfRows: Int = 1
     
     init(in tableView: UITableView,
          with viewModel: HomeViewModel) {
@@ -124,7 +132,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int { sections.count }
     
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int { 1 }
+                   numberOfRowsInSection section: Int) -> Int { numberOfRows }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {

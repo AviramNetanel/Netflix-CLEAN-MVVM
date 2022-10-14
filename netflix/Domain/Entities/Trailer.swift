@@ -14,6 +14,6 @@ struct Trailer {
     var urlPath: String
 }
 
-// MARK: - Mediable implementation
+// MARK: - Trailer: Mediable implementation
 
 extension Trailer: Mediable {}
