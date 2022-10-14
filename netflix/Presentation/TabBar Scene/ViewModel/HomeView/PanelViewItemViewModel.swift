@@ -52,7 +52,7 @@ final class PanelViewItemViewModel: ViewModel {
     }
     
     fileprivate func bind(on item: PanelViewItem) {
-        isSelected.observe(on: self) { _ in item.configuration?.itemDidConfigure() }
+        isSelected.observe(on: self) { _ in item.configuration?.viewDidConfigure() }
     }
     
     func removeObservers() {

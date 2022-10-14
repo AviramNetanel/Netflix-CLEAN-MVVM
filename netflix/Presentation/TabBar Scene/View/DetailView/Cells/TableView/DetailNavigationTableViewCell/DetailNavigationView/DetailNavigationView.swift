@@ -10,14 +10,18 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func stateDidChange(view: DetailNavigationViewItem)
+    var _stateDidChange: ((DetailNavigationView.State) -> Void)? { get }
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
+    var leadingItem: DetailNavigationViewItem! { get }
+    var centerItem: DetailNavigationViewItem! { get }
+    var trailingItem: DetailNavigationViewItem! { get }
     var state: DetailNavigationView.State! { get }
-    var _stateDidChange: ((DetailNavigationView.State) -> Void)? { get }
 }
 
 // MARK: - View typealias
@@ -38,21 +42,12 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var centerViewContainer: UIView!
     @IBOutlet private weak var trailingViewContrainer: UIView!
     
-    private(set) var leadingItem: DetailNavigationViewItem!
-    private(set) var centerItem: DetailNavigationViewItem!
-    private(set) var trailingItem: DetailNavigationViewItem!
+    fileprivate(set) var leadingItem: DetailNavigationViewItem!
+    fileprivate(set) var centerItem: DetailNavigationViewItem!
+    fileprivate(set) var trailingItem: DetailNavigationViewItem!
     
     fileprivate var state: State!
-    
     var _stateDidChange: ((State) -> Void)?
-    
-    static func create(on parent: UIView) -> DetailNavigationView {
-        let view = DetailNavigationView(frame: parent.bounds)
-        view.nibDidLoad()
-        view.backgroundColor = .black
-        view.setupSubviews()
-        return view
-    }
     
     deinit {
         _stateDidChange = nil
@@ -62,30 +57,30 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         trailingItem = nil
     }
     
-    private func setupSubviews() {
-        setupLeadingView()
-        setupCenterView()
-        setupTrailingView()
+    static func create(on parent: UIView) -> DetailNavigationView {
+        let view = DetailNavigationView(frame: .zero)
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
+        view.nibDidLoad()
+        createItems(on: view)
+        view.viewDidLoad()
+        return view
+    }
+    
+    private static func createItems(on view: DetailNavigationView) {
+        view.leadingItem = .create(on: view.leadingViewContainer, navigationView: view)
+        view.centerItem = .create(on: view.centerViewContainer, navigationView: view)
+        view.trailingItem = .create(on: view.trailingViewContrainer, navigationView: view)
+    }
+    
+    fileprivate func viewDidLoad() {
+        setupSubviews()
         
         stateDidChange(view: leadingItem)
     }
     
-    private func setupLeadingView() {
-        leadingItem = DetailNavigationViewItem.create(on: leadingViewContainer,
-                                                      navigationView: self)
-        leadingViewContainer.addSubview(leadingItem)
-    }
-    
-    private func setupCenterView() {
-        centerItem = DetailNavigationViewItem.create(on: centerViewContainer,
-                                                     navigationView: self)
-        centerViewContainer.addSubview(centerItem)
-    }
-    
-    private func setupTrailingView() {
-        trailingItem = DetailNavigationViewItem.create(on: trailingViewContrainer,
-                                                       navigationView: self)
-        trailingViewContrainer.addSubview(trailingItem)
+    private func setupSubviews() {
+        backgroundColor = .black
     }
     
     func stateDidChange(view: DetailNavigationViewItem) {

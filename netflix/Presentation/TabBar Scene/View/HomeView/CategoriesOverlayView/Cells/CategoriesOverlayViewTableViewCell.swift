@@ -10,12 +10,14 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
+    func viewDidLoad(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
 }
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var titleLabel: UILabel { get }
+}
 
 // MARK: - View typealias
 
@@ -46,12 +48,17 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
         view.backgroundColor = .clear
         view.selectionStyle = .none
         let model = viewModel.dataSource.items[indexPath.row]
-        let cellViewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
-        view.viewDidConfigure(with: cellViewModel)
+        view.viewDidLoad(with: createViewModel(on: view, with: model))
         return view
     }
     
-    fileprivate func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
+    private static func createViewModel(
+        on view: CategoriesOverlayViewTableViewCell,
+        with model: CategoriesOverlayViewTableViewDataSource.T) -> CategoriesOverlayViewCollectionViewCellViewModel {
+            return CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
+    }
+    
+    fileprivate func viewDidLoad(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
         titleLabel.text = viewModel.title
     }
 }

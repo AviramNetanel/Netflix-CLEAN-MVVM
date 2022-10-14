@@ -14,15 +14,15 @@ final class DetailViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var previewContainer: UIView!
     
-    var viewModel: DetailViewModel!
+    private var previewView: PreviewView!
+    private(set) var viewModel: DetailViewModel!
     private(set) var dataSource: DetailTableViewDataSource!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupSubviews()
-        setupBindings()
-        setupObservers()
-        viewModel.viewDidLoad()
+    deinit {
+        removeObservers()
+        previewView = nil
+        dataSource = nil
+        viewModel = nil
     }
     
     static func create(with viewModel: DetailViewModel) -> DetailViewController {
@@ -33,10 +33,12 @@ final class DetailViewController: UIViewController {
         return view
     }
     
-    deinit {
-        removeObservers()
-        dataSource = nil
-        viewModel = nil
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSubviews()
+        setupBindings()
+        setupObservers()
+        viewModel.viewDidLoad()
     }
     
     private func setupSubviews() {
@@ -54,9 +56,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupPreviewView() {
-        let previewView = PreviewView.create(on: previewContainer, with: viewModel)
-        previewView.translatesAutoresizingMaskIntoConstraints = false
-        previewView.constraintToSuperview(previewContainer)
+        previewView = .create(on: previewContainer, with: viewModel)
     }
     
     private func setupDataSource() {
@@ -124,14 +124,14 @@ extension DetailViewController {
     
     private func navigationViewState(in viewModel: DetailViewModel) {
         viewModel.navigationViewState.observe(on: self) { [weak self] state in
-            self?.dataSource?.collectionCell?.detailCollectionView?.setupDataSource()
+            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
             self?.heightForRow(in: self!.dataSource)
         }
     }
     
     private func season(in viewModel: DetailViewModel) {
         viewModel.season.observe(on: self) { [weak self] season in
-            self?.dataSource?.collectionCell?.detailCollectionView?.setupDataSource()
+            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
             self?.heightForRow(in: self!.dataSource)
         }
     }

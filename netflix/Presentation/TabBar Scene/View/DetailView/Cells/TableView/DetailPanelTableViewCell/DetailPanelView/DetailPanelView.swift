@@ -9,11 +9,17 @@ import UIKit
 
 // MARK: - ViewInput protocol
 
-private protocol ViewInput {}
+private protocol ViewInput {
+    func viewDidLoad()
+}
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var leadingItem: DetailPanelViewItem! { get }
+    var centerItem: DetailPanelViewItem! { get }
+    var trailingItem: DetailPanelViewItem! { get }
+}
 
 // MARK: - View typealias
 
@@ -27,36 +33,25 @@ final class DetailPanelView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var centerViewContainer: UIView!
     @IBOutlet private weak var trailingViewContainer: UIView!
     
-    private(set) var leadingItem: DetailPanelViewItem!
-    private(set) var centerItem: DetailPanelViewItem!
-    private(set) var trailingItem: DetailPanelViewItem!
+    fileprivate(set) var leadingItem: DetailPanelViewItem!
+    fileprivate(set) var centerItem: DetailPanelViewItem!
+    fileprivate(set) var trailingItem: DetailPanelViewItem!
     
     static func create(on parent: UIView) -> DetailPanelView {
         let view = DetailPanelView(frame: parent.bounds)
         view.nibDidLoad()
-        view.backgroundColor = .black
-        view.setupSubviews()
+        createItems(on: view)
+        view.viewDidLoad()
         return view
     }
     
-    private func setupSubviews() {
-        setupLeadingView()
-        setupCenterView()
-        setupTrailingView()
+    private static func createItems(on view: DetailPanelView) {
+        view.leadingItem = .create(on: view.leadingViewContainer)
+        view.centerItem = .create(on: view.centerViewContainer)
+        view.trailingItem = .create(on: view.trailingViewContainer)
     }
     
-    private func setupLeadingView() {
-        leadingItem = DetailPanelViewItem.create(on: leadingViewContainer)
-        leadingViewContainer.addSubview(leadingItem)
-    }
+    fileprivate func viewDidLoad() { setupSubviews() }
     
-    private func setupCenterView() {
-        centerItem = DetailPanelViewItem.create(on: centerViewContainer)
-        centerViewContainer.addSubview(centerItem)
-    }
-    
-    private func setupTrailingView() {
-        trailingItem = DetailPanelViewItem.create(on: trailingViewContainer)
-        trailingViewContainer.addSubview(trailingItem)
-    }
+    private func setupSubviews() { backgroundColor = .black }
 }

@@ -7,16 +7,34 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidConfigure(at index: Int,
+                          with viewModel: HomeViewModel)
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var titleLabel: UILabel { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - TableViewHeaderFooterView class
 
-final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
+final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
     
-    private let titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
         let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
         label.font = font
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        label.constraintBottom(toParent: self, withLeadingAnchor: 8.0)
         return label
     }()
     
@@ -26,28 +44,16 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
         guard let view = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
         else { return nil }
-        let title = String(describing: viewModel.sections.value[section].title)
-        view.setupSubviews()
-        view.titleLabel.text = title
-        view.backgroundView = .init()
-        view.backgroundView!.backgroundColor = .black
+        view.viewDidConfigure(at: section, with: viewModel)
         return view
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.constraintSubviews()
-    }
-    
-    private func setupSubviews() {
-        contentView.addSubview(titleLabel)
-    }
-    
-    private func constraintSubviews() {
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8.0),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+    fileprivate func viewDidConfigure(at index: Int,
+                                      with viewModel: HomeViewModel) {
+        backgroundView = .init()
+        backgroundView?.backgroundColor = .black
+        
+        let title = String(describing: viewModel.sections.value[index].title)
+        titleLabel.text = title
     }
 }

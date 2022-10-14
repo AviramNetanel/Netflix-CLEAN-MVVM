@@ -7,23 +7,47 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var panelView: DetailPanelView! { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailPanelTableViewCell class
 
-final class DetailPanelTableViewCell: UITableViewCell {
+final class DetailPanelTableViewCell: UITableViewCell, View {
     
-    private(set) var panelView: DetailPanelView!
+    fileprivate(set) var panelView: DetailPanelView!
+    
+    deinit { panelView = nil }
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath) -> DetailPanelTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailPanelTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailPanelTableViewCell
-        view.backgroundColor = .black
-        view.selectionStyle = .none
-        view.panelView = DetailPanelView.create(on: view)
-        view.addSubview(view.panelView)
+        view.addSubview(createView(on: view))
+        view.viewDidLoad()
         return view
     }
     
-    deinit { panelView = nil }
+    private static func createView(on view: DetailPanelTableViewCell) -> DetailPanelView {
+        view.panelView = .create(on: view)
+        return view.panelView
+    }
+    
+    fileprivate func viewDidLoad() {
+        backgroundColor = .black
+        selectionStyle = .none
+    }
 }

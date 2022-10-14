@@ -24,7 +24,6 @@ struct MediaPlayer: MediaPlayerOutput {
     static func create(on parent: UIView) -> MediaPlayer {
         let mediaPlayerLayer = MediaPlayerLayer(frame: parent.bounds)
         let view = MediaPlayer(mediaPlayerLayer: mediaPlayerLayer)
-        view.mediaPlayerLayer.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(view.mediaPlayerLayer)
         view.mediaPlayerLayer.constraintToSuperview(parent)
         view.mediaPlayerLayer.player = view.player

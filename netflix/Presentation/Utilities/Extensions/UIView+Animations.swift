@@ -40,7 +40,8 @@ extension UIView {
     
     func setAlphaAnimation(using gesture: UIGestureRecognizer? = nil,
                            duration: TimeInterval? = nil,
-                           alpha: CGFloat? = nil) {
+                           alpha: CGFloat? = nil,
+                           completion: @escaping () -> Void) {
         guard let gesture = gesture else { return }
         UIView.animate(withDuration: duration ?? defaultAnimationDuration) { [weak self] in
             guard let self = self else { return }
@@ -52,6 +53,7 @@ extension UIView {
                 guard let self = self else { return }
                 self.alpha = alpha ?? self.nonTransparent
                 self.isUserInteractionEnabled = true
+                completion()
             }
         }
     }

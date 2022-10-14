@@ -19,7 +19,8 @@ final class MediaPlayerViewItem: AVPlayerItem {
     
     convenience init?(with media: Media) {
         let url = URL(string: media.previewURL ?? media.trailers.first!)
-        self.init(asset: AVAsset(url: url ?? .init(string: "https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_1920_2_2MB.mov")!),
+        let string = "https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_1920_2_2MB.mov"
+        self.init(asset: AVAsset(url: url ?? .init(string: string)!),
                   automaticallyLoadedAssetKeys: nil)
     }
 }

@@ -11,6 +11,7 @@ import Foundation
 
 private protocol ViewModelInput {
     var stateDidChangeDidBindToViewModel: ((NavigationView.State) -> Void)? { get }
+    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)? { get }
 }
 
 // MARK: - ViewModelOutput protocol
@@ -32,11 +33,15 @@ final class NavigationViewViewModel: ViewModel {
     fileprivate(set) var items: [NavigationViewItem]
     
     var stateDidChangeDidBindToViewModel: ((NavigationView.State) -> Void)?
+    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)?
     
     init(items: [NavigationViewItem]) {
         self.items = items
         self.state = .init(.home)
     }
     
-    deinit { stateDidChangeDidBindToViewModel = nil }
+    deinit {
+        stateDidChangeDidBindToViewModel = nil
+        stateDidChangeDidBindToHomeViewController = nil
+    }
 }

@@ -10,16 +10,16 @@ import Foundation
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
-    var tag: Int { get }
-    var title: String! { get }
-    var image: String! { get }
+    func title(for tag: Int) -> String?
+    func image(for tag: Int) -> String?
 }
 
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    func title(for tag: Int) -> String?
-    func image(for tag: Int) -> String?
+    var tag: Int { get }
+    var title: String! { get }
+    var image: String! { get }
 }
 
 // MARK: - ViewModel typealias

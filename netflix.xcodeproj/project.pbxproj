@@ -134,6 +134,7 @@
 		A1AA28EF28F71F410011EE9D /* TrailerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AA28EE28F71F410011EE9D /* TrailerCollectionViewCell.xib */; };
 		A1AA28F128F738D80011EE9D /* UICollectionView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28F028F738D80011EE9D /* UICollectionView+Register.swift */; };
 		A1AA28F528F750D60011EE9D /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28F428F750D60011EE9D /* Storyboard.swift */; };
+		A1AA28F828F84D590011EE9D /* MyListStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28F728F84D590011EE9D /* MyListStorage.swift */; };
 		A1AD25A028D2987B00F793B3 /* DisplayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */; };
 		A1AD25A228D29A1000F793B3 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25A128D29A1000F793B3 /* DisplayView.swift */; };
 		A1AD25A428D29A7800F793B3 /* DisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1AD25A328D29A7800F793B3 /* DisplayView.xib */; };
@@ -331,6 +332,7 @@
 		A1AA28EE28F71F410011EE9D /* TrailerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrailerCollectionViewCell.xib; sourceTree = "<group>"; };
 		A1AA28F028F738D80011EE9D /* UICollectionView+Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Register.swift"; sourceTree = "<group>"; };
 		A1AA28F428F750D60011EE9D /* Storyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
+		A1AA28F728F84D590011EE9D /* MyListStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListStorage.swift; sourceTree = "<group>"; };
 		A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTableViewCell.swift; sourceTree = "<group>"; };
 		A1AD25A128D29A1000F793B3 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		A1AD25A328D29A7800F793B3 /* DisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayView.xib; sourceTree = "<group>"; };
@@ -981,8 +983,9 @@
 		A18B998128C03DED0077A5A6 /* PersistentStorage */ = {
 			isa = PBXGroup;
 			children = (
-				A18B999A28C0E6670077A5A6 /* AuthResponsesStorage */,
 				A18B998228C03DFE0077A5A6 /* CoreDataStorage */,
+				A18B999A28C0E6670077A5A6 /* AuthResponsesStorage */,
+				A1AA28F628F84D2B0011EE9D /* MyListStorage */,
 			);
 			path = PersistentStorage;
 			sourceTree = "<group>";
@@ -1146,11 +1149,20 @@
 			path = Mappings;
 			sourceTree = "<group>";
 		};
+		A1AA28F628F84D2B0011EE9D /* MyListStorage */ = {
+			isa = PBXGroup;
+			children = (
+				A1AA28F728F84D590011EE9D /* MyListStorage.swift */,
+			);
+			path = MyListStorage;
+			sourceTree = "<group>";
+		};
 		A1AD25A928D2A6AE00F793B3 /* DisplayView */ = {
 			isa = PBXGroup;
 			children = (
 				A1AD25A128D29A1000F793B3 /* DisplayView.swift */,
 				A1AD25A328D29A7800F793B3 /* DisplayView.xib */,
+				A1AD25AA28D2A6B500F793B3 /* PanelView */,
 			);
 			path = DisplayView;
 			sourceTree = "<group>";
@@ -1171,7 +1183,6 @@
 				A1AD259F28D2987B00F793B3 /* DisplayTableViewCell.swift */,
 				A1BA1DA828D9315E00730EA8 /* DisplayTableViewCell.xib */,
 				A1AD25A928D2A6AE00F793B3 /* DisplayView */,
-				A1AD25AA28D2A6B500F793B3 /* PanelView */,
 			);
 			path = DisplayTableViewCell;
 			sourceTree = "<group>";
@@ -1577,6 +1588,7 @@
 				A18B995728BFF66C0077A5A6 /* SectionDTO+Mapping.swift in Sources */,
 				A1F56A6728C68EAD0089BD4F /* NavigationBarTitleView.swift in Sources */,
 				A18691C528C7B0B20087DE3B /* HomeUseCase.swift in Sources */,
+				A1AA28F828F84D590011EE9D /* MyListStorage.swift in Sources */,
 				A18691EC28C957A60087DE3B /* SectionsRequest.swift in Sources */,
 				A18691E228C8D4B10087DE3B /* SectionsResponseDTO+Mapping.swift in Sources */,
 				A1AA28E028F5E0F20011EE9D /* SeasonsRepository.swift in Sources */,

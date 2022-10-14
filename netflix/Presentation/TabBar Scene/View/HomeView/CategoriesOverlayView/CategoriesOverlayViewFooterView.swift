@@ -10,12 +10,15 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func buttonDidTap()
+    func viewDidConfigure()
+    func viewDidTap()
 }
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var viewModel: CategoriesOverlayViewViewModel! { get }
+}
 
 // MARK: - View typealias
 
@@ -23,40 +26,48 @@ private typealias View = ViewInput & ViewOutput
 
 // MARK: - CategoriesOverlayViewFooterView class
 
-final class CategoriesOverlayViewFooterView: UIView {
+final class CategoriesOverlayViewFooterView: UIView, View {
     
-    private var viewModel: CategoriesOverlayViewViewModel!
+    fileprivate var viewModel: CategoriesOverlayViewViewModel!
     
     private lazy var button: UIButton = {
         let button = UIButton(type: .system)
         let systemName = "xmark.circle.fill"
         let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
         let image = UIImage(systemName: systemName)?.whiteRendering(with: symbolConfiguration)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(image, for: .normal)
         button.addTarget(self,
-                         action: #selector(buttonDidTap),
+                         action: #selector(viewDidTap),
                          for: .touchUpInside)
         return button
     }()
     
+    deinit { viewModel = nil }
+    
     static func create(on parent: UIView,
-                       frame: CGRect,
                        with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView {
-        let view = CategoriesOverlayViewFooterView(frame: frame)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        view.isHidden(true)
+        let view = CategoriesOverlayViewFooterView(frame: .zero)
         view.addSubview(view.button)
         view.constraintToCenter(view.button)
-        view.viewModel = viewModel
+        createViewModel(on: view, with: viewModel)
         parent.addSubview(view)
         view.constraintBottom(toParent: parent, withHeightAnchor: 60.0)
+        view.viewDidConfigure()
         return view
     }
     
-    deinit { viewModel = nil }
+    @discardableResult
+    private static func createViewModel(on view: CategoriesOverlayViewFooterView,
+                                        with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewViewModel {
+        view.viewModel = viewModel
+        return view.viewModel
+    }
+    
+    fileprivate func viewDidConfigure() {
+        backgroundColor = .clear
+        isHidden(true)
+    }
     
     @objc
-    fileprivate func buttonDidTap() { viewModel.isPresented.value = false }
+    fileprivate func viewDidTap() { viewModel.isPresented.value = false }
 }

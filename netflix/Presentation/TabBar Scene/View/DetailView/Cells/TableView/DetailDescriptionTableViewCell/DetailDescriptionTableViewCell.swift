@@ -7,20 +7,42 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailDescriptionTableViewCell class
 
-final class DetailDescriptionTableViewCell: UITableViewCell {
+final class DetailDescriptionTableViewCell: UITableViewCell, View {
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
                        with viewModel: DetailViewModel) -> DetailDescriptionTableViewCell {
-        let view = tableView.dequeueReusableCell(
+        guard let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailDescriptionTableViewCell.reuseIdentifier),
-            for: indexPath) as! DetailDescriptionTableViewCell
-        view.backgroundColor = .black
-        view.selectionStyle = .none
-        let detailDescriptionView = DetailDescriptionView.create(on: view, with: viewModel)
-        view.addSubview(detailDescriptionView)
+            for: indexPath) as? DetailDescriptionTableViewCell else { fatalError() }
+        view.addSubview(createView(on: view, with: viewModel))
+        view.viewDidLoad()
         return view
+    }
+    
+    private static func createView(on view: UIView,
+                                   with viewModel: DetailViewModel) -> DetailDescriptionView {
+        return .create(on: view, with: viewModel)
+    }
+    
+    fileprivate func viewDidLoad() {
+        backgroundColor = .black
+        selectionStyle = .none
     }
 }

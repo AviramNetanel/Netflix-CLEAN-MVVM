@@ -10,6 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel)
 }
 
@@ -33,15 +34,22 @@ final class DetailDescriptionView: UIView, View, ViewInstantiable {
                        with viewModel: DetailViewModel) -> DetailDescriptionView {
         let view = DetailDescriptionView(frame: parent.bounds)
         view.nibDidLoad()
-        view.backgroundColor = .black
-        let viewModel = DetailDescriptionViewViewModel(with: viewModel.media)
-        view.viewDidConfigure(with: viewModel)
+        view.viewDidLoad()
+        view.viewDidConfigure(with: createViewModel(with: viewModel))
         return view
     }
+    
+    private static func createViewModel(with viewModel: DetailViewModel) -> DetailDescriptionViewViewModel {
+        return .init(with: viewModel.media)
+    }
+    
+    fileprivate func viewDidLoad() { setupSubviews() }
     
     fileprivate func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel) {
         descriptionTextView.text = viewModel.description
         castLabel.text = viewModel.cast
         writersLabel.text = viewModel.writers
     }
+    
+    private func setupSubviews() { backgroundColor = .black }
 }

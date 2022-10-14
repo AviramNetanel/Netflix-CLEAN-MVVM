@@ -44,17 +44,12 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
             withReuseIdentifier: EpisodeCollectionViewCell.reuseIdentifier,
             for: indexPath) as? EpisodeCollectionViewCell else { fatalError() }
         view.setupSubviews()
-        let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
-        view.viewDidLoad(at: indexPath, with: cellViewModel)
+        view.viewDidLoad(at: indexPath, with: createViewModel(with: viewModel))
         return view
     }
     
-    private func setupSubviews() {
-        playButton.layer.borderColor = UIColor.white.cgColor
-        playButton.layer.borderWidth = 2.0
-        playButton.layer.cornerRadius = playButton.bounds.size.height / 2
-        
-        imageView.layer.cornerRadius = 4.0
+    private static func createViewModel(with viewModel: DetailViewModel) -> EpisodeCollectionViewCellViewModel {
+        return .init(with: viewModel)
     }
     
     fileprivate func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
@@ -71,6 +66,8 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
         dataDidDownload(with: viewModel) { [weak self] in
             self?.viewDidConfigure(at: indexPath, with: viewModel)
         }
+        
+        setupSubviews()
     }
     
     fileprivate func viewDidConfigure(at indexPath: IndexPath,
@@ -82,5 +79,13 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
         titleLabel.text = episode.title
         timestampLabel.text = viewModel.media.length ?? viewModel.media.duration!
         descriptionTextView.text = viewModel.media.description
+    }
+    
+    private func setupSubviews() {
+        playButton.layer.borderColor = UIColor.white.cgColor
+        playButton.layer.borderWidth = 2.0
+        playButton.layer.cornerRadius = playButton.bounds.size.height / 2
+        
+        imageView.layer.cornerRadius = 4.0
     }
 }

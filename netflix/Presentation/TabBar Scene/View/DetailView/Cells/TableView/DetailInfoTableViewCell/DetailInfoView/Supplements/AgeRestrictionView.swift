@@ -7,11 +7,27 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var label: UILabel { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - AgeRestrictionView class
 
-final class AgeRestrictionView: UIView {
+final class AgeRestrictionView: UIView, View {
     
-    private lazy var label: UILabel = {
+    fileprivate lazy var label: UILabel = {
         let label = UILabel(frame: bounds)
         label.font = UIFont.systemFont(ofSize: 11.0, weight: .heavy)
         label.textColor = .white
@@ -22,9 +38,15 @@ final class AgeRestrictionView: UIView {
     
     static func create(with frame: CGRect) -> AgeRestrictionView {
         let view = AgeRestrictionView(frame: frame)
-        view.layer.cornerRadius = 2.0
-        view.backgroundColor = .hexColor("#535353")
         view.addSubview(view.label)
+        view.viewDidLoad()
         return view
+    }
+    
+    fileprivate func viewDidLoad() { setupSubviews() }
+    
+    private func setupSubviews() {
+        layer.cornerRadius = 2.0
+        backgroundColor = .hexColor("#535353")
     }
 }

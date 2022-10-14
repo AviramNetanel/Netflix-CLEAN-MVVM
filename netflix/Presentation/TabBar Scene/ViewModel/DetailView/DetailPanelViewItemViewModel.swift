@@ -9,7 +9,10 @@ import Foundation
 
 // MARK: - ViewModelInput protocol
 
-private protocol ViewModelInput {}
+private protocol ViewModelInput {
+    func bind(on item: DetailPanelViewItem)
+    func removeObservers()
+}
 
 // MARK: - ViewModelOutput protocol
 
@@ -55,7 +58,7 @@ final class DetailPanelViewItemViewModel: ViewModel {
         self.bind(on: item)
     }
     
-    private func bind(on item: DetailPanelViewItem) {
+    fileprivate func bind(on item: DetailPanelViewItem) {
         isSelected.observe(on: self) { _ in item.configuration?.viewDidConfigure() }
     }
     

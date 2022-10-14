@@ -12,7 +12,7 @@
                 <outlet property="bottomGradientView" destination="BA2-MX-Hoa" id="sI8-h3-pRO"/>
                 <outlet property="genresLabel" destination="5tl-T9-cEZ" id="M6R-o2-hc0"/>
                 <outlet property="logoImageView" destination="cRg-Dy-aNl" id="Hax-Qm-504"/>
-                <outlet property="panelView" destination="5pH-9s-sEM" id="Td3-ie-hJ4"/>
+                <outlet property="panelViewContainer" destination="5pH-9s-sEM" id="hui-6F-shc"/>
                 <outlet property="posterImageView" destination="9mn-Ka-sYh" id="ie6-BN-qQf"/>
                 <outlet property="typeImageView" destination="zkE-eC-9kY" id="kbe-Y6-ukl"/>
             </connections>
@@ -70,7 +70,7 @@
                         <constraint firstItem="cRg-Dy-aNl" firstAttribute="top" secondItem="zkE-eC-9kY" secondAttribute="bottom" constant="16" id="x4B-vA-uKO"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pH-9s-sEM" customClass="PanelView" customModule="netflix" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pH-9s-sEM">
                     <rect key="frame" x="0.0" y="628" width="414" height="64"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="QqG-xM-23D"/>

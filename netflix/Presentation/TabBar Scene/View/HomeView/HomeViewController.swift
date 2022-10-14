@@ -12,21 +12,20 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
-    @IBOutlet private(set) var navigationView: NavigationView!
-    @IBOutlet private var navigationViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private(set) var navigationViewContainer: UIView!
+    @IBOutlet private var navigationViewTopConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: HomeViewModel!
     private(set) var dataSource: TableViewDataSource!
+    private(set) var navigationView: NavigationView!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupBehaviors()
-        setupSubviews()
-        setupBindings()
-        viewModel.viewDidLoad()
+    deinit {
+        categoriesOverlayView = nil
+        viewModel = nil
+        dataSource = nil
     }
     
     static func create(with viewModel: HomeViewModel) -> HomeViewController {
@@ -37,10 +36,12 @@ final class HomeViewController: UIViewController {
         return view
     }
     
-    deinit {
-        categoriesOverlayView = nil
-        viewModel = nil
-        dataSource = nil
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupBehaviors()
+        setupSubviews()
+        setupBindings()
+        viewModel.viewDidLoad()
     }
     
     private func setupBehaviors() {
@@ -68,11 +69,12 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupNavigationView() {
+        navigationView = .create(on: navigationViewContainer)
         stateDidChange(in: navigationView)
     }
     
     private func setupCategoriesOverlayView() {
-        categoriesOverlayView = CategoriesOverlayView.create(on: view)
+        categoriesOverlayView = .create(on: view)
         isPresentedDidChange(in: categoriesOverlayView)
     }
     
@@ -99,7 +101,7 @@ extension HomeViewController {
     private func navigationViewDidAppear(in viewModel: HomeViewModel) {
         viewModel.navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
-            self.navigationViewHeightConstraint.constant = 0.0
+            self.navigationViewTopConstraint.constant = 0.0
             self.navigationView.alpha = 1.0
             self.view.animateUsingSpring(withDuration: 0.66,
                                          withDamping: 1.0,
@@ -130,11 +132,11 @@ extension HomeViewController {
                                          withDamping: 1.0,
                                          initialSpringVelocity: 1.0) {
                 guard translation.y < 0 else {
-                    self.navigationViewHeightConstraint.constant = 0.0
+                    self.navigationViewTopConstraint.constant = 0.0
                     self.navigationView.alpha = 1.0
                     return self.view.layoutIfNeeded()
                 }
-                self.navigationViewHeightConstraint.constant = -162.0
+                self.navigationViewTopConstraint.constant = -162.0
                 self.navigationView.alpha = 0.0
                 self.view.layoutIfNeeded()
             }
@@ -157,7 +159,7 @@ extension HomeViewController {
     // MARK: NavigationView bindings
     
     private func stateDidChange(in navigationView: NavigationView) {
-        navigationView.stateDidChangeDidBindToHomeViewController = { [weak self] state in
+        navigationView.viewModel.stateDidChangeDidBindToHomeViewController = { [weak self] state in
             guard
                 let self = self
             else { return }

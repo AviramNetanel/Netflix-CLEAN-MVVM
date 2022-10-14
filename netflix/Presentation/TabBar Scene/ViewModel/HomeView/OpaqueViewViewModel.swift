@@ -9,13 +9,13 @@ import Foundation
 
 // MARK: - ViewModelInput protocol
 
-private protocol ViewModelInput {
-    var imagePath: String { get }
-}
+private protocol ViewModelInput {}
 
 // MARK: - ViewModelOutput protocol
 
-private protocol ViewModelOutput {}
+private protocol ViewModelOutput {
+    var imagePath: String { get }
+}
 
 // MARK: - ViewModel typealias
 

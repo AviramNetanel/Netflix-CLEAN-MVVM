@@ -11,18 +11,19 @@ import UIKit
 
 final class DisplayTableViewCell: UITableViewCell {
     
-    @IBOutlet private(set) weak var displayView: DisplayView!
+    private(set) var displayView: DisplayView!
     
     static func create(in tableView: UITableView,
                        for indexPath: IndexPath,
                        with viewModel: HomeViewModel) -> DisplayTableViewCell {
-        let view = tableView.dequeueReusableCell(withIdentifier: DisplayTableViewCell.reuseIdentifier,
-                                                for: indexPath) as! DisplayTableViewCell
-        
-        viewModel.presentedDisplayMediaDidChange()
-        
-        let displayViewViewModel = DisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
-        view.displayView.viewModel = displayViewViewModel
+        let view = tableView.dequeueReusableCell(
+            withIdentifier: DisplayTableViewCell.reuseIdentifier,
+            for: indexPath) as! DisplayTableViewCell
+        view.displayView = .create(on: view, with: viewModel)
+        view.addSubview(view.displayView)
+        view.displayView.constraintToSuperview(view)
         return view
     }
+    
+    deinit { displayView = nil }
 }

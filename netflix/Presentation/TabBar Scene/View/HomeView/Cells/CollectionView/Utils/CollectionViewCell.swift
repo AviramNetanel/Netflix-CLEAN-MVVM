@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - CellInput protocol
+// MARK: - ViewInput protocol
 
-private protocol CellInput {
+private protocol ViewInput {
     func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
                          completion: (() -> Void)?)
     func viewDidLoad(media: Media,
@@ -19,19 +19,19 @@ private protocol CellInput {
     func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel)
 }
 
-// MARK: - CellOutput protocol
+// MARK: - ViewOutput protocol
 
-private protocol CellOutput {
+private protocol ViewOutput {
     var representedIdentifier: NSString? { get }
 }
 
-// MARK: - Cell typealias
+// MARK: - View typealias
 
-private typealias Cell = CellInput & CellOutput
+private typealias View = ViewInput & ViewOutput
 
 // MARK: - CollectionViewCell class
 
-class CollectionViewCell: UICollectionViewCell, Cell {
+class CollectionViewCell: UICollectionViewCell, View {
     
     @IBOutlet private weak var coverImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
@@ -40,13 +40,7 @@ class CollectionViewCell: UICollectionViewCell, Cell {
     
     fileprivate var representedIdentifier: NSString?
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        coverImageView.image = nil
-        logoImageView.image = nil
-        placeholderLabel.text = nil
-        representedIdentifier = nil
-    }
+    deinit { representedIdentifier = nil }
     
     static func create(in collectionView: UICollectionView,
                        reuseIdentifier: String,
@@ -59,12 +53,26 @@ class CollectionViewCell: UICollectionViewCell, Cell {
         let media = state == .tvShows
             ? section.tvshows![indexPath.row]
             : section.movies![indexPath.row]
-        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
-        view.viewDidLoad(media: media, with: cellViewModel)
+        view.viewDidLoad(media: media,
+                         with: createViewModel(in: view,
+                                               for: indexPath,
+                                               with: media))
         return view
     }
     
-    deinit { representedIdentifier = nil }
+    private static func createViewModel(in view: CollectionViewCell,
+                                        for indexPath: IndexPath,
+                                        with media: Media) -> CollectionViewCellItemViewModel {
+        return .init(media: media, indexPath: indexPath)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        coverImageView.image = nil
+        logoImageView.image = nil
+        placeholderLabel.text = nil
+        representedIdentifier = nil
+    }
     
     fileprivate func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
                                      completion: (() -> Void)?) {
@@ -87,7 +95,9 @@ class CollectionViewCell: UICollectionViewCell, Cell {
         coverImageView.layer.cornerRadius = 6.0
         coverImageView.contentMode = .scaleAspectFill
         
-        dataDidDownload(with: viewModel) { [weak self] in self?.viewDidConfigure(with: viewModel) }
+        dataDidDownload(with: viewModel) { [weak self] in
+            self?.viewDidConfigure(with: viewModel)
+        }
         
         representedIdentifier = media.slug as NSString
         placeholderLabel.text = viewModel.title

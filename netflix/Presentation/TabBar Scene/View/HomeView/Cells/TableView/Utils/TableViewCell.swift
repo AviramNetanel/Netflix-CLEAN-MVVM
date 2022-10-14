@@ -42,7 +42,6 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         collectionView.backgroundColor = .black
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.registerNib(T.self)
         contentView.addSubview(collectionView)
         collectionView.constraintToSuperview(contentView)
@@ -70,9 +69,7 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         return view
     }
     
-    fileprivate func viewDidLoad() {
-        backgroundColor = .black
-    }
+    fileprivate func viewDidLoad() { backgroundColor = .black }
     
     func viewDidConfigure(section: Section,
                           with viewModel: HomeViewModel) {

@@ -11,7 +11,8 @@ import UIKit
 
 @objc
 private protocol ConfigurationInput {
-    func buttonDidTap()
+    func viewDidRegisterRecognizers()
+    func viewDidTap()
 }
 
 // MARK: - ConfigurationOutput protocol
@@ -32,21 +33,27 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     fileprivate weak var view: DetailNavigationViewItem!
     fileprivate weak var navigationView: DetailNavigationView!
     
-    init(view: DetailNavigationViewItem,
-         with navigationView: DetailNavigationView) {
-        self.view = view
-        self.navigationView = navigationView
-        self.view.button.addTarget(self,
-                                   action: #selector(self.buttonDidTap),
-                                   for: .touchUpInside)
-    }
-    
     deinit {
         view = nil
         navigationView = nil
     }
     
-    func buttonDidTap() {
+    static func create(view: DetailNavigationViewItem,
+                       with navigationView: DetailNavigationView) -> DetailNavigationViewItemConfiguration {
+        let configuration = DetailNavigationViewItemConfiguration()
+        configuration.view = view
+        configuration.navigationView = navigationView
+        configuration.viewDidRegisterRecognizers()
+        return configuration
+    }
+    
+    fileprivate func viewDidRegisterRecognizers() {
+        view.button.addTarget(self,
+                              action: #selector(viewDidTap),
+                              for: .touchUpInside)
+    }
+    
+    func viewDidTap() {
         if view.isSelected {
             view.widthConstraint?.constant = view.bounds.width
         } else {
@@ -59,9 +66,27 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
 }
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var configuration: DetailNavigationViewItemConfiguration! { get }
+    var viewModel: DetailNavigationViewItemViewModel! { get }
+    var isSelected: Bool { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailNavigationViewItem class
 
-final class DetailNavigationViewItem: UIView {
+final class DetailNavigationViewItem: UIView, View {
     
     enum Item: Int {
         case episodes
@@ -69,13 +94,12 @@ final class DetailNavigationViewItem: UIView {
         case similarContent
     }
     
-    private(set) var configuration: DetailNavigationViewItemConfiguration!
-    private(set) var viewModel: DetailNavigationViewItemViewModel!
+    fileprivate(set) var configuration: DetailNavigationViewItemConfiguration!
+    fileprivate(set) var viewModel: DetailNavigationViewItemViewModel!
     
     private lazy var indicatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemRed
-        view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
         return view
     }()
@@ -85,7 +109,6 @@ final class DetailNavigationViewItem: UIView {
         view.setTitle(viewModel.title, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
-        view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
         return view
     }()
@@ -93,33 +116,43 @@ final class DetailNavigationViewItem: UIView {
     var isSelected = false
     var widthConstraint: NSLayoutConstraint!
     
-    static func create(on parent: UIView,
-                       navigationView: DetailNavigationView) -> DetailNavigationViewItem {
-        let view = DetailNavigationViewItem(frame: parent.bounds)
-        view.tag = parent.tag
-        view.viewModel = .init(with: view)
-        view.configuration = .init(view: view, with: navigationView)
-        view.setupSubviews()
-        return view
-    }
-    
     deinit {
         widthConstraint = nil
         configuration = nil
         viewModel = nil
     }
     
+    static func create(on parent: UIView,
+                       navigationView: DetailNavigationView) -> DetailNavigationViewItem {
+        let view = DetailNavigationViewItem(frame: parent.bounds)
+        view.tag = parent.tag
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
+        createViewModel(on: view)
+        createConfiguration(on: view, with: navigationView)
+        view.viewDidLoad()
+        return view
+    }
+    
+    @discardableResult
+    private static func createViewModel(on view: DetailNavigationViewItem) -> DetailNavigationViewItemViewModel {
+        view.viewModel = .init(with: view)
+        return view.viewModel
+    }
+    
+    @discardableResult
+    private static func createConfiguration(on view: DetailNavigationViewItem,
+                                            with navigationView: DetailNavigationView) -> DetailNavigationViewItemConfiguration {
+        view.configuration = .create(view: view, with: navigationView)
+        return view.configuration
+    }
+    
+    fileprivate func viewDidLoad() { setupSubviews() }
+    
     private func setupSubviews() {
         widthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: bounds.width)
-        NSLayoutConstraint.activate([
-            indicatorView.topAnchor.constraint(equalTo: topAnchor, constant: 4.0),
-            indicatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            widthConstraint,
-            indicatorView.heightAnchor.constraint(equalToConstant: 3.0),
-            button.topAnchor.constraint(equalTo: indicatorView.bottomAnchor),
-            button.leadingAnchor.constraint(equalTo: leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+        chainConstraintToSuperview(linking: indicatorView,
+                                   to: button,
+                                   withWidthAnchor: widthConstraint)
     }
 }

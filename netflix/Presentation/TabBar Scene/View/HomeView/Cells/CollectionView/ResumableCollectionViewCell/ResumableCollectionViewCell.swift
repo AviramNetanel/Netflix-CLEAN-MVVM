@@ -7,9 +7,23 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - ResumableCollectionViewCell class
 
-final class ResumableCollectionViewCell: CollectionViewCell {
+final class ResumableCollectionViewCell: CollectionViewCell, View {
     
     @IBOutlet private weak var actionBoxView: UIView!
     @IBOutlet private weak var optionsButton: UIButton!
@@ -24,10 +38,14 @@ final class ResumableCollectionViewCell: CollectionViewCell {
         self.viewDidLoad()
     }
     
-    private func viewDidLoad() {
+    fileprivate func viewDidLoad() {
+        setupSubviews()
+    }
+    
+    private func setupSubviews() {
         setupPlayButton()
         setupProgressView()
-        setupGradient()
+        setupGradientView()
     }
     
     private func setupPlayButton() {
@@ -41,17 +59,10 @@ final class ResumableCollectionViewCell: CollectionViewCell {
         progressView.clipsToBounds = true
     }
     
-    private func setupGradient() {
+    private func setupGradientView() {
         gradientView.addGradientLayer(frame: gradientView.bounds,
                                       colors: [.clear,
                                                .black.withAlphaComponent(0.75)],
                                       locations: [0.0, 1.0])
-    }
-    
-    @IBAction func buttonDidTap(_ sender: UIButton) {
-        switch sender.tag {
-        case 0: break
-        default: return
-        }
     }
 }

@@ -38,18 +38,12 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrailerCollectionViewCell.reuseIdentifier,
             for: indexPath) as? TrailerCollectionViewCell else { fatalError() }
-        view.setupSubviews()
-        let cellViewModel = TrailerCollectionViewCellViewModel(with: media)
-        view.viewDidLoad(with: cellViewModel)
+        view.viewDidLoad(with: createViewModel(with: media))
         return view
     }
     
-    private func setupSubviews() {
-        playButton.layer.borderColor = UIColor.white.cgColor
-        playButton.layer.borderWidth = 2.0
-        playButton.layer.cornerRadius = playButton.bounds.size.height / 2
-        
-        posterImageView.layer.cornerRadius = 4.0
+    private static func createViewModel(with media: Media) -> TrailerCollectionViewCellViewModel {
+        return .init(with: media)
     }
     
     fileprivate func dataDidDownload(with viewModel: TrailerCollectionViewCellViewModel,
@@ -63,11 +57,21 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
         dataDidDownload(with: viewModel) { [weak self] in
             DispatchQueue.main.async { self?.viewDidConfigure(with: viewModel) }
         }
+        
+        setupSubviews()
     }
     
     fileprivate func viewDidConfigure(with viewModel: TrailerCollectionViewCellViewModel) {
         let image = AsyncImageFetcher.shared.object(for: viewModel.posterImageIdentifier)
         posterImageView.image = image
         titleLabel.text = viewModel.title
+    }
+    
+    private func setupSubviews() {
+        playButton.layer.borderColor = UIColor.white.cgColor
+        playButton.layer.borderWidth = 2.0
+        playButton.layer.cornerRadius = playButton.bounds.size.height / 2
+        
+        posterImageView.layer.cornerRadius = 4.0
     }
 }

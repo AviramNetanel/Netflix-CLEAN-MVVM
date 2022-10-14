@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidConfigure(with viewModel: OpaqueViewViewModel)
+    func viewDidLoad(with viewModel: OpaqueViewViewModel)
 }
 
 // MARK: - ViewOutput protocol
@@ -18,6 +18,7 @@ private protocol ViewInput {
 private protocol ViewOutput {
     var imageView: UIImageView! { get }
     var blurView: UIVisualEffectView! { get }
+    var viewModel: OpaqueViewViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -31,16 +32,7 @@ final class OpaqueView: UIView, View {
     fileprivate var imageView: UIImageView!
     fileprivate var blurView: UIVisualEffectView!
     
-    private var viewModel: OpaqueViewViewModel!
-    
-    @discardableResult
-    static func createViewModel(on view: OpaqueView,
-                                with viewModel: HomeViewModel) -> OpaqueViewViewModel? {
-        guard let presentedDisplayMedia = viewModel.presentedDisplayMedia.value as Media? else { return nil }
-        view.viewModel = .init(with: presentedDisplayMedia)
-        view.viewDidConfigure(with: view.viewModel)
-        return view.viewModel
-    }
+    fileprivate var viewModel: OpaqueViewViewModel!
     
     deinit {
         imageView = nil
@@ -48,7 +40,16 @@ final class OpaqueView: UIView, View {
         viewModel = nil
     }
     
-    fileprivate func viewDidConfigure(with viewModel: OpaqueViewViewModel) {
+    @discardableResult
+    static func createViewModel(on view: OpaqueView,
+                                with viewModel: HomeViewModel) -> OpaqueViewViewModel? {
+        guard let presentedDisplayMedia = viewModel.presentedDisplayMedia.value as Media? else { return nil }
+        view.viewModel = .init(with: presentedDisplayMedia)
+        view.viewDidLoad(with: view.viewModel)
+        return view.viewModel
+    }
+    
+    fileprivate func viewDidLoad(with viewModel: OpaqueViewViewModel) {
         imageView?.removeFromSuperview()
         blurView?.removeFromSuperview()
         

@@ -10,6 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func viewDidConfigure(with viewModel: DetailInfoViewViewModel)
 }
 
@@ -35,21 +36,33 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    private var viewModel: DetailViewModel!
-    
     static func create(on parent: UIView,
                        with viewModel: DetailViewModel) -> DetailInfoView {
         let view = DetailInfoView(frame: parent.bounds)
         view.nibDidLoad()
-        view.backgroundColor = .black
-        view.viewModel = viewModel
-        view.setupSubviews()
-        let viewModel = DetailInfoViewViewModel(with: viewModel)
-        view.viewDidConfigure(with: viewModel)
+        view.viewDidLoad()
+        view.viewDidConfigure(with: createViewModel(with: viewModel))
         return view
     }
     
+    private static func createViewModel(with viewModel: DetailViewModel) -> DetailInfoViewViewModel {
+        return .init(with: viewModel)
+    }
+    
+    fileprivate func viewDidLoad() { setupSubviews() }
+    
+    fileprivate func viewDidConfigure(with viewModel: DetailInfoViewViewModel) {
+        mediaTypeLabel.text = viewModel.mediaType
+        titlelabel.text = viewModel.title
+        downloadButton.setTitle(viewModel.downloadButtonTitle, for: .normal)
+        lengthLabel.text = viewModel.duration
+        yearLabel.text = viewModel.year
+        hdViewContainer.isHidden(!viewModel.isHD)
+    }
+    
     private func setupSubviews() {
+        backgroundColor = .black
+        
         setupHDView()
         setupAgeRestrictionView()
         setupGradientView()
@@ -73,14 +86,5 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
                                                      alpha: 1.0),
                                                .clear],
                                       locations: [0.3, 1.0])
-    }
-    
-    fileprivate func viewDidConfigure(with viewModel: DetailInfoViewViewModel) {
-        mediaTypeLabel.text = viewModel.mediaType
-        titlelabel.text = viewModel.title
-        downloadButton.setTitle(viewModel.downloadButtonTitle, for: .normal)
-        lengthLabel.text = viewModel.duration
-        yearLabel.text = viewModel.year
-        hdViewContainer.isHidden(!viewModel.isHD)
     }
 }

@@ -19,4 +19,6 @@ final class MediaPlayerLayer: UIView {
         get { playerLayer.player }
         set { playerLayer.player = newValue }
     }
+    
+    deinit { player = nil }
 }

@@ -42,7 +42,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa" customClass="NavigationView" customModule="netflix" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4My-Bp-qqa">
                                 <rect key="frame" x="0.0" y="-162" width="414" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="162" id="vZM-Eo-uVL"/>
@@ -64,8 +64,8 @@
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="g4D-sf-r5G"/>
                     <navigationItem key="navigationItem" id="bCF-aS-6la"/>
                     <connections>
-                        <outlet property="navigationView" destination="4My-Bp-qqa" id="QIB-PK-4DN"/>
-                        <outlet property="navigationViewHeightConstraint" destination="SSs-Pf-MtQ" id="9oX-hc-csw"/>
+                        <outlet property="navigationViewContainer" destination="4My-Bp-qqa" id="Wfx-nF-Z4O"/>
+                        <outlet property="navigationViewTopConstraint" destination="SSs-Pf-MtQ" id="01D-Gg-oec"/>
                         <outlet property="tableView" destination="uGu-Ie-jYU" id="n1A-En-7Co"/>
                     </connections>
                 </viewController>

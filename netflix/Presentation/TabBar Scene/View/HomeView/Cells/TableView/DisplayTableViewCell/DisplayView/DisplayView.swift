@@ -7,16 +7,70 @@
 
 import UIKit
 
+// MARK: - ConfigurationInput protocol
+
+private protocol ConfigurationInput {
+    func viewDidConfigure(with viewModel: DisplayViewViewModel)
+}
+
+// MARK: - ConfigurationOutput protocol
+
+private protocol ConfigurationOutput {
+    var view: DisplayView! { get }
+}
+
+// MARK: - Configuration typealias
+
+private typealias Configuration = ConfigurationInput & ConfigurationOutput
+
+// MARK: - DisplayViewConfiguration struct
+
+private struct DisplayViewConfiguration: Configuration {
+    
+    fileprivate weak var view: DisplayView!
+    
+    static func create(on view: DisplayView,
+                       with viewModel: DisplayViewViewModel) -> DisplayViewConfiguration {
+        let configuration = DisplayViewConfiguration(view: view)
+        configuration.viewDidConfigure(with: viewModel)
+        return configuration
+    }
+    
+    fileprivate func viewDidConfigure(with viewModel: DisplayViewViewModel) {
+        view.posterImageView.image = nil
+        view.logoImageView.image = nil
+        view.genresLabel.attributedText = nil
+        
+        AsyncImageFetcher.shared.load(
+            url: viewModel.posterImageURL,
+            identifier: viewModel.posterImageIdentifier) { image in
+                DispatchQueue.main.async { view.posterImageView.image = image }
+            }
+        
+        AsyncImageFetcher.shared.load(
+            url: viewModel.logoImageURL,
+            identifier: viewModel.logoImageIdentifier) { image in
+                DispatchQueue.main.async { view.logoImageView.image = image }
+            }
+        
+        view.genresLabel.attributedText = viewModel.attributedGenres
+    }
+}
+
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
     func viewDidLoad()
-    func viewDidConfigure(with viewModel: DisplayViewViewModel)
 }
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var panelView: PanelView! { get }
+    var viewModel: DisplayViewViewModel! { get }
+    var homeViewModel: HomeViewModel! { get }
+    var configuration: DisplayViewConfiguration! { get }
+}
 
 // MARK: - View typealias
 
@@ -24,51 +78,71 @@ private typealias View = ViewInput & ViewOutput
 
 // MARK: - DisplayView class
 
-final class DisplayView: UIView, ViewInstantiable {
+final class DisplayView: UIView, View, ViewInstantiable {
     
-    @IBOutlet private weak var posterImageView: UIImageView!
-    @IBOutlet private weak var logoImageView: UIImageView!
+    @IBOutlet private(set) weak var posterImageView: UIImageView!
+    @IBOutlet private(set) weak var logoImageView: UIImageView!
     @IBOutlet private weak var bottomGradientView: UIView!
-    @IBOutlet private weak var genresLabel: UILabel!
+    @IBOutlet private(set) weak var genresLabel: UILabel!
     @IBOutlet private weak var typeImageView: UIImageView!
-    @IBOutlet private(set) weak var panelView: PanelView!
+    @IBOutlet private(set) weak var panelViewContainer: UIView!
     
-    var viewModel: DisplayViewViewModel! { didSet { viewDidConfigure(with: viewModel) } }
+    fileprivate(set) var panelView: PanelView!
+    fileprivate var viewModel: DisplayViewViewModel!
+    fileprivate var homeViewModel: HomeViewModel!
+    fileprivate var configuration: DisplayViewConfiguration!
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.nibDidLoad()
-        self.viewDidLoad()
+    deinit {
+        panelView = nil
+        viewModel = nil
+        homeViewModel = nil
+        configuration = nil
     }
     
-    deinit { viewModel = nil }
+    static func create(on parent: UIView,
+                       with viewModel: HomeViewModel) -> DisplayView {
+        let view = DisplayView(frame: .zero)
+        view.nibDidLoad()
+        viewModel.presentedDisplayMediaDidChange()
+        createViewModel(in: view, with: viewModel)
+        createConfiguration(in: view)
+        createPanelView(in: view)
+        view.viewDidLoad()
+        return view
+    }
     
-    fileprivate func viewDidLoad() {
+    @discardableResult
+    fileprivate static func createViewModel(in view: DisplayView,
+                                with homeViewModel: HomeViewModel) -> DisplayViewViewModel {
+        let viewModel = DisplayViewViewModel(with: homeViewModel.presentedDisplayMedia.value!)
+        view.viewModel = viewModel
+        view.homeViewModel = homeViewModel
+        return viewModel
+    }
+    
+    @discardableResult
+    fileprivate static func createConfiguration(in view: DisplayView) -> DisplayViewConfiguration {
+        view.configuration = .create(on: view, with: view.viewModel)
+        return view.configuration
+    }
+    
+    @discardableResult
+    fileprivate static func createPanelView(in view: DisplayView) -> PanelView {
+        view.panelView = .create(on: view.panelViewContainer,
+                                 with: view.homeViewModel)
+        return view.panelView
+    }
+    
+    fileprivate func viewDidLoad() { setupSubviews() }
+    
+    private func setupSubviews() { setupGradientView() }
+    
+    private func setupGradientView() {
         bottomGradientView.addGradientLayer(
             frame: bottomGradientView.bounds,
             colors: [.clear, .black],
             locations: [0.0, 0.66])
         
         posterImageView.contentMode = .scaleAspectFill
-    }
-    
-    fileprivate func viewDidConfigure(with viewModel: DisplayViewViewModel) {
-        posterImageView.image = nil
-        logoImageView.image = nil
-        genresLabel.attributedText = nil
-        
-        AsyncImageFetcher.shared.load(
-            url: viewModel.posterImageURL,
-            identifier: viewModel.posterImageIdentifier) { [weak self] image in
-                DispatchQueue.main.async { self?.posterImageView.image = image }
-            }
-        
-        AsyncImageFetcher.shared.load(
-            url: viewModel.logoImageURL,
-            identifier: viewModel.logoImageIdentifier) { [weak self] image in
-                DispatchQueue.main.async { self?.logoImageView.image = image }
-            }
-        
-        genresLabel.attributedText = viewModel.attributedGenres
     }
 }

@@ -7,11 +7,28 @@
 
 import UIKit
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {
+    func viewDidLoad()
+}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var layerView: UIView { get }
+    var textLayer: RatableCollectionViewCell.TextLayer { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - RatableCollectionViewCell class
 
-final class RatableCollectionViewCell: CollectionViewCell {
+final class RatableCollectionViewCell: CollectionViewCell, View {
     
-    private final class TextLayer: CATextLayer {
+    fileprivate final class TextLayer: CATextLayer {
         override func draw(in ctx: CGContext) {
             ctx.saveGState()
             ctx.translateBy(x: .zero, y: .zero)
@@ -20,33 +37,22 @@ final class RatableCollectionViewCell: CollectionViewCell {
         }
     }
     
-    private let layerView = UIView()
-    private var textLayer = TextLayer()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.viewDidLoad()
-    }
+    fileprivate let layerView = UIView()
+    fileprivate var textLayer = TextLayer()
     
     deinit {
         textLayer.removeFromSuperlayer()
         layerView.removeFromSuperview()
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.viewDidLoad()
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         textLayer.string = nil
-    }
-    
-    private func viewDidLoad() {
-        contentView.addSubview(layerView)
-        layerView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
-        ])
     }
     
     override func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel) {
@@ -75,5 +81,16 @@ final class RatableCollectionViewCell: CollectionViewCell {
         
         layerView.layer.insertSublayer(textLayer, at: 1)
         textLayer.string = attributedString
+    }
+    
+    fileprivate func viewDidLoad() {
+        contentView.addSubview(layerView)
+        layerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            layerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            layerView.heightAnchor.constraint(equalToConstant: bounds.height / 2)
+        ])
     }
 }

@@ -41,6 +41,6 @@ struct Storyboard: Storyboarding {
     }
     
     func instantiate() -> UIViewController {
-        return storyboard.instantiateViewController(withIdentifier: String(describing: self.viewController))
+        return storyboard.instantiateViewController(withIdentifier: String(describing: viewController))
     }
 }

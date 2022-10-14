@@ -9,14 +9,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NavigationView" customModule="netflix" customModuleProvider="target">
             <connections>
-                <outlet property="accountButton" destination="bzF-Ir-7K2" id="fKz-nZ-YUh"/>
-                <outlet property="airPlayButton" destination="jyM-Yo-6ZJ" id="fuf-iV-C9t"/>
-                <outlet property="categoriesItemView" destination="cNO-pR-kSt" id="a3J-aI-5mT"/>
+                <outlet property="accountItemViewContainer" destination="bzF-Ir-7K2" id="kOW-kx-OkP"/>
+                <outlet property="airPlayItemViewContainer" destination="jyM-Yo-6ZJ" id="WON-ON-Fpd"/>
+                <outlet property="categoriesItemViewContainer" destination="cNO-pR-kSt" id="ljn-b1-Ndn"/>
                 <outlet property="gradientView" destination="f6v-Ra-O22" id="Rk2-lA-Uvq"/>
-                <outlet property="homeButton" destination="xi4-Cf-x0R" id="yfo-DR-8dl"/>
+                <outlet property="homeItemViewContainer" destination="xi4-Cf-x0R" id="oBd-cx-IzV"/>
                 <outlet property="itemsCenterXConstraint" destination="e9E-dU-X7G" id="taE-2R-nrK"/>
-                <outlet property="moviesItemView" destination="oaQ-J8-Kai" id="bVR-en-kW7"/>
-                <outlet property="tvShowsItemView" destination="hup-KA-ylD" id="fLS-4Y-gdJ"/>
+                <outlet property="moviesItemViewContainer" destination="oaQ-J8-Kai" id="qTM-DJ-TKc"/>
+                <outlet property="tvShowsItemViewContainer" destination="hup-KA-ylD" id="410-oM-aik"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -36,21 +36,21 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p6X-Bg-Psj" userLabel="Top Container">
                             <rect key="frame" x="0.0" y="54" width="414" height="54"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-Cf-x0R" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-Cf-x0R">
                                     <rect key="frame" x="8" y="7" width="40" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="DM7-xw-fpX"/>
                                         <constraint firstAttribute="width" constant="40" id="Jfb-aQ-bvC"/>
                                     </constraints>
                                 </view>
-                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyM-Yo-6ZJ" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyM-Yo-6ZJ">
                                     <rect key="frame" x="318" y="11" width="32" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="b9r-xf-N2n"/>
                                         <constraint firstAttribute="height" constant="32" id="qTv-RB-h82"/>
                                     </constraints>
                                 </view>
-                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-Ir-7K2" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-Ir-7K2">
                                     <rect key="frame" x="366" y="11" width="32" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="32" id="SQi-b1-LWK"/>
@@ -73,13 +73,13 @@
                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-W1-okM">
                                     <rect key="frame" x="31" y="0.0" width="352" height="54"/>
                                     <subviews>
-                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hup-KA-ylD">
                                             <rect key="frame" x="0.0" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                        <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaQ-J8-Kai">
                                             <rect key="frame" x="117.5" y="0.0" width="117.5" height="54"/>
                                         </view>
-                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt" customClass="NavigationViewItem" customModule="netflix" customModuleProvider="target">
+                                        <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-pR-kSt">
                                             <rect key="frame" x="235" y="0.0" width="117" height="54"/>
                                         </view>
                                     </subviews>

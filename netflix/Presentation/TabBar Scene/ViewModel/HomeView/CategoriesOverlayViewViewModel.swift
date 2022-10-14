@@ -17,9 +17,9 @@ private protocol ViewModelInput {
 
 private protocol ViewModelOutput {
     var isPresented: Observable<Bool> { get }
-    
     var state: NavigationView.State { get }
     var category: CategoriesOverlayView.Category { get }
+    var dataSource: CategoriesOverlayViewTableViewDataSource! { get }
 }
 
 // MARK: - ViewModel typealias
@@ -30,13 +30,10 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 final class CategoriesOverlayViewViewModel: ViewModel {
     
-    var isPresented: Observable<Bool> = Observable(false)
-    
+    fileprivate(set) var isPresented: Observable<Bool> = Observable(false)
     var state: NavigationView.State = .tvShows
-    
-    var category: CategoriesOverlayView.Category = .home
-    
-    var dataSource: CategoriesOverlayViewTableViewDataSource!
+    fileprivate var category: CategoriesOverlayView.Category = .home
+    fileprivate(set) var dataSource: CategoriesOverlayViewTableViewDataSource!
     
     func viewDidLoad() {
         dataSource = CategoriesOverlayViewTableViewDataSource(items: [], with: self)

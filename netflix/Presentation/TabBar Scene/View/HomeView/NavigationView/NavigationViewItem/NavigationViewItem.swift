@@ -12,14 +12,14 @@ import UIKit
 @objc
 private protocol ConfigurationInput {
     func viewDidConfigure(view: NavigationViewItem)
-    func buttonDidTap()
+    func viewDidTap()
 }
 
 // MARK: - ConfigurationOutput protocol
 
 private protocol ConfigurationOutput {
     var view: NavigationViewItem! { get }
-    var _buttonDidTap: ((NavigationView.State) -> Void)? { get }
+    var _viewDidTap: ((NavigationView.State) -> Void)? { get }
 }
 
 // MARK: - Configuration typealias
@@ -31,17 +31,17 @@ private typealias Configuration = ConfigurationInput & ConfigurationOutput
 final class NavigationViewItemConfiguration: Configuration {
     
     fileprivate weak var view: NavigationViewItem!
-    var _buttonDidTap: ((NavigationView.State) -> Void)?
+    var _viewDidTap: ((NavigationView.State) -> Void)?
+    
+    deinit {
+        view = nil
+        _viewDidTap = nil
+    }
     
     static func create(with view: NavigationViewItem) -> NavigationViewItemConfiguration {
         let configuration = NavigationViewItemConfiguration()
         configuration.viewDidConfigure(view: view)
         return configuration
-    }
-    
-    deinit {
-        view = nil
-        _buttonDidTap = nil
     }
     
     fileprivate func viewDidConfigure(view: NavigationViewItem) {
@@ -53,7 +53,7 @@ final class NavigationViewItemConfiguration: Configuration {
         view.button.frame = view.bounds
         view.button.layer.shadow(.black, radius: 3.0, opacity: 0.4)
         view.button.addTarget(self,
-                              action: #selector(buttonDidTap),
+                              action: #selector(viewDidTap),
                               for: .touchUpInside)
         
         let image: UIImage!
@@ -80,9 +80,9 @@ final class NavigationViewItemConfiguration: Configuration {
         }
     }
     
-    fileprivate func buttonDidTap() {
+    fileprivate func viewDidTap() {
         guard let state = NavigationView.State(rawValue: view.tag) else { return }
-        _buttonDidTap?(state)
+        _viewDidTap?(state)
     }
 }
 
@@ -96,6 +96,7 @@ private protocol ViewInput {
 
 private protocol ViewOutput {
     var configuration: NavigationViewItemConfiguration! { get }
+    var viewModel: NavigationViewItemViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -111,15 +112,31 @@ final class NavigationViewItem: UIView, View {
     private(set) var configuration: NavigationViewItemConfiguration!
     var viewModel: NavigationViewItemViewModel!
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.viewModel = .init(tag: self.tag)
-        self.configuration = .create(with: self)
-    }
-    
     deinit {
         configuration = nil
         viewModel = nil
+    }
+    
+    static func create(on parent: UIView) -> NavigationViewItem {
+        let view = NavigationViewItem(frame: parent.bounds)
+        view.tag = parent.tag
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
+        createViewModel(in: view)
+        createConfiguration(in: view)
+        return view
+    }
+    
+    @discardableResult
+    private static func createViewModel(in view: NavigationViewItem) -> NavigationViewItemViewModel {
+        view.viewModel = .init(tag: view.tag)
+        return view.viewModel
+    }
+    
+    @discardableResult
+    private static func createConfiguration(in view: NavigationViewItem) -> NavigationViewItemConfiguration {
+        view.configuration = .create(with: view)
+        return view.configuration
     }
     
     func viewDidConfigure(with state: NavigationView.State) {

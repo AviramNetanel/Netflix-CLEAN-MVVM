@@ -10,7 +10,9 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func isPresentedDidChange()
+    var _isPresentedDidChange: (() -> Void)? { get }
 }
 
 // MARK: - ViewOutput protocol
@@ -18,7 +20,6 @@ private protocol ViewInput {
 private protocol ViewOutput {
     var tableView: UITableView { get }
     var opaqueView: OpaqueView { get }
-    var _isPresentedDidChange: (() -> Void)? { get }
 }
 
 // MARK: - View typealias
@@ -69,24 +70,29 @@ final class CategoriesOverlayView: UIView, View {
     static func create(on parent: UIView) -> CategoriesOverlayView {
         let view = CategoriesOverlayView(frame: UIScreen.main.bounds)
         parent.addSubview(view)
-        view.setupSubviews(parent: parent)
-        view.setupObservers()
+        createFooter(on: parent, with: view)
+        view.viewDidLoad()
         view.viewModel.viewDidLoad()
         return view
     }
     
-    private func setupSubviews(parent: UIView) {
-        setupFooterView(on: parent)
+    @discardableResult
+    private static func createFooter(on parent: UIView,
+                                     with view: CategoriesOverlayView) -> CategoriesOverlayViewFooterView {
+        view.footerView = .create(on: parent, with: view.viewModel)
+        return view.footerView
+    }
+    
+    fileprivate func viewDidLoad() {
+        setupSubviews()
+    }
+    
+    private func setupSubviews() {
+        setupObservers()
     }
     
     private func setupObservers() {
         isPresented(in: viewModel)
-    }
-    
-    private func setupFooterView(on parent: UIView) {
-        footerView = CategoriesOverlayViewFooterView.create(on: parent,
-                                                            frame: .zero,
-                                                            with: viewModel)
     }
     
     private func setupDataSource() {

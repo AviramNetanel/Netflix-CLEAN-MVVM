@@ -16,7 +16,13 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)? { get }
+    var homeItemView: NavigationViewItem! { get }
+    var airPlayItemView: NavigationViewItem! { get }
+    var accountItemView: NavigationViewItem! { get }
+    var tvShowsItemView: NavigationViewItem! { get }
+    var moviesItemView: NavigationViewItem! { get }
+    var categoriesItemView: NavigationViewItem! { get }
+    var viewModel: NavigationViewViewModel! { get }
 }
 
 // MARK: - View typelias
@@ -37,44 +43,74 @@ final class NavigationView: UIView, View, ViewInstantiable {
     }
     
     @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private weak var homeButton: NavigationViewItem!
-    @IBOutlet private weak var airPlayButton: NavigationViewItem!
-    @IBOutlet private weak var accountButton: NavigationViewItem!
-    @IBOutlet private(set) weak var tvShowsItemView: NavigationViewItem!
-    @IBOutlet private(set) weak var moviesItemView: NavigationViewItem!
-    @IBOutlet private weak var categoriesItemView: NavigationViewItem!
+    @IBOutlet private weak var homeItemViewContainer: UIView!
+    @IBOutlet private weak var airPlayItemViewContainer: UIView!
+    @IBOutlet private weak var accountItemViewContainer: UIView!
+    @IBOutlet private(set) weak var tvShowsItemViewContainer: UIView!
+    @IBOutlet private(set) weak var moviesItemViewContainer: UIView!
+    @IBOutlet private weak var categoriesItemViewContainer: UIView!
     @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    private(set) var viewModel: NavigationViewViewModel!
+    fileprivate var homeItemView: NavigationViewItem!
+    fileprivate var airPlayItemView: NavigationViewItem!
+    fileprivate var accountItemView: NavigationViewItem!
+    fileprivate(set) var tvShowsItemView: NavigationViewItem!
+    fileprivate(set) var moviesItemView: NavigationViewItem!
+    fileprivate var categoriesItemView: NavigationViewItem!
     
-    var stateDidChangeDidBindToHomeViewController: ((State) -> Void)?
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.nibDidLoad()
-        self.setupSubviews()
-        let items: [NavigationViewItem] = [self.homeButton,
-                                           self.airPlayButton,
-                                           self.accountButton,
-                                           self.tvShowsItemView,
-                                           self.moviesItemView,
-                                           self.categoriesItemView]
-        self.viewModel = .init(items: items)
-        self.viewDidLoad()
-    }
+    fileprivate(set) var viewModel: NavigationViewViewModel!
     
     deinit {
-        stateDidChangeDidBindToHomeViewController = nil
+        homeItemView = nil
+        airPlayItemView = nil
+        accountItemView = nil
+        tvShowsItemView = nil
+        moviesItemView = nil
+        categoriesItemView = nil
         viewModel = nil
     }
     
-    private func setupSubviews() {
-        addGradientLayer()
+    static func create(on parent: UIView) -> NavigationView {
+        let view = NavigationView(frame: parent.bounds)
+        view.nibDidLoad()
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
+        createItems(in: view)
+        createViewModel(in: view)
+        view.viewDidLoad()
+        return view
+    }
+    
+    @discardableResult
+    private static func createViewModel(in view: NavigationView) -> NavigationViewViewModel {
+        let items: [NavigationViewItem] = [view.homeItemView,
+                                           view.airPlayItemView,
+                                           view.accountItemView,
+                                           view.tvShowsItemView,
+                                           view.moviesItemView,
+                                           view.categoriesItemView]
+        view.viewModel = .init(items: items)
+        return view.viewModel
+    }
+    
+    private static func createItems(in view: NavigationView) {
+        view.homeItemView = .create(on: view.homeItemViewContainer)
+        view.airPlayItemView = .create(on: view.airPlayItemViewContainer)
+        view.accountItemView = .create(on: view.accountItemViewContainer)
+        view.tvShowsItemView = .create(on: view.tvShowsItemViewContainer)
+        view.moviesItemView = .create(on: view.moviesItemViewContainer)
+        view.categoriesItemView = .create(on: view.categoriesItemViewContainer)
+    }
+    
+    fileprivate func viewDidLoad() {
+        setupBindings()
+        setupObservers()
+        setupSubviews()
     }
     
     private func setupBindings() {
         stateDidChange(in: viewModel)
-        buttonDidTap(for: viewModel.items)
+        viewDidTap(for: viewModel.items)
     }
     
     private func setupObservers() {
@@ -83,18 +119,17 @@ final class NavigationView: UIView, View, ViewInstantiable {
         }
     }
     
-    private func addGradientLayer() {
+    private func setupSubviews() {
+        setupGradientView()
+    }
+    
+    private func setupGradientView() {
         gradientView.addGradientLayer(frame: gradientView.bounds,
                                       colors:
                                         [.black.withAlphaComponent(0.8),
                                          .black.withAlphaComponent(0.6),
                                          .clear],
                                       locations: [0.0, 0.5, 1.0])
-    }
-    
-    fileprivate func viewDidLoad() {
-        setupBindings()
-        setupObservers()
     }
     
     func removeObservers() {
@@ -113,15 +148,15 @@ extension NavigationView {
         viewModel.stateDidChangeDidBindToViewModel = { [weak self] state in
             guard let self = self else { return }
             
-            self.stateDidChangeDidBindToHomeViewController?(state)
+            self.viewModel.stateDidChangeDidBindToHomeViewController?(state)
             
             self.categoriesItemView.viewDidConfigure(with: state)
             
             switch state {
             case .home:
-                self.tvShowsItemView.isHidden(false)
-                self.moviesItemView.isHidden(false)
-                self.categoriesItemView.isHidden(false)
+                self.tvShowsItemViewContainer.isHidden(false)
+                self.moviesItemViewContainer.isHidden(false)
+                self.categoriesItemViewContainer.isHidden(false)
                 self.itemsCenterXConstraint.constant = .zero
                 
                 self.tvShowsItemView.viewModel.hasInteracted = false
@@ -131,16 +166,16 @@ extension NavigationView {
             case .account:
                 break
             case .tvShows:
-                self.tvShowsItemView.isHidden(false)
-                self.moviesItemView.isHidden(true)
-                self.categoriesItemView.isHidden(false)
+                self.tvShowsItemViewContainer.isHidden(false)
+                self.moviesItemViewContainer.isHidden(true)
+                self.categoriesItemViewContainer.isHidden(false)
                 self.itemsCenterXConstraint.constant = -24.0
                 
                 self.tvShowsItemView.viewModel.hasInteracted = true
             case .movies:
-                self.tvShowsItemView.isHidden(true)
-                self.moviesItemView.isHidden(false)
-                self.categoriesItemView.isHidden(false)
+                self.tvShowsItemViewContainer.isHidden(true)
+                self.moviesItemViewContainer.isHidden(false)
+                self.categoriesItemViewContainer.isHidden(false)
                 self.itemsCenterXConstraint.constant = -32.0
                 
                 self.moviesItemView.viewModel.hasInteracted = true
@@ -156,9 +191,9 @@ extension NavigationView {
     
     // MARK: NavigationViewItem bindings
     
-    private func buttonDidTap(for items: [NavigationViewItem]) {
+    private func viewDidTap(for items: [NavigationViewItem]) {
         items.forEach {
-            $0.configuration._buttonDidTap = { [weak self] state in
+            $0.configuration._viewDidTap = { [weak self] state in
                 self?.viewModel.state.value = state
             }
         }

@@ -10,13 +10,18 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func dataDidLoad()
+    func dataSourceDidChange()
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    
+    var collectionView: UICollectionView { get }
+    var dataSource: DetailCollectionViewDataSource<Mediable>! { get }
+    var layout: CollectionViewLayout! { get }
+    var viewModel: DetailViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -25,9 +30,9 @@ private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailCollectionView class
 
-final class DetailCollectionView: UIView {
+final class DetailCollectionView: UIView, View {
     
-    private(set) lazy var collectionView: UICollectionView = {
+    fileprivate lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: bounds,
                                               collectionViewLayout: .init())
         collectionView.backgroundColor = .black
@@ -45,21 +50,9 @@ final class DetailCollectionView: UIView {
         return collectionView
     }()
     
-    private(set) var dataSource: DetailCollectionViewDataSource<Mediable>!
-    private var layout: CollectionViewLayout!
-    private var viewModel: DetailViewModel!
-    
-    static func create(on parent: UIView,
-                       with viewModel: DetailViewModel) -> DetailCollectionView {
-        let view = DetailCollectionView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        view.viewModel = viewModel
-        view.dataDidLoad()
-        view.viewDidLoad()
-        return view
-    }
+    fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
+    fileprivate var layout: CollectionViewLayout!
+    fileprivate var viewModel: DetailViewModel!
     
     deinit {
         layout = nil
@@ -67,21 +60,32 @@ final class DetailCollectionView: UIView {
         viewModel = nil
     }
     
-    private func setupSubviews() {
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.constraintToSuperview(self)
+    static func create(on parent: UIView,
+                       with viewModel: DetailViewModel) -> DetailCollectionView {
+        let view = DetailCollectionView(frame: .zero)
+        parent.addSubview(view)
+        view.constraintToSuperview(parent)
+        view.collectionView.constraintToSuperview(view)
+        createViewModel(on: view, with: viewModel)
+        view.viewDidLoad()
+        return view
+    }
+    
+    @discardableResult
+    private static func createViewModel(on view: DetailCollectionView,
+                                        with viewModel: DetailViewModel) -> DetailViewModel {
+        view.viewModel = viewModel
+        return view.viewModel
     }
     
     fileprivate func dataDidLoad() {
         let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
-        viewModel.getSeason(with: cellViewModel) { [weak self] in self?.setupDataSource() }
+        viewModel.getSeason(with: cellViewModel) { [weak self] in self?.dataSourceDidChange() }
     }
     
-    fileprivate func viewDidLoad() {
-        setupSubviews()
-    }
+    fileprivate func viewDidLoad() { dataDidLoad() }
     
-    func setupDataSource() {
+    func dataSourceDidChange() {
         collectionView.delegate = nil
         collectionView.dataSource = nil
         collectionView.prefetchDataSource = nil

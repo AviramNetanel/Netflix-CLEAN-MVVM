@@ -12,12 +12,15 @@ import UIKit
 @objc
 private protocol ConfigurationInput {
     func viewDidConfigure()
-    func buttonDidTap()
+    func viewDidRegisterRecognizers()
+    func viewDidTap()
 }
 
 // MARK: - ConfigurationOutput protocol
 
-private protocol ConfigurationOutput {}
+private protocol ConfigurationOutput {
+    var view: DetailPanelViewItem! { get }
+}
 
 // MARK: - Configuration typealias
 
@@ -33,19 +36,23 @@ final class DetailPanelViewItemConfiguration: Configuration {
         case share
     }
     
-    private weak var view: DetailPanelViewItem!
+    fileprivate weak var view: DetailPanelViewItem!
     
     init(view: DetailPanelViewItem) { self.view = view }
     
     deinit { view = nil }
     
-    static func create(with item: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
-        let configuration = DetailPanelViewItemConfiguration(view: item)
+    static func create(with view: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
+        let configuration = DetailPanelViewItemConfiguration(view: view)
         configuration.viewDidConfigure()
-        let tapRecognizer = UITapGestureRecognizer(target: configuration,
-                                                   action: #selector(configuration.buttonDidTap))
-        item.addGestureRecognizer(tapRecognizer)
+        configuration.viewDidRegisterRecognizers()
         return configuration
+    }
+    
+    fileprivate func viewDidRegisterRecognizers() {
+        let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                   action: #selector(viewDidTap))
+        view.addGestureRecognizer(tapRecognizer)
     }
     
     func viewDidConfigure() {
@@ -53,32 +60,48 @@ final class DetailPanelViewItemConfiguration: Configuration {
         view.label.text = view.viewModel.title
     }
     
-    func buttonDidTap() {
+    func viewDidTap() {
         guard let tag = Item(rawValue: view.tag) else { return }
-        
-        view.setAlphaAnimation(using: view.gestureRecognizers!.first)
-        view.viewModel.isSelected.value.toggle()
         
         switch tag {
         case .myList: print("mylist")
         case .rate: print("rate")
         case .share: print("share")
         }
+        
+        view.setAlphaAnimation(using: view.gestureRecognizers!.first) { [weak self] in
+            self?.view.viewModel.isSelected.value.toggle()
+        }
     }
 }
 
+// MARK: - ViewInput protocol
+
+private protocol ViewInput {}
+
+// MARK: - ViewOutput protocol
+
+private protocol ViewOutput {
+    var configuration: DetailPanelViewItemConfiguration! { get }
+    var viewModel: DetailPanelViewItemViewModel! { get }
+    var isSelected: Bool { get }
+}
+
+// MARK: - View typealias
+
+private typealias View = ViewInput & ViewOutput
+
 // MARK: - DetailPanelViewItem class
 
-final class DetailPanelViewItem: UIView {
+final class DetailPanelViewItem: UIView, View {
     
-    private(set) var configuration: DetailPanelViewItemConfiguration?
-    var viewModel: DetailPanelViewItemViewModel!
+    fileprivate(set) var configuration: DetailPanelViewItemConfiguration!
+    fileprivate(set) var viewModel: DetailPanelViewItemViewModel!
     
     fileprivate lazy var imageView: UIImageView = {
         let image = UIImage()
         let imageView = UIImageView(image: image)
         imageView.image = image.whiteRendering()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
         return imageView
     }()
@@ -88,32 +111,36 @@ final class DetailPanelViewItem: UIView {
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
         return label
     }()
     
     var isSelected = false
     
+    deinit {
+        configuration = nil
+        viewModel = nil
+    }
+    
     static func create(on parent: UIView) -> DetailPanelViewItem {
         let view = DetailPanelViewItem(frame: parent.bounds)
         view.tag = parent.tag
-        view.viewModel = DetailPanelViewItemViewModel(with: view)
-        view.configuration = .create(with: view)
-        view.setupSubviews()
+        parent.addSubview(view)
+        view.chainConstraintToCenter(linking: view.imageView, to: view.label)
+        createViewModel(on: view)
+        createConfiguration(on: view)
         return view
     }
     
-    private func setupSubviews() {
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 8.0),
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 24.0),
-            imageView.heightAnchor.constraint(equalToConstant: 24.0),
-            imageView.bottomAnchor.constraint(equalTo: label.topAnchor, constant: 0.0),
-            label.centerXAnchor.constraint(equalTo: centerXAnchor),
-            label.widthAnchor.constraint(equalTo: widthAnchor),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 8.0)
-        ])
+    @discardableResult
+    private static func createViewModel(on view: DetailPanelViewItem) -> DetailPanelViewItemViewModel {
+        view.viewModel = .init(with: view)
+        return view.viewModel
+    }
+    
+    @discardableResult
+    private static func createConfiguration(on view: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
+        view.configuration = .create(with: view)
+        return view.configuration
     }
 }

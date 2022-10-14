@@ -32,9 +32,11 @@ private struct MediaPlayerOverlayViewConfiguration: Configuration {
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
+    func viewDidLoad()
     func viewWillAppear()
     func viewWillDisappear()
     func viewDidRegisterObservers()
+    func viewDidConfigure()
     func didSelect(view: Any)
     func buttonDidTap(_ view: UIButton)
     func value(for slider: UISlider)
@@ -43,9 +45,12 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var observers: MediaPlayerObservers! { get }
+    var observers: MediaPlayerObservers { get }
     var configuration: MediaPlayerOverlayViewConfiguration! { get }
     var timer: ScheduledTimer { get }
+    var mediaPlayerView: MediaPlayerView! { get }
+    var viewModel: MediaPlayerOverlayViewViewModel { get }
+    var mediaPlayerViewModel: MediaPlayerViewViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -80,26 +85,12 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var gradientView: UIView!
     
     fileprivate var configuration: MediaPlayerOverlayViewConfiguration!
-    fileprivate(set) var observers: MediaPlayerObservers!
+    fileprivate(set) var observers = MediaPlayerObservers()
     fileprivate var timer = ScheduledTimer()
     
-    private weak var mediaPlayerView: MediaPlayerView!
-    private let viewModel = MediaPlayerOverlayViewViewModel()
-    private var mediaPlayerViewModel: MediaPlayerViewViewModel!
-
-    static func create(on parent: UIView,
-                       mediaPlayerView: MediaPlayerView,
-                       with viewModel: MediaPlayerViewViewModel) -> MediaPlayerOverlayView {
-        let view = MediaPlayerOverlayView(frame: parent.bounds)
-        view.nibDidLoad()
-        view.mediaPlayerViewModel = viewModel
-        view.observers = .init()
-        view.mediaPlayerView = mediaPlayerView
-        view.configuration = .init(durationThreshold: 3.0, repeats: true)
-        view.setupObservers()
-        view.setupSubviews()
-        return view
-    }
+    fileprivate weak var mediaPlayerView: MediaPlayerView!
+    fileprivate let viewModel = MediaPlayerOverlayViewViewModel()
+    fileprivate var mediaPlayerViewModel: MediaPlayerViewViewModel!
     
     deinit {
         timer.invalidate()
@@ -107,7 +98,114 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
         mediaPlayerView = nil
         mediaPlayerViewModel = nil
         configuration = nil
-        observers = nil
+    }
+
+    static func create(on parent: MediaPlayerView) -> MediaPlayerOverlayView {
+        let view = MediaPlayerOverlayView(frame: parent.bounds)
+        view.nibDidLoad()
+        view.mediaPlayerViewModel = parent.viewModel
+        view.mediaPlayerView = parent
+        createConfiguration(on: view)
+        view.viewDidLoad()
+        return view
+    }
+    
+    @discardableResult
+    private static func createConfiguration(on view: MediaPlayerOverlayView) -> MediaPlayerOverlayViewConfiguration {
+        view.configuration = .init(durationThreshold: 3.0, repeats: true)
+        return view.configuration
+    }
+    
+    fileprivate func viewDidLoad() {
+        setupObservers()
+        setupSubviews()
+    }
+    
+    fileprivate func viewDidConfigure() {
+        guard
+            let player = mediaPlayerView.mediaPlayer.player as AVPlayer?,
+            let item = player.currentItem
+        else { return }
+        switch item.status {
+        case .failed:
+            playButton.isEnabled = false
+            trackingSlider.isEnabled = false
+            startTimeLabel.isEnabled = false
+            durationLabel.isEnabled = false
+        case .readyToPlay:
+            playButton.isEnabled = true
+            let newDurationInSeconds = Float(item.duration.seconds)
+            let currentTime = Float(CMTimeGetSeconds(player.currentTime()))
+            trackingSlider.isEnabled = true
+            startTimeLabel.isEnabled = true
+            durationLabel.isEnabled = true
+            
+            progressView.setProgress(currentTime, animated: true)
+            trackingSlider.maximumValue = newDurationInSeconds
+            trackingSlider.value = currentTime
+            startTimeLabel.text = viewModel.timeString(currentTime)
+            durationLabel.text = viewModel.timeString(newDurationInSeconds)
+        default:
+            playButton.isEnabled = false
+            trackingSlider.isEnabled = false
+            startTimeLabel.isEnabled = false
+            durationLabel.isEnabled = false
+        }
+    }
+    
+    fileprivate func viewDidRegisterObservers() {
+        guard let player = mediaPlayerView.mediaPlayer.player as AVPlayer? else { return }
+        
+        let timeScale = CMTimeScale(NSEC_PER_SEC)
+        let interval = CMTime(value: 1, timescale: timeScale)
+        observers.timeObserverToken = player.addPeriodicTimeObserver(
+            forInterval: interval,
+            queue: .main) { [weak self] time in
+                guard let self = self else { return }
+                let timeElapsed = Float(time.seconds)
+                let duration = Float(player.currentItem?.duration.seconds ?? .zero).rounded()
+                self.progressView.progress = timeElapsed / duration
+                self.trackingSlider.value = timeElapsed
+                self.startTimeLabel.text = self.viewModel.timeString(timeElapsed)
+        }
+        
+        observers.cancelBag = []
+        observers.playerItemDidEndPlayingObserver = NotificationCenter.default
+            .publisher(for: .AVPlayerItemDidPlayToEndTime)
+            .sink { _ in player.seek(to: CMTime.zero)
+        }
+        observers.playerItemDidEndPlayingObserver.store(in: &observers.cancelBag)
+        
+        observers.playerTimeControlStatusObserver = player.observe(
+            \AVPlayer.timeControlStatus,
+             options: [.initial, .new],
+             changeHandler: { [weak self] _, _ in self?.setupPlayButton() })
+        
+        observers.playerItemFastForwardObserver = player.observe(
+            \AVPlayer.currentItem?.canPlayFastForward,
+             options: [.initial, .new],
+             changeHandler: { [weak self] player, _ in
+                 self?.forwardButton.isEnabled = player.currentItem?.canPlayFastForward ?? false
+             })
+        
+        observers.playerItemReverseObserver = player.observe(
+            \AVPlayer.currentItem?.canPlayReverse,
+             options: [.initial],
+             changeHandler: { [weak self] player, _ in
+                 self?.backwardButton.isEnabled = player.currentItem?.canPlayReverse ?? false
+             })
+        
+        observers.playerItemFastReverseObserver = player.observe(
+            \AVPlayer.currentItem?.canPlayFastReverse,
+             options: [.initial, .new],
+             changeHandler: { [weak self] player, _ in
+                 self?.backwardButton.isEnabled = player.currentItem?.canPlayFastReverse ?? false
+             })
+        
+        observers.playerItemStatusObserver = player.observe(
+            \AVPlayer.currentItem?.status,
+             options: [.initial, .new],
+             changeHandler: { [weak self] _, _ in self?.viewDidConfigure() })
     }
     
     private func setupSubviews() {
@@ -155,93 +253,6 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
         
         guard let image = systemImage as UIImage? else { return }
         playButton.setImage(image, for: .normal)
-    }
-    
-    private func viewsDidConfigure() {
-        guard
-            let player = mediaPlayerView.mediaPlayer.player as AVPlayer?,
-            let item = player.currentItem
-        else { return }
-        switch item.status {
-        case .failed:
-            playButton.isEnabled = false
-            trackingSlider.isEnabled = false
-            startTimeLabel.isEnabled = false
-            durationLabel.isEnabled = false
-        case .readyToPlay:
-            playButton.isEnabled = true
-            let newDurationInSeconds = Float(item.duration.seconds)
-            let currentTime = Float(CMTimeGetSeconds(player.currentTime()))
-            trackingSlider.isEnabled = true
-            startTimeLabel.isEnabled = true
-            durationLabel.isEnabled = true
-            
-            progressView.setProgress(currentTime, animated: true)
-            trackingSlider.maximumValue = newDurationInSeconds
-            trackingSlider.value = currentTime
-            startTimeLabel.text = viewModel.timeString(currentTime)
-            durationLabel.text = viewModel.timeString(newDurationInSeconds)
-        default:
-            playButton.isEnabled = false
-            trackingSlider.isEnabled = false
-            startTimeLabel.isEnabled = false
-            durationLabel.isEnabled = false
-        }
-    }
-    
-    func viewDidRegisterObservers() {
-        guard let player = mediaPlayerView.mediaPlayer.player as AVPlayer? else { return }
-        
-        let timeScale = CMTimeScale(NSEC_PER_SEC)
-        let interval = CMTime(value: 1, timescale: timeScale)
-        observers?.timeObserverToken = player.addPeriodicTimeObserver(
-            forInterval: interval,
-            queue: .main) { [weak self] time in
-                guard let self = self else { return }
-                let timeElapsed = Float(time.seconds)
-                let duration = Float(player.currentItem?.duration.seconds ?? .zero).rounded()
-                self.progressView.progress = timeElapsed / duration
-                self.trackingSlider.value = timeElapsed
-                self.startTimeLabel.text = self.viewModel.timeString(timeElapsed)
-        }
-        
-        observers?.cancelBag = []
-        observers?.playerItemDidEndPlayingObserver = NotificationCenter.default
-            .publisher(for: .AVPlayerItemDidPlayToEndTime)
-            .sink { _ in player.seek(to: CMTime.zero)
-        }
-        observers?.playerItemDidEndPlayingObserver.store(in: &observers!.cancelBag)
-        
-        observers?.playerTimeControlStatusObserver = player.observe(
-            \AVPlayer.timeControlStatus,
-             options: [.initial, .new],
-             changeHandler: { [weak self] _, _ in self?.setupPlayButton() })
-        
-        observers?.playerItemFastForwardObserver = player.observe(
-            \AVPlayer.currentItem?.canPlayFastForward,
-             options: [.initial, .new],
-             changeHandler: { [weak self] player, _ in
-                 self?.forwardButton.isEnabled = player.currentItem?.canPlayFastForward ?? false
-             })
-        
-        observers?.playerItemReverseObserver = player.observe(
-            \AVPlayer.currentItem?.canPlayReverse,
-             options: [.initial],
-             changeHandler: { [weak self] player, _ in
-                 self?.backwardButton.isEnabled = player.currentItem?.canPlayReverse ?? false
-             })
-        
-        observers?.playerItemFastReverseObserver = player.observe(
-            \AVPlayer.currentItem?.canPlayFastReverse,
-             options: [.initial, .new],
-             changeHandler: { [weak self] player, _ in
-                 self?.backwardButton.isEnabled = player.currentItem?.canPlayFastReverse ?? false
-             })
-        
-        observers?.playerItemStatusObserver = player.observe(
-            \AVPlayer.currentItem?.status,
-             options: [.initial, .new],
-             changeHandler: { [weak self] _, _ in self?.viewsDidConfigure() })
     }
     
     func viewWillAppear() {
@@ -362,19 +373,19 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     
     func removeObservers() {
         print("Removed `MediaPlayerOverlayView` observers.")
-        observers?.playerItemStatusObserver?.invalidate()
-        observers?.playerItemFastForwardObserver?.invalidate()
-        observers?.playerItemReverseObserver?.invalidate()
-        observers?.playerItemFastReverseObserver?.invalidate()
-        observers?.playerTimeControlStatusObserver?.invalidate()
-        observers?.cancelBag?.removeAll()
-        observers?.timeObserverToken = nil
-        observers?.playerItemStatusObserver = nil
-        observers?.playerItemFastForwardObserver = nil
-        observers?.playerItemReverseObserver = nil
-        observers?.playerItemFastReverseObserver = nil
-        observers?.playerTimeControlStatusObserver = nil
-        observers?.playerItemDidEndPlayingObserver = nil
-        observers?.cancelBag = nil
+        observers.playerItemStatusObserver?.invalidate()
+        observers.playerItemFastForwardObserver?.invalidate()
+        observers.playerItemReverseObserver?.invalidate()
+        observers.playerItemFastReverseObserver?.invalidate()
+        observers.playerTimeControlStatusObserver?.invalidate()
+        observers.cancelBag?.removeAll()
+        observers.timeObserverToken = nil
+        observers.playerItemStatusObserver = nil
+        observers.playerItemFastForwardObserver = nil
+        observers.playerItemReverseObserver = nil
+        observers.playerItemFastReverseObserver = nil
+        observers.playerTimeControlStatusObserver = nil
+        observers.playerItemDidEndPlayingObserver = nil
+        observers.cancelBag = nil
     }
 }
