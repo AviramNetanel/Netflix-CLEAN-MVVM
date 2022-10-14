@@ -21,7 +21,6 @@ final class NavigationBarTitleView: UINavigationItem {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        titleView = imageView
+        self.titleView = imageView
     }
 }

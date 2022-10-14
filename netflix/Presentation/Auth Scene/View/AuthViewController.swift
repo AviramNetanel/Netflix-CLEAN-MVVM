@@ -22,7 +22,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
-        setupViews()
+        setupSubviews()
         viewModel.viewDidLoad()
     }
     
@@ -55,35 +55,38 @@ final class AuthViewController: UIViewController {
                       BlackStyleNavigationBarBehavior()])
     }
     
-    private func setupViews() {
-        setGradientLayers()
-        setActions()
+    private func setupSubviews() {
+        setupGradientViews()
+        setupTargets()
     }
     
-    private func setGradientLayers() {
-        statusBarGradientView.addGradientLayer(frame: statusBarGradientView.bounds,
-                                               colors:
-                                                [.black.withAlphaComponent(0.75),
-                                                 .black.withAlphaComponent(0.5),
-                                                 .clear],
-                                               locations: [0.0, 0.5, 1.0])
+    private func setupGradientViews() {
+        statusBarGradientView.addGradientLayer(
+            frame: statusBarGradientView.bounds,
+            colors:
+                [.black.withAlphaComponent(0.75),
+                 .black.withAlphaComponent(0.5),
+                 .clear],
+            locations: [0.0, 0.5, 1.0])
         
-        topGradientView.addGradientLayer(frame: topGradientView.bounds,
-                                         colors:
-                                            [.clear,
-                                             .black.withAlphaComponent(0.75),
-                                             .black.withAlphaComponent(0.9)],
-                                         locations: [0.0, 0.5, 1.0])
+        topGradientView.addGradientLayer(
+            frame: topGradientView.bounds,
+            colors:
+                [.clear,
+                 .black.withAlphaComponent(0.75),
+                 .black.withAlphaComponent(0.9)],
+            locations: [0.0, 0.5, 1.0])
         
-        bottomGradientView.addGradientLayer(frame: bottomGradientView.bounds,
-                                            colors:
-                                                [.black.withAlphaComponent(0.9),
-                                                 .black.withAlphaComponent(0.75),
-                                                 .clear],
-                                            locations: [0.0, 0.5, 1.0])
+        bottomGradientView.addGradientLayer(
+            frame: bottomGradientView.bounds,
+            colors:
+                [.black.withAlphaComponent(0.9),
+                 .black.withAlphaComponent(0.75),
+                 .clear],
+            locations: [0.0, 0.5, 1.0])
     }
     
-    private func setActions() {
+    private func setupTargets() {
         guard let viewModel = viewModel else { return }
         
         signInButton.addTarget(viewModel,

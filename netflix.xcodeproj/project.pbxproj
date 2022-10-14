@@ -848,7 +848,7 @@
 				A1B3F99128C5755D0042DE9F /* AuthViewController.storyboard */,
 				A1B3F99628C627710042DE9F /* SignUpView */,
 				A1B3F99B28C631D90042DE9F /* SignInView */,
-				A1F56A6528C68E850089BD4F /* Common */,
+				A1F56A6528C68E850089BD4F /* Utils */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1340,12 +1340,12 @@
 			path = UIViewController;
 			sourceTree = "<group>";
 		};
-		A1F56A6528C68E850089BD4F /* Common */ = {
+		A1F56A6528C68E850089BD4F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				A1F56A6628C68EAD0089BD4F /* NavigationBarTitleView.swift */,
 			);
-			path = Common;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

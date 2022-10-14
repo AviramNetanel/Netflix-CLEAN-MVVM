@@ -29,19 +29,19 @@ final class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AppAppearance.darkAppearance()
-        setupViews()
+        setupSubviews()
     }
     
-    private func setupViews() {
+    private func setupSubviews() {
         setAttributes(for: [nameTextField,
                             emailTextField,
                             passwordTextField,
                             passwordConfirmTextField])
         signUpButton.setLayerBorder(.black, width: 1.5)
-        setActions()
+        setupTargets()
     }
     
-    private func setActions() {
+    private func setupTargets() {
         signUpButton.addTarget(self,
                                action: #selector(didSignUp),
                                for: .touchUpInside)

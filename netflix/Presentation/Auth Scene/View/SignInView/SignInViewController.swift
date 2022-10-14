@@ -25,17 +25,17 @@ final class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AppAppearance.darkAppearance()
-        setupViews()
+        setupSubviews()
     }
     
-    private func setupViews() {
+    private func setupSubviews() {
         setAttributes(for: [emailTextField,
                             passwordTextField])
         signInButton.setLayerBorder(.black, width: 1.5)
-        setActions()
+        setupTargets()
     }
     
-    private func setActions() {
+    private func setupTargets() {
         signInButton.addTarget(self,
                                action: #selector(didSignIn),
                                for: .touchUpInside)

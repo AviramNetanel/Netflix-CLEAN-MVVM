@@ -46,9 +46,7 @@ final class AuthViewModel: ViewModel {
     fileprivate(set) var actions: AuthViewModelActions?
     
     fileprivate var authorizationTask: Cancellable? {
-        willSet {
-            authorizationTask?.cancel()
-        }
+        willSet { authorizationTask?.cancel() }
     }
     
     init(authUseCase: AuthUseCase, actions: AuthViewModelActions? = nil) {
