@@ -147,13 +147,13 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
         view.tag = parent.tag
         parent.addSubview(view)
         view.constraintToSuperview(parent)
-        createViewModel(in: view, with: viewModel)
-        createConfiguration(in: view)
+        createViewModel(on: view, with: viewModel)
+        createConfiguration(on: view)
         return view
     }
     
     @discardableResult
-    private static func createViewModel(in view: PanelViewItem,
+    private static func createViewModel(on view: PanelViewItem,
                                         with homeViewModel: HomeViewModel) -> PanelViewItemViewModel {
         let viewModel = PanelViewItemViewModel(with: view)
         view.viewModel = viewModel
@@ -162,7 +162,7 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
     }
     
     @discardableResult
-    private static func createConfiguration(in view: PanelViewItem) -> PanelViewItemConfiguration {
+    private static func createConfiguration(on view: PanelViewItem) -> PanelViewItemConfiguration {
         view.configuration = .create(view: view,
                                      gestureRecognizers: [.tap],
                                      with: view.homeViewModel)

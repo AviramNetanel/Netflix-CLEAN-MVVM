@@ -414,21 +414,13 @@
 		A1741CFE28E6793700F3C46B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A1741CFF28E6794100F3C46B /* TableView */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		A1741CFF28E6794100F3C46B /* TableView */ = {
-			isa = PBXGroup;
-			children = (
 				A1741D0128E6796400F3C46B /* DetailInfoTableViewCell */,
 				A1741D0228E6796A00F3C46B /* DetailDescriptionTableViewCell */,
 				A1741D0328E6797300F3C46B /* DetailPanelTableViewCell */,
 				A1741D0428E6797800F3C46B /* DetailNavigationTableViewCell */,
 				A1741D0528E6797E00F3C46B /* DetailCollectionTableViewCell */,
 			);
-			path = TableView;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		A1741D0128E6796400F3C46B /* DetailInfoTableViewCell */ = {

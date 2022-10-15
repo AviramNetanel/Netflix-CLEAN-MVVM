@@ -7,21 +7,24 @@
 
 import UIKit
 
-// MARK: - DataSourcingInput protocol
+// MARK: - DataSourceInput protocol
 
-private protocol DataSourcingInput {}
+private protocol DataSourceInput {}
 
-// MARK: - DataSourcingOutput protocol
+// MARK: - DataSourceOutput protocol
 
-private protocol DataSourcingOutput {
-    var collectionView: UICollectionView { get }
-    var viewModel: DetailViewModel { get }
+private protocol DataSourceOutput {
+    associatedtype T
+    var items: [T]! { get }
+    var collectionView: UICollectionView! { get }
+    var viewModel: DetailViewModel! { get }
     var numberOfSections: Int { get }
+    var cache: NSCache<NSString, UIImage> { get }
 }
 
 // MARK: - DataSourcing typealias
 
-private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
+private typealias DataSourcing = DataSourceInput & DataSourceOutput
 
 // MARK: - DetailCollectionViewDataSource class
 
@@ -31,19 +34,26 @@ final class DetailCollectionViewDataSource<T>: NSObject,
                                                UICollectionViewDataSource,
                                                UICollectionViewDataSourcePrefetching {
     
-    fileprivate var collectionView: UICollectionView
-    fileprivate(set) var items: [T]
-    fileprivate var viewModel: DetailViewModel
     fileprivate let numberOfSections = 1
+    fileprivate(set) var items: [T]!
+    fileprivate var collectionView: UICollectionView!
+    fileprivate var viewModel: DetailViewModel!
+    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
-    private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
+    deinit {
+        items = nil
+        collectionView = nil
+        viewModel = nil
+    }
     
-    init(collectionView: UICollectionView,
-         items: [T],
-         with viewModel: DetailViewModel) {
-        self.collectionView = collectionView
-        self.items = items
-        self.viewModel = viewModel
+    static func create(on collectionView: UICollectionView,
+                       items: [T],
+                       with viewModel: DetailViewModel) -> DetailCollectionViewDataSource {
+        let dataSource = DetailCollectionViewDataSource()
+        dataSource.collectionView = collectionView
+        dataSource.items = items
+        dataSource.viewModel = viewModel
+        return dataSource
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int { numberOfSections }
@@ -55,15 +65,15 @@ final class DetailCollectionViewDataSource<T>: NSObject,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch viewModel.navigationViewState.value {
         case .episodes:
-            return EpisodeCollectionViewCell.create(in: collectionView,
+            return EpisodeCollectionViewCell.create(on: collectionView,
                                                     for: indexPath,
                                                     with: viewModel)
         case .trailers:
-            return TrailerCollectionViewCell.create(in: collectionView,
+            return TrailerCollectionViewCell.create(on: collectionView,
                                                     for: indexPath,
                                                     with: viewModel.media)
         default:
-            return CollectionViewCell.create(in: collectionView,
+            return CollectionViewCell.create(on: collectionView,
                                              reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
                                              section: viewModel.section,
                                              for: indexPath,

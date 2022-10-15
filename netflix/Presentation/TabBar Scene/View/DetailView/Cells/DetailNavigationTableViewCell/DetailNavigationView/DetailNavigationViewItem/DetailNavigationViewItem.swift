@@ -38,7 +38,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
         navigationView = nil
     }
     
-    static func create(view: DetailNavigationViewItem,
+    static func create(on view: DetailNavigationViewItem,
                        with navigationView: DetailNavigationView) -> DetailNavigationViewItemConfiguration {
         let configuration = DetailNavigationViewItemConfiguration()
         configuration.view = view
@@ -143,7 +143,7 @@ final class DetailNavigationViewItem: UIView, View {
     @discardableResult
     private static func createConfiguration(on view: DetailNavigationViewItem,
                                             with navigationView: DetailNavigationView) -> DetailNavigationViewItemConfiguration {
-        view.configuration = .create(view: view, with: navigationView)
+        view.configuration = .create(on: view, with: navigationView)
         return view.configuration
     }
     

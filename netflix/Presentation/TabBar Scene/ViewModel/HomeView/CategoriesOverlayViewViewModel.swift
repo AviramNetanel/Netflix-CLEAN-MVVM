@@ -10,7 +10,7 @@ import Foundation
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
-    func viewDidLoad()
+    var _isPresentedDidChange: (() -> Void)? { get }
 }
 
 // MARK: - ViewModelOutput protocol
@@ -19,7 +19,6 @@ private protocol ViewModelOutput {
     var isPresented: Observable<Bool> { get }
     var state: NavigationView.State { get }
     var category: CategoriesOverlayView.Category { get }
-    var dataSource: CategoriesOverlayViewTableViewDataSource! { get }
 }
 
 // MARK: - ViewModel typealias
@@ -33,9 +32,7 @@ final class CategoriesOverlayViewViewModel: ViewModel {
     fileprivate(set) var isPresented: Observable<Bool> = Observable(false)
     var state: NavigationView.State = .tvShows
     fileprivate var category: CategoriesOverlayView.Category = .home
-    fileprivate(set) var dataSource: CategoriesOverlayViewTableViewDataSource!
+    var _isPresentedDidChange: (() -> Void)?
     
-    func viewDidLoad() {
-        dataSource = CategoriesOverlayViewTableViewDataSource(items: [], with: self)
-    }
+    deinit { _isPresentedDidChange = nil }
 }

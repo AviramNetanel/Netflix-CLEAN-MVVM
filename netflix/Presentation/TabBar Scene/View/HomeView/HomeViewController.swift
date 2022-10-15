@@ -23,6 +23,7 @@ final class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     deinit {
+        navigationView = nil
         categoriesOverlayView = nil
         viewModel = nil
         dataSource = nil
@@ -62,7 +63,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = .init(in: tableView, with: viewModel)
+        dataSource = .create(on: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
         didSelectItem(in: dataSource)
@@ -197,8 +198,8 @@ extension HomeViewController {
     // MARK: CategoriesOverlayView bindings
     
     private func isPresentedDidChange(in categoriesOverlayView: CategoriesOverlayView) {
-        categoriesOverlayView._isPresentedDidChange = { [weak self] in
-            self?.categoriesOverlayView?.viewModel.isPresented.value == true
+        categoriesOverlayView.viewModel._isPresentedDidChange = { [weak self] in
+            categoriesOverlayView.viewModel.isPresented.value == true
                 ? self?.tabBarController?.tabBar.isHidden(true)
                 : self?.tabBarController?.tabBar.isHidden(false)
         }

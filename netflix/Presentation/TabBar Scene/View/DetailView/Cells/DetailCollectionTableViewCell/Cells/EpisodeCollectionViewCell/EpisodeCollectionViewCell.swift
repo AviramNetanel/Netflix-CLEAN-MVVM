@@ -37,7 +37,7 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    static func create(in collectionView: UICollectionView,
+    static func create(on collectionView: UICollectionView,
                        for indexPath: IndexPath,
                        with viewModel: DetailViewModel) -> EpisodeCollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(

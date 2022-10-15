@@ -10,19 +10,20 @@ import UIKit
 // MARK: - DataSourcingInput protocol
 
 private protocol DataSourcingInput {
-    func reload()
-    var heightForRow: ((IndexPath) -> CGFloat)? { get }
+    var _heightForRow: ((IndexPath) -> CGFloat)? { get }
 }
 
 // MARK: - DataSourcingOutput protocol
 
 private protocol DataSourcingOutput {
+    var tableView: UITableView! { get }
+    var viewModel: DetailViewModel! { get }
+    var numberOfRows: Int { get }
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
     var panelCell: DetailPanelTableViewCell! { get }
     var navigationCell: DetailNavigationTableViewCell! { get }
     var collectionCell: DetailCollectionTableViewCell! { get }
-    var numberOfRows: Int { get }
 }
 
 // MARK: - DataSourcing typealias
@@ -44,8 +45,10 @@ final class DetailTableViewDataSource: NSObject,
         case collection
     }
     
-    private var tableView: UITableView
-    private var viewModel: DetailViewModel
+    fileprivate let numberOfRows: Int = 1
+    
+    fileprivate var tableView: UITableView!
+    fileprivate var viewModel: DetailViewModel!
     
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
@@ -53,14 +56,8 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    var heightForRow: ((IndexPath) -> CGFloat)? { didSet { reload() } }
-    
-    fileprivate let numberOfRows: Int = 1
-    
-    init(tableView: UITableView,
-         viewModel: DetailViewModel) {
-        self.tableView = tableView
-        self.viewModel = viewModel
+    var _heightForRow: ((IndexPath) -> CGFloat)? {
+        didSet { tableView.reloadData() }
     }
     
     deinit {
@@ -69,10 +66,18 @@ final class DetailTableViewDataSource: NSObject,
         panelCell = nil
         navigationCell = nil
         collectionCell = nil
-        heightForRow = nil
+        _heightForRow = nil
+        tableView = nil
+        viewModel = nil
     }
     
-    func reload() { tableView.reloadData() }
+    static func create(on tableView: UITableView,
+                       with viewModel: DetailViewModel) -> DetailTableViewDataSource {
+        let dataSource = DetailTableViewDataSource()
+        dataSource.tableView = tableView
+        dataSource.viewModel = viewModel
+        return dataSource
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int { Index.allCases.count }
     
@@ -85,24 +90,24 @@ final class DetailTableViewDataSource: NSObject,
         switch index {
         case .info:
             guard infoCell == nil else { return infoCell }
-            infoCell = DetailInfoTableViewCell.create(in: tableView,
+            infoCell = DetailInfoTableViewCell.create(on: tableView,
                                                       for: indexPath,
                                                       with: viewModel)
             return infoCell
         case .description:
             guard descriptionCell == nil else { return descriptionCell }
-            descriptionCell = DetailDescriptionTableViewCell.create(in: tableView,
+            descriptionCell = DetailDescriptionTableViewCell.create(on: tableView,
                                                                     for: indexPath,
                                                                     with: viewModel)
             return descriptionCell
         case .panel:
             guard panelCell == nil else { return panelCell }
-            panelCell = DetailPanelTableViewCell.create(in: tableView,
+            panelCell = DetailPanelTableViewCell.create(on: tableView,
                                                         for: indexPath)
             return panelCell
         case .navigation:
             guard navigationCell == nil else { return navigationCell }
-            navigationCell = DetailNavigationTableViewCell.create(in: tableView,
+            navigationCell = DetailNavigationTableViewCell.create(on: tableView,
                                                                   for: indexPath)
             navigationCell.navigationView._stateDidChange = { [weak self] state in
                 self?.viewModel.navigationViewState.value = state
@@ -110,7 +115,7 @@ final class DetailTableViewDataSource: NSObject,
             return navigationCell
         case .collection:
             guard collectionCell == nil else { return collectionCell }
-            collectionCell = DetailCollectionTableViewCell.create(in: tableView,
+            collectionCell = DetailCollectionTableViewCell.create(on: tableView,
                                                                   for: indexPath,
                                                                   with: viewModel)
             return collectionCell
@@ -118,5 +123,5 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     func tableView(_ tableView: UITableView,
-                   heightForRowAt indexPath: IndexPath) -> CGFloat { heightForRow!(indexPath) }
+                   heightForRowAt indexPath: IndexPath) -> CGFloat { _heightForRow!(indexPath) }
 }

@@ -93,16 +93,16 @@ final class DetailCollectionView: UIView, View {
         switch viewModel.navigationViewState.value {
         case .episodes:
             guard let episodes = viewModel.season.value?.media else { return }
-            dataSource = .init(collectionView: collectionView,
-                               items: episodes,
-                               with: viewModel)
+            dataSource = .create(on: collectionView,
+                                 items: episodes,
+                                 with: viewModel)
             layout = CollectionViewLayout(layout: .descriptive, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         case .trailers:
             guard let trailers = viewModel.media.trailers.toDomain() as [Trailer]? else { return }
-            dataSource = .init(collectionView: collectionView,
-                               items: trailers,
-                               with: viewModel)
+            dataSource = .create(on: collectionView,
+                                 items: trailers,
+                                 with: viewModel)
             layout = CollectionViewLayout(layout: .trailer, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
@@ -110,9 +110,9 @@ final class DetailCollectionView: UIView, View {
                     ? viewModel.section!.tvshows!
                     : viewModel.section!.movies! as [Media]?
             else { return }
-            dataSource = .init(collectionView: collectionView,
-                               items: media,
-                               with: viewModel)
+            dataSource = .create(on: collectionView,
+                                 items: media,
+                                 with: viewModel)
             layout = CollectionViewLayout(layout: .detail, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }

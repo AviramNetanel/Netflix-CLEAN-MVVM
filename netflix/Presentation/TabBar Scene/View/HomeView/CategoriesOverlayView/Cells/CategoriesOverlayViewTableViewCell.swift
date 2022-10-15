@@ -39,23 +39,22 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
         return label
     }()
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewCell {
+                       with items: [Valuable]) -> CategoriesOverlayViewTableViewCell {
         guard let view = tableView.dequeueReusableCell(
             withIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier,
             for: indexPath) as? CategoriesOverlayViewTableViewCell else { fatalError() }
         view.backgroundColor = .clear
         view.selectionStyle = .none
-        let model = viewModel.dataSource.items[indexPath.row]
+        let model = items[indexPath.row]
         view.viewDidLoad(with: createViewModel(on: view, with: model))
         return view
     }
     
-    private static func createViewModel(
-        on view: CategoriesOverlayViewTableViewCell,
-        with model: CategoriesOverlayViewTableViewDataSource.T) -> CategoriesOverlayViewCollectionViewCellViewModel {
-            return CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
+    private static func createViewModel(on view: CategoriesOverlayViewTableViewCell,
+                                        with model: Valuable) -> CategoriesOverlayViewCollectionViewCellViewModel {
+        return CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
     }
     
     fileprivate func viewDidLoad(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {

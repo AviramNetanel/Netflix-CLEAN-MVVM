@@ -1,5 +1,5 @@
 //
-//  DetailDescriptionTableViewCell.swift
+//  DetailInfoTableViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 30/09/2022.
@@ -21,23 +21,23 @@ private protocol ViewOutput {}
 
 private typealias View = ViewInput & ViewOutput
 
-// MARK: - DetailDescriptionTableViewCell class
+// MARK: - DetailInfoTableViewCell class
 
-final class DetailDescriptionTableViewCell: UITableViewCell, View {
+final class DetailInfoTableViewCell: UITableViewCell, View {
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> DetailDescriptionTableViewCell {
+                       with viewModel: DetailViewModel) -> DetailInfoTableViewCell {
         guard let view = tableView.dequeueReusableCell(
-            withIdentifier: String(describing: DetailDescriptionTableViewCell.reuseIdentifier),
-            for: indexPath) as? DetailDescriptionTableViewCell else { fatalError() }
+            withIdentifier: String(describing: DetailInfoTableViewCell.reuseIdentifier),
+            for: indexPath) as? DetailInfoTableViewCell else { fatalError() }
         view.addSubview(createView(on: view, with: viewModel))
         view.viewDidLoad()
         return view
     }
     
     private static func createView(on view: UIView,
-                                   with viewModel: DetailViewModel) -> DetailDescriptionView {
+                                   with viewModel: DetailViewModel) -> DetailInfoView {
         return .create(on: view, with: viewModel)
     }
     

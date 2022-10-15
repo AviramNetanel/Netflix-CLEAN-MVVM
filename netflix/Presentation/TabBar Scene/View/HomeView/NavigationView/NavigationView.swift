@@ -75,14 +75,14 @@ final class NavigationView: UIView, View, ViewInstantiable {
         view.nibDidLoad()
         parent.addSubview(view)
         view.constraintToSuperview(parent)
-        createItems(in: view)
-        createViewModel(in: view)
+        createItems(on: view)
+        createViewModel(on: view)
         view.viewDidLoad()
         return view
     }
     
     @discardableResult
-    private static func createViewModel(in view: NavigationView) -> NavigationViewViewModel {
+    private static func createViewModel(on view: NavigationView) -> NavigationViewViewModel {
         let items: [NavigationViewItem] = [view.homeItemView,
                                            view.airPlayItemView,
                                            view.accountItemView,
@@ -93,7 +93,7 @@ final class NavigationView: UIView, View, ViewInstantiable {
         return view.viewModel
     }
     
-    private static func createItems(in view: NavigationView) {
+    private static func createItems(on view: NavigationView) {
         view.homeItemView = .create(on: view.homeItemViewContainer)
         view.airPlayItemView = .create(on: view.airPlayItemViewContainer)
         view.accountItemView = .create(on: view.accountItemViewContainer)

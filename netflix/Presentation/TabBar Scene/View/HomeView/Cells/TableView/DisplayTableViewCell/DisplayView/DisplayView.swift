@@ -106,7 +106,7 @@ final class DisplayView: UIView, View, ViewInstantiable {
         viewModel.presentedDisplayMediaDidChange()
         createViewModel(in: view, with: viewModel)
         createConfiguration(in: view)
-        createPanelView(in: view)
+        createPanelView(on: view)
         view.viewDidLoad()
         return view
     }
@@ -127,7 +127,7 @@ final class DisplayView: UIView, View, ViewInstantiable {
     }
     
     @discardableResult
-    fileprivate static func createPanelView(in view: DisplayView) -> PanelView {
+    fileprivate static func createPanelView(on view: DisplayView) -> PanelView {
         view.panelView = .create(on: view.panelViewContainer,
                                  with: view.homeViewModel)
         return view.panelView

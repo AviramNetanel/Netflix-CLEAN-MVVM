@@ -60,7 +60,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = .init(tableView: tableView, viewModel: viewModel)
+        dataSource = .create(on: tableView, with: viewModel)
         tableView.register(class: DetailInfoTableViewCell.self)
         tableView.register(class: DetailDescriptionTableViewCell.self)
         tableView.register(class: DetailPanelTableViewCell.self)
@@ -93,7 +93,7 @@ extension DetailViewController {
     // MARK: DetailTableViewDataSource bindings
     
     private func heightForRow(in dataSource: DetailTableViewDataSource) {
-        dataSource.heightForRow = { [weak self] indexPath in
+        dataSource._heightForRow = { [weak self] indexPath in
             guard
                 let self = self,
                 let index = DetailTableViewDataSource.Index(rawValue: indexPath.section)

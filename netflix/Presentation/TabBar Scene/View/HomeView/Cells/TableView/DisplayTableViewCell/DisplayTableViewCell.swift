@@ -13,7 +13,7 @@ final class DisplayTableViewCell: UITableViewCell {
     
     private(set) var displayView: DisplayView!
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath,
                        with viewModel: HomeViewModel) -> DisplayTableViewCell {
         let view = tableView.dequeueReusableCell(

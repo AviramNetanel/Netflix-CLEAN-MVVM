@@ -31,7 +31,7 @@ final class DetailPanelTableViewCell: UITableViewCell, View {
     
     deinit { panelView = nil }
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath) -> DetailPanelTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailPanelTableViewCell.reuseIdentifier),

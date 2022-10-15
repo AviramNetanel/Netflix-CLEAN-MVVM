@@ -122,19 +122,19 @@ final class NavigationViewItem: UIView, View {
         view.tag = parent.tag
         parent.addSubview(view)
         view.constraintToSuperview(parent)
-        createViewModel(in: view)
-        createConfiguration(in: view)
+        createViewModel(on: view)
+        createConfiguration(on: view)
         return view
     }
     
     @discardableResult
-    private static func createViewModel(in view: NavigationViewItem) -> NavigationViewItemViewModel {
+    private static func createViewModel(on view: NavigationViewItem) -> NavigationViewItemViewModel {
         view.viewModel = .init(tag: view.tag)
         return view.viewModel
     }
     
     @discardableResult
-    private static func createConfiguration(in view: NavigationViewItem) -> NavigationViewItemConfiguration {
+    private static func createConfiguration(on view: NavigationViewItem) -> NavigationViewItemConfiguration {
         view.configuration = .create(with: view)
         return view.configuration
     }

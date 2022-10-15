@@ -7,21 +7,21 @@
 
 import UIKit
 
-// MARK: - DataSourcingInput protocol
+// MARK: - DataSourceInput protocol
 
-private protocol DataSourcingInput {}
+private protocol DataSourceInput {}
 
-// MARK: - DataSourcingOutput protocol
+// MARK: - DataSourceOutput protocol
 
-private protocol DataSourcingOutput {
-    associatedtype T
-    var items: [T] { get }
+private protocol DataSourceOutput {
     var numberOfSections: Int { get }
+    var items: [Valuable]! { get }
+    var viewModel: CategoriesOverlayViewViewModel! { get }
 }
 
 // MARK: - DataSourcing typealias
 
-private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
+private typealias DataSourcing = DataSourceInput & DataSourceOutput
 
 // MARK: - CategoriesOverlayViewTableViewDataSource class
 
@@ -30,16 +30,23 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
     
-    typealias T = Valuable
-    
-    var items: [T]
-    private var viewModel: CategoriesOverlayViewViewModel
+    var items: [Valuable]!
+    fileprivate var viewModel: CategoriesOverlayViewViewModel!
     fileprivate let numberOfSections: Int = 1
     
-    init(items: [T],
-         with viewModel: CategoriesOverlayViewViewModel) {
-        self.items = items
-        self.viewModel = viewModel
+    static func create(items: [Valuable],
+                       with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
+        let dataSource = CategoriesOverlayViewTableViewDataSource()
+        dataSource.items = items
+        createViewModel(on: dataSource, with: viewModel)
+        return dataSource
+    }
+    
+    @discardableResult
+    private static func createViewModel(on dataSource: CategoriesOverlayViewTableViewDataSource,
+                                        with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewViewModel {
+        dataSource.viewModel = viewModel
+        return dataSource.viewModel
     }
     
     func numberOfSections(in tableView: UITableView) -> Int { numberOfSections }
@@ -49,9 +56,9 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return CategoriesOverlayViewTableViewCell.create(in: tableView,
+        return CategoriesOverlayViewTableViewCell.create(on: tableView,
                                                          for: indexPath,
-                                                         with: viewModel)
+                                                         with: items)
     }
     
     func tableView(_ tableView: UITableView,

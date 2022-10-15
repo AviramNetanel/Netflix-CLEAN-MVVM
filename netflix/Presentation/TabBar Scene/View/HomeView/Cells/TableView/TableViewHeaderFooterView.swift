@@ -38,7 +38,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
         return label
     }()
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for section: Int,
                        with viewModel: HomeViewModel) -> TableViewHeaderFooterView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(

@@ -32,7 +32,7 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var playButton: UIButton!
     
-    static func create(in collectionView: UICollectionView,
+    static func create(on collectionView: UICollectionView,
                        for indexPath: IndexPath,
                        with media: Media) -> TrailerCollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(

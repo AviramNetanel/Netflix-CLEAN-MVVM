@@ -31,7 +31,7 @@ final class DetailCollectionTableViewCell: UITableViewCell, View {
     
     deinit { detailCollectionView = nil }
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath,
                        with viewModel: DetailViewModel) -> DetailCollectionTableViewCell {
         guard let view = tableView.dequeueReusableCell(

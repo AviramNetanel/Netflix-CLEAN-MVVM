@@ -42,7 +42,7 @@ class CollectionViewCell: UICollectionViewCell, View {
     
     deinit { representedIdentifier = nil }
     
-    static func create(in collectionView: UICollectionView,
+    static func create(on collectionView: UICollectionView,
                        reuseIdentifier: String,
                        section: Section,
                        for indexPath: IndexPath,
@@ -54,13 +54,13 @@ class CollectionViewCell: UICollectionViewCell, View {
             ? section.tvshows![indexPath.row]
             : section.movies![indexPath.row]
         view.viewDidLoad(media: media,
-                         with: createViewModel(in: view,
+                         with: createViewModel(on: view,
                                                for: indexPath,
                                                with: media))
         return view
     }
     
-    private static func createViewModel(in view: CollectionViewCell,
+    private static func createViewModel(on view: CollectionViewCell,
                                         for indexPath: IndexPath,
                                         with media: Media) -> CollectionViewCellItemViewModel {
         return .init(media: media, indexPath: indexPath)

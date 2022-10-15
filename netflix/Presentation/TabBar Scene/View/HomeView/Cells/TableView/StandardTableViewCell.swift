@@ -11,7 +11,7 @@ import UIKit
 
 final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
     
-    override class func create(in tableView: UITableView,
+    override class func create(on tableView: UITableView,
                                for indexPath: IndexPath,
                                with viewModel: HomeViewModel) -> StandardTableViewCell {
         let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)

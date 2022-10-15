@@ -7,24 +7,27 @@
 
 import UIKit
 
-// MARK: - DataSourcingInput protocol
+// MARK: - DataSourceInput protocol
 
-private protocol DataSourcingInput {
+private protocol DataSourceInput {
+    func viewDidLoad()
     func dataSourceDidChange()
     func media(for indexPath: IndexPath) -> Media?
     var didSelectItem: ((IndexPath.Element) -> Void)? { get }
 }
 
-// MARK: - DataSourcingOutput protocol
+// MARK: - DataSourceOutput protocol
 
-private protocol DataSourcingOutput {
+private protocol DataSourceOutput {
     var collectionView: UICollectionView! { get }
-    var section: Section { get }
+    var section: Section! { get }
+    var viewModel: HomeViewModel! { get }
+    var cache: NSCache<NSString, UIImage> { get }
 }
 
 // MARK: - DataSourcing protocol
 
-private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
+private typealias DataSourcing = DataSourceInput & DataSourceOutput
 
 // MARK: - CollectionViewDataSource class
 
@@ -35,35 +38,31 @@ final class CollectionViewDataSource<Cell>: NSObject,
                                             UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
     
     fileprivate weak var collectionView: UICollectionView!
-    fileprivate(set) var section: Section
-    private var viewModel: HomeViewModel
-    
-    private var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
+    fileprivate var section: Section!
+    fileprivate var viewModel: HomeViewModel!
+    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
     var didSelectItem: ((Int) -> Void)?
     
-    init(collectionView: UICollectionView,
-         section: Section,
-         viewModel: HomeViewModel) {
-        self.collectionView = collectionView
-        self.section = section
-        self.viewModel = viewModel
-        super.init()
-        self.setupSubviews()
-    }
-    
     deinit {
         didSelectItem = nil
+        section = nil
         collectionView = nil
+        viewModel = nil
     }
     
-    private func setupSubviews() {
-        setupCollectionView()
+    static func create(on collectionView: UICollectionView,
+                       section: Section,
+                       with viewModel: HomeViewModel) -> CollectionViewDataSource {
+        let dataSource = CollectionViewDataSource()
+        dataSource.section = section
+        dataSource.viewModel = viewModel
+        dataSource.collectionView = collectionView
+        dataSource.viewDidLoad()
+        return dataSource
     }
     
-    private func setupCollectionView() {
-        dataSourceDidChange()
-    }
+    fileprivate func viewDidLoad() { dataSourceDidChange() }
     
     fileprivate func dataSourceDidChange() {
         collectionView.delegate = self
@@ -87,7 +86,7 @@ final class CollectionViewDataSource<Cell>: NSObject,
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return CollectionViewCell.create(in: collectionView,
+        return CollectionViewCell.create(on: collectionView,
                                          reuseIdentifier: Cell.reuseIdentifier,
                                          section: section,
                                          for: indexPath,

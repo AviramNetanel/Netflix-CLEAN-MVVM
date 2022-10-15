@@ -31,7 +31,7 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
     
     deinit { navigationView = nil }
     
-    static func create(in tableView: UITableView,
+    static func create(on tableView: UITableView,
                        for indexPath: IndexPath) -> DetailNavigationTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailNavigationTableViewCell.reuseIdentifier),

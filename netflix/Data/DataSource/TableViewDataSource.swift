@@ -10,6 +10,7 @@ import UIKit
 // MARK: - DataSourcingInput protocol
 
 private protocol DataSourcingInput {
+    func viewDidLoad()
     func viewsDidRegister()
     func dataSourceDidChange()
     var heightForRowAt: ((IndexPath) -> CGFloat)? { get }
@@ -20,13 +21,10 @@ private protocol DataSourcingInput {
 // MARK: - DataSourcingOutput protocol
 
 private protocol DataSourcingOutput {
-    var tableView: UITableView { get }
-    var sections: [Section] { get }
+    var tableView: UITableView! { get }
+    var sections: [Section]! { get }
     var numberOfRows: Int { get }
     var displayCell: DisplayTableViewCell! { get }
-    var ratableCell: RatableTableViewCell! { get }
-    var resumableCell: ResumableTableViewCell! { get }
-    var standardCell: StandardTableViewCell! { get }
     var viewModel: HomeViewModel! { get }
 }
 
@@ -39,22 +37,22 @@ private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
 final class TableViewDataSource: NSObject, DataSourcing {
     
     enum Index: Int, CaseIterable {
-        case display,
-             ratable,
-             resumable,
-             action,
-             sciFi,
-             blockbuster,
-             myList,
-             crime,
-             thriller,
-             adventure,
-             comedy,
-             drama,
-             horror,
-             anime,
-             familyNchildren,
-             documentary
+        case display
+        case ratable
+        case resumable
+        case action
+        case sciFi
+        case blockbuster
+        case myList
+        case crime
+        case thriller
+        case adventure
+        case comedy
+        case drama
+        case horror
+        case anime
+        case familyNchildren
+        case documentary
     }
     
     enum State: Int {
@@ -62,50 +60,46 @@ final class TableViewDataSource: NSObject, DataSourcing {
         case movies
     }
     
-    fileprivate var tableView: UITableView
-    fileprivate var sections: [Section]
+    fileprivate let numberOfRows: Int = 1
     
+    fileprivate var tableView: UITableView!
+    fileprivate var sections: [Section]!
     fileprivate var viewModel: HomeViewModel!
+    fileprivate(set) var displayCell: DisplayTableViewCell!
     
     var heightForRowAt: ((IndexPath) -> CGFloat)?
     var tableViewDidScroll: ((UIScrollView) -> Void)?
     var didSelectItem: ((Int, Int) -> Void)?
     
-    fileprivate(set) var displayCell: DisplayTableViewCell!
-    fileprivate var ratableCell: RatableTableViewCell!
-    fileprivate var resumableCell: ResumableTableViewCell!
-    fileprivate var standardCell: StandardTableViewCell!
-    
-    fileprivate let numberOfRows: Int = 1
-    
-    init(in tableView: UITableView,
-         with viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-        self.tableView = tableView
-        self.sections = viewModel.sections.value
-        super.init()
-        self.setupSubviews()
-    }
-    
     deinit {
         displayCell = nil
-        ratableCell = nil
-        resumableCell = nil
-        standardCell = nil
         heightForRowAt = nil
         tableViewDidScroll = nil
         didSelectItem = nil
         viewModel = nil
+        tableView = nil
+        sections = nil
     }
     
-    private func setupSubviews() {
-        setupTableView()
+    static func create(on tableView: UITableView,
+                       with viewModel: HomeViewModel) -> TableViewDataSource {
+        let dataSource = TableViewDataSource()
+        dataSource.tableView = tableView
+        dataSource.sections = viewModel.sections.value
+        createViewModel(on: dataSource, with: viewModel)
+        dataSource.viewsDidRegister()
+        dataSource.viewDidLoad()
+        return dataSource
     }
     
-    private func setupTableView() {
-        viewsDidRegister()
-        dataSourceDidChange()
+    @discardableResult
+    private static func createViewModel(on dataSource: TableViewDataSource,
+                                        with viewModel: HomeViewModel) -> HomeViewModel {
+        dataSource.viewModel = viewModel
+        return dataSource.viewModel
     }
+    
+    fileprivate func viewDidLoad() { dataSourceDidChange() }
     
     fileprivate func viewsDidRegister() {
         tableView.register(headerFooter: TableViewHeaderFooterView.self)
@@ -140,34 +134,34 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
         switch index {
         case .display:
             guard displayCell == nil else { return displayCell }
-            displayCell = .create(in: tableView,
+            displayCell = .create(on: tableView,
                                   for: indexPath,
                                   with: viewModel)
             return displayCell
         case .ratable:
-            ratableCell = RatableTableViewCell.create(in: tableView,
-                                                      for: indexPath,
-                                                      with: viewModel) as? RatableTableViewCell
-            ratableCell?.dataSource?.didSelectItem = { [weak self] row in
+            let cell = RatableTableViewCell.create(on: tableView,
+                                                   for: indexPath,
+                                                   with: viewModel)!
+            cell.dataSource?.didSelectItem = { [weak self] row in
                 self?.didSelectItem?(indexPath.section, row)
             }
-            return ratableCell
+            return cell
         case .resumable:
-            resumableCell = ResumableTableViewCell.create(in: tableView,
-                                                          for: indexPath,
-                                                          with: viewModel) as? ResumableTableViewCell
-            resumableCell?.dataSource?.didSelectItem = { [weak self] row in
+            let cell = ResumableTableViewCell.create(on: tableView,
+                                                     for: indexPath,
+                                                     with: viewModel)!
+            cell.dataSource?.didSelectItem = { [weak self] row in
                 self?.didSelectItem?(indexPath.section, row)
             }
-            return resumableCell
+            return cell
         default:
-            standardCell = StandardTableViewCell.create(in: tableView,
-                                                        for: indexPath,
-                                                        with: viewModel)
-            standardCell?.dataSource?.didSelectItem = { [weak self] row in
+            let cell = StandardTableViewCell.create(on: tableView,
+                                                    for: indexPath,
+                                                    with: viewModel)
+            cell.dataSource?.didSelectItem = { [weak self] row in
                 self?.didSelectItem?(indexPath.section, row)
             }
-            return standardCell
+            return cell
         }
     }
     
@@ -178,7 +172,7 @@ extension TableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-        return TableViewHeaderFooterView.create(in: tableView,
+        return TableViewHeaderFooterView.create(on: tableView,
                                                 for: section,
                                                 with: viewModel)
     }

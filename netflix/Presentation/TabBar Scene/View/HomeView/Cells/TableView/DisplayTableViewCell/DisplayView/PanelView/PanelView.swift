@@ -52,7 +52,7 @@ final class PanelView: UIView, View, ViewInstantiable {
     }
     
     private static func createItems(on view: PanelView,
-                                        with viewModel: HomeViewModel) {
+                                    with viewModel: HomeViewModel) {
         view.leadingItemView = .create(on: view.leadingItemViewContainer, with: viewModel)
         view.trailingItemView = .create(on: view.trailingItemViewContainer, with: viewModel)
     }

@@ -56,7 +56,7 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         dataSource = nil
     }
     
-    class func create(in tableView: UITableView,
+    class func create(on tableView: UITableView,
                       for indexPath: IndexPath,
                       with viewModel: HomeViewModel) -> TableViewCell<T>? {
         guard let view = tableView.dequeueReusableCell(
@@ -75,9 +75,9 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
                           with viewModel: HomeViewModel) {
         guard let indices = TableViewDataSource.Index(rawValue: section.id) else { return }
         
-        dataSource = .init(collectionView: collectionView,
-                           section: section,
-                           viewModel: viewModel)
+        dataSource = .create(on: collectionView,
+                             section: section,
+                             with: viewModel)
         
         switch indices {
         case .display: break
