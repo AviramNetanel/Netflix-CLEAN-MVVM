@@ -69,7 +69,7 @@ final class SceneDependencies {
     // MARK: AuthScene
     
     func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
-        return AuthViewController.create(with: createAuthViewModel(actions: actions))
+        return .create(with: createAuthViewModel(actions: actions))
     }
     
     func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
@@ -80,18 +80,17 @@ final class SceneDependencies {
     // MARK: HomeView
     
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
-        return HomeViewController.create(with: createHomeViewModel(actions: actions))
+        return .create(with: createHomeViewModel(actions: actions))
     }
     
     func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
-        return HomeViewModel(homeUseCase: createHomeUseCase(),
-                             actions: actions)
+        return .create(homeUseCase: createHomeUseCase(), actions: actions)
     }
     
     // MARK: DetailView
     
     func createDetailViewController() -> DetailViewController {
-        return DetailViewController.create(with: createDetailViewModel())
+        return .create(with: createDetailViewModel())
     }
     
     func createDetailViewModel() -> DetailViewModel {

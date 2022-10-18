@@ -12,15 +12,6 @@ import CoreData
 @objc(UserDTO)
 public final class UserDTO: NSObject, Codable, NSSecureCoding {
     
-    private enum CodingKeys: String, CodingKey {
-        case name,
-             email,
-             password,
-             passwordConfirm,
-             role,
-             active
-    }
-    
     var name: String?
     var email: String?
     var password: String?
@@ -40,33 +31,6 @@ public final class UserDTO: NSObject, Codable, NSSecureCoding {
         self.passwordConfirm = passwordConfirm
         self.role = role
         self.active = active
-    }
-    
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let name = try container.decodeIfPresent(String.self, forKey: .name)
-        let email = try container.decodeIfPresent(String.self, forKey: .email)
-        let password = try container.decodeIfPresent(String.self, forKey: .password)
-        let passwordConfirm = try container.decodeIfPresent(String.self, forKey: .passwordConfirm)
-        let role = try container.decodeIfPresent(String.self, forKey: .role)
-        let active = try container.decodeIfPresent(Bool.self, forKey: .active)
-        
-        self.name = name
-        self.email = email
-        self.password = password
-        self.passwordConfirm = passwordConfirm
-        self.role = role
-        self.active = active
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(name, forKey: .name)
-        try container.encode(email, forKey: .email)
-        try container.encode(password, forKey: .password)
-        try container.encodeIfPresent(passwordConfirm, forKey: .passwordConfirm)
-        try container.encodeIfPresent(role, forKey: .role)
-        try container.encodeIfPresent(active, forKey: .active)
     }
     
     // MARK: NSSecureCoding

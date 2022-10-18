@@ -156,6 +156,11 @@
 		A1B3F99428C575A30042DE9F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99328C575A30042DE9F /* AuthViewModel.swift */; };
 		A1B3F99828C6278A0042DE9F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */; };
 		A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F99C28C631F90042DE9F /* SignInViewController.swift */; };
+		A1B93C6A28FF057200AF2C7F /* SectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6928FF057200AF2C7F /* SectionResponse.swift */; };
+		A1B93C6C28FF058D00AF2C7F /* SectionResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6B28FF058D00AF2C7F /* SectionResponseDTO+Mapping.swift */; };
+		A1B93C6E28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */; };
+		A1B93C7028FF08F500AF2C7F /* MediaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6F28FF08F500AF2C7F /* MediaResponse.swift */; };
+		A1B93C7228FF329800AF2C7F /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7128FF329800AF2C7F /* Array+Extension.swift */; };
 		A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */; };
 		A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */; };
 		A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */; };
@@ -349,6 +354,11 @@
 		A1B3F99328C575A30042DE9F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A1B3F99C28C631F90042DE9F /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		A1B93C6928FF057200AF2C7F /* SectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionResponse.swift; sourceTree = "<group>"; };
+		A1B93C6B28FF058D00AF2C7F /* SectionResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
+		A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
+		A1B93C6F28FF08F500AF2C7F /* MediaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResponse.swift; sourceTree = "<group>"; };
+		A1B93C7128FF329800AF2C7F /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rendering.swift"; sourceTree = "<group>"; };
 		A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
@@ -654,7 +664,9 @@
 			children = (
 				A18691F128C958A30087DE3B /* AuthResponse.swift */,
 				A18691F328C959810087DE3B /* SectionsResponse.swift */,
+				A1B93C6928FF057200AF2C7F /* SectionResponse.swift */,
 				A1AA28FD28FB8EC70011EE9D /* MediasResponse.swift */,
+				A1B93C6F28FF08F500AF2C7F /* MediaResponse.swift */,
 				A1AA28D928F5A47C0011EE9D /* SeasonResponse.swift */,
 			);
 			path = Responses;
@@ -851,6 +863,7 @@
 		A18B993328BFC70D0077A5A6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A1B93C7128FF329800AF2C7F /* Array+Extension.swift */,
 				A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */,
 				A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */,
 				A18691BD28C764600087DE3B /* UIBarButtonItem+Extension.swift */,
@@ -1021,7 +1034,9 @@
 			children = (
 				A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */,
 				A18691E128C8D4B10087DE3B /* SectionsResponseDTO+Mapping.swift */,
+				A1B93C6B28FF058D00AF2C7F /* SectionResponseDTO+Mapping.swift */,
 				A1AA28FB28FB8D8F0011EE9D /* MediasResponseDTO+Mapping.swift */,
+				A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */,
 				A1AA28DD28F5A5070011EE9D /* SeasonResponseDTO+Mapping.swift */,
 			);
 			path = Responses;
@@ -1415,6 +1430,7 @@
 				A1E81D0B28CFE16E00D044EA /* Orientable.swift in Sources */,
 				A1741D4828EC408B00F3C46B /* DetailPanelViewItem.swift in Sources */,
 				A1741D2C28E68FB600F3C46B /* PreviewViewViewModel.swift in Sources */,
+				A1B93C6C28FF058D00AF2C7F /* SectionResponseDTO+Mapping.swift in Sources */,
 				A1F56A6928C68FB10089BD4F /* NSAttributedString+Extension.swift in Sources */,
 				A1AD25A028D2987B00F793B3 /* DisplayTableViewCell.swift in Sources */,
 				A1E81D1428CFE2C900D044EA /* CollectionViewCell.swift in Sources */,
@@ -1427,6 +1443,7 @@
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */,
 				A1AA28D428F590B30011EE9D /* EpisodeCollectionViewCell.swift in Sources */,
+				A1B93C7028FF08F500AF2C7F /* MediaResponse.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
 				A127C1E228DD00F100CEE34F /* CategoriesOverlayViewFooterView.swift in Sources */,
 				A1AD25D028D6D31000F793B3 /* NavigationViewViewModel.swift in Sources */,
@@ -1438,6 +1455,7 @@
 				A186921628CA2D100087DE3B /* TableViewCellItemViewModel.swift in Sources */,
 				A1741D5028EC774700F3C46B /* DetailNavigationViewItemViewModel.swift in Sources */,
 				A1AA28C828F487E70011EE9D /* MediaPlayerObservers.swift in Sources */,
+				A1B93C6A28FF057200AF2C7F /* SectionResponse.swift in Sources */,
 				A1AD25C028D3FC9600F793B3 /* UITableView+Register.swift in Sources */,
 				A18B991928BEBE040077A5A6 /* AppFlowCoordinator.swift in Sources */,
 				A18B995528BFF1D10077A5A6 /* UserDTO+Mapping.swift in Sources */,
@@ -1526,6 +1544,7 @@
 				A1E81D2C28CFE4A900D044EA /* CollectionViewDataSource.swift in Sources */,
 				A1F56A6F28C695FC0089BD4F /* UITextField+Extension.swift in Sources */,
 				A1AA28FA28FB8C350011EE9D /* MediaRequestDTO+Mapping.swift in Sources */,
+				A1B93C7228FF329800AF2C7F /* Array+Extension.swift in Sources */,
 				A18B998028C03CA20077A5A6 /* JWT.swift in Sources */,
 				A18B991B28BEC0580077A5A6 /* AppDependencies.swift in Sources */,
 				A1AD25C928D56BB100F793B3 /* NavigationViewItem.swift in Sources */,
@@ -1572,6 +1591,7 @@
 				A1E81D0928CFE16900D044EA /* Mutable.swift in Sources */,
 				A1AA28DC28F5A4B90011EE9D /* SeasonRequestDTO+Mapping.swift in Sources */,
 				A1AD25AD28D3C29600F793B3 /* PanelViewItem.swift in Sources */,
+				A1B93C6E28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift in Sources */,
 				A1741D0D28E679AE00F3C46B /* DetailPanelTableViewCell.swift in Sources */,
 				A1E81D1628CFE2D800D044EA /* TableViewCell.swift in Sources */,
 				A186921C28CA2ED20087DE3B /* CollectionViewCellItemViewModel.swift in Sources */,

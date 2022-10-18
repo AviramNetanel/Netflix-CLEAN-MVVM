@@ -13,21 +13,20 @@ struct HomeViewModelActions {
     let presentMediaDetails: (Section, Media) -> Void
 }
 
-// MARK: - HomeViewModelEndpoints protocol
-
-private protocol HomeViewModelEndpoints {
-    func getSections()
-}
-
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
+    func dataWillLoad()
+    func dataDidLoad<T>(response: T.Type,
+                        completion: (() -> Void)?)
     func viewDidLoad()
-    func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void)
+    func sectionsDidFetch() async
+    func mediaDidFetch() async
+    
     func filter(sections: [Section])
-    func filter(sections: [Section], at index: Int, withMinimumRating value: Float?)
-    func sort(section: Section)
-    func prefix(section: Section, by length: Int)
+    func filter(sections: [Section],
+                at index: Int,
+                withMinimumRating value: Float?)
     func section(at index: TableViewDataSource.Index) -> Section
     func title(forHeaderAt index: Int) -> String
     func randomObject(at section: Section) -> Media
@@ -39,6 +38,8 @@ private protocol ViewModelInput {
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
+    var homeUseCase: HomeUseCase! { get }
+    var actions: HomeViewModelActions! { get }
     var state: Observable<TableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
     var media: Observable<[Media]> { get }
@@ -48,41 +49,40 @@ private protocol ViewModelOutput {
 
 // MARK: - ViewModel protocol
 
-private typealias ViewModel = ViewModelInput & ViewModelOutput & HomeViewModelEndpoints
+private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 // MARK: - HomeViewModel class
 
 final class HomeViewModel: ViewModel {
     
-    private(set) var homeUseCase: HomeUseCase
-    private(set) var actions: HomeViewModelActions
+    private(set) var homeUseCase: HomeUseCase!
+    private(set) var actions: HomeViewModelActions!
     
-    private var task: Cancellable? { willSet { task?.cancel() } }
-    private var task2: Cancellable? { willSet { task?.cancel() } }
+    private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
+    private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
     
     fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
     fileprivate(set) var media: Observable<[Media]> = Observable([])
     private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
-    fileprivate var isEmpty: Bool { return sections.value.isEmpty }
+    fileprivate var isEmpty: Bool { sections.value.isEmpty }
     
     var navigationViewDidAppear: (() -> Void)?
     
-    init(homeUseCase: HomeUseCase,
-         actions: HomeViewModelActions) {
-        self.homeUseCase = homeUseCase
-        self.actions = actions
+    static func create(homeUseCase: HomeUseCase,
+                       actions: HomeViewModelActions) -> HomeViewModel {
+        let viewModel = HomeViewModel()
+        viewModel.homeUseCase = homeUseCase
+        viewModel.actions = actions
+        return viewModel
     }
     
     deinit {
-        task = nil
+        mediaTask = nil
+        sectionsTask = nil
         navigationViewDidAppear = nil
-    }
-    
-    private func present() {
-        navigationViewDidAppear?()
-        // Main entry-point for tableview.
-        state.value = .tvShows
+        actions = nil
+        homeUseCase = nil
     }
 }
 
@@ -90,44 +90,79 @@ final class HomeViewModel: ViewModel {
 
 extension HomeViewModel {
     
+    func dataWillLoad() {
+        Task {
+            await sectionsDidFetch()
+            await mediaDidFetch()
+        }
+    }
+    
+    func dataDidLoad<T>(response: T,
+                        completion: (() -> Void)?) {
+        switch response {
+        case let response as SectionsResponse:
+            sections.value = response.data
+        case let response as MediasResponse:
+            media.value = response.data
+        default: break
+        }
+        
+        completion?()
+    }
+    
     func viewDidLoad() {
-        getSections()
-    }
-    
-    func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void) {
-        sections.value = response.data
-        
-        completion()
-    }
-    
-    func dataDidLoad(response: MediasResponse, completion: @escaping () -> Void) {
-        media.value = response.data
+        navigationViewDidAppear?()
         filter(sections: sections.value)
-        
-        completion()
+        // Root entry-point for tableview presentation.
+        state.value = .tvShows
     }
+    
+    func sectionsDidFetch() async {
+        sectionsTask = await homeUseCase.execute(for: SectionsResponse.self) { [weak self] result in
+            guard let self = self else { return }
+            if case let .success(response) = result {
+                self.dataDidLoad(response: response, completion: nil)
+            }
+        }
+    }
+    
+    func mediaDidFetch() async {
+        mediaTask = await homeUseCase.execute(for: MediasResponse.self) { [weak self] result in
+            guard let self = self else { return }
+            if case let .success(response) = result {
+                self.dataDidLoad(response: response) { self.viewDidLoad() }
+            }
+        }
+    }
+}
+
+// MARK: - ViewModelInput implementation
+
+extension HomeViewModel {
     
     func filter(sections: [Section]) {
         for index in TableViewDataSource.Index.allCases {
             switch index {
             case .ratable:
-                media.value = media.value.sorted { $0.rating > $1.rating }
-                media.value = media.value.filter { $0.rating > 7.5 }
-                let slice = media.value.prefix(10)
-                sections[index.rawValue].media = Array(slice)
+                var media = media.value
+                media = media
+                    .shuffled()
+                    .sorted { $0.rating > $1.rating }
+                    .filter { $0.rating > 7.5 }
+                    .slice(10)
+                sections[index.rawValue].media = media
             case .resumable:
-                media.value = media.value.shuffled()
-                sections[index.rawValue].media = media.value
+                var media = media.value
+                media = media.shuffled()
+                sections[index.rawValue].media = media
             case .action, .sciFi,
                     .crime, .thriller,
                     .adventure, .comedy,
                     .drama, .horror,
                     .anime, .familyNchildren,
                     .documentary:
-                media.value = media.value.shuffled()
                 filter(sections: sections, at: index.rawValue)
             case .blockbuster:
-                media.value = media.value.shuffled()
                 filter(sections: sections, at: index.rawValue, withMinimumRating: 7.5)
             default: break
             }
@@ -138,36 +173,24 @@ extension HomeViewModel {
                 at index: Int,
                 withMinimumRating value: Float? = nil) {
         guard let value = value else {
-            sections[index].media = media.value.filter {
-                $0.genres.contains(sections[index].title)
-            }
-            sections[index].media = media.value.filter {
+            sections[index].media = media.value.shuffled().filter {
                 $0.genres.contains(sections[index].title)
             }
             return
         }
-        sections[index].media = media.value.filter { $0.rating > value }
-    }
-    
-    func sort(section: Section) {
-        section.media = media.value.sorted { $0.rating > $1.rating }
-    }
-    
-    func prefix(section: Section, by length: Int) {
-        let slice = media.value.prefix(10)
-        section.media = Array(slice)
+        sections[index].media = media.value.shuffled().filter { $0.rating > value }
     }
     
     func section(at index: TableViewDataSource.Index) -> Section {
-        return sections.value[index.rawValue]
+        sections.value[index.rawValue]
     }
     
     func title(forHeaderAt index: Int) -> String {
-        return .init(describing: sections.value[index].title)
+        .init(describing: sections.value[index].title)
     }
     
     func randomObject(at section: Section) -> Media {
-        return state.value == .tvShows
+        state.value == .tvShows
             ? media.value.randomElement()!
             : media.value.randomElement()!
     }
@@ -175,87 +198,5 @@ extension HomeViewModel {
     func presentedDisplayMediaDidChange() {
         let media = randomObject(at: section(at: .display))
         presentedDisplayMedia.value = media
-    }
-}
-
-// MARK: - HomeViewModelEndpoints implementation
-
-fileprivate extension HomeViewModel {
-    
-    func getSections() {
-        task = homeUseCase.execute(for: SectionsResponse.self) { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result {
-                self.dataDidLoad(response: response) {
-                    self.getMedia()
-                }
-            }
-        }
-    }
-    
-    func getMedia() {
-        task2 = homeUseCase.execute(for: MediasResponse.self) { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result {
-                self.dataDidLoad(response: response) { [weak self] in
-                    self?.present()
-                }
-            }
-        }
-        
-        Task {
-            let string = "https://netflix-swift-api.herokuapp.com/api/v1/media/the-witcher"
-            let urls: [URL] = Array(0...1).map { _ in
-                URL(string: string)
-            }.compactMap { $0 }
-            
-            for try await data in DataSequence(urls: urls) {
-                let media = try! JSONDecoder().decode(MediaResponseDTO.self, from: data)
-                print(media.data.toDomain())
-            }
-        }
-    }
-}
-
-
-struct DataSequence: AsyncSequence {
-    
-    typealias Element = Data
-    
-    let urls: [URL]
-    
-    init(urls: [URL]) {
-        self.urls = urls
-    }
-    
-    func makeAsyncIterator() -> DataIterator {
-        return DataIterator(urls: urls)
-    }
-}
-
-struct DataIterator: AsyncIteratorProtocol {
-    
-    typealias Element = Data
-    
-    private var index = 0
-    private let urlSession = URLSession.shared
-    let urls: [URL]
-    
-    init(urls: [URL]) {
-        self.urls = urls
-    }
-    
-    mutating func next() async throws -> Data? {
-        guard index < urls.count else { return nil }
-        
-        let url = urls[index]
-        index += 1
-        
-        if #available(iOS 15.0, *) {
-            let (data, _) = try await urlSession.data(from: url)
-            return data
-        }
-        print("na")
-        return nil
     }
 }

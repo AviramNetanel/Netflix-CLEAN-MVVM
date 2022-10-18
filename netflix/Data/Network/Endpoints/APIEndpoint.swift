@@ -33,7 +33,7 @@ struct APIEndpoint {
     
     // MARK: SectionsRepository endpoints
     
-    static func getSections() -> Endpoint<SectionsResponseDTO> {
+    static func getAllSections() -> Endpoint<SectionsResponseDTO> {
         return Endpoint(path: "api/v1/sections",
                         method: .get,
                         queryParameters: ["sort": "id"])
@@ -41,7 +41,7 @@ struct APIEndpoint {
     
     // MARK: MediaRepository endpoints
     
-    static func getMedia() -> Endpoint<MediasResponseDTO> {
+    static func getAllMedia() -> Endpoint<MediasResponseDTO> {
         return Endpoint(path: "api/v1/media",
                         method: .get,
                         queryParameters: ["sort": "id"])

@@ -14,9 +14,3 @@ struct MediasResponse {
     let results: Int
     let data: [Media]
 }
-
-
-struct MediaResponse {
-    let status: String
-    let data: Media
-}

@@ -38,7 +38,7 @@ final class MediaRepository: Repository {
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.getMedia()
+        let endpoint = APIEndpoint.getAllMedia()
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):

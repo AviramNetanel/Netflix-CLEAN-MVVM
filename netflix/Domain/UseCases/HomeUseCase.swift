@@ -11,9 +11,9 @@ import Foundation
 
 private protocol UseCaseInput {
     func request<T>(for response: T.Type,
-                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
+                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
     func execute<T>(for response: T.Type,
-                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
+                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
 }
 
 // MARK: - UseCaseOutput protocol
@@ -41,7 +41,7 @@ final class HomeUseCase: UseCase {
     }
     
     fileprivate func request<T>(for response: T.Type,
-                                completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
+                                completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
         switch response {
         case is SectionsResponse.Type:
             return sectionsRepository.getAll { result in
@@ -66,7 +66,7 @@ final class HomeUseCase: UseCase {
     }
     
     func execute<T>(for response: T.Type,
-                    completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
-        return request(for: response, completion: completion)
+                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
+        return await request(for: response, completion: completion)
     }
 }

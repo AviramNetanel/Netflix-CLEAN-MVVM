@@ -42,7 +42,7 @@ final class HomeViewController: UIViewController {
         setupBehaviors()
         setupSubviews()
         setupBindings()
-        viewModel.viewDidLoad()
+        viewModel.dataWillLoad()
     }
     
     private func setupBehaviors() {
