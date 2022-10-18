@@ -37,7 +37,8 @@ final class AuthRepository {
     private let dataTransferService: DataTransferService
     private let cache: AuthResponseStorage
     
-    init(dataTransferService: DataTransferService, cache: AuthResponseStorage) {
+    init(dataTransferService: DataTransferService,
+         cache: AuthResponseStorage) {
         self.dataTransferService = dataTransferService
         self.cache = cache
     }
@@ -57,7 +58,7 @@ extension AuthRepository: RepositoryInput {
         guard !task.isCancelled else { return nil }
         
         let endpoint = APIEndpoint.signUp(with: requestDTO)
-        task.networkTask = self.dataTransferService.request(with: endpoint) { result in
+        task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):
                 self.cache.save(response: response, for: requestDTO)

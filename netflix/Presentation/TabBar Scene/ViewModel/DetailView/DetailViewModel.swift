@@ -20,13 +20,13 @@ private protocol ViewModelInput {
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    var detailUseCase: DetailUseCase { get }
+    var detailUseCase: DetailUseCase! { get }
     var task: Cancellable? { get }
     var section: Section! { get }
     var media: Media! { get }
     var state: TableViewDataSource.State! { get }
-    var navigationViewState: Observable<DetailNavigationView.State> { get }
-    var season: Observable<Season?> { get }
+    var navigationViewState: Observable<DetailNavigationView.State>! { get }
+    var season: Observable<Season?>! { get }
 }
 
 // MARK: - ViewModel typealias
@@ -37,17 +37,15 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 final class DetailViewModel: ViewModel {
     
-    let detailUseCase: DetailUseCase
+    var detailUseCase: DetailUseCase!
     var task: Cancellable? { willSet { task?.cancel() } }
     
     var section: Section!
     var media: Media!
     var state: TableViewDataSource.State!
     
-    var navigationViewState: Observable<DetailNavigationView.State> = .init(.episodes)
-    var season: Observable<Season?> = .init(nil)
-    
-    init(detailUseCase: DetailUseCase) { self.detailUseCase = detailUseCase }
+    var navigationViewState: Observable<DetailNavigationView.State>! = .init(.episodes)
+    var season: Observable<Season?>! = .init(nil)
     
     deinit {
         season.value = nil
@@ -55,6 +53,12 @@ final class DetailViewModel: ViewModel {
         media = nil
         section = nil
         task = nil
+    }
+    
+    static func create(detailUseCase: DetailUseCase) -> DetailViewModel {
+        let viewModel = DetailViewModel()
+        viewModel.detailUseCase = detailUseCase
+        return viewModel
     }
     
     fileprivate func dataDidLoad<T>(response: T) {

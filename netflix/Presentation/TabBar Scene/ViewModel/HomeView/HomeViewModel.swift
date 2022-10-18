@@ -69,20 +69,20 @@ final class HomeViewModel: ViewModel {
     
     var navigationViewDidAppear: (() -> Void)?
     
-    static func create(homeUseCase: HomeUseCase,
-                       actions: HomeViewModelActions) -> HomeViewModel {
-        let viewModel = HomeViewModel()
-        viewModel.homeUseCase = homeUseCase
-        viewModel.actions = actions
-        return viewModel
-    }
-    
     deinit {
         mediaTask = nil
         sectionsTask = nil
         navigationViewDidAppear = nil
         actions = nil
         homeUseCase = nil
+    }
+    
+    static func create(homeUseCase: HomeUseCase,
+                       actions: HomeViewModelActions) -> HomeViewModel {
+        let viewModel = HomeViewModel()
+        viewModel.homeUseCase = homeUseCase
+        viewModel.actions = actions
+        return viewModel
     }
 }
 
@@ -130,7 +130,9 @@ extension HomeViewModel {
         mediaTask = await homeUseCase.execute(for: MediasResponse.self) { [weak self] result in
             guard let self = self else { return }
             if case let .success(response) = result {
-                self.dataDidLoad(response: response) { self.viewDidLoad() }
+                self.dataDidLoad(response: response) {
+                    self.viewDidLoad()
+                }
             }
         }
     }
@@ -141,6 +143,8 @@ extension HomeViewModel {
 extension HomeViewModel {
     
     func filter(sections: [Section]) {
+        guard !isEmpty else { return }
+        
         for index in TableViewDataSource.Index.allCases {
             switch index {
             case .ratable:
@@ -173,12 +177,14 @@ extension HomeViewModel {
                 at index: Int,
                 withMinimumRating value: Float? = nil) {
         guard let value = value else {
-            sections[index].media = media.value.shuffled().filter {
-                $0.genres.contains(sections[index].title)
-            }
+            sections[index].media = media.value
+                .shuffled()
+                .filter { $0.genres.contains(sections[index].title) }
             return
         }
-        sections[index].media = media.value.shuffled().filter { $0.rating > value }
+        sections[index].media = media.value
+            .shuffled()
+            .filter { $0.rating > value }
     }
     
     func section(at index: TableViewDataSource.Index) -> Section {

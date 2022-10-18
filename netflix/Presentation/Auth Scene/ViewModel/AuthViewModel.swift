@@ -29,7 +29,7 @@ private protocol ViewModelInput {
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    var authUseCase: AuthUseCase { get }
+    var authUseCase: AuthUseCase! { get }
     var actions: AuthViewModelActions? { get }
     var authorizationTask: Cancellable? { get }
 }
@@ -42,16 +42,25 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 final class AuthViewModel: ViewModel {
     
-    fileprivate let authUseCase: AuthUseCase
+    fileprivate var authUseCase: AuthUseCase!
     fileprivate(set) var actions: AuthViewModelActions?
     
     fileprivate var authorizationTask: Cancellable? {
         willSet { authorizationTask?.cancel() }
     }
     
-    init(authUseCase: AuthUseCase, actions: AuthViewModelActions? = nil) {
-        self.authUseCase = authUseCase
-        self.actions = actions
+    deinit {
+        authorizationTask = nil
+        actions = nil
+        authUseCase = nil
+    }
+    
+    static func create(authUseCase: AuthUseCase,
+                       actions: AuthViewModelActions? = nil) -> AuthViewModel {
+        let viewModel = AuthViewModel()
+        viewModel.authUseCase = authUseCase
+        viewModel.actions = actions
+        return viewModel
     }
 }
 
