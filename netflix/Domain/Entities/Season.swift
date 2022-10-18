@@ -10,9 +10,9 @@ import Foundation
 // MARK: - Season struct
 
 struct Season {
-    var tvShow: String
+    var mediaId: String
     var title: String
     var slug: String
     var season: Int
-    var media: [Episode]
+    var episodes: [Episode]
 }

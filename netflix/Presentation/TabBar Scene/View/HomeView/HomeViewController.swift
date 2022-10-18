@@ -151,8 +151,8 @@ extension HomeViewController {
                 ? self.viewModel.sections.value[section]
                 : self.viewModel.sections.value[section]
             let media = self.viewModel.state.value == .tvShows
-                ? section.tvshows![row]
-                : section.movies![row]
+                ? section.media[row]
+                : section.media[row]
             self.viewModel.actions.presentMediaDetails(section, media)
         }
     }

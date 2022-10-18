@@ -1,8 +1,8 @@
 //
-//  TVShowsRepository.swift
+//  MediaRepository.swift
 //  netflix
 //
-//  Created by Zach Bazov on 06/09/2022.
+//  Created by Zach Bazov on 17/10/2022.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func getAll(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable?
+    func getAll(completion: @escaping (Result<MediasResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - RepositoryOutput protocol
@@ -23,27 +23,22 @@ private protocol RepositoryOutput {
 
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - TVShowsRepository class
+// MARK: - MediaRepository struct
 
-final class TVShowsRepository: Repository {
+final class MediaRepository: Repository {
     
     fileprivate let dataTransferService: DataTransferService
     
     init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService
     }
-}
-
-// MARK: - RepositoryInput implementation
-
-extension TVShowsRepository {
     
-    func getAll(completion: @escaping (Result<TVShowsResponseDTO, Error>) -> Void) -> Cancellable? {
+    func getAll(completion: @escaping (Result<MediasResponseDTO, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.getTVShows()
+        let endpoint = APIEndpoint.getMedia()
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):

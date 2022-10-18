@@ -39,18 +39,10 @@ struct APIEndpoint {
                         queryParameters: ["sort": "id"])
     }
     
-    // MARK: TVShowsRepository endpoints
+    // MARK: MediaRepository endpoints
     
-    static func getTVShows() -> Endpoint<TVShowsResponseDTO> {
-        return Endpoint(path: "api/v1/tvshows",
-                        method: .get,
-                        queryParameters: ["sort": "id"])
-    }
-    
-    // MARK: MoviesRepository endpoints
-    
-    static func getMovies() -> Endpoint<MoviesResponseDTO> {
-        return Endpoint(path: "api/v1/movies",
+    static func getMedia() -> Endpoint<MediasResponseDTO> {
+        return Endpoint(path: "api/v1/media",
                         method: .get,
                         queryParameters: ["sort": "id"])
     }
@@ -59,7 +51,7 @@ struct APIEndpoint {
     
     static func getSeason(with viewModel: EpisodeCollectionViewCellViewModel,
                           season: Int? = 1) -> Endpoint<SeasonResponseDTO> {
-        return Endpoint(path: "api/v1/tvshows/\(viewModel.media.slug)/seasons/\(season!)",
+        return Endpoint(path: "api/v1/media/\(viewModel.media.slug)/seasons/\(season!)",
                         method: .get)
     }
 }

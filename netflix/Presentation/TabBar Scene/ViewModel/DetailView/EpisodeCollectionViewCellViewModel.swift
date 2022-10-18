@@ -37,7 +37,7 @@ struct EpisodeCollectionViewCellViewModel: ViewModel {
     
     init(with viewModel: DetailViewModel) {
         self.media = viewModel.media
-        self.posterImagePath = viewModel.media.detailCover
+        self.posterImagePath = viewModel.media.resources.previewPoster
         self.posterImageIdentifier = .init(string: "detailposter_\(viewModel.media.slug)")
         self.posterImageURL = .init(string: self.posterImagePath)
         if let season = viewModel.season.value as Season? {

@@ -34,6 +34,6 @@ struct DetailDescriptionViewViewModel: ViewModel {
     init(with media: Media) {
         self.description = media.description
         self.cast = media.cast
-        self.writers = media.writers ?? ""
+        self.writers = media.writers
     }
 }

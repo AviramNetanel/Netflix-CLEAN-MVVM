@@ -12,7 +12,7 @@ import Foundation
 struct EpisodeDTO: Decodable {
     
     enum CodingKeys: String, CodingKey {
-        case tvShow,
+        case mediaId,
              title,
              slug,
              season,
@@ -20,7 +20,7 @@ struct EpisodeDTO: Decodable {
              url
     }
     
-    let tvShow: String
+    let mediaId: String
     let title: String
     let slug: String
     let season: Int
@@ -29,14 +29,14 @@ struct EpisodeDTO: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let tvShow = try container.decode(String.self, forKey: .tvShow)
+        let mediaId = try container.decode(String.self, forKey: .mediaId)
         let title = try container.decode(String.self, forKey: .title)
         let slug = try container.decode(String.self, forKey: .slug)
         let season = try container.decode(Int.self, forKey: .season)
         let episode = try container.decode(Int.self, forKey: .episode)
         let url = try container.decode(String.self, forKey: .url)
         
-        self.tvShow = tvShow
+        self.mediaId = mediaId
         self.title = title
         self.slug = slug
         self.season = season
@@ -49,7 +49,7 @@ struct EpisodeDTO: Decodable {
 
 extension EpisodeDTO {
     func toDomain() -> Episode {
-        return .init(tvShow: tvShow,
+        return .init(mediaId: mediaId,
                      title: title,
                      slug: slug,
                      season: season,

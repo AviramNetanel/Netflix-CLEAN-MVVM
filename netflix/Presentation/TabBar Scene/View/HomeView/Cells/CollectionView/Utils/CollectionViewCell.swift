@@ -51,8 +51,8 @@ class CollectionViewCell: UICollectionViewCell, View {
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
         let media = state == .tvShows
-            ? section.tvshows![indexPath.row]
-            : section.movies![indexPath.row]
+            ? section.media[indexPath.row]
+            : section.media[indexPath.row]
         view.viewDidLoad(media: media,
                          with: createViewModel(on: view,
                                                for: indexPath,
@@ -105,7 +105,7 @@ class CollectionViewCell: UICollectionViewCell, View {
     
     fileprivate func logoDidAlign(_ constraint: NSLayoutConstraint,
                                   with viewModel: CollectionViewCellItemViewModel) {
-        switch viewModel.logoAlignment {
+        switch viewModel.presentedLogoAlignment {
         case .top: constraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
         case .midTop: constraint.constant = 64.0
         case .mid: constraint.constant = bounds.midY

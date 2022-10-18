@@ -11,49 +11,51 @@ import UIKit
 
 struct Media {
     
-    // MARK: Shared Properties
+    let id: String?
+    let type: String
+    let title: String
+    let slug: String
     
-    var id: String?
-    var title: String
-    var rating: Float
-    var description: String
-    var cast: String
-    var isHD: Bool
-    var displayCover: String
-    var detailCover: String
-    var hasWatched: Bool
-    var newRelease: Bool
-    var logoPosition: String
-    var slug: String
-    var presentedCover: String?
-    var presentedLogo: String?
-    var presentedDisplayLogo: String?
-    var isNetflixExclusive: Bool?
+    let createdAt: String
     
-    var displayLogos: [String]?
-    var logos: [String]
-    var genres: [String]
-    var trailers: [String]
-    var covers: [String]
+    let rating: Float
+    let description: String
+    let cast: String
+    let writers: String
+    let duration: String
+    let length: String
+    let genres: [String]
     
-    // MARK: TV Show's Properties
+    let hasWatched: Bool
+    let isHD: Bool
+    let isExclusive: Bool
+    let isNewRelease: Bool
+    let isSecret: Bool
     
-    var duration: String?
-    var seasonCount: Int?
-    var episodeCount: Int?
+    struct Resources {
+        let posters: [String]
+        let logos: [String]
+        let trailers: [String]
+        let displayPoster: String
+        let displayLogos: [String]
+        let previewPoster: String
+        let previewUrl: String
+        let presentedPoster: String
+        let presentedLogo: String
+        let presentedDisplayLogo: String
+        let presentedLogoAlignment: String
+    }
     
-    // MARK: Movie's Properties
+    let resources: Resources
     
-    var year: Int?
-    var length: String?
-    var writers: String?
-    var previewURL: String?
+    let seasons: [String]?
+    let numberOfEpisodes: Int?
 }
 
 // MARK: - Media: Equatable implementation
 
 extension Media: Equatable {
-    static func ==(lhs: Media, rhs: Media) -> Bool { return lhs.id == rhs.id }
+    static func ==(lhs: Media, rhs: Media) -> Bool { lhs.id == rhs.id }
 }
 
 // MARK: - Media: Hashable implementation

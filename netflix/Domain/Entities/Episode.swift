@@ -11,7 +11,7 @@ import Foundation
 
 struct Episode {
     var id: String?
-    var tvShow: String
+    var mediaId: String
     var title: String
     var slug: String
     var season: Int

@@ -55,8 +55,8 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
         mediaTypeLabel.text = viewModel.mediaType
         titlelabel.text = viewModel.title
         downloadButton.setTitle(viewModel.downloadButtonTitle, for: .normal)
-        lengthLabel.text = viewModel.duration
-        yearLabel.text = viewModel.year
+        lengthLabel.text = viewModel.length
+        yearLabel.text = viewModel.duration
         hdViewContainer.isHidden(!viewModel.isHD)
     }
     

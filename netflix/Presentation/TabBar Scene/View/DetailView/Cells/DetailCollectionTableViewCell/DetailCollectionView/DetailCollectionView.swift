@@ -92,14 +92,14 @@ final class DetailCollectionView: UIView, View {
         
         switch viewModel.navigationViewState.value {
         case .episodes:
-            guard let episodes = viewModel.season.value?.media else { return }
+            guard let episodes = viewModel.season.value?.episodes else { return }
             dataSource = .create(on: collectionView,
                                  items: episodes,
                                  with: viewModel)
             layout = CollectionViewLayout(layout: .descriptive, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         case .trailers:
-            guard let trailers = viewModel.media.trailers.toDomain() as [Trailer]? else { return }
+            guard let trailers = viewModel.media.resources.trailers.toDomain() as [Trailer]? else { return }
             dataSource = .create(on: collectionView,
                                  items: trailers,
                                  with: viewModel)
@@ -107,8 +107,8 @@ final class DetailCollectionView: UIView, View {
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
             guard let media = viewModel.state == .tvShows
-                    ? viewModel.section!.tvshows!
-                    : viewModel.section!.movies! as [Media]?
+                    ? viewModel.section!.media
+                    : viewModel.section!.media as [Media]?
             else { return }
             dataSource = .create(on: collectionView,
                                  items: media,

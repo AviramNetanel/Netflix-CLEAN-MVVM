@@ -53,7 +53,7 @@ struct DisplayViewViewModel: ViewModel {
     
     init(with media: Media) {
         self.slug = media.slug
-        self.posterImagePath = media.displayCover
+        self.posterImagePath = media.resources.displayPoster
         self.logoImagePath = .init()
         self.genres = media.genres
         self.attributedGenres = .init()
@@ -66,14 +66,14 @@ struct DisplayViewViewModel: ViewModel {
     }
     
     fileprivate func path(with media: Media) -> String? {
-        switch PresentedLogo(rawValue: media.presentedDisplayLogo!) {
-        case .first: return media.logos[0]
-        case .second: return media.logos[1]
-        case .third: return media.logos[2]
-        case .fourth: return media.logos[3]
-        case .fifth: return media.logos[4]
-        case .sixth: return media.logos[5]
-        case .seventh: return media.logos[6]
+        switch PresentedLogo(rawValue: media.resources.presentedLogo) {
+        case .first: return media.resources.logos[0]
+        case .second: return media.resources.logos[1]
+        case .third: return media.resources.logos[2]
+        case .fourth: return media.resources.logos[3]
+        case .fifth: return media.resources.logos[4]
+        case .sixth: return media.resources.logos[5]
+        case .seventh: return media.resources.logos[6]
         default: return nil
         }
     }

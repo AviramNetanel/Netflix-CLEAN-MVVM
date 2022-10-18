@@ -73,11 +73,11 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
     fileprivate func viewDidConfigure(at indexPath: IndexPath,
                                       with viewModel: EpisodeCollectionViewCellViewModel) {
         guard let season = viewModel.season else { return }
-        let episode = season.media[indexPath.row]
+        let episode = season.episodes[indexPath.row]
         let image = AsyncImageFetcher.shared.object(for: viewModel.posterImageIdentifier)
         imageView.image = image
         titleLabel.text = episode.title
-        timestampLabel.text = viewModel.media.length ?? viewModel.media.duration!
+        timestampLabel.text = viewModel.media.length
         descriptionTextView.text = viewModel.media.description
     }
     

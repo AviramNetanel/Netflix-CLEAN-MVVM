@@ -12,159 +12,145 @@ import UIKit
 struct MediaDTO: Codable {
     
     private enum CodingKeys: String, CodingKey {
-        case id,
-             title,
-             rating,
-             description,
-             cast,
-             isHD,
-             displayCover,
-             detailCover,
-             hasWatched,
-             newRelease,
-             logoPosition,
-             slug,
-             presentedCover,
-             presentedLogo,
-             presentedDisplayLogo,
-             displayLogos,
-             logos,
-             genres,
-             trailers,
-             covers,
-             duration,
-             seasonCount,
-             episodeCount,
-             isNetflixExclusive,
-             year,
-             length,
-             writers,
-             previewURL
+        case id
+        case type
+        case title
+        case slug
+        case createdAt
+        case rating
+        case description
+        case cast
+        case writers
+        case duration
+        case length
+        case genres
+        case hasWatched
+        case isHD
+        case isExclusive
+        case isNewRelease
+        case isSecret
+        case resources
+        case seasons
+        case numberOfEpisodes
     }
     
-    var id: String?
-    var title: String
-    var rating: CGFloat
-    var description: String
-    var cast: String
-    var isHD: Bool
-    var displayCover: String
-    var detailCover: String
-    var hasWatched: Bool
-    var newRelease: Bool
-    var logoPosition: String
-    var slug: String
-    var presentedCover: String?
-    var presentedLogo: String?
-    var presentedDisplayLogo: String?
+    let id: String?
+    let type: String
+    let title: String
+    let slug: String
     
-    var displayLogos: [String]?
-    var logos: [String]
-    var genres: [String]
-    var trailers: [String]
-    var covers: [String]
+    let createdAt: String
     
-    var duration: String?
-    var seasonCount: Int?
-    var episodeCount: Int?
-    var isNetflixExclusive: Bool?
+    let rating: Float
+    let description: String
+    let cast: String
+    let writers: String
+    let duration: String
+    let length: String
+    let genres: [String]
     
-    var year: Int?
-    var length: String?
-    var writers: String?
-    var previewURL: String?
+    let hasWatched: Bool
+    let isHD: Bool
+    let isExclusive: Bool
+    let isNewRelease: Bool
+    let isSecret: Bool
+    
+    struct Resources: Codable {
+        let posters: [String]
+        let logos: [String]
+        let trailers: [String]
+        let displayPoster: String
+        let displayLogos: [String]
+        let previewPoster: String
+        let previewUrl: String?
+        let presentedPoster: String
+        let presentedLogo: String
+        let presentedDisplayLogo: String
+        let presentedLogoAlignment: String
+    }
+    
+    let resources: Resources
+    
+    let seasons: [String]?
+    let numberOfEpisodes: Int?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let id = try container.decode(String.self, forKey: .id)
+        let id = try container.decodeIfPresent(String.self, forKey: .id)
+        let type = try container.decode(String.self, forKey: .type)
         let title = try container.decode(String.self, forKey: .title)
-        let rating = try container.decode(CGFloat.self, forKey: .rating)
+        let slug = try container.decode(String.self, forKey: .slug)
+        
+        let createdAt = try container.decode(String.self, forKey: .createdAt)
+        
+        let rating = try container.decode(Float.self, forKey: .rating)
         let description = try container.decode(String.self, forKey: .description)
         let cast = try container.decode(String.self, forKey: .cast)
-        let isHD = try container.decode(Bool.self, forKey: .isHD)
-        let displayCover = try container.decode(String.self, forKey: .displayCover)
-        let detailCover = try container.decode(String.self, forKey: .detailCover)
-        let hasWatched = try container.decode(Bool.self, forKey: .hasWatched)
-        let newRelease = try container.decode(Bool.self, forKey: .newRelease)
-        let logoPosition = try container.decode(String.self, forKey: .logoPosition)
-        let slug = try container.decode(String.self, forKey: .slug)
-        let presentedCover = try container.decode(String.self, forKey: .presentedCover)
-        let presentedLogo = try container.decode(String.self, forKey: .presentedLogo)
-        let presentedDisplayLogo = try container.decode(String.self, forKey: .presentedDisplayLogo)
-        let displayLogos = try container.decode([String].self, forKey: .displayLogos)
-        let logos = try container.decode([String].self, forKey: .logos)
-        let genres = try container.decode([String].self, forKey: .genres)
-        let trailers = try container.decode([String].self, forKey: .trailers)
-        let covers = try container.decode([String].self, forKey: .covers)
-        let duration = try container.decodeIfPresent(String.self, forKey: .duration)
-        let seasonCount = try container.decodeIfPresent(Int.self, forKey: .seasonCount)
-        let episodeCount = try container.decodeIfPresent(Int.self, forKey: .episodeCount)
-        let isNetflixExclusive = try container.decodeIfPresent(Bool.self, forKey: .isNetflixExclusive)
-        let year = try container.decodeIfPresent(Int.self, forKey: .year)
-        let length = try container.decodeIfPresent(String.self, forKey: .length)
         let writers = try container.decodeIfPresent(String.self, forKey: .writers)
-        let previewURL = try container.decodeIfPresent(String.self, forKey: .previewURL)
+        let duration = try container.decodeIfPresent(String.self, forKey: .duration)
+        let length = try container.decode(String.self, forKey: .length)
+        let genres = try container.decode([String].self, forKey: .genres)
+        
+        let hasWatched = try container.decode(Bool.self, forKey: .hasWatched)
+        let isHD = try container.decode(Bool.self, forKey: .isHD)
+        let isExclusive = try container.decode(Bool.self, forKey: .isExclusive)
+        let isNewRelease = try container.decode(Bool.self, forKey: .isNewRelease)
+        let isSecret = try container.decode(Bool.self, forKey: .isSecret)
+        
+        let resources = try container.decode(MediaDTO.Resources.self, forKey: .resources)
+        
+        let seasons = try container.decodeIfPresent([String].self, forKey: .seasons)
+        let numberOfEpisodes = try container.decodeIfPresent(Int.self, forKey: .numberOfEpisodes)
         
         self.id = id
+        self.type = type
         self.title = title
+        self.slug = slug
+        
+        self.createdAt = createdAt
+        
         self.rating = rating
         self.description = description
         self.cast = cast
-        self.isHD = isHD
-        self.displayCover = displayCover
-        self.detailCover = detailCover
-        self.hasWatched = hasWatched
-        self.newRelease = newRelease
-        self.logoPosition = logoPosition
-        self.slug = slug
-        self.presentedCover = presentedCover
-        self.presentedLogo = presentedLogo
-        self.presentedDisplayLogo = presentedDisplayLogo
-        self.displayLogos = displayLogos
-        self.logos = logos
-        self.genres = genres
-        self.trailers = trailers
-        self.covers = covers
-        self.duration = duration
-        self.seasonCount = seasonCount
-        self.episodeCount = episodeCount
-        self.isNetflixExclusive = isNetflixExclusive
-        self.year = year
+        self.writers = writers ?? ""
+        self.duration = duration ?? ""
         self.length = length
-        self.writers = writers
-        self.previewURL = previewURL
+        self.genres = genres
+        
+        self.hasWatched = hasWatched
+        self.isHD = isHD
+        self.isExclusive = isExclusive
+        self.isNewRelease = isNewRelease
+        self.isSecret = isSecret
+        
+        self.resources = resources
+        
+        self.seasons = seasons
+        self.numberOfEpisodes = numberOfEpisodes
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(type, forKey: .type)
         try container.encode(title, forKey: .title)
+        try container.encode(slug, forKey: .slug)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(rating, forKey: .rating)
         try container.encode(description, forKey: .description)
         try container.encode(cast, forKey: .cast)
-        try container.encode(isHD, forKey: .isHD)
-        try container.encode(displayCover, forKey: .displayCover)
-        try container.encode(detailCover, forKey: .detailCover)
-        try container.encode(hasWatched, forKey: .hasWatched)
-        try container.encode(newRelease, forKey: .newRelease)
-        try container.encode(logoPosition, forKey: .logoPosition)
-        try container.encode(slug, forKey: .slug)
-        try container.encode(presentedCover, forKey: .presentedCover)
-        try container.encode(presentedLogo, forKey: .presentedLogo)
-        try container.encode(presentedDisplayLogo, forKey: .presentedDisplayLogo)
-        try container.encode(displayLogos, forKey: .displayLogos)
-        try container.encode(logos, forKey: .logos)
-        try container.encode(genres, forKey: .genres)
-        try container.encode(trailers, forKey: .trailers)
-        try container.encode(covers, forKey: .covers)
-        try container.encode(duration, forKey: .duration)
-        try container.encode(seasonCount, forKey: .seasonCount)
-        try container.encode(episodeCount, forKey: .episodeCount)
-        try container.encode(isNetflixExclusive, forKey: .isNetflixExclusive)
-        try container.encode(year, forKey: .year)
+        try container.encodeIfPresent(writers, forKey: .writers)
+        try container.encodeIfPresent(duration, forKey: .duration)
         try container.encode(length, forKey: .length)
-        try container.encode(writers, forKey: .writers)
-        try container.encode(previewURL, forKey: .previewURL)
+        try container.encode(genres, forKey: .genres)
+        try container.encode(hasWatched, forKey: .hasWatched)
+        try container.encode(isHD, forKey: .isHD)
+        try container.encode(isExclusive, forKey: .isExclusive)
+        try container.encode(isNewRelease, forKey: .isNewRelease)
+        try container.encode(isSecret, forKey: .isSecret)
+        try container.encode(resources, forKey: .resources)
+        try container.encodeIfPresent(seasons, forKey: .seasons)
+        try container.encodeIfPresent(numberOfEpisodes, forKey: .numberOfEpisodes)
     }
 }
 
@@ -173,32 +159,40 @@ struct MediaDTO: Codable {
 extension MediaDTO {
     func toDomain() -> Media {
         return .init(id: id,
+                     type: type,
                      title: title,
-                     rating: Float(rating),
+                     slug: slug,
+                     createdAt: createdAt,
+                     rating: rating,
                      description: description,
                      cast: cast,
-                     isHD: isHD,
-                     displayCover: displayCover,
-                     detailCover: detailCover,
+                     writers: writers,
+                     duration: duration,
+                     length: length,
+                     genres: genres,
                      hasWatched: hasWatched,
-                     newRelease: newRelease,
-                     logoPosition: logoPosition,
-                     slug: slug,
-                     presentedCover: presentedCover,
+                     isHD: isHD,
+                     isExclusive: isExclusive,
+                     isNewRelease: isNewRelease,
+                     isSecret: isSecret,
+                     resources: resources.toDomain(),
+                     seasons: seasons,
+                     numberOfEpisodes: numberOfEpisodes)
+    }
+}
+
+extension MediaDTO.Resources {
+    func toDomain() -> Media.Resources {
+        return .init(posters: posters,
+                     logos: logos,
+                     trailers: trailers,
+                     displayPoster: displayPoster,
+                     displayLogos: displayLogos,
+                     previewPoster: previewPoster,
+                     previewUrl: previewUrl ?? "",
+                     presentedPoster: presentedPoster,
                      presentedLogo: presentedLogo,
                      presentedDisplayLogo: presentedDisplayLogo,
-                     isNetflixExclusive: isNetflixExclusive,
-                     displayLogos: displayLogos,
-                     logos: logos,
-                     genres: genres,
-                     trailers: trailers,
-                     covers: covers,
-                     duration: duration,
-                     seasonCount: seasonCount,
-                     episodeCount: episodeCount,
-                     year: year,
-                     length: length,
-                     writers: writers,
-                     previewURL: previewURL)
+                     presentedLogoAlignment: presentedLogoAlignment)
     }
 }

@@ -13,16 +13,13 @@ final class Section {
     
     var id: Int
     var title: String
-    var tvshows: [Media]?
-    var movies: [Media]?
+    var media: [Media]
     
     init(id: Int,
          title: String,
-         tvshows: [Media]?,
-         movies: [Media]?) {
+         media: [Media]) {
         self.id = id
         self.title = title
-        self.tvshows = tvshows ?? []
-        self.movies = movies ?? []
+        self.media = media
     }
 }

@@ -73,15 +73,15 @@ final class CollectionViewDataSource<Cell>: NSObject,
     
     fileprivate func media(for indexPath: IndexPath) -> Media? {
         return viewModel.state.value == .tvShows
-            ? section.tvshows![indexPath.row] as Media?
-            : section.movies![indexPath.row] as Media?
+            ? section.media[indexPath.row] as Media?
+            : section.media[indexPath.row] as Media?
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return viewModel.state.value == .tvShows
-            ? self.section.tvshows!.count
-            : self.section.movies!.count
+            ? self.section.media.count
+            : self.section.media.count
     }
     
     func collectionView(_ collectionView: UICollectionView,

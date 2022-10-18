@@ -30,7 +30,7 @@ struct OpaqueViewViewModel: ViewModel {
     let imageURL: URL
     
     init(with media: Media) {
-        self.imagePath = media.displayCover
+        self.imagePath = media.resources.displayPoster
         self.identifier = "displayPoster_\(media.slug)" as NSString
         self.imageURL = URL(string: self.imagePath)!
     }

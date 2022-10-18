@@ -16,8 +16,9 @@ private protocol ViewModelInput {}
 private protocol ViewModelOutput {
     var id: Int { get }
     var title: String { get }
-    var tvshows: [Media] { get }
-    var movies: [Media] { get }
+    var media: [Media] { get }
+//    var tvshows: [Media] { get }
+//    var movies: [Media] { get }
 }
 
 // MARK: - ViewModel typealias
@@ -30,13 +31,15 @@ struct TableViewCellItemViewModel: ViewModel {
     
     let id: Int
     let title: String
-    let tvshows: [Media]
-    let movies: [Media]
+    let media: [Media]
+//    let tvshows: [Media]
+//    let movies: [Media]
     
     init(section: Section) {
         self.id = section.id
         self.title = section.title
-        self.tvshows = section.tvshows ?? []
-        self.movies = section.movies ?? []
+        self.media = section.media
+//        self.tvshows = section.tvshows ?? []
+//        self.movies = section.movies ?? []
     }
 }

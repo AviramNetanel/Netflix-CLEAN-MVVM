@@ -38,7 +38,7 @@ struct PreviewViewViewModel: ViewModel {
     init(with media: Media) {
         self.title = media.title
         self.slug = media.slug
-        self.posterImagePath = media.detailCover
+        self.posterImagePath = media.resources.previewPoster
         self.identifier = "detailPoster_\(media.slug)" as NSString
         self.url = URL(string: self.posterImagePath)!
     }

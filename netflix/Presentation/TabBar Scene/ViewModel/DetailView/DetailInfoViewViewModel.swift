@@ -19,7 +19,7 @@ private protocol ViewModelOutput {
     var title: String { get }
     var downloadButtonTitle: String { get }
     var duration: String { get }
-    var year: String { get }
+    var length: String { get }
     var isHD: Bool { get }
 }
 
@@ -36,7 +36,7 @@ struct DetailInfoViewViewModel: ViewModel {
     let title: String
     let downloadButtonTitle: String
     let duration: String
-    let year: String
+    let length: String
     let isHD: Bool
     
     init(with viewModel: DetailViewModel) {
@@ -49,16 +49,15 @@ struct DetailInfoViewViewModel: ViewModel {
         self.title = media.title
         self.downloadButtonTitle = "Download \(self.title)"
         
-        if case .tvShows = state {
-            let year = media.duration ?? ""
-            let seasonCount = media.seasonCount ?? 0
-            self.year = String(describing: year)
-            self.duration = String(describing: seasonCount > 1
-                                    ? "\(seasonCount) Seasons"
-                                    : "\(seasonCount) Season")
+        if media.type == "series" {
+            let numberOfSeasons = Int(media.seasons?.count ?? 1)
+            self.duration = String(describing: media.duration)
+            self.length = String(describing: numberOfSeasons > 1
+                                    ? "\(numberOfSeasons) Seasons"
+                                    : "\(numberOfSeasons) Season")
         } else {
-            self.year = String(describing: media.year!)
-            self.duration = media.length!
+            self.duration = media.duration
+            self.length = media.length
         }
         
         self.isHD = media.isHD

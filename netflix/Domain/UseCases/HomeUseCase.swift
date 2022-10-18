@@ -20,8 +20,7 @@ private protocol UseCaseInput {
 
 private protocol UseCaseOutput {
     var sectionsRepository: SectionsRepository { get }
-    var tvShowsRepository: TVShowsRepository { get }
-    var moviesRepository: MoviesRepository { get }
+    var mediaRepository: MediaRepository { get }
 }
 
 // MARK: - UseCase typealias
@@ -33,40 +32,28 @@ private typealias UseCase = UseCaseInput & UseCaseOutput
 final class HomeUseCase: UseCase {
     
     fileprivate let sectionsRepository: SectionsRepository
-    fileprivate let tvShowsRepository: TVShowsRepository
-    fileprivate let moviesRepository: MoviesRepository
+    fileprivate let mediaRepository: MediaRepository
     
     init(sectionsRepository: SectionsRepository,
-         tvShowsRepository: TVShowsRepository,
-         moviesRepository: MoviesRepository) {
+         mediaRepository: MediaRepository) {
         self.sectionsRepository = sectionsRepository
-        self.tvShowsRepository = tvShowsRepository
-        self.moviesRepository = moviesRepository
+        self.mediaRepository = mediaRepository
     }
     
     fileprivate func request<T>(for response: T.Type,
                                 completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
         switch response {
-        case is TVShowsResponse.Type:
-            return tvShowsRepository.getAll { result in
-                switch result {
-                case .success(let response):
-                    completion(.success(response.toDomain() as! T))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-        case is MoviesResponse.Type:
-            return moviesRepository.getAll { result in
-                switch result {
-                case .success(let response):
-                    completion(.success(response.toDomain() as! T))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
         case is SectionsResponse.Type:
             return sectionsRepository.getAll { result in
+                switch result {
+                case .success(let response):
+                    completion(.success(response.toDomain() as! T))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        case is MediasResponse.Type:
+            return mediaRepository.getAll { result in
                 switch result {
                 case .success(let response):
                     completion(.success(response.toDomain() as! T))

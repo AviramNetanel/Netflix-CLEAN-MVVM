@@ -41,6 +41,7 @@ private protocol ViewModelInput {
 private protocol ViewModelOutput {
     var state: Observable<TableViewDataSource.State> { get }
     var sections: Observable<[Section]> { get }
+    var media: Observable<[Media]> { get }
     var presentedDisplayMedia: Observable<Media?> { get }
     var isEmpty: Bool { get }
 }
@@ -57,9 +58,11 @@ final class HomeViewModel: ViewModel {
     private(set) var actions: HomeViewModelActions
     
     private var task: Cancellable? { willSet { task?.cancel() } }
+    private var task2: Cancellable? { willSet { task?.cancel() } }
     
     fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
+    fileprivate(set) var media: Observable<[Media]> = Observable([])
     private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     fileprivate var isEmpty: Bool { return sections.value.isEmpty }
     
@@ -93,6 +96,12 @@ extension HomeViewModel {
     
     func dataDidLoad(response: SectionsResponse, completion: @escaping () -> Void) {
         sections.value = response.data
+        
+        completion()
+    }
+    
+    func dataDidLoad(response: MediasResponse, completion: @escaping () -> Void) {
+        media.value = response.data
         filter(sections: sections.value)
         
         completion()
@@ -102,22 +111,23 @@ extension HomeViewModel {
         for index in TableViewDataSource.Index.allCases {
             switch index {
             case .ratable:
-                sections[index.rawValue].tvshows = sections.first!.tvshows
-                sections[index.rawValue].movies = sections.first!.movies
-                
-                sort(section: sections[index.rawValue])
-                prefix(section: sections[index.rawValue], by: 10)
+                media.value = media.value.sorted { $0.rating > $1.rating }
+                media.value = media.value.filter { $0.rating > 7.5 }
+                let slice = media.value.prefix(10)
+                sections[index.rawValue].media = Array(slice)
             case .resumable:
-                sections[index.rawValue].tvshows = sections.first!.tvshows
-                sections[index.rawValue].movies = sections.first!.movies
+                media.value = media.value.shuffled()
+                sections[index.rawValue].media = media.value
             case .action, .sciFi,
                     .crime, .thriller,
                     .adventure, .comedy,
                     .drama, .horror,
                     .anime, .familyNchildren,
                     .documentary:
+                media.value = media.value.shuffled()
                 filter(sections: sections, at: index.rawValue)
             case .blockbuster:
+                media.value = media.value.shuffled()
                 filter(sections: sections, at: index.rawValue, withMinimumRating: 7.5)
             default: break
             }
@@ -128,28 +138,24 @@ extension HomeViewModel {
                 at index: Int,
                 withMinimumRating value: Float? = nil) {
         guard let value = value else {
-            sections[index].tvshows = sections.first!.tvshows!.filter {
+            sections[index].media = media.value.filter {
                 $0.genres.contains(sections[index].title)
             }
-            sections[index].movies = sections.first!.movies!.filter {
+            sections[index].media = media.value.filter {
                 $0.genres.contains(sections[index].title)
             }
             return
         }
-        sections[index].tvshows = sections.first!.tvshows!.filter { $0.rating > value }
-        sections[index].movies = sections.first!.movies!.filter { $0.rating > value }
+        sections[index].media = media.value.filter { $0.rating > value }
     }
     
     func sort(section: Section) {
-        section.tvshows = section.tvshows?.sorted { $0.rating > $1.rating }
-        section.movies = section.movies?.sorted { $0.rating > $1.rating }
+        section.media = media.value.sorted { $0.rating > $1.rating }
     }
     
     func prefix(section: Section, by length: Int) {
-        let tvShowsSlice = section.tvshows!.prefix(10)
-        let moviesSlice = section.movies!.prefix(10)
-        section.tvshows = Array(tvShowsSlice)
-        section.movies = Array(moviesSlice)
+        let slice = media.value.prefix(10)
+        section.media = Array(slice)
     }
     
     func section(at index: TableViewDataSource.Index) -> Section {
@@ -162,8 +168,8 @@ extension HomeViewModel {
     
     func randomObject(at section: Section) -> Media {
         return state.value == .tvShows
-            ? section.tvshows!.randomElement()!
-            : section.movies!.randomElement()!
+            ? media.value.randomElement()!
+            : media.value.randomElement()!
     }
     
     func presentedDisplayMediaDidChange() {
@@ -180,8 +186,76 @@ fileprivate extension HomeViewModel {
         task = homeUseCase.execute(for: SectionsResponse.self) { [weak self] result in
             guard let self = self else { return }
             if case let .success(response) = result {
-                self.dataDidLoad(response: response) { [weak self] in self?.present() }
+                self.dataDidLoad(response: response) {
+                    self.getMedia()
+                }
             }
         }
+    }
+    
+    func getMedia() {
+        task2 = homeUseCase.execute(for: MediasResponse.self) { [weak self] result in
+            guard let self = self else { return }
+            if case let .success(response) = result {
+                self.dataDidLoad(response: response) { [weak self] in
+                    self?.present()
+                }
+            }
+        }
+        
+        Task {
+            let string = "https://netflix-swift-api.herokuapp.com/api/v1/media/the-witcher"
+            let urls: [URL] = Array(0...1).map { _ in
+                URL(string: string)
+            }.compactMap { $0 }
+            
+            for try await data in DataSequence(urls: urls) {
+                let media = try! JSONDecoder().decode(MediaResponseDTO.self, from: data)
+                print(media.data.toDomain())
+            }
+        }
+    }
+}
+
+
+struct DataSequence: AsyncSequence {
+    
+    typealias Element = Data
+    
+    let urls: [URL]
+    
+    init(urls: [URL]) {
+        self.urls = urls
+    }
+    
+    func makeAsyncIterator() -> DataIterator {
+        return DataIterator(urls: urls)
+    }
+}
+
+struct DataIterator: AsyncIteratorProtocol {
+    
+    typealias Element = Data
+    
+    private var index = 0
+    private let urlSession = URLSession.shared
+    let urls: [URL]
+    
+    init(urls: [URL]) {
+        self.urls = urls
+    }
+    
+    mutating func next() async throws -> Data? {
+        guard index < urls.count else { return nil }
+        
+        let url = urls[index]
+        index += 1
+        
+        if #available(iOS 15.0, *) {
+            let (data, _) = try await urlSession.data(from: url)
+            return data
+        }
+        print("na")
+        return nil
     }
 }

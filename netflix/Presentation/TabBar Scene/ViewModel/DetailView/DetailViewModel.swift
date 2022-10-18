@@ -73,11 +73,11 @@ final class DetailViewModel: ViewModel {
             guard let season = season.value as Season? else { return .zero }
             let cellHeight = Float(156.0)
             let lineSpacing = Float(8.0)
-            let itemsCount = Float(season.media.count)
+            let itemsCount = Float(season.episodes.count)
             let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
             return Float(value)
         case .trailers:
-            guard let trailers = media.trailers as [String]? else { return .zero }
+            guard let trailers = media.resources.trailers as [String]? else { return .zero }
             let cellHeight = Float(224.0)
             let lineSpacing = Float(8.0)
             let itemsCount = Float(trailers.count)
@@ -89,8 +89,8 @@ final class DetailViewModel: ViewModel {
             let itemsPerLine = Float(3.0)
             let topContentInset = Float(16.0)
             let itemsCount = self.state == .tvShows
-                ? Float(section.tvshows!.count)
-                : Float(section.movies!.count)
+                ? Float(section.media.count)
+                : Float(section.media.count)
             let roundedItemsOutput = (itemsCount / itemsPerLine).rounded(.awayFromZero)
             let value =
                 roundedItemsOutput * cellHeight

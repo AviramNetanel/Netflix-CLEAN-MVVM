@@ -12,8 +12,7 @@ import Foundation
 struct SectionDTO: Decodable {
     let id: Int
     let title: String
-    var tvshows: [MediaDTO]
-    var movies: [MediaDTO]
+    var media: [MediaDTO]
 }
 
 // MARK: - Mapping
@@ -22,7 +21,6 @@ extension SectionDTO {
     func toDomain() -> Section {
         return .init(id: id,
                      title: title,
-                     tvshows: tvshows.map { $0.toDomain() },
-                     movies: movies.map { $0.toDomain() })
+                     media: media.map { $0.toDomain() })
     }
 }
