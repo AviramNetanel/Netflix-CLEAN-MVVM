@@ -25,6 +25,7 @@ final class SceneDependencies {
     private let dependencies: Dependencies
     
     lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage()
+    lazy var mediaResponseCache: MediaResponseStorage = MediaResponseStorage()
     
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -37,27 +38,33 @@ final class SceneDependencies {
     }
     
     func createHomeUseCase() -> HomeUseCase {
-        return HomeUseCase(sectionsRepository: createSectionsRepository(),
-                           mediaRepository: createMediaRepository())
+        return HomeUseCase(
+            sectionsRepository: createSectionsRepository(),
+            mediaRepository: createMediaRepository())
     }
     
     func createDetailUseCase() -> DetailUseCase {
-        return DetailUseCase(seasonsRepository: createSeasonsRepoistory())
+        return DetailUseCase(
+            seasonsRepository: createSeasonsRepoistory())
     }
     
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
-        return AuthRepository(dataTransferService: dependencies.dataTransferService,
-                              cache: authResponseCache)
+        return AuthRepository(
+            dataTransferService: dependencies.dataTransferService,
+            cache: authResponseCache)
     }
     
     func createSectionsRepository() -> SectionsRepository {
-        return SectionsRepository(dataTransferService: dependencies.dataTransferService)
+        return SectionsRepository(
+            dataTransferService: dependencies.dataTransferService)
     }
     
     func createMediaRepository() -> MediaRepository {
-        return MediaRepository(dataTransferService: dependencies.dataTransferService)
+        return MediaRepository(
+            dataTransferService: dependencies.dataTransferService,
+            cache: mediaResponseCache)
     }
     
     func createSeasonsRepoistory() -> SeasonsRepository {

@@ -11,8 +11,12 @@ import Foundation
 
 private protocol UseCaseInput {
     func request<T>(for response: T.Type,
+                    query: MediaRequestQuery?,
+                    cached: @escaping (T?) -> Void,
                     completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
     func execute<T>(for response: T.Type,
+                    query: MediaRequestQuery?,
+                    cached: @escaping (T?) -> Void,
                     completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
 }
 
@@ -32,7 +36,7 @@ private typealias UseCase = UseCaseInput & UseCaseOutput
 final class HomeUseCase: UseCase {
     
     fileprivate let sectionsRepository: SectionsRepository
-    fileprivate let mediaRepository: MediaRepository
+    fileprivate(set) var mediaRepository: MediaRepository
     
     init(sectionsRepository: SectionsRepository,
          mediaRepository: MediaRepository) {
@@ -41,6 +45,8 @@ final class HomeUseCase: UseCase {
     }
     
     fileprivate func request<T>(for response: T.Type,
+                                query: MediaRequestQuery? = nil,
+                                cached: @escaping (T?) -> Void,
                                 completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
         switch response {
         case is SectionsResponse.Type:
@@ -56,17 +62,41 @@ final class HomeUseCase: UseCase {
             return mediaRepository.getAll { result in
                 switch result {
                 case .success(let response):
+                    cached(response as? T)
                     completion(.success(response.toDomain() as! T))
                 case .failure(let error):
                     completion(.failure(error))
                 }
             }
+        case is MediaResponse.Type:
+            guard let query = query else { return nil }
+            let requestDTO = MediaRequestDTO(user: query.user,
+                                             id: query.media.id,
+                                             slug: query.media.slug)
+            let requestQuery = MediaRequestQuery(user: query.user,
+                                                 media: requestDTO)
+            return mediaRepository.getOne(
+                query: requestQuery,
+                cached: { _ in },
+                completion: { result in
+                    switch result {
+                    case .success(let response):
+                        completion(.success(response as! T))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                })
         default: return nil
         }
     }
     
     func execute<T>(for response: T.Type,
+                    query: MediaRequestQuery? = nil,
+                    cached: @escaping (T?) -> Void,
                     completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
-        return await request(for: response, completion: completion)
+        return await request(for: response,
+                             query: query,
+                             cached: cached,
+                             completion: completion)
     }
 }

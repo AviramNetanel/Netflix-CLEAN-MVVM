@@ -92,7 +92,7 @@ final class MediaPlayerView: UIView, View {
     
     func removeObservers() {
         if let timeObserverToken = overlayView.configuration.observers.timeObserverToken {
-            print("Removed `MediaPlayerView` observers.")
+            printIfDebug("Removed `MediaPlayerView` observers.")
             mediaPlayer?.player.removeTimeObserver(timeObserverToken)
         }
     }

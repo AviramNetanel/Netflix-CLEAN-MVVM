@@ -7,6 +7,22 @@
 
 import UIKit
 
+// MARK: - MediaResources struct
+
+struct MediaResources {
+    let posters: [String]
+    let logos: [String]
+    let trailers: [String]
+    let displayPoster: String
+    let displayLogos: [String]
+    let previewPoster: String
+    let previewUrl: String
+    let presentedPoster: String
+    let presentedLogo: String
+    let presentedDisplayLogo: String
+    let presentedLogoAlignment: String
+}
+
 // MARK: - Media struct
 
 struct Media {
@@ -32,21 +48,7 @@ struct Media {
     let isNewRelease: Bool
     let isSecret: Bool
     
-    struct Resources {
-        let posters: [String]
-        let logos: [String]
-        let trailers: [String]
-        let displayPoster: String
-        let displayLogos: [String]
-        let previewPoster: String
-        let previewUrl: String
-        let presentedPoster: String
-        let presentedLogo: String
-        let presentedDisplayLogo: String
-        let presentedLogoAlignment: String
-    }
-    
-    let resources: Resources
+    let resources: MediaResources
     
     let seasons: [String]?
     let numberOfEpisodes: Int?

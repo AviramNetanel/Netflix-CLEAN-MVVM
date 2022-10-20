@@ -20,6 +20,8 @@ enum CoreDataStorageError: Error {
 private protocol StorageInput {
     init()
     func url(for container: NSPersistentContainer) -> URL?
+    func transformersDidRegister()
+    func context() -> NSManagedObjectContext
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void)
     func saveContext()
 }
@@ -42,7 +44,7 @@ final class CoreDataStorage: Storage {
     static let shared = CoreDataStorage()
     
     fileprivate lazy var persistentContainer: NSPersistentContainer = {
-        ValueTransformer.setValueTransformer(AnyTransformer(), forName: .userToDataTransformer)
+        transformersDidRegister()
 
         let container = NSPersistentContainer(name: "CoreDataStorage")
         container.loadPersistentStores { _, error in
@@ -62,6 +64,15 @@ final class CoreDataStorage: Storage {
         return url
     }
     
+    fileprivate func transformersDidRegister() {
+        ValueTransformer.setValueTransformer(ValueTransformer<UserDTO>(),
+                                             forName: .userTransformer)
+        ValueTransformer.setValueTransformer(ValueTransformer<MediaResourcesDTO>(),
+                                             forName: .mediaResourcesTransformer)
+    }
+    
+    func context() -> NSManagedObjectContext { persistentContainer.viewContext }
+    
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         persistentContainer.performBackgroundTask(block)
     }
@@ -71,10 +82,22 @@ final class CoreDataStorage: Storage {
         
         guard context.hasChanges else { return }
         
+        do { try context.save() }
+        catch { assertionFailure("CoreDataStorage unresolved error \(error), \((error as NSError).userInfo)") }
+    }
+    
+    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequestQuery) -> Void) {
+        let request: NSFetchRequest = AuthRequestEntity.fetchRequest()
         do {
-            try context.save()
+            let entities = try context().fetch(request)
+            let userDTO = UserDTO(email: entities.first?.user?.email ?? "",
+                                  password: entities.first?.user?.password ?? "")
+            let requestDTO = AuthRequestDTO(user: userDTO)
+            let requestQuery = AuthRequestQuery(user: requestDTO.user)
+            
+            completion(requestQuery)
         } catch {
-            assertionFailure("CoreDataStorage unresolved error \(error), \((error as NSError).userInfo)")
+            printIfDebug("Unresolved error \(error) ")
         }
     }
 }

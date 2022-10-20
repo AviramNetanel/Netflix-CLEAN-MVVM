@@ -102,8 +102,9 @@
 		A18B999828C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */; };
 		A18B999E28C0E6D80077A5A6 /* AuthResponseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B999D28C0E6D80077A5A6 /* AuthResponseStorage.swift */; };
 		A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */; };
-		A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0828C140A300C5D733 /* AnyTransformer.swift */; };
-		A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0B28C1571600C5D733 /* AuthQuery.swift */; };
+		A196AE0928C140A300C5D733 /* ValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0828C140A300C5D733 /* ValueTransformer.swift */; };
+		A196AE0C28C1571600C5D733 /* AuthRequestQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196AE0B28C1571600C5D733 /* AuthRequestQuery.swift */; };
+		A19956DA2900D65400B7D655 /* User+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19956D92900D65400B7D655 /* User+Mapping.swift */; };
 		A1AA28C628F487290011EE9D /* MediaPlayerOverlayViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28C528F487290011EE9D /* MediaPlayerOverlayViewViewModel.swift */; };
 		A1AA28C828F487E70011EE9D /* MediaPlayerObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28C728F487E70011EE9D /* MediaPlayerObservers.swift */; };
 		A1AA28CC28F4C3710011EE9D /* MediaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AA28CB28F4C3710011EE9D /* MediaPlayer.swift */; };
@@ -161,6 +162,12 @@
 		A1B93C6E28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */; };
 		A1B93C7028FF08F500AF2C7F /* MediaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6F28FF08F500AF2C7F /* MediaResponse.swift */; };
 		A1B93C7228FF329800AF2C7F /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7128FF329800AF2C7F /* Array+Extension.swift */; };
+		A1B93C7828FF886500AF2C7F /* MediaEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7728FF886500AF2C7F /* MediaEntity+Mapping.swift */; };
+		A1B93C7A28FF921000AF2C7F /* MediaResponseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7928FF921000AF2C7F /* MediaResponseStorage.swift */; };
+		A1B93C7C2900B0DC00AF2C7F /* MediaRequestQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7B2900B0DC00AF2C7F /* MediaRequestQuery.swift */; };
+		A1B93C7F2900B69B00AF2C7F /* MediaResponseEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7E2900B69B00AF2C7F /* MediaResponseEntity+Mapping.swift */; };
+		A1B93C812900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C802900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift */; };
+		A1B93C832900D2A800AF2C7F /* QoS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C822900D2A800AF2C7F /* QoS.swift */; };
 		A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */; };
 		A1BA1DA528D818C400730EA8 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */; };
 		A1BA1DA728D8BA9F00730EA8 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */; };
@@ -300,8 +307,9 @@
 		A18B999728C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		A18B999D28C0E6D80077A5A6 /* AuthResponseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseStorage.swift; sourceTree = "<group>"; };
 		A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseEntity+Mapping.swift"; sourceTree = "<group>"; };
-		A196AE0828C140A300C5D733 /* AnyTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTransformer.swift; sourceTree = "<group>"; };
-		A196AE0B28C1571600C5D733 /* AuthQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthQuery.swift; sourceTree = "<group>"; };
+		A196AE0828C140A300C5D733 /* ValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueTransformer.swift; sourceTree = "<group>"; };
+		A196AE0B28C1571600C5D733 /* AuthRequestQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestQuery.swift; sourceTree = "<group>"; };
+		A19956D92900D65400B7D655 /* User+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Mapping.swift"; sourceTree = "<group>"; };
 		A1AA28C528F487290011EE9D /* MediaPlayerOverlayViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerOverlayViewViewModel.swift; sourceTree = "<group>"; };
 		A1AA28C728F487E70011EE9D /* MediaPlayerObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerObservers.swift; sourceTree = "<group>"; };
 		A1AA28CB28F4C3710011EE9D /* MediaPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayer.swift; sourceTree = "<group>"; };
@@ -359,6 +367,12 @@
 		A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		A1B93C6F28FF08F500AF2C7F /* MediaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResponse.swift; sourceTree = "<group>"; };
 		A1B93C7128FF329800AF2C7F /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		A1B93C7728FF886500AF2C7F /* MediaEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEntity+Mapping.swift"; sourceTree = "<group>"; };
+		A1B93C7928FF921000AF2C7F /* MediaResponseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResponseStorage.swift; sourceTree = "<group>"; };
+		A1B93C7B2900B0DC00AF2C7F /* MediaRequestQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRequestQuery.swift; sourceTree = "<group>"; };
+		A1B93C7E2900B69B00AF2C7F /* MediaResponseEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaResponseEntity+Mapping.swift"; sourceTree = "<group>"; };
+		A1B93C802900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthRequestEntity+Mapping.swift"; sourceTree = "<group>"; };
+		A1B93C822900D2A800AF2C7F /* QoS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QoS.swift; sourceTree = "<group>"; };
 		A1BA1DA228D8149B00730EA8 /* UIImage+Rendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rendering.swift"; sourceTree = "<group>"; };
 		A1BA1DA428D818C400730EA8 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		A1BA1DA628D8BA9F00730EA8 /* UIView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
@@ -978,6 +992,7 @@
 			children = (
 				A18B998228C03DFE0077A5A6 /* CoreDataStorage */,
 				A18B999A28C0E6670077A5A6 /* AuthResponsesStorage */,
+				A1B93C7528FF884500AF2C7F /* MediaResponsesStorage */,
 				A1AA28F628F84D2B0011EE9D /* MyListStorage */,
 			);
 			path = PersistentStorage;
@@ -988,7 +1003,7 @@
 			children = (
 				A18B998328C03E1C0077A5A6 /* CoreDataStorage.swift */,
 				A18B998528C03F050077A5A6 /* CoreDataStorage.xcdatamodeld */,
-				A196AE0728C1409A00C5D733 /* Utils */,
+				A19956DB2900E0C600B7D655 /* Utils */,
 			);
 			path = CoreDataStorage;
 			sourceTree = "<group>";
@@ -998,6 +1013,7 @@
 			children = (
 				A18B998928C040A70077A5A6 /* Cancellable.swift */,
 				A1AA28E928F695CE0011EE9D /* DebugPrint.swift */,
+				A1B93C822900D2A800AF2C7F /* QoS.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1069,24 +1085,26 @@
 			isa = PBXGroup;
 			children = (
 				A18B99A028C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift */,
+				A1B93C802900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift */,
 			);
 			path = EntityMapping;
-			sourceTree = "<group>";
-		};
-		A196AE0728C1409A00C5D733 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				A196AE0828C140A300C5D733 /* AnyTransformer.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		A196AE0A28C1570D00C5D733 /* Queries */ = {
 			isa = PBXGroup;
 			children = (
-				A196AE0B28C1571600C5D733 /* AuthQuery.swift */,
+				A196AE0B28C1571600C5D733 /* AuthRequestQuery.swift */,
+				A1B93C7B2900B0DC00AF2C7F /* MediaRequestQuery.swift */,
 			);
 			path = Queries;
+			sourceTree = "<group>";
+		};
+		A19956DB2900E0C600B7D655 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A196AE0828C140A300C5D733 /* ValueTransformer.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A1AA28CA28F48A1D0011EE9D /* PreviewView */ = {
@@ -1137,6 +1155,7 @@
 		A1AA28EB28F7074C0011EE9D /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
+				A19956D92900D65400B7D655 /* User+Mapping.swift */,
 				A1AA28EC28F7075C0011EE9D /* Trailer+Mapping.swift */,
 			);
 			path = Mappings;
@@ -1233,6 +1252,24 @@
 				A1B3F99C28C631F90042DE9F /* SignInViewController.swift */,
 			);
 			path = SignInView;
+			sourceTree = "<group>";
+		};
+		A1B93C7528FF884500AF2C7F /* MediaResponsesStorage */ = {
+			isa = PBXGroup;
+			children = (
+				A1B93C7928FF921000AF2C7F /* MediaResponseStorage.swift */,
+				A1B93C7628FF885500AF2C7F /* EntityMapping */,
+			);
+			path = MediaResponsesStorage;
+			sourceTree = "<group>";
+		};
+		A1B93C7628FF885500AF2C7F /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				A1B93C7728FF886500AF2C7F /* MediaEntity+Mapping.swift */,
+				A1B93C7E2900B69B00AF2C7F /* MediaResponseEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
 			sourceTree = "<group>";
 		};
 		A1BA1DAA28D9D3D500730EA8 /* CategoriesOverlayView */ = {
@@ -1466,7 +1503,7 @@
 				A1AD25CB28D56BBA00F793B3 /* NavigationViewItemViewModel.swift in Sources */,
 				A1AA28EA28F695CE0011EE9D /* DebugPrint.swift in Sources */,
 				A1AD25A728D2A4E900F793B3 /* PanelView.swift in Sources */,
-				A196AE0928C140A300C5D733 /* AnyTransformer.swift in Sources */,
+				A196AE0928C140A300C5D733 /* ValueTransformer.swift in Sources */,
 				A1741D4628EC3F6100F3C46B /* DetailDescriptionViewViewModel.swift in Sources */,
 				A18B998F28C06A200077A5A6 /* AuthUseCase.swift in Sources */,
 				A18B991728BEBD040077A5A6 /* AppConfiguration.swift in Sources */,
@@ -1476,6 +1513,7 @@
 				A18691D828C8C1EE0087DE3B /* HomeTabBarController.swift in Sources */,
 				A1F56A6B28C6934B0089BD4F /* UIButton+Extension.swift in Sources */,
 				A18B997A28C0244D0077A5A6 /* Endpoint.swift in Sources */,
+				A1B93C812900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift in Sources */,
 				A1AA28DE28F5A5070011EE9D /* SeasonResponseDTO+Mapping.swift in Sources */,
 				A1BA1DB728DA209700730EA8 /* OpaqueViewViewModel.swift in Sources */,
 				A1741D2228E67CE200F3C46B /* DetailInfoView.swift in Sources */,
@@ -1498,8 +1536,9 @@
 				A1741D2628E67CF200F3C46B /* DetailPanelView.swift in Sources */,
 				A1741D5E28EE61E700F3C46B /* MediaPlayerOverlayView.swift in Sources */,
 				A1BA1DBD28DCB69100730EA8 /* CategoriesOverlayViewTableViewCell.swift in Sources */,
-				A196AE0C28C1571600C5D733 /* AuthQuery.swift in Sources */,
+				A196AE0C28C1571600C5D733 /* AuthRequestQuery.swift in Sources */,
 				A18691E628C936DE0087DE3B /* Valuable.swift in Sources */,
+				A1B93C7A28FF921000AF2C7F /* MediaResponseStorage.swift in Sources */,
 				A18691F228C958A30087DE3B /* AuthResponse.swift in Sources */,
 				A18B993B28BFC9700077A5A6 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				A1741D4B28EC5B1B00F3C46B /* DetailNavigationViewItem.swift in Sources */,
@@ -1513,6 +1552,7 @@
 				A18B999828C0DFC00077A5A6 /* AuthResponseDTO+Mapping.swift in Sources */,
 				A1741D0F28E679B200F3C46B /* DetailNavigationTableViewCell.swift in Sources */,
 				A18691D628C8423B0087DE3B /* DetailViewController.swift in Sources */,
+				A1B93C7F2900B69B00AF2C7F /* MediaResponseEntity+Mapping.swift in Sources */,
 				A18B993D28BFC9A40077A5A6 /* BlackStyleNavigationBarBehavior.swift in Sources */,
 				A1E81D1C28CFE46B00D044EA /* StandardTableViewCell.swift in Sources */,
 				A1AA28C628F487290011EE9D /* MediaPlayerOverlayViewViewModel.swift in Sources */,
@@ -1530,6 +1570,7 @@
 				A186923D28CAD45A0087DE3B /* AsyncImageFetcher.swift in Sources */,
 				A1AA28E428F64F000011EE9D /* EpisodeCollectionViewCellViewModel.swift in Sources */,
 				A1B3F98A28C54F510042DE9F /* AuthRepository.swift in Sources */,
+				A19956DA2900D65400B7D655 /* User+Mapping.swift in Sources */,
 				A1BA1DB528DA205400730EA8 /* OpaqueView.swift in Sources */,
 				A18B99A128C0FEC40077A5A6 /* AuthResponseEntity+Mapping.swift in Sources */,
 				A1741D5228ECC77400F3C46B /* MediaPlayerView.swift in Sources */,
@@ -1551,6 +1592,7 @@
 				A1AD25B428D3F37000F793B3 /* PanelViewItemViewModel.swift in Sources */,
 				A1E81D2E28CFE79400D044EA /* TableViewHeaderFooterView.swift in Sources */,
 				A1BA1DC228DCB7D700730EA8 /* CategoriesOverlayViewTableViewDataSource.swift in Sources */,
+				A1B93C832900D2A800AF2C7F /* QoS.swift in Sources */,
 				A18B999E28C0E6D80077A5A6 /* AuthResponseStorage.swift in Sources */,
 				A1BA1DA328D8149B00730EA8 /* UIImage+Rendering.swift in Sources */,
 				A1E81D2228CFE47E00D044EA /* StandardCollectionViewCell.swift in Sources */,
@@ -1568,6 +1610,7 @@
 				A1741D0B28E679A900F3C46B /* DetailDescriptionTableViewCell.swift in Sources */,
 				A1AA28E228F60ABE0011EE9D /* TrailerCollectionViewCellViewModel.swift in Sources */,
 				A18B98FE28BEB62C0077A5A6 /* SceneDelegate.swift in Sources */,
+				A1B93C7C2900B0DC00AF2C7F /* MediaRequestQuery.swift in Sources */,
 				A1AD25BC28D3FBDC00F793B3 /* UICollectionViewCell+Configurable.swift in Sources */,
 				A1F56A5E28C679980089BD4F /* UIView+Extension.swift in Sources */,
 				A1E81D0D28CFE17100D044EA /* Reusable.swift in Sources */,
@@ -1580,6 +1623,7 @@
 				A18B995728BFF66C0077A5A6 /* SectionDTO+Mapping.swift in Sources */,
 				A1F56A6728C68EAD0089BD4F /* NavigationBarTitleView.swift in Sources */,
 				A18691C528C7B0B20087DE3B /* HomeUseCase.swift in Sources */,
+				A1B93C7828FF886500AF2C7F /* MediaEntity+Mapping.swift in Sources */,
 				A1AA28F828F84D590011EE9D /* MyListStorage.swift in Sources */,
 				A18691EC28C957A60087DE3B /* SectionsRequest.swift in Sources */,
 				A18691E228C8D4B10087DE3B /* SectionsResponseDTO+Mapping.swift in Sources */,

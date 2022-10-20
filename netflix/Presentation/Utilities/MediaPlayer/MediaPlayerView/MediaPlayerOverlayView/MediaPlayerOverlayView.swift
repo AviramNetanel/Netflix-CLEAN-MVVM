@@ -229,7 +229,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
     }
     
     func removeObservers() {
-        print("Removed `MediaPlayerOverlayView` observers.")
+        printIfDebug("Removed `MediaPlayerOverlayView` observers.")
         observers.playerItemStatusObserver?.invalidate()
         observers.playerItemFastForwardObserver?.invalidate()
         observers.playerItemReverseObserver?.invalidate()

@@ -10,11 +10,11 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func signUp(query: AuthQuery,
+    func signUp(query: AuthRequestQuery,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
     
-    func signIn(query: AuthQuery,
+    func signIn(query: AuthRequestQuery,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
@@ -35,7 +35,7 @@ private typealias Repository = RepositoryInput & RepositoryOutput
 final class AuthRepository {
     
     private let dataTransferService: DataTransferService
-    private let cache: AuthResponseStorage
+    let cache: AuthResponseStorage
     
     init(dataTransferService: DataTransferService,
          cache: AuthResponseStorage) {
@@ -48,7 +48,7 @@ final class AuthRepository {
 
 extension AuthRepository: RepositoryInput {
     
-    func signUp(query: AuthQuery,
+    func signUp(query: AuthRequestQuery,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         
@@ -71,7 +71,7 @@ extension AuthRepository: RepositoryInput {
         return task
     }
     
-    func signIn(query: AuthQuery,
+    func signIn(query: AuthRequestQuery,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         

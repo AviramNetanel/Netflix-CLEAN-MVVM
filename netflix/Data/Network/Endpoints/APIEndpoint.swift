@@ -47,6 +47,12 @@ struct APIEndpoint {
                         queryParameters: ["sort": "id"])
     }
     
+    static func getMedia(with request: MediaRequestDTO) -> Endpoint<MediaResponseDTO> {
+        let assertion = request.id == nil ? request.slug! : request.id!
+        return Endpoint(path: "api/v1/media/\(assertion)",
+                        method: .get)
+    }
+    
     // MARK: SeasonsRepository endpoints
     
     static func getSeason(with viewModel: EpisodeCollectionViewCellViewModel,
@@ -55,4 +61,3 @@ struct APIEndpoint {
                         method: .get)
     }
 }
-

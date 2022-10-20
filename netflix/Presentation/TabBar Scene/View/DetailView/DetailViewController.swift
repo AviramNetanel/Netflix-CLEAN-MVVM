@@ -73,12 +73,12 @@ final class DetailViewController: UIViewController {
     
     func removeObservers() {
         if let viewModel = viewModel {
-            print("Removed `DetailViewModel` observers.")
+            printIfDebug("Removed `DetailViewModel` observers.")
             viewModel.navigationViewState.remove(observer: self)
             viewModel.season.remove(observer: self)
         }
         if let panelView = dataSource.panelCell.panelView {
-            print("Removed `DetailPanelViewItem` observers.")
+            printIfDebug("Removed `DetailPanelViewItem` observers.")
             panelView.leadingItem.viewModel.removeObservers()
             panelView.centerItem.viewModel.removeObservers()
             panelView.trailingItem.viewModel.removeObservers()

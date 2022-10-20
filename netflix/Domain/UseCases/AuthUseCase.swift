@@ -11,7 +11,7 @@ import Foundation
 
 struct AuthUseCaseRequestValue {
     var method: AuthMethod
-    let query: AuthQuery
+    let query: AuthRequestQuery
 }
 
 // MARK: - AuthMethod struct
@@ -43,7 +43,7 @@ private typealias UseCase = UseCaseInput & UseCaseOutput
 
 final class AuthUseCase: UseCase {
     
-    fileprivate let authRepository: AuthRepository
+    let authRepository: AuthRepository
     
     init(authRepository: AuthRepository) {
         self.authRepository = authRepository
@@ -80,6 +80,8 @@ final class AuthUseCase: UseCase {
     func execute(requestValue: AuthUseCaseRequestValue,
                  cached: @escaping (AuthResponseDTO?) -> Void,
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
-        return request(requestValue: requestValue, cached: cached, completion: completion)
+        return request(requestValue: requestValue,
+                       cached: cached,
+                       completion: completion)
     }
 }

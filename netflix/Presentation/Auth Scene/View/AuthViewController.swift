@@ -47,7 +47,12 @@ final class AuthViewController: UIViewController {
             
             signUpViewController.viewModel = viewModel
             
-        } else { view.alpha = 0.0 }
+        } else if segue.identifier == String(describing: HomeViewController.self),
+                  let destinationVC = segue.destination as? HomeTabBarController {
+            
+            view.alpha = 0.0
+            destinationVC.homeViewController.viewModel.user = viewModel.user
+        }
     }
     
     private func setupBehaviors() {

@@ -56,7 +56,7 @@ final class SignUpViewController: UIViewController {
                               password: credentials.2,
                               passwordConfirm: credentials.3)
         let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthQuery(user: requestDTO.user)
+        let authQuery = AuthRequestQuery(user: requestDTO.user)
         
         viewModel.signUp(query: authQuery) { [weak self] result in
             guard let self = self else { return }

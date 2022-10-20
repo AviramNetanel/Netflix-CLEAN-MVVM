@@ -46,7 +46,7 @@ final class SignInViewController: UIViewController {
         let userDTO = UserDTO(email: credentials.0,
                               password: credentials.1)
         let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthQuery(user: requestDTO.user)
+        let authQuery = AuthRequestQuery(user: requestDTO.user)
         
         viewModel.signIn(query: authQuery) { [weak self] result in
             if case .success = result {

@@ -15,7 +15,7 @@ final class HomeTabBarController: UITabBarController {
     
     private var sceneDependencies: SceneDependencies! { appFlowCoordinator?.sceneDependencies }
     
-    private var homeViewController: HomeViewController! {
+    var homeViewController: HomeViewController! {
         appFlowCoordinator?.homeFlowCoordinator?.viewController as? HomeViewController
     }
     

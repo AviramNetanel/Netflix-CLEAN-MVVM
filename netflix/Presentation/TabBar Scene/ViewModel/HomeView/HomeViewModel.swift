@@ -45,6 +45,7 @@ private protocol ViewModelOutput {
     var media: Observable<[Media]> { get }
     var presentedDisplayMedia: Observable<Media?> { get }
     var isEmpty: Bool { get }
+    var user: User? { get }
 }
 
 // MARK: - ViewModel protocol
@@ -68,8 +69,10 @@ final class HomeViewModel: ViewModel {
     fileprivate var isEmpty: Bool { sections.value.isEmpty }
     
     var navigationViewDidAppear: (() -> Void)?
+    var user: User?
     
     deinit {
+        user = nil
         mediaTask = nil
         sectionsTask = nil
         navigationViewDidAppear = nil
@@ -118,23 +121,48 @@ extension HomeViewModel {
     }
     
     func sectionsDidFetch() async {
-        sectionsTask = await homeUseCase.execute(for: SectionsResponse.self) { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result {
-                self.dataDidLoad(response: response, completion: nil)
-            }
-        }
+        sectionsTask = await homeUseCase.execute(
+            for: SectionsResponse.self,
+            cached: { _ in
+                print("cachedSectionsResponse, `sectionsDidFetch`")
+            }, completion: { [weak self] result in
+                guard let self = self else { return }
+                if case let .success(response) = result {
+                    self.dataDidLoad(response: response, completion: nil)
+                }
+            })
     }
     
     func mediaDidFetch() async {
-        mediaTask = await homeUseCase.execute(for: MediasResponse.self) { [weak self] result in
-            guard let self = self else { return }
-            if case let .success(response) = result {
-                self.dataDidLoad(response: response) {
-                    self.viewDidLoad()
+        mediaTask = await homeUseCase.execute(
+            for: MediasResponse.self,
+            cached: { _ in
+                print("cachedMediasResponse, `mediaDidFetch`")
+            },
+            completion: { [weak self] result in
+                guard let self = self else { return }
+                if case let .success(response) = result {
+                    self.dataDidLoad(response: response) {
+                        self.viewDidLoad()
+                    }
                 }
-            }
-        }
+            })
+    }
+    
+    // experimental
+    func oneMediaDidFetch() {
+        let query = MediaRequestQuery(media: .init(id: nil, slug: "the-blacklist"))
+        mediaTask = homeUseCase.mediaRepository.getOne(
+            query: query,
+            cached: { _ in },
+            completion: { result in
+                switch result {
+                case .success(let response):
+                    print(response)
+                case .failure(let error):
+                    print(error)
+                }
+            })
     }
 }
 

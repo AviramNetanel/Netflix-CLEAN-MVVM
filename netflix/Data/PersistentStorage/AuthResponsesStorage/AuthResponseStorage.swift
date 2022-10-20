@@ -12,8 +12,10 @@ import CoreData
 private protocol StorageInput {
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void)
-    func save(response: AuthResponseDTO, for request: AuthRequestDTO)
-    func deleteResponse(for request: AuthRequestDTO, in context: NSManagedObjectContext)
+    func save(response: AuthResponseDTO,
+              for request: AuthRequestDTO)
+    func deleteResponse(for request: AuthRequestDTO,
+                        in context: NSManagedObjectContext)
 }
 
 // MARK: - StorageOutput protocol
@@ -30,7 +32,7 @@ private typealias Storage = StorageInput & StorageOutput
 
 final class AuthResponseStorage: Storage {
     
-    fileprivate let coreDataStorage: CoreDataStorage
+    let coreDataStorage: CoreDataStorage
     
     init(coreDataStorage: CoreDataStorage = .shared) {
         self.coreDataStorage = coreDataStorage
@@ -38,7 +40,9 @@ final class AuthResponseStorage: Storage {
     
     private func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity> {
         let request: NSFetchRequest = AuthRequestEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "%K = %@", #keyPath(AuthRequestEntity.user), requestDTO.user)
+        request.predicate = NSPredicate(format: "%K = %@",
+                                        #keyPath(AuthRequestEntity.user),
+                                        requestDTO.user)
         return request
     }
 }
@@ -90,6 +94,7 @@ extension AuthResponseStorage {
             if let result = try context.fetch(fetchRequest) as [AuthRequestEntity]? {
                 for r in result {
                     context.delete(r)
+                    context.delete(r.response!)
                 }
             }
         } catch {
