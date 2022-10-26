@@ -262,8 +262,11 @@ extension HomeViewModel {
 extension HomeViewModel {
     
     func shouldAddOrRemoveToMyList(_ media: Media, uponSelection selected: Bool) {
-        if selected { return section(at: .myList).media.removeAll { $0.title == media.title } }
-        section(at: .myList).media.append(media)
+        if selected {
+            section(at: .myList).media.removeAll { $0.title == media.title }
+        } else {
+            section(at: .myList).media.append(media)
+        }
         
         myListDidUpdate()
         _reloadData?()
