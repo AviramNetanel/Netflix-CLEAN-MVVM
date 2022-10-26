@@ -32,18 +32,20 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
     deinit { navigationView = nil }
     
     static func create(on tableView: UITableView,
-                       for indexPath: IndexPath) -> DetailNavigationTableViewCell {
+                       for indexPath: IndexPath,
+                       with viewModel: DetailViewModel) -> DetailNavigationTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailNavigationTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailNavigationTableViewCell
-        createView(on: view)
+        createView(on: view, with: viewModel)
         view.viewDidLoad()
         return view
     }
     
     @discardableResult
-    private static func createView(on view: DetailNavigationTableViewCell) -> DetailNavigationView {
-        view.navigationView = .create(on: view)
+    private static func createView(on view: DetailNavigationTableViewCell,
+                                   with viewModel: DetailViewModel) -> DetailNavigationView {
+        view.navigationView = .create(on: view, with: viewModel)
         return view.navigationView
     }
     

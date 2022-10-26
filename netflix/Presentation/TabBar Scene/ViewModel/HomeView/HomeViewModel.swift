@@ -33,6 +33,10 @@ private protocol ViewModelInput {
     func presentedDisplayMediaDidChange()
     
     var navigationViewDidAppear: (() -> Void)? { get }
+    
+    var _reloadData: (() -> Void)? { get }
+    func shouldAddOrRemoveToMyList(_ media: Media, uponSelection selected: Bool)
+    func contains(_ media: Media, in list: [Media]) -> Bool
 }
 
 // MARK: - ViewModelOutput protocol
@@ -71,7 +75,10 @@ final class HomeViewModel: ViewModel {
     var navigationViewDidAppear: (() -> Void)?
     var user: User?
     
+    var _reloadData: (() -> Void)?
+    
     deinit {
+        _reloadData = nil
         user = nil
         mediaTask = nil
         sectionsTask = nil
@@ -94,19 +101,18 @@ final class HomeViewModel: ViewModel {
 extension HomeViewModel {
     
     func dataWillLoad() {
-        Task {
-            await sectionsDidFetch()
-            await mediaDidFetch()
-        }
+        sectionsDidFetch()
     }
     
     func dataDidLoad<T>(response: T,
                         completion: (() -> Void)?) {
         switch response {
-        case let response as SectionsResponse:
+        case let response as SectionResponse.GET:
             sections.value = response.data
-        case let response as MediasResponse:
+            mediaDidFetch()
+        case let response as MediaResponse.GET.Many:
             media.value = response.data
+            myListDidFetch()
         default: break
         }
         
@@ -120,12 +126,12 @@ extension HomeViewModel {
         state.value = .tvShows
     }
     
-    func sectionsDidFetch() async {
-        sectionsTask = await homeUseCase.execute(
-            for: SectionsResponse.self,
-            cached: { _ in
-                print("cachedSectionsResponse, `sectionsDidFetch`")
-            }, completion: { [weak self] result in
+    func sectionsDidFetch() {
+        sectionsTask = homeUseCase.execute(
+            for: SectionResponse.GET.self,
+            request: Any.self,
+            cached: { _ in },
+            completion: { [weak self] result in
                 guard let self = self else { return }
                 if case let .success(response) = result {
                     self.dataDidLoad(response: response, completion: nil)
@@ -133,12 +139,11 @@ extension HomeViewModel {
             })
     }
     
-    func mediaDidFetch() async {
-        mediaTask = await homeUseCase.execute(
-            for: MediasResponse.self,
-            cached: { _ in
-                print("cachedMediasResponse, `mediaDidFetch`")
-            },
+    func mediaDidFetch() {
+        mediaTask = homeUseCase.execute(
+            for: MediaResponse.GET.Many.self,
+            request: MediaRequestDTO.self,
+            cached: { _ in },
             completion: { [weak self] result in
                 guard let self = self else { return }
                 if case let .success(response) = result {
@@ -149,20 +154,35 @@ extension HomeViewModel {
             })
     }
     
-    // experimental
-    func oneMediaDidFetch() {
-        let query = MediaRequestQuery(media: .init(id: nil, slug: "the-blacklist"))
-        mediaTask = homeUseCase.mediaRepository.getOne(
-            query: query,
+    func myListDidFetch() {
+        guard let user = user else { return }
+        let requestDTO = MyListRequestDTO.GET(user: user.toDTO())
+        let _: Cancellable? = homeUseCase.execute(
+            for: MyListResponseDTO.GET.self,
+            request: requestDTO,
             cached: { _ in },
-            completion: { result in
+            completion: { [weak self] result in
                 switch result {
                 case .success(let response):
-                    print(response)
+                    self?.section(at: .myList).media = response.data.toDomain().media
                 case .failure(let error):
                     print(error)
                 }
             })
+    }
+    
+    func myListDidUpdate() {
+        guard
+            let user = user,
+            let media = section(at: .myList).media as [Media]?
+        else { return }
+        let requestDTO = MyListRequestDTO.PATCH(user: user._id!,
+                                                media: media.map { String($0.id!) })
+        let _ = homeUseCase.execute(
+            for: MyListResponseDTO.PATCH.self,
+            request: requestDTO,
+            cached: { _ in },
+            completion: { _ in })
     }
 }
 
@@ -195,7 +215,9 @@ extension HomeViewModel {
                     .documentary:
                 filter(sections: sections, at: index.rawValue)
             case .blockbuster:
-                filter(sections: sections, at: index.rawValue, withMinimumRating: 7.5)
+                filter(sections: sections,
+                       at: index.rawValue,
+                       withMinimumRating: 7.5)
             default: break
             }
         }
@@ -225,12 +247,27 @@ extension HomeViewModel {
     
     func randomObject(at section: Section) -> Media {
         state.value == .tvShows
-            ? media.value.randomElement()!
-            : media.value.randomElement()!
+        ? media.value.randomElement()!
+        : media.value.randomElement()!
     }
     
     func presentedDisplayMediaDidChange() {
         let media = randomObject(at: section(at: .display))
         presentedDisplayMedia.value = media
     }
+}
+
+// MARK: - MyList methods
+
+extension HomeViewModel {
+    
+    func shouldAddOrRemoveToMyList(_ media: Media, uponSelection selected: Bool) {
+        if selected { return section(at: .myList).media.removeAll { $0.title == media.title } }
+        section(at: .myList).media.append(media)
+        
+        myListDidUpdate()
+        _reloadData?()
+    }
+    
+    func contains(_ media: Media, in list: [Media]) -> Bool { list.contains(media) }
 }

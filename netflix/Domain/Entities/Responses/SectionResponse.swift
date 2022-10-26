@@ -2,7 +2,7 @@
 //  SectionResponse.swift
 //  netflix
 //
-//  Created by Zach Bazov on 18/10/2022.
+//  Created by Zach Bazov on 08/09/2022.
 //
 
 import Foundation
@@ -10,6 +10,10 @@ import Foundation
 // MARK: - SectionResponse struct
 
 struct SectionResponse {
-    let status: String
-    let data: Section
+    
+    struct GET {
+        let status: String
+        let results: Int
+        let data: [Section]
+    }
 }

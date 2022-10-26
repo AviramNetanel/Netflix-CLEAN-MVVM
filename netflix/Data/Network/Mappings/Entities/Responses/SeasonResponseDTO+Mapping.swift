@@ -9,15 +9,18 @@ import Foundation
 
 // MARK: - SeasonResponseDTO struct
 
-struct SeasonResponseDTO: Decodable {
-    let status: String
-    let data: SeasonDTO
+struct SeasonResponseDTO {
+    
+    struct GET: Decodable {
+        let status: String
+        let data: SeasonDTO
+    }
 }
 
 // MARK: - Mapping
 
-extension SeasonResponseDTO {
-    func toDomain() -> SeasonResponse {
+extension SeasonResponseDTO.GET {
+    func toDomain() -> SeasonResponse.GET {
         return .init(status: status,
                      data: data.toDomain())
     }

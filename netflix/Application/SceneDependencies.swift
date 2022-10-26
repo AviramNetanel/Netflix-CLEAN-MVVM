@@ -40,7 +40,8 @@ final class SceneDependencies {
     func createHomeUseCase() -> HomeUseCase {
         return HomeUseCase(
             sectionsRepository: createSectionsRepository(),
-            mediaRepository: createMediaRepository())
+            mediaRepository: createMediaRepository(),
+            myListRepository: createMyListRepository())
     }
     
     func createDetailUseCase() -> DetailUseCase {
@@ -56,8 +57,8 @@ final class SceneDependencies {
             cache: authResponseCache)
     }
     
-    func createSectionsRepository() -> SectionsRepository {
-        return SectionsRepository(
+    func createSectionsRepository() -> SectionRepository {
+        return SectionRepository(
             dataTransferService: dependencies.dataTransferService)
     }
     
@@ -67,8 +68,12 @@ final class SceneDependencies {
             cache: mediaResponseCache)
     }
     
-    func createSeasonsRepoistory() -> SeasonsRepository {
-        return SeasonsRepository(dataTransferService: dependencies.dataTransferService)
+    func createSeasonsRepoistory() -> SeasonRepository {
+        return SeasonRepository(dataTransferService: dependencies.dataTransferService)
+    }
+    
+    func createMyListRepository() -> MyListRepository {
+        return MyListRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     // MARK: - Scenes

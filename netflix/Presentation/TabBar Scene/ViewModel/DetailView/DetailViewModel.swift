@@ -13,7 +13,7 @@ private protocol ViewModelInput {
     func dataDidLoad<T>(response: T)
     func viewDidLoad()
     func contentSize(with state: DetailNavigationView.State) -> Float
-    func getSeason(with viewModel: EpisodeCollectionViewCellViewModel,
+    func getSeason(with request: SeasonRequestDTO.GET,
                    completion: @escaping () -> Void)
 }
 
@@ -63,7 +63,7 @@ final class DetailViewModel: ViewModel {
     
     fileprivate func dataDidLoad<T>(response: T) {
         switch response {
-        case let response as SeasonResponse:
+        case let response as SeasonResponse.GET:
             season.value = response.data
         default: break
         }
@@ -104,10 +104,10 @@ final class DetailViewModel: ViewModel {
         }
     }
     
-    func getSeason(with viewModel: EpisodeCollectionViewCellViewModel,
+    func getSeason(with request: SeasonRequestDTO.GET,
                    completion: @escaping () -> Void) {
         task = detailUseCase.execute(for: SeasonResponse.self,
-                                     with: viewModel) { [weak self] result in
+                                     with: request) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.dataDidLoad(response: response)

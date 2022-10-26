@@ -22,6 +22,7 @@ private protocol ViewOutput {
     var centerItem: DetailNavigationViewItem! { get }
     var trailingItem: DetailNavigationViewItem! { get }
     var state: DetailNavigationView.State! { get }
+    var viewModel: DetailViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -45,6 +46,7 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     fileprivate(set) var leadingItem: DetailNavigationViewItem!
     fileprivate(set) var centerItem: DetailNavigationViewItem!
     fileprivate(set) var trailingItem: DetailNavigationViewItem!
+    fileprivate(set) var viewModel: DetailViewModel!
     
     fileprivate var state: State!
     var _stateDidChange: ((State) -> Void)?
@@ -55,22 +57,35 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         leadingItem = nil
         centerItem = nil
         trailingItem = nil
+        viewModel = nil
     }
     
-    static func create(on parent: UIView) -> DetailNavigationView {
+    static func create(on parent: UIView,
+                       with viewModel: DetailViewModel) -> DetailNavigationView {
         let view = DetailNavigationView(frame: .zero)
         parent.addSubview(view)
         view.constraintToSuperview(parent)
         view.nibDidLoad()
+        createViewModel(on: view, with: viewModel)
         createItems(on: view)
         view.viewDidLoad()
         return view
     }
     
     private static func createItems(on view: DetailNavigationView) {
-        view.leadingItem = .create(on: view.leadingViewContainer, navigationView: view)
-        view.centerItem = .create(on: view.centerViewContainer, navigationView: view)
-        view.trailingItem = .create(on: view.trailingViewContrainer, navigationView: view)
+        view.leadingItem = .create(on: view.leadingViewContainer,
+                                   navigationView: view)
+        view.centerItem = .create(on: view.centerViewContainer,
+                                  navigationView: view)
+        view.trailingItem = .create(on: view.trailingViewContrainer,
+                                    navigationView: view)
+    }
+    
+    @discardableResult
+    private static func createViewModel(on view: DetailNavigationView,
+                                        with viewModel: DetailViewModel) -> DetailViewModel {
+        view.viewModel = viewModel
+        return view.viewModel
     }
     
     fileprivate func viewDidLoad() {

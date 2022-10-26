@@ -1,8 +1,8 @@
 //
-//  SectionsRepository.swift
+//  SeasonRepository.swift
 //  netflix
 //
-//  Created by Zach Bazov on 07/09/2022.
+//  Created by Zach Bazov on 11/10/2022.
 //
 
 import Foundation
@@ -10,7 +10,8 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func getAll(completion: @escaping (Result<SectionsResponseDTO, Error>) -> Void) -> Cancellable?
+    func getSeason(with request: SeasonRequestDTO.GET,
+                   completion: @escaping (Result<SeasonResponseDTO.GET, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - RepositoryOutput protocol
@@ -21,11 +22,11 @@ private protocol RepositoryOutput {
 
 // MARK: - Repository typealias
 
-private typealias Repository = RepositoryInput & RepositoryOutput
+private typealias Repository = RepositoryInput
 
-// MARK: - SectionsRepository class
+// MARK: - SeasonRepository struct
 
-final class SectionsRepository: Repository {
+struct SeasonRepository: Repository {
     
     fileprivate let dataTransferService: DataTransferService
     
@@ -36,14 +37,15 @@ final class SectionsRepository: Repository {
 
 // MARK: - RepositoryInput implementation
 
-extension SectionsRepository {
+extension SeasonRepository {
     
-    func getAll(completion: @escaping (Result<SectionsResponseDTO, Error>) -> Void) -> Cancellable? {
+    func getSeason(with request: SeasonRequestDTO.GET,
+                   completion: @escaping (Result<SeasonResponseDTO.GET, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.getAllSections()
+        let endpoint = APIEndpoint.getSeason(with: request)
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):

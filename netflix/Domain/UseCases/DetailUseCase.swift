@@ -11,17 +11,17 @@ import Foundation
 
 private protocol UseCaseInput {
     func request<T>(for response: T.Type,
-                    with viewModel: EpisodeCollectionViewCellViewModel,
-                    completion: @escaping (Result<SeasonResponse, Error>) -> Void) -> Cancellable?
+                    with request: SeasonRequestDTO.GET,
+                    completion: @escaping (Result<SeasonResponse.GET, Error>) -> Void) -> Cancellable?
     func execute<T>(for response: T.Type,
-                    with viewModel: EpisodeCollectionViewCellViewModel,
-                    completion: @escaping (Result<SeasonResponse, Error>) -> Void) -> Cancellable?
+                    with request: SeasonRequestDTO.GET,
+                    completion: @escaping (Result<SeasonResponse.GET, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - UseCaseOutput protocol
 
 private protocol UseCaseOutput {
-    var seasonsRepository: SeasonsRepository { get }
+    var seasonsRepository: SeasonRepository { get }
 }
 
 // MARK: - UseCase typealias
@@ -32,16 +32,16 @@ private typealias UseCase = UseCaseInput & UseCaseOutput
 
 final class DetailUseCase: UseCase {
     
-    fileprivate let seasonsRepository: SeasonsRepository
+    fileprivate let seasonsRepository: SeasonRepository
     
-    init(seasonsRepository: SeasonsRepository) {
+    init(seasonsRepository: SeasonRepository) {
         self.seasonsRepository = seasonsRepository
     }
     
     fileprivate func request<T>(for response: T.Type,
-                            with viewModel: EpisodeCollectionViewCellViewModel,
-                            completion: @escaping (Result<SeasonResponse, Error>) -> Void) -> Cancellable? {
-        return seasonsRepository.getSeason(with: viewModel) { result in
+                                with request: SeasonRequestDTO.GET,
+                                completion: @escaping (Result<SeasonResponse.GET, Error>) -> Void) -> Cancellable? {
+        return seasonsRepository.getSeason(with: request) { result in
             switch result {
             case .success(let response):
                 completion(.success(response.toDomain()))
@@ -52,8 +52,8 @@ final class DetailUseCase: UseCase {
     }
     
     func execute<T>(for response: T.Type,
-                    with viewModel: EpisodeCollectionViewCellViewModel,
-                    completion: @escaping (Result<SeasonResponse, Error>) -> Void) -> Cancellable? {
-        return request(for: response, with: viewModel, completion: completion)
+                    with request: SeasonRequestDTO.GET,
+                    completion: @escaping (Result<SeasonResponse.GET, Error>) -> Void) -> Cancellable? {
+        return self.request(for: response, with: request, completion: completion)
     }
 }

@@ -46,9 +46,8 @@ final class SignInViewController: UIViewController {
         let userDTO = UserDTO(email: credentials.0,
                               password: credentials.1)
         let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthRequestQuery(user: requestDTO.user)
         
-        viewModel.signIn(query: authQuery) { [weak self] result in
+        viewModel.signIn(request: requestDTO.toDomain()) { [weak self] result in
             if case .success = result {
                 guard let self = self else { return }
                 DispatchQueue.main.async {

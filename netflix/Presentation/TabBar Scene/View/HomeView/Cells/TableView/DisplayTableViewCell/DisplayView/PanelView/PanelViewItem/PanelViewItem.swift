@@ -15,6 +15,7 @@ private protocol ConfigurationInput {
     func viewDidConfigure()
     func viewDidTap()
     func viewDidLongPress()
+    func selectIfNeeded()
 }
 
 // MARK: - ConfigurationOutput protocol
@@ -78,10 +79,21 @@ final class PanelViewItemConfiguration: Configuration {
         }
     }
     
+    fileprivate func selectIfNeeded() {
+        guard let item = Item(rawValue: view.tag) else { return }
+        if case .myList = item {
+            view.viewModel.isSelected.value = view.homeViewModel.contains(
+                view.viewModel.media,
+                in: view.homeViewModel.section(at: .myList).media)
+        }
+    }
+    
     func viewDidConfigure() {
         guard let view = view else { return }
         view.imageView.image = .init(systemName: view.viewModel.systemImage)
         view.titleLabel.text = view.viewModel.title
+        
+        selectIfNeeded()
     }
     
     @objc
@@ -89,7 +101,8 @@ final class PanelViewItemConfiguration: Configuration {
         guard let tag = Item(rawValue: view.tag) else { return }
         switch tag {
         case .myList:
-            break
+            let media = view.homeViewModel.presentedDisplayMedia.value!
+            view.homeViewModel.shouldAddOrRemoveToMyList(media, uponSelection: view.viewModel.isSelected.value)
         case .info:
             let section = view.homeViewModel.section(at: .display)
             let media = view.homeViewModel.presentedDisplayMedia.value!
@@ -155,7 +168,7 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
     @discardableResult
     private static func createViewModel(on view: PanelViewItem,
                                         with homeViewModel: HomeViewModel) -> PanelViewItemViewModel {
-        let viewModel = PanelViewItemViewModel(with: view)
+        let viewModel = PanelViewItemViewModel(item: view, with: homeViewModel.presentedDisplayMedia.value!)
         view.viewModel = viewModel
         view.homeViewModel = homeViewModel
         return viewModel

@@ -10,6 +10,9 @@ import Foundation
 // MARK: - SeasonResponse struct
 
 struct SeasonResponse {
-    let status: String
-    let data: Season
+    
+    struct GET {
+        let status: String
+        let data: Season
+    }
 }

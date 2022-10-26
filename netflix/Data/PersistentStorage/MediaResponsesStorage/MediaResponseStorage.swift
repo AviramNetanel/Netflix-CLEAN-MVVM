@@ -11,11 +11,11 @@ import CoreData
 // MARK: - StorageInput protocol
 
 private protocol StorageInput {
-    func getResponse(for request: MediaRequestDTO,
-                     completion: @escaping (Result<MediaResponseDTO?, CoreDataStorageError>) -> Void)
-    func save(response: MediaResponseDTO,
-              for request: MediaRequestDTO)
-    func deleteResponse(for request: MediaRequestDTO,
+    func getResponse(for request: MediaRequestDTO.GET.One,
+                     completion: @escaping (Result<MediaResponseDTO.GET.One?, CoreDataStorageError>) -> Void)
+    func save(response: MediaResponseDTO.GET.One,
+              for request: MediaRequestDTO.GET.One)
+    func deleteResponse(for request: MediaRequestDTO.GET.One,
                         in context: NSManagedObjectContext)
 }
 
@@ -39,7 +39,7 @@ final class MediaResponseStorage: Storage {
         self.coreDataStorage = coreDataStorage
     }
     
-    private func fetchRequest(for requestDTO: MediaRequestDTO) -> NSFetchRequest<MediaRequestEntity> {
+    private func fetchRequest(for requestDTO: MediaRequestDTO.GET.One) -> NSFetchRequest<MediaRequestEntity> {
         let request: NSFetchRequest = MediaRequestEntity.fetchRequest()
         if requestDTO.slug != nil {
             request.predicate = NSPredicate(format: "%K = %@",
@@ -58,8 +58,8 @@ final class MediaResponseStorage: Storage {
 
 extension MediaResponseStorage {
     
-    func getResponse(for request: MediaRequestDTO,
-                     completion: @escaping (Result<MediaResponseDTO?, CoreDataStorageError>) -> Void) {
+    func getResponse(for request: MediaRequestDTO.GET.One,
+                     completion: @escaping (Result<MediaResponseDTO.GET.One?, CoreDataStorageError>) -> Void) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 let fetchRequest = self.fetchRequest(for: request)
@@ -72,8 +72,8 @@ extension MediaResponseStorage {
         }
     }
     
-    func save(response: MediaResponseDTO,
-              for request: MediaRequestDTO) {
+    func save(response: MediaResponseDTO.GET.One,
+              for request: MediaRequestDTO.GET.One) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 self.deleteResponse(for: request, in: context)
@@ -88,7 +88,7 @@ extension MediaResponseStorage {
         }
     }
     
-    func deleteResponse(for request: MediaRequestDTO,
+    func deleteResponse(for request: MediaRequestDTO.GET.One,
                         in context: NSManagedObjectContext) {
         let fetchRequest = self.fetchRequest(for: request)
         do {

@@ -56,9 +56,8 @@ final class SignUpViewController: UIViewController {
                               password: credentials.2,
                               passwordConfirm: credentials.3)
         let requestDTO = AuthRequestDTO(user: userDTO)
-        let authQuery = AuthRequestQuery(user: requestDTO.user)
         
-        viewModel.signUp(query: authQuery) { [weak self] result in
+        viewModel.signUp(request: requestDTO.toDomain()) { [weak self] result in
             guard let self = self else { return }
             if case .success = result {
                 self.viewModel.actions?.presentHomeViewController()

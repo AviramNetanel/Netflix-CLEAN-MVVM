@@ -5,21 +5,32 @@
 //  Created by Zach Bazov on 18/10/2022.
 //
 
-import Foundation
 import CoreData
 
 // MARK: - MediaResponseDTO struct
 
-struct MediaResponseDTO: Decodable {
-    let status: String
-    let data: MediaDTO
+struct MediaResponseDTO {
+    
+    struct GET {
+        
+        struct One: Decodable {
+            let status: String
+            let data: MediaDTO
+        }
+        
+        struct Many: Decodable {
+            let status: String
+            let results: Int
+            let data: [MediaDTO]
+        }
+    }
 }
 
 // MARK: - Mapping
 
-extension MediaResponseDTO {
+extension MediaResponseDTO.GET.One {
     
-    func toDomain() -> MediaResponse {
+    func toDomain() -> MediaResponse.GET.One {
         return .init(status: status,
                      data: data.toDomain())
     }
@@ -47,5 +58,13 @@ extension MediaResponseDTO {
         entity.seasons = data.seasons
         entity.numberOfEpisodes = Int32(data.numberOfEpisodes!)
         return entity
+    }
+}
+
+extension MediaResponseDTO.GET.Many {
+    func toDomain() -> MediaResponse.GET.Many {
+        return .init(status: status,
+                     results: results,
+                     data: data.map { $0.toDomain() })
     }
 }

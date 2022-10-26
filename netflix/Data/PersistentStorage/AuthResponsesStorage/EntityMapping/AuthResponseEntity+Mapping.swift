@@ -21,6 +21,7 @@ extension AuthResponseEntity {
 extension AuthRequestDTO {
     func toEntity(in context: NSManagedObjectContext) -> AuthRequestEntity {
         let entity: AuthRequestEntity = .init(context: context)
+        entity.user?._id = user._id
         entity.user?.name = user.name
         entity.user?.email = user.email
         entity.user?.password = user.password

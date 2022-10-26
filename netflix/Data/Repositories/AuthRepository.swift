@@ -10,11 +10,11 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func signUp(query: AuthRequestQuery,
+    func signUp(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
     
-    func signIn(query: AuthRequestQuery,
+    func signIn(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
@@ -48,11 +48,11 @@ final class AuthRepository {
 
 extension AuthRepository: RepositoryInput {
     
-    func signUp(query: AuthRequestQuery,
+    func signUp(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         
-        let requestDTO = AuthRequestDTO(user: query.user)
+        let requestDTO = AuthRequestDTO(user: request.user.toDTO())
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
@@ -71,11 +71,11 @@ extension AuthRepository: RepositoryInput {
         return task
     }
     
-    func signIn(query: AuthRequestQuery,
+    func signIn(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         
-        let requestDTO = AuthRequestDTO(user: query.user)
+        let requestDTO = AuthRequestDTO(user: request.user.toDTO())
         let task = RepositoryTask()
         
         cache.getResponse(for: requestDTO) { result in

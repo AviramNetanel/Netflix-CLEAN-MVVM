@@ -12,6 +12,7 @@ import UIKit
 @objc
 private protocol ConfigurationInput {
     func viewDidRegisterRecognizers()
+    func viewDidConfigure()
     func viewDidTap()
 }
 
@@ -44,6 +45,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
         configuration.view = view
         configuration.navigationView = navigationView
         configuration.viewDidRegisterRecognizers()
+        configuration.viewDidConfigure()
         return configuration
     }
     
@@ -51,6 +53,17 @@ final class DetailNavigationViewItemConfiguration: Configuration {
         view.button.addTarget(self,
                               action: #selector(viewDidTap),
                               for: .touchUpInside)
+    }
+    
+    fileprivate func viewDidConfigure() {
+        guard let item = DetailNavigationView.State(rawValue: view.tag) else { return }
+        switch item {
+        case .episodes:
+            navigationView.viewModel.state == .tvShows ? view.isHidden(true) : view.isHidden(false)
+        case .trailers:
+            navigationView.viewModel.state == .tvShows ? view.isHidden(false) : view.isHidden(true)
+        default: break
+        }
     }
     
     func viewDidTap() {
@@ -87,12 +100,6 @@ private typealias View = ViewInput & ViewOutput
 // MARK: - DetailNavigationViewItem class
 
 final class DetailNavigationViewItem: UIView, View {
-    
-    enum Item: Int {
-        case episodes
-        case trailers
-        case similarContent
-    }
     
     fileprivate(set) var configuration: DetailNavigationViewItemConfiguration!
     fileprivate(set) var viewModel: DetailNavigationViewItemViewModel!

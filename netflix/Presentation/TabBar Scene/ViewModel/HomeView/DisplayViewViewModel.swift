@@ -66,7 +66,7 @@ struct DisplayViewViewModel: ViewModel {
     }
     
     fileprivate func path(with media: Media) -> String? {
-        switch PresentedLogo(rawValue: media.resources.presentedLogo) {
+        switch PresentedLogo(rawValue: media.resources.presentedDisplayLogo) {
         case .first: return media.resources.logos[0]
         case .second: return media.resources.logos[1]
         case .third: return media.resources.logos[2]

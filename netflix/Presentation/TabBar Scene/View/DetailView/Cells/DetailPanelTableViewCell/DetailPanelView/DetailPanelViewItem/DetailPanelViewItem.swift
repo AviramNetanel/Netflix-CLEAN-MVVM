@@ -14,6 +14,7 @@ private protocol ConfigurationInput {
     func viewDidConfigure()
     func viewDidRegisterRecognizers()
     func viewDidTap()
+    func selectIfNeeded()
 }
 
 // MARK: - ConfigurationOutput protocol
@@ -37,13 +38,19 @@ final class DetailPanelViewItemConfiguration: Configuration {
     }
     
     fileprivate weak var view: DetailPanelViewItem!
+    fileprivate var viewModel: HomeViewModel!
     
-    init(view: DetailPanelViewItem) { self.view = view }
+    init(view: DetailPanelViewItem,
+         viewModel: HomeViewModel) {
+        self.view = view
+        self.viewModel = viewModel
+    }
     
     deinit { view = nil }
     
-    static func create(with view: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
-        let configuration = DetailPanelViewItemConfiguration(view: view)
+    static func create(view: DetailPanelViewItem,
+                       with viewModel: HomeViewModel) -> DetailPanelViewItemConfiguration {
+        let configuration = DetailPanelViewItemConfiguration(view: view, viewModel: viewModel)
         configuration.viewDidConfigure()
         configuration.viewDidRegisterRecognizers()
         return configuration
@@ -55,16 +62,29 @@ final class DetailPanelViewItemConfiguration: Configuration {
         view.addGestureRecognizer(tapRecognizer)
     }
     
+    fileprivate func selectIfNeeded() {
+        guard let tag = Item(rawValue: view.tag) else { return }
+        if case .myList = tag {
+            view.viewModel.isSelected.value = viewModel.contains(
+                view.viewModel.media,
+                in: viewModel.section(at: .myList).media)
+        }
+    }
+    
     func viewDidConfigure() {
         view.imageView.image = UIImage(systemName: view.viewModel.systemImage)?.whiteRendering()
         view.label.text = view.viewModel.title
+        
+        selectIfNeeded()
     }
     
     func viewDidTap() {
         guard let tag = Item(rawValue: view.tag) else { return }
         
         switch tag {
-        case .myList: print("mylist")
+        case .myList:
+            let media = view.viewModel.media!
+            viewModel.shouldAddOrRemoveToMyList(media, uponSelection: view.viewModel.isSelected.value)
         case .rate: print("rate")
         case .share: print("share")
         }
@@ -122,25 +142,29 @@ final class DetailPanelViewItem: UIView, View {
         viewModel = nil
     }
     
-    static func create(on parent: UIView) -> DetailPanelViewItem {
+    static func create(on parent: UIView,
+                       viewModel: DetailViewModel,
+                       homeViewModel: HomeViewModel) -> DetailPanelViewItem {
         let view = DetailPanelViewItem(frame: parent.bounds)
         view.tag = parent.tag
         parent.addSubview(view)
         view.chainConstraintToCenter(linking: view.imageView, to: view.label)
-        createViewModel(on: view)
-        createConfiguration(on: view)
+        createViewModel(on: view, with: viewModel)
+        createConfiguration(on: view, with: homeViewModel)
         return view
     }
     
     @discardableResult
-    private static func createViewModel(on view: DetailPanelViewItem) -> DetailPanelViewItemViewModel {
-        view.viewModel = .init(with: view)
+    private static func createViewModel(on view: DetailPanelViewItem,
+                                        with viewModel: DetailViewModel) -> DetailPanelViewItemViewModel {
+        view.viewModel = .init(item: view, with: viewModel)
         return view.viewModel
     }
     
     @discardableResult
-    private static func createConfiguration(on view: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
-        view.configuration = .create(with: view)
+    private static func createConfiguration(on view: DetailPanelViewItem,
+                                            with viewModel: HomeViewModel) -> DetailPanelViewItemConfiguration {
+        view.configuration = .create(view: view, with: viewModel)
         return view.configuration
     }
 }

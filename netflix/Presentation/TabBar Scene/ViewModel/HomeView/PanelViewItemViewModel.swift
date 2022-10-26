@@ -32,6 +32,7 @@ final class PanelViewItemViewModel: ViewModel {
     
     let tag: Int
     let isSelected: Observable<Bool>
+    let media: Media!
     
     var systemImage: String {
         let leading = isSelected.value ? "checkmark" : "plus"
@@ -45,9 +46,10 @@ final class PanelViewItemViewModel: ViewModel {
         return tag == 0 ? leading : trailing
     }
     
-    init(with item: PanelViewItem) {
+    init(item: PanelViewItem, with media: Media) {
         self.tag = item.tag
         self.isSelected = .init(item.isSelected)
+        self.media = media
         self.bind(on: item)
     }
     

@@ -9,4 +9,7 @@ import Foundation
 
 // MARK: - MediaRequest struct
 
-struct MediaRequest {}
+struct MediaRequest {
+    var user: UserDTO? = nil
+    let media: MediaRequestDTO
+}

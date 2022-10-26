@@ -2,23 +2,28 @@
 //  SectionResponseDTO+Mapping.swift
 //  netflix
 //
-//  Created by Zach Bazov on 18/10/2022.
+//  Created by Zach Bazov on 07/09/2022.
 //
 
 import Foundation
 
-// MARK: - SectionResponseDTO + Decodable
+// MARK: - SectionResponseDTO struct
 
-struct SectionResponseDTO: Decodable {
-    let status: String
-    let data: SectionDTO
+struct SectionResponseDTO {
+    
+    struct GET: Decodable {
+        let status: String
+        let results: Int
+        let data: [SectionDTO]
+    }
 }
 
 // MARK: - Mapping
 
-extension SectionResponseDTO {
-    func toDomain() -> SectionResponse {
+extension SectionResponseDTO.GET {
+    func toDomain() -> SectionResponse.GET {
         return .init(status: status,
-                     data: data.toDomain())
+                     results: results,
+                     data: data.map { $0.toDomain() })
     }
 }

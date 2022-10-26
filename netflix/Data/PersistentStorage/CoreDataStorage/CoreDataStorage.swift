@@ -85,19 +85,4 @@ final class CoreDataStorage: Storage {
         do { try context.save() }
         catch { assertionFailure("CoreDataStorage unresolved error \(error), \((error as NSError).userInfo)") }
     }
-    
-    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequestQuery) -> Void) {
-        let request: NSFetchRequest = AuthRequestEntity.fetchRequest()
-        do {
-            let entities = try context().fetch(request)
-            let userDTO = UserDTO(email: entities.first?.user?.email ?? "",
-                                  password: entities.first?.user?.password ?? "")
-            let requestDTO = AuthRequestDTO(user: userDTO)
-            let requestQuery = AuthRequestQuery(user: requestDTO.user)
-            
-            completion(requestQuery)
-        } catch {
-            printIfDebug("Unresolved error \(error) ")
-        }
-    }
 }

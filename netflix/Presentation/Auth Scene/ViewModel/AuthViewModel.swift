@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 // MARK: - AuthViewModelActions struct
 
@@ -20,9 +19,9 @@ struct AuthViewModelActions {
 
 private protocol ViewModelInput {
     func viewDidLoad()
-    func signUp(query: AuthRequestQuery,
+    func signUp(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
-    func signIn(query: AuthRequestQuery,
+    func signIn(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
     func signInButtonDidTap()
 }
@@ -65,12 +64,13 @@ final class AuthViewModel: ViewModel {
     }
     
     private func userDidAuthorize() {
-        authUseCase.authRepository.cache.coreDataStorage.performCachedAuthorizationSession { [weak self] query in
+        authUseCase.authRepository.cache.performCachedAuthorizationSession { [weak self] query in
             guard let self = self else { return }
-            self.signIn(query: query) { result in
+            self.signIn(request: query) { result in
                 switch result {
                 case .success(let response):
                     self.user = response.data?.toDomain()
+                    self.user?.token = response.token
                     
                     asynchrony { self.actions?.presentHomeViewController() }
                 case .failure(let error):
@@ -89,10 +89,10 @@ extension AuthViewModel {
         userDidAuthorize()
     }
     
-    func signUp(query: AuthRequestQuery,
+    func signUp(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
         authorizationTask = authUseCase.execute(
-            requestValue: .init(method: .signup, query: query),
+            requestValue: .init(method: .signup, request: request),
             cached: { _ in },
             completion: { result in
                 switch result {
@@ -104,10 +104,10 @@ extension AuthViewModel {
             })
     }
     
-    func signIn(query: AuthRequestQuery,
+    func signIn(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
         authorizationTask = authUseCase.execute(
-            requestValue: .init(method: .signin, query: query),
+            requestValue: .init(method: .signin, request: request),
             cached: { response in
                 if let response = response {
                     return completion(.success(response))

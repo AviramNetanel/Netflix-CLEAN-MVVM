@@ -115,7 +115,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
     
     func viewDidConfigure() {
         guard
-            let player = mediaPlayerView.mediaPlayer.player as AVPlayer?,
+            let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer?,
             let overlayView = overlayView,
             let item = player.currentItem
         else { return }
@@ -204,7 +204,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
     }
     
     func setupPlayButton() {
-        guard let player = mediaPlayerView.mediaPlayer.player as AVPlayer? else { return }
+        guard let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer? else { return }
         
         var systemImage: UIImage
         switch player.timeControlStatus {

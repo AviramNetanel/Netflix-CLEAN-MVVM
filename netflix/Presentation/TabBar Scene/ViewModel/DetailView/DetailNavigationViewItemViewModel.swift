@@ -31,7 +31,7 @@ final class DetailNavigationViewItemViewModel: ViewModel {
     fileprivate var isSelected: Bool
     
     var title: String {
-        guard let tag = DetailNavigationViewItem.Item(rawValue: tag) else { fatalError() }
+        guard let tag = DetailNavigationView.State(rawValue: tag) else { fatalError() }
         switch tag {
         case .episodes: return "Episodes"
         case .trailers: return "Trailers"

@@ -10,10 +10,10 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func getAll(completion: @escaping (Result<MediasResponseDTO, Error>) -> Void) -> Cancellable?
-    func getOne(query: MediaRequestQuery,
-                cached: @escaping (MediaResponseDTO?) -> Void,
-                completion: @escaping (Result<MediaResponseDTO, Error>) -> Void) -> Cancellable?
+    func getAll(completion: @escaping (Result<MediaResponseDTO.GET.Many, Error>) -> Void) -> Cancellable?
+    func getOne(request: MediaRequestDTO.GET.One,
+                cached: @escaping (MediaResponseDTO.GET.One?) -> Void,
+                completion: @escaping (Result<MediaResponseDTO.GET.One, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - RepositoryOutput protocol
@@ -40,7 +40,7 @@ final class MediaRepository: Repository {
         self.cache = cache
     }
     
-    func getAll(completion: @escaping (Result<MediasResponseDTO, Error>) -> Void) -> Cancellable? {
+    func getAll(completion: @escaping (Result<MediaResponseDTO.GET.Many, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
@@ -58,13 +58,12 @@ final class MediaRepository: Repository {
         return task
     }
     
-    func getOne(query: MediaRequestQuery,
-                cached: @escaping (MediaResponseDTO?) -> Void,
-                completion: @escaping (Result<MediaResponseDTO, Error>) -> Void) -> Cancellable? {
-        
-        let requestDTO = MediaRequestDTO(user: query.user,
-                                         id: query.media.id,
-                                         slug: query.media.slug)
+    func getOne(request: MediaRequestDTO.GET.One,
+                cached: @escaping (MediaResponseDTO.GET.One?) -> Void,
+                completion: @escaping (Result<MediaResponseDTO.GET.One, Error>) -> Void) -> Cancellable? {
+        let requestDTO = MediaRequestDTO.GET.One(user: request.user,
+                                             id: request.id,
+                                             slug: request.slug)
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }

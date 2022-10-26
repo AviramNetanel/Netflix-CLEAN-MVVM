@@ -11,7 +11,7 @@ import Foundation
 
 struct AuthUseCaseRequestValue {
     var method: AuthMethod
-    let query: AuthRequestQuery
+    let request: AuthRequest
 }
 
 // MARK: - AuthMethod struct
@@ -54,7 +54,7 @@ final class AuthUseCase: UseCase {
                          completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {
         switch requestValue.method {
         case .signup:
-            return authRepository.signUp(query: requestValue.query,
+            return authRepository.signUp(request: requestValue.request,
                                          cached: cached) { result in
                 switch result {
                 case .success(let response):
@@ -64,7 +64,7 @@ final class AuthUseCase: UseCase {
                 }
             }
         case .signin:
-            return authRepository.signIn(query: requestValue.query,
+            return authRepository.signIn(request: requestValue.request,
                                          cached: cached) { result in
                 switch result {
                 case .success(let response):

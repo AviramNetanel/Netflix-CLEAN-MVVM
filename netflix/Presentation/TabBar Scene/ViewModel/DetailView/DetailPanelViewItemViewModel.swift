@@ -33,6 +33,7 @@ final class DetailPanelViewItemViewModel: ViewModel {
     
     let tag: Int
     var isSelected: Observable<Bool>
+    var media: Media!
     
     var systemImage: String {
         guard let tag = DetailPanelViewItemConfiguration.Item(rawValue: tag) else { fatalError() }
@@ -52,9 +53,11 @@ final class DetailPanelViewItemViewModel: ViewModel {
         }
     }
     
-    init(with item: DetailPanelViewItem) {
+    init(item: DetailPanelViewItem,
+         with viewModel: DetailViewModel) {
         self.tag = item.tag
         self.isSelected = .init(item.isSelected)
+        self.media = viewModel.media
         self.bind(on: item)
     }
     

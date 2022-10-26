@@ -9,12 +9,19 @@ import Foundation
 
 // MARK: - SeasonRequestDTO struct
 
-struct SeasonRequestDTO: Decodable {}
+struct SeasonRequestDTO {
+    
+    struct GET: Decodable {
+        var id: String? = nil
+        var slug: String? = nil
+        var season: Int? = 1
+    }
+}
 
 // MARK: - Mapping
 
-extension SeasonRequestDTO {
-    func toDomain() -> SeasonRequest {
+extension SeasonRequestDTO.GET {
+    func toDomain() -> SeasonRequest.GET {
         return .init()
     }
 }

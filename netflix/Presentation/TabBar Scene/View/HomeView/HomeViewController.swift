@@ -43,6 +43,10 @@ final class HomeViewController: UIViewController {
         setupSubviews()
         setupBindings()
         viewModel.dataWillLoad()
+        
+        
+        
+        viewModel._reloadData = { [weak self] in self?.reloadData() }
     }
     
     private func setupBehaviors() {
@@ -90,6 +94,13 @@ final class HomeViewController: UIViewController {
             viewModel.state.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
+    }
+    
+    
+    
+    func reloadData() {
+        guard let myListIndex = TableViewDataSource.Index(rawValue: 6) else { return }
+        tableView.reloadSections(IndexSet(integer: myListIndex.rawValue), with: .automatic)
     }
 }
 

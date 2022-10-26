@@ -49,6 +49,7 @@ final class DetailTableViewDataSource: NSObject,
     
     fileprivate var tableView: UITableView!
     fileprivate var viewModel: DetailViewModel!
+    fileprivate var homeViewModel: HomeViewModel!
     
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
@@ -69,13 +70,16 @@ final class DetailTableViewDataSource: NSObject,
         _heightForRow = nil
         tableView = nil
         viewModel = nil
+        homeViewModel = nil
     }
     
     static func create(on tableView: UITableView,
-                       with viewModel: DetailViewModel) -> DetailTableViewDataSource {
+                       viewModel: DetailViewModel,
+                       homeViewModel: HomeViewModel) -> DetailTableViewDataSource {
         let dataSource = DetailTableViewDataSource()
         dataSource.tableView = tableView
         dataSource.viewModel = viewModel
+        dataSource.homeViewModel = homeViewModel
         return dataSource
     }
     
@@ -103,12 +107,15 @@ final class DetailTableViewDataSource: NSObject,
         case .panel:
             guard panelCell == nil else { return panelCell }
             panelCell = DetailPanelTableViewCell.create(on: tableView,
-                                                        for: indexPath)
+                                                        for: indexPath,
+                                                        viewModel: viewModel,
+                                                        homeViewModel: homeViewModel)
             return panelCell
         case .navigation:
             guard navigationCell == nil else { return navigationCell }
             navigationCell = DetailNavigationTableViewCell.create(on: tableView,
-                                                                  for: indexPath)
+                                                                  for: indexPath,
+                                                                  with: viewModel)
             navigationCell.navigationView._stateDidChange = { [weak self] state in
                 self?.viewModel.navigationViewState.value = state
             }

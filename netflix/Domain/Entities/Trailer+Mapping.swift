@@ -14,6 +14,12 @@ struct Trailer {
     var urlPath: String
 }
 
-// MARK: - Trailer: Mediable implementation
+// MARK: - Mediable implementation
 
 extension Trailer: Mediable {}
+
+// MARK: - Mapping
+
+extension Array where Element == String {
+    func toDomain() -> Array<Trailer> { map { .init(urlPath: $0) } }
+}

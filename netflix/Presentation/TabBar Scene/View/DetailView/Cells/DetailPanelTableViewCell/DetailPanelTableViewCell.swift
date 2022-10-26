@@ -32,17 +32,25 @@ final class DetailPanelTableViewCell: UITableViewCell, View {
     deinit { panelView = nil }
     
     static func create(on tableView: UITableView,
-                       for indexPath: IndexPath) -> DetailPanelTableViewCell {
+                       for indexPath: IndexPath,
+                       viewModel: DetailViewModel,
+                       homeViewModel: HomeViewModel) -> DetailPanelTableViewCell {
         let view = tableView.dequeueReusableCell(
             withIdentifier: String(describing: DetailPanelTableViewCell.reuseIdentifier),
             for: indexPath) as! DetailPanelTableViewCell
-        view.addSubview(createView(on: view))
+        view.addSubview(createView(on: view,
+                                   viewModel: viewModel,
+                                   homeViewModel: homeViewModel))
         view.viewDidLoad()
         return view
     }
     
-    private static func createView(on view: DetailPanelTableViewCell) -> DetailPanelView {
-        view.panelView = .create(on: view)
+    private static func createView(on view: DetailPanelTableViewCell,
+                                   viewModel: DetailViewModel,
+                                   homeViewModel: HomeViewModel) -> DetailPanelView {
+        view.panelView = .create(on: view,
+                                 viewModel: viewModel,
+                                 homeViewModel: homeViewModel)
         return view.panelView
     }
     

@@ -10,21 +10,22 @@ import Foundation
 // MARK: - UseCaseInput protocol
 
 private protocol UseCaseInput {
-    func request<T>(for response: T.Type,
-                    query: MediaRequestQuery?,
-                    cached: @escaping (T?) -> Void,
-                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
-    func execute<T>(for response: T.Type,
-                    query: MediaRequestQuery?,
-                    cached: @escaping (T?) -> Void,
-                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable?
+    func request<T, R>(for response: T.Type,
+                       request: R?,
+                       cached: ((T?) -> Void)?,
+                       completion: ((Result<T, Error>) -> Void)?) -> Cancellable?
+    func execute<T, R>(for response: T.Type,
+                       request: R?,
+                       cached: ((T?) -> Void)?,
+                       completion: ((Result<T, Error>) -> Void)?) -> Cancellable?
 }
 
 // MARK: - UseCaseOutput protocol
 
 private protocol UseCaseOutput {
-    var sectionsRepository: SectionsRepository { get }
+    var sectionsRepository: SectionRepository { get }
     var mediaRepository: MediaRepository { get }
+    var myListRepository: MyListRepository { get }
 }
 
 // MARK: - UseCase typealias
@@ -35,68 +36,92 @@ private typealias UseCase = UseCaseInput & UseCaseOutput
 
 final class HomeUseCase: UseCase {
     
-    fileprivate let sectionsRepository: SectionsRepository
+    fileprivate let sectionsRepository: SectionRepository
     fileprivate(set) var mediaRepository: MediaRepository
+    fileprivate(set) var myListRepository: MyListRepository
     
-    init(sectionsRepository: SectionsRepository,
-         mediaRepository: MediaRepository) {
+    init(sectionsRepository: SectionRepository,
+         mediaRepository: MediaRepository,
+         myListRepository: MyListRepository) {
         self.sectionsRepository = sectionsRepository
         self.mediaRepository = mediaRepository
+        self.myListRepository = myListRepository
     }
     
-    fileprivate func request<T>(for response: T.Type,
-                                query: MediaRequestQuery? = nil,
-                                cached: @escaping (T?) -> Void,
-                                completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
+    fileprivate func request<T, R>(for response: T.Type,
+                                   request: R? = nil,
+                                   cached: ((T?) -> Void)?,
+                                   completion: ((Result<T, Error>) -> Void)?) -> Cancellable? {
         switch response {
-        case is SectionsResponse.Type:
+        case is SectionResponse.GET.Type:
             return sectionsRepository.getAll { result in
                 switch result {
                 case .success(let response):
-                    completion(.success(response.toDomain() as! T))
+                    cached?(response as? T)
+                    completion?(.success(response.toDomain() as! T))
                 case .failure(let error):
-                    completion(.failure(error))
+                    completion?(.failure(error))
                 }
             }
-        case is MediasResponse.Type:
+        case is MediaResponse.GET.Many.Type:
             return mediaRepository.getAll { result in
                 switch result {
                 case .success(let response):
-                    cached(response as? T)
-                    completion(.success(response.toDomain() as! T))
+                    cached?(response as? T)
+                    completion?(.success(response.toDomain() as! T))
                 case .failure(let error):
-                    completion(.failure(error))
+                    completion?(.failure(error))
                 }
             }
-        case is MediaResponse.Type:
-            guard let query = query else { return nil }
-            let requestDTO = MediaRequestDTO(user: query.user,
-                                             id: query.media.id,
-                                             slug: query.media.slug)
-            let requestQuery = MediaRequestQuery(user: query.user,
-                                                 media: requestDTO)
+        case is MediaResponse.GET.One.Type:
+            guard let request = request as? MediaRequestDTO.GET.One else { return nil }
+            let requestDTO = MediaRequestDTO.GET.One(user: request.user,
+                                                     id: request.id,
+                                                     slug: request.slug)
             return mediaRepository.getOne(
-                query: requestQuery,
+                request: requestDTO,
                 cached: { _ in },
                 completion: { result in
                     switch result {
                     case .success(let response):
-                        completion(.success(response as! T))
+                        completion?(.success(response as! T))
                     case .failure(let error):
-                        completion(.failure(error))
+                        completion?(.failure(error))
                     }
                 })
+        case is MyListResponseDTO.GET.Type:
+            guard let request = request as? MyListRequestDTO.GET else { return nil }
+            return myListRepository.getOne(
+                request: request,
+                completion: { result in
+                    switch result {
+                    case .success(let response):
+                        completion?(.success(response as! T))
+                    case .failure(let error):
+                        completion?(.failure(error))
+                    }
+                })
+        case is MyListResponseDTO.PATCH.Type:
+            guard let request = request as? MyListRequestDTO.PATCH else { return nil }
+            return myListRepository.updateOne(request: request) { result in
+                switch result {
+                case .success(let response):
+                    completion?(.success(response as! T))
+                case .failure(let error):
+                    completion?(.failure(error))
+                }
+            }
         default: return nil
         }
     }
     
-    func execute<T>(for response: T.Type,
-                    query: MediaRequestQuery? = nil,
-                    cached: @escaping (T?) -> Void,
-                    completion: @escaping (Result<T, Error>) -> Void) async -> Cancellable? {
-        return await request(for: response,
-                             query: query,
-                             cached: cached,
-                             completion: completion)
+    func execute<T, R>(for response: T.Type,
+                       request: R? = nil,
+                       cached: ((T?) -> Void)?,
+                       completion: ((Result<T, Error>) -> Void)?) -> Cancellable? {
+        return self.request(for: response,
+                            request: request,
+                            cached: cached ?? { _ in },
+                            completion: completion ?? { _ in })
     }
 }

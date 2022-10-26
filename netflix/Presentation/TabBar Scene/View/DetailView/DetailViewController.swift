@@ -17,12 +17,14 @@ final class DetailViewController: UIViewController {
     private var previewView: PreviewView!
     private(set) var viewModel: DetailViewModel!
     private(set) var dataSource: DetailTableViewDataSource!
+    var homeViewModel: HomeViewModel!
     
     deinit {
         removeObservers()
         previewView = nil
         dataSource = nil
         viewModel = nil
+        homeViewModel = nil
     }
     
     static func create(with viewModel: DetailViewModel) -> DetailViewController {
@@ -60,7 +62,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = .create(on: tableView, with: viewModel)
+        dataSource = .create(on: tableView, viewModel: viewModel, homeViewModel: homeViewModel)
         tableView.register(class: DetailInfoTableViewCell.self)
         tableView.register(class: DetailDescriptionTableViewCell.self)
         tableView.register(class: DetailPanelTableViewCell.self)

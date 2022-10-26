@@ -10,6 +10,8 @@ import CoreData
 // MARK: - StorageInput protocol
 
 private protocol StorageInput {
+    func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity>
+    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void)
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void)
     func save(response: AuthResponseDTO,
@@ -32,18 +34,33 @@ private typealias Storage = StorageInput & StorageOutput
 
 final class AuthResponseStorage: Storage {
     
-    let coreDataStorage: CoreDataStorage
+    fileprivate let coreDataStorage: CoreDataStorage
     
     init(coreDataStorage: CoreDataStorage = .shared) {
         self.coreDataStorage = coreDataStorage
     }
     
-    private func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity> {
+    fileprivate func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity> {
         let request: NSFetchRequest = AuthRequestEntity.fetchRequest()
         request.predicate = NSPredicate(format: "%K = %@",
                                         #keyPath(AuthRequestEntity.user),
                                         requestDTO.user)
         return request
+    }
+    
+    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void) {
+        let request = AuthRequestEntity.fetchRequest()
+        do {
+            let entities = try coreDataStorage.context().fetch(request)
+            let userDTO = UserDTO(email: entities.first?.user?.email ?? "",
+                                  password: entities.first?.user?.password ?? "")
+            let requestDTO = AuthRequestDTO(user: userDTO)
+            let requestQuery = AuthRequestDTO(user: requestDTO.user)
+            
+            completion(requestQuery.toDomain())
+        } catch {
+            printIfDebug("Unresolved error \(error) ")
+        }
     }
 }
 
@@ -89,7 +106,6 @@ extension AuthResponseStorage {
     
     func deleteResponse(for request: AuthRequestDTO, in context: NSManagedObjectContext) {
         let fetchRequest = fetchRequest(for: request)
-        
         do {
             if let result = try context.fetch(fetchRequest) as [AuthRequestEntity]? {
                 for r in result {

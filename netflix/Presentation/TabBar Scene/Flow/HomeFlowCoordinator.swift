@@ -54,6 +54,7 @@ final class HomeFlowCoordinator {
         detailViewController?.viewModel.section = section
         detailViewController?.viewModel.media = media
         detailViewController?.viewModel.state = homeViewController.viewModel.state.value
+        detailViewController?.homeViewModel = homeViewController.viewModel
         homeViewController.present(detailViewController!, animated: true)
     }
     
