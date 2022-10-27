@@ -10,8 +10,8 @@ import Foundation
 // MARK: - Array extension
 
 extension Array where Element == Media {
-    func slice(_ maxLength: Int) -> Array<Element> {
-        let slice = prefix(maxLength)
-        return Array(slice)
-    }
+    
+    func slice(_ maxLength: Int) -> [Element] { Array(prefix(maxLength)) }
+    
+    func toObjectIDs() -> [String] { map { String($0.id!) } }
 }

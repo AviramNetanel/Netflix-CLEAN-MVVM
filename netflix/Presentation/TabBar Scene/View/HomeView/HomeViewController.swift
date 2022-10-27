@@ -111,7 +111,7 @@ extension HomeViewController {
     // MARK: HomeViewModel bindings
     
     private func navigationViewDidAppear(in viewModel: HomeViewModel) {
-        viewModel.navigationViewDidAppear = { [weak self] in
+        viewModel._navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
             self.navigationViewTopConstraint.constant = 0.0
             self.navigationView.alpha = 1.0

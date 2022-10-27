@@ -32,7 +32,7 @@ private protocol ViewModelInput {
     func randomObject(at section: Section) -> Media
     func presentedDisplayMediaDidChange()
     
-    var navigationViewDidAppear: (() -> Void)? { get }
+    var _navigationViewDidAppear: (() -> Void)? { get }
     
     var _reloadData: (() -> Void)? { get }
     func shouldAddOrRemoveToMyList(_ media: Media, uponSelection selected: Bool)
@@ -65,6 +65,7 @@ final class HomeViewModel: ViewModel {
     
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
     private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
+    private var listTask: Cancellable? { willSet { listTask?.cancel() } }
     
     fileprivate(set) var state: Observable<TableViewDataSource.State> = Observable(.tvShows)
     fileprivate(set) var sections: Observable<[Section]> = Observable([])
@@ -72,17 +73,17 @@ final class HomeViewModel: ViewModel {
     private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     fileprivate var isEmpty: Bool { sections.value.isEmpty }
     
-    var navigationViewDidAppear: (() -> Void)?
-    var user: User?
-    
+    var _navigationViewDidAppear: (() -> Void)?
     var _reloadData: (() -> Void)?
+    
+    var user: User?
     
     deinit {
         _reloadData = nil
+        _navigationViewDidAppear = nil
         user = nil
         mediaTask = nil
         sectionsTask = nil
-        navigationViewDidAppear = nil
         actions = nil
         homeUseCase = nil
     }
@@ -120,9 +121,9 @@ extension HomeViewModel {
     }
     
     func viewDidLoad() {
-        navigationViewDidAppear?()
+        _navigationViewDidAppear?()
         filter(sections: sections.value)
-        // Root entry-point for tableview presentation.
+        // Entry-point for tableview presentation.
         state.value = .tvShows
     }
     
@@ -157,7 +158,7 @@ extension HomeViewModel {
     func myListDidFetch() {
         guard let user = user else { return }
         let requestDTO = MyListRequestDTO.GET(user: user.toDTO())
-        let _: Cancellable? = homeUseCase.execute(
+        listTask = homeUseCase.execute(
             for: MyListResponseDTO.GET.self,
             request: requestDTO,
             cached: { _ in },
@@ -177,8 +178,8 @@ extension HomeViewModel {
             let media = section(at: .myList).media as [Media]?
         else { return }
         let requestDTO = MyListRequestDTO.PATCH(user: user._id!,
-                                                media: media.map { String($0.id!) })
-        let _ = homeUseCase.execute(
+                                                media: media.toObjectIDs())
+        listTask = homeUseCase.execute(
             for: MyListResponseDTO.PATCH.self,
             request: requestDTO,
             cached: { _ in },
