@@ -56,6 +56,7 @@ final class TableViewDataSource: NSObject, DataSourcing {
     }
     
     enum State: Int {
+      case all
         case tvShows
         case movies
     }

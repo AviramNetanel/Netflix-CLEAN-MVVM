@@ -64,9 +64,11 @@ final class HomeViewController: UIViewController {
         state(in: viewModel)
         navigationViewDidAppear(in: viewModel)
         presentedDisplayMedia(in: viewModel)
+        myList(in: viewModel)
     }
     
     private func setupDataSource() {
+        viewModel.filter(sections: viewModel.sections.value)
         dataSource = .create(on: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
@@ -88,18 +90,29 @@ final class HomeViewController: UIViewController {
                                    with: viewModel)
     }
     
-    func removeObservers() {
+    func viewDidUnobserve() {
         if let viewModel = viewModel {
             printIfDebug("Removed `HomeViewModel` observers.")
             viewModel.state.remove(observer: self)
+            viewModel.media.remove(observer: self)
+            viewModel.myList.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
     }
     
     
     
+    
+    
+    private func myList(in viewModel: HomeViewModel) {
+        viewModel.myList.observe(on: self) { [weak self] _ in self?.reloadData() }
+    }
+    
     func reloadData() {
-        guard let myListIndex = TableViewDataSource.Index(rawValue: 6) else { return }
+        guard
+            tableView.numberOfSections > 0,
+            let myListIndex = TableViewDataSource.Index(rawValue: 6)
+        else { return }
         tableView.reloadSections(IndexSet(integer: myListIndex.rawValue), with: .automatic)
     }
 }
@@ -138,7 +151,7 @@ extension HomeViewController {
             guard
                 let self = self,
                 let translation = scrollView.panGestureRecognizer
-                                            .translation(in: self.view) as CGPoint?
+                    .translation(in: self.view) as CGPoint?
             else { return }
             self.view.animateUsingSpring(withDuration: 0.66,
                                          withDamping: 1.0,
@@ -172,15 +185,30 @@ extension HomeViewController {
     
     private func stateDidChange(in navigationView: NavigationView) {
         navigationView.viewModel.stateDidChangeDidBindToHomeViewController = { [weak self] state in
-            guard
-                let self = self
-            else { return }
+            guard let self = self else { return }
             
-            self.categoriesOverlayView.viewModel.state = state
+            self.categoriesOverlayView.viewModel.navigationViewState = state
+            
+            switch self.categoriesOverlayView.viewModel.navigationViewState {
+            case .tvShows,
+                    .movies:
+                self.categoriesOverlayView.viewModel.state = .mainMenu
+            case .categories:
+                self.categoriesOverlayView.viewModel.state = .categories
+            default:
+                break
+            }
             
             switch state {
             case .home:
-                self.categoriesOverlayView.viewModel.isPresented.value = false
+                guard self.viewModel.state.value != .all else {
+                    guard navigationView.homeItemView.viewModel.hasInteracted else {
+                        return self.categoriesOverlayView.viewModel.isPresented.value = false
+                    }
+                    return self.categoriesOverlayView.viewModel.isPresented.value = true
+                }
+                
+                self.viewModel.state.value = .all
             case .tvShows:
                 guard self.viewModel.state.value != .tvShows else {
                     guard navigationView.tvShowsItemView.viewModel.hasInteracted else {
@@ -211,8 +239,8 @@ extension HomeViewController {
     private func isPresentedDidChange(in categoriesOverlayView: CategoriesOverlayView) {
         categoriesOverlayView.viewModel._isPresentedDidChange = { [weak self] in
             categoriesOverlayView.viewModel.isPresented.value == true
-                ? self?.tabBarController?.tabBar.isHidden(true)
-                : self?.tabBarController?.tabBar.isHidden(false)
+            ? self?.tabBarController?.tabBar.isHidden(true)
+            : self?.tabBarController?.tabBar.isHidden(false)
         }
     }
 }

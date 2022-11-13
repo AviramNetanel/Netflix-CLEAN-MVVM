@@ -81,12 +81,19 @@ public final class MediaResourcesDTO: NSObject, Codable, NSSecureCoding {
     }
 }
 
+//
+
+enum MediaType: String, Codable {
+  case series
+  case film
+}
+
 // MARK: - MediaDTO struct
 
 struct MediaDTO: Codable {
     
     let id: String?
-    let type: String
+  let type: MediaType
     let title: String
     let slug: String
     

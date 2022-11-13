@@ -11,6 +11,7 @@ import UIKit
 
 private protocol ViewInput {
     func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -51,7 +52,7 @@ final class NavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var categoriesItemViewContainer: UIView!
     @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    fileprivate var homeItemView: NavigationViewItem!
+    fileprivate(set) var homeItemView: NavigationViewItem!
     fileprivate var airPlayItemView: NavigationViewItem!
     fileprivate var accountItemView: NavigationViewItem!
     fileprivate(set) var tvShowsItemView: NavigationViewItem!
@@ -103,23 +104,12 @@ final class NavigationView: UIView, View, ViewInstantiable {
     }
     
     fileprivate func viewDidLoad() {
-        setupBindings()
-        setupObservers()
-        setupSubviews()
+        viewDidBind()
+        viewDidObserve()
+        viewDidConfigure()
     }
     
-    private func setupBindings() {
-        stateDidChange(in: viewModel)
-        viewDidTap(for: viewModel.items)
-    }
-    
-    private func setupObservers() {
-        viewModel.state.observe(on: self) { [weak self] state in
-            self?.viewModel.stateDidChangeDidBindToViewModel?(state)
-        }
-    }
-    
-    private func setupSubviews() {
+    fileprivate func viewDidConfigure() {
         setupGradientView()
     }
     
@@ -131,14 +121,30 @@ final class NavigationView: UIView, View, ViewInstantiable {
                                          .clear],
                                       locations: [0.0, 0.5, 1.0])
     }
+}
+
+// MARK: -
+
+extension NavigationView: ObservableDelegate {
     
-    func removeObservers() {
+    func viewDidObserve() {
+        viewModel.state.observe(on: self) { [weak self] state in
+            self?.viewModel.stateDidChangeDidBindToViewModel?(state)
+        }
+    }
+    
+    func viewDidUnobserve() {
         printIfDebug("Removed `NavigationView` observers.")
         viewModel.state.remove(observer: self)
     }
+    
+    func viewDidBind() {
+        stateDidChange(in: viewModel)
+        viewDidTap(in: viewModel.items)
+    }
 }
 
-// MARK: - Bindings
+// MARK: - Bindings implementation
 
 extension NavigationView {
     
@@ -191,7 +197,7 @@ extension NavigationView {
     
     // MARK: NavigationViewItem bindings
     
-    private func viewDidTap(for items: [NavigationViewItem]) {
+    private func viewDidTap(in items: [NavigationViewItem]) {
         items.forEach {
             $0.configuration._viewDidTap = { [weak self] state in
                 self?.viewModel.state.value = state

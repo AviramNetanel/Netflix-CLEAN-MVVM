@@ -26,7 +26,7 @@ extension MediaResponseEntity {
             presentedLogoAlignment: resources!.presentedLogoAlignment)
         let media = MediaDTO(
             id: id,
-            type: type!,
+            type: MediaType(rawValue: type!)!,
             title: title!,
             slug: slug!,
             createdAt: createdAt!,

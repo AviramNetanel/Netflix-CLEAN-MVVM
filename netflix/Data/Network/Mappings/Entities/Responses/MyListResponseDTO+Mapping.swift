@@ -16,6 +16,11 @@ struct MyListResponseDTO {
         let data: MyListDTO
     }
     
+    struct POST: Decodable {
+        let status: String
+        var data: MyListDTO
+    }
+    
     struct PATCH: Decodable {
         let status: String
         var data: MyListDTO

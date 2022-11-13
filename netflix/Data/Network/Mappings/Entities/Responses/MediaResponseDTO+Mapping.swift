@@ -38,7 +38,7 @@ extension MediaResponseDTO.GET.One {
     func toEntity(in context: NSManagedObjectContext) -> MediaResponseEntity {
         let entity: MediaResponseEntity = .init(context: context)
         entity.id = data.id
-        entity.type = data.type
+      entity.type = data.type.rawValue
         entity.title = data.title
         entity.slug = data.slug
         entity.createdAt = data.createdAt

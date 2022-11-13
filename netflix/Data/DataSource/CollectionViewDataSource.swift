@@ -12,7 +12,7 @@ import UIKit
 private protocol DataSourceInput {
     func viewDidLoad()
     func dataSourceDidChange()
-    func media(for indexPath: IndexPath) -> Media?
+//    func media(for indexPath: IndexPath) -> Media?
     var didSelectItem: ((IndexPath.Element) -> Void)? { get }
 }
 
@@ -71,17 +71,15 @@ final class CollectionViewDataSource<Cell>: NSObject,
         collectionView.reloadData()
     }
     
-    fileprivate func media(for indexPath: IndexPath) -> Media? {
-        return viewModel.state.value == .tvShows
-            ? section.media[indexPath.row] as Media?
-            : section.media[indexPath.row] as Media?
-    }
+//    fileprivate func media(for indexPath: IndexPath) -> Media? {
+//        return viewModel.state.value == .tvShows
+//            ? section.media[indexPath.row] as Media?
+//            : section.media[indexPath.row] as Media?
+//    }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return viewModel.state.value == .tvShows
-            ? self.section.media.count
-            : self.section.media.count
+        return self.section.media.count
     }
     
     func collectionView(_ collectionView: UICollectionView,

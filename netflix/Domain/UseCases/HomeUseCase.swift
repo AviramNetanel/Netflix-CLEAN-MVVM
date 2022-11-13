@@ -10,12 +10,12 @@ import Foundation
 // MARK: - UseCaseInput protocol
 
 private protocol UseCaseInput {
-    func request<T, R>(for response: T.Type,
-                       request: R?,
+    func request<T, U>(for response: T.Type,
+                       request: U?,
                        cached: ((T?) -> Void)?,
                        completion: ((Result<T, Error>) -> Void)?) -> Cancellable?
-    func execute<T, R>(for response: T.Type,
-                       request: R?,
+    func execute<T, U>(for response: T.Type,
+                       request: U?,
                        cached: ((T?) -> Void)?,
                        completion: ((Result<T, Error>) -> Void)?) -> Cancellable?
 }
@@ -48,8 +48,8 @@ final class HomeUseCase: UseCase {
         self.myListRepository = myListRepository
     }
     
-    fileprivate func request<T, R>(for response: T.Type,
-                                   request: R? = nil,
+    fileprivate func request<T, U>(for response: T.Type,
+                                   request: U? = nil,
                                    cached: ((T?) -> Void)?,
                                    completion: ((Result<T, Error>) -> Void)?) -> Cancellable? {
         switch response {
@@ -101,6 +101,18 @@ final class HomeUseCase: UseCase {
                         completion?(.failure(error))
                     }
                 })
+        case is MyListResponseDTO.POST.Type:
+            guard let request = request as? MyListRequestDTO.POST else { return nil }
+            return myListRepository.createOne(
+                request: request,
+                completion: { result in
+                    switch result {
+                    case .success(let response):
+                        completion?(.success(response as! T))
+                    case .failure(let error):
+                        completion?(.failure(error))
+                    }
+                })
         case is MyListResponseDTO.PATCH.Type:
             guard let request = request as? MyListRequestDTO.PATCH else { return nil }
             return myListRepository.updateOne(request: request) { result in
@@ -115,8 +127,8 @@ final class HomeUseCase: UseCase {
         }
     }
     
-    func execute<T, R>(for response: T.Type,
-                       request: R? = nil,
+    func execute<T, U>(for response: T.Type,
+                       request: U? = nil,
                        cached: ((T?) -> Void)?,
                        completion: ((Result<T, Error>) -> Void)?) -> Cancellable? {
         return self.request(for: response,

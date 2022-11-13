@@ -78,6 +78,9 @@ final class HomeViewModel: ViewModel {
     
     var user: User?
     
+    var myList: Observable<[Media]> = Observable([])
+//    var myList: [Media] = []
+    
     deinit {
         _reloadData = nil
         _navigationViewDidAppear = nil
@@ -101,6 +104,8 @@ final class HomeViewModel: ViewModel {
 
 extension HomeViewModel {
     
+    // MARK: Load
+    
     func dataWillLoad() {
         sectionsDidFetch()
     }
@@ -122,10 +127,12 @@ extension HomeViewModel {
     
     func viewDidLoad() {
         _navigationViewDidAppear?()
-        filter(sections: sections.value)
+        //filter(sections: sections.value)
         // Entry-point for tableview presentation.
-        state.value = .tvShows
+        state.value = .all
     }
+    
+    // MARK: Sections
     
     func sectionsDidFetch() {
         sectionsTask = homeUseCase.execute(
@@ -139,6 +146,8 @@ extension HomeViewModel {
                 }
             })
     }
+    
+    // MARK: Media
     
     func mediaDidFetch() {
         mediaTask = homeUseCase.execute(
@@ -155,6 +164,8 @@ extension HomeViewModel {
             })
     }
     
+    // MARK: MyList
+    
     func myListDidFetch() {
         guard let user = user else { return }
         let requestDTO = MyListRequestDTO.GET(user: user.toDTO())
@@ -165,7 +176,30 @@ extension HomeViewModel {
             completion: { [weak self] result in
                 switch result {
                 case .success(let response):
-                    self?.section(at: .myList).media = response.data.toDomain().media
+                    self?.myList.value = response.data.toDomain().media
+                    self?.section(at: .myList).media = self!.myList.value
+                case .failure(let error):
+                    print(error)
+                }
+            })
+    }
+    
+    func myListDidCreate() {
+        guard
+            let user = user,
+            let media = section(at: .myList).media as [Media]?
+        else { return }
+        let requestDTO = MyListRequestDTO.POST(user: user._id!,
+                                               media: media.toObjectIDs())
+        listTask = homeUseCase.execute(
+            for: MyListResponseDTO.POST.self,
+            request: requestDTO,
+            cached: { _ in },
+            completion: { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.myList.value = response.data.toDomain().media
+                    self?.section(at: .myList).media = self!.myList.value
                 case .failure(let error):
                     print(error)
                 }
@@ -183,7 +217,15 @@ extension HomeViewModel {
             for: MyListResponseDTO.PATCH.self,
             request: requestDTO,
             cached: { _ in },
-            completion: { _ in })
+            completion: { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.myList.value = response.data.toDomain().media
+                    self?.section(at: .myList).media = self!.myList.value
+                case .failure(let error):
+                    print(error)
+                }
+            })
     }
 }
 
@@ -198,15 +240,49 @@ extension HomeViewModel {
             switch index {
             case .ratable:
                 var media = media.value
-                media = media
-                    .shuffled()
-                    .sorted { $0.rating > $1.rating }
-                    .filter { $0.rating > 7.5 }
-                    .slice(10)
+                if state.value == .tvShows {
+                    media = media
+                        .shuffled()
+                        .filter { $0.type == .series }
+                        .sorted { $0.rating > $1.rating }
+                        .filter { $0.rating > 7.5 }
+                        .slice(10)
+                } else if state.value == .movies {
+                    media = media
+                        .shuffled()
+                        .filter { $0.type == .film }
+                        .sorted { $0.rating > $1.rating }
+                        .filter { $0.rating > 7.5 }
+                        .slice(10)
+                } else {
+                    media = media
+                        .shuffled()
+                        .sorted { $0.rating > $1.rating }
+                        .filter { $0.rating > 7.5 }
+                        .slice(10)
+                }
                 sections[index.rawValue].media = media
             case .resumable:
                 var media = media.value
-                media = media.shuffled()
+                if state.value == .tvShows {
+                    media = media
+                        .shuffled()
+                        .filter { $0.type == .series }
+                } else if state.value == .movies {
+                    media = media
+                        .shuffled()
+                        .filter { $0.type == .film }
+                } else {
+                    media = media.shuffled()
+                }
+                sections[index.rawValue].media = media
+            case .myList:
+                var media = myList.value
+                if state.value == .tvShows {
+                    media = media.filter { $0.type == .series }
+                } else if state.value == .movies {
+                    media = media.filter { $0.type == .film }
+                }
                 sections[index.rawValue].media = media
             case .action, .sciFi,
                     .crime, .thriller,
@@ -228,14 +304,40 @@ extension HomeViewModel {
                 at index: Int,
                 withMinimumRating value: Float? = nil) {
         guard let value = value else {
-            sections[index].media = media.value
-                .shuffled()
-                .filter { $0.genres.contains(sections[index].title) }
+            if state.value == .tvShows {
+                sections[index].media = media.value
+                    .shuffled()
+                    .filter { $0.type == .series }
+                    .filter { $0.genres.contains(sections[index].title) }
+            } else if state.value == .movies {
+                sections[index].media = media.value
+                    .shuffled()
+                    .filter { $0.type == .film }
+                    .filter { $0.genres.contains(sections[index].title) }
+            } else {
+                sections[index].media = media.value
+                    .shuffled()
+                    .filter { $0.genres.contains(sections[index].title) }
+            }
+            
             return
         }
-        sections[index].media = media.value
-            .shuffled()
-            .filter { $0.rating > value }
+        
+        if state.value == .tvShows {
+            sections[index].media = media.value
+                .shuffled()
+                .filter { $0.type == .series }
+                .filter { $0.rating > value }
+        } else if state.value == .movies {
+            sections[index].media = media.value
+                .shuffled()
+                .filter { $0.type == .film }
+                .filter { $0.rating > value }
+        } else {
+            sections[index].media = media.value
+                .shuffled()
+                .filter { $0.rating > value }
+        }
     }
     
     func section(at index: TableViewDataSource.Index) -> Section {
@@ -247,9 +349,11 @@ extension HomeViewModel {
     }
     
     func randomObject(at section: Section) -> Media {
-        state.value == .tvShows
-        ? media.value.randomElement()!
-        : media.value.randomElement()!
+        switch state.value {
+        case .all: return media.value.randomElement()!
+        case .tvShows: return media.value.filter { $0.type == .series }.randomElement()!
+        case .movies: return media.value.filter { $0.type == .film }.randomElement()!
+        }
     }
     
     func presentedDisplayMediaDidChange() {
@@ -262,7 +366,8 @@ extension HomeViewModel {
 
 extension HomeViewModel {
     
-    func shouldAddOrRemoveToMyList(_ media: Media, uponSelection selected: Bool) {
+    func shouldAddOrRemoveToMyList(_ media: Media,
+                                   uponSelection selected: Bool) {
         if selected {
             section(at: .myList).media.removeAll { $0.title == media.title }
         } else {

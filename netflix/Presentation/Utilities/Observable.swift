@@ -7,27 +7,35 @@
 
 import Foundation
 
-// MARK: - ObservingInput protocol
+// MARK: - ObservableDelegate protocol
 
-private protocol ObservingInput {
+protocol ObservableDelegate {
+  func viewDidObserve()
+  func viewDidUnobserve()
+  func viewDidBind()
+}
+
+// MARK: - ObservableInput protocol
+
+private protocol ObservableInput {
     associatedtype Value
     init(_ value: Value)
     func observe(on observer: AnyObject,
-                 observerBlock: @escaping (Value) -> Void)
+                 block: @escaping (Value) -> Void)
     func remove(observer: AnyObject)
     func notifyObservers()
 }
 
-// MARK: - ObservingOutput protocol
+// MARK: - ObservableOutput protocol
 
-private protocol ObservingOutput: ObservingInput {
+private protocol ObservableOutput: ObservableInput {
     var observers: [Observable<Value>.Observer<Value>] { get }
     var value: Value { get }
 }
 
 // MARK: - Observing typealias
 
-private typealias Observing = ObservingInput & ObservingOutput
+private typealias Observing = ObservableInput & ObservableOutput
 
 // MARK: - Observable class
 
@@ -53,9 +61,9 @@ final class Observable<Value>: Observing {
     }
     
     func observe(on observer: AnyObject,
-                 observerBlock: @escaping (Value) -> Void) {
-        observers.append(Observer(observer: observer, block: observerBlock))
-        observerBlock(self.value)
+                 block: @escaping (Value) -> Void) {
+        observers.append(Observer(observer: observer, block: block))
+        block(self.value)
     }
     
     func remove(observer: AnyObject) {

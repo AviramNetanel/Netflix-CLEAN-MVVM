@@ -11,6 +11,8 @@ import UIKit
 
 private protocol ViewInput {
     func viewDidLoad()
+    func viewDidUnobserve()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -57,11 +59,11 @@ final class PanelView: UIView, View, ViewInstantiable {
         view.trailingItemView = .create(on: view.trailingItemViewContainer, with: viewModel)
     }
     
-    fileprivate func viewDidLoad() { setupSubviews() }
+    fileprivate func viewDidLoad() { viewDidConfigure() }
     
-    private func setupSubviews() { playButton.layer.cornerRadius = 6.0 }
+    fileprivate func viewDidConfigure() { playButton.layer.cornerRadius = 6.0 }
     
-    func removeObservers() {
+    func viewDidUnobserve() {
         printIfDebug("Removed `PanelView` observers.")
         leadingItemView.viewModel.removeObservers()
         trailingItemView.viewModel.removeObservers()

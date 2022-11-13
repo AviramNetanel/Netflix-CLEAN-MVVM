@@ -13,7 +13,6 @@ private protocol RepositoryInput {
     func signUp(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
-    
     func signIn(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
@@ -57,7 +56,7 @@ extension AuthRepository: RepositoryInput {
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.signUp(with: requestDTO)
+        let endpoint = APIEndpoint.AuthRepository.signUp(with: requestDTO)
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):
@@ -85,7 +84,7 @@ extension AuthRepository: RepositoryInput {
             
             guard !task.isCancelled else { return }
             
-            let endpoint = APIEndpoint.signIn(with: requestDTO)
+            let endpoint = APIEndpoint.AuthRepository.signIn(with: requestDTO)
             task.networkTask = self.dataTransferService.request(with: endpoint) { result in
                 switch result {
                 case .success(let response):

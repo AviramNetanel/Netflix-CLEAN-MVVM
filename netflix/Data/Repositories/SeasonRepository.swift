@@ -45,7 +45,7 @@ extension SeasonRepository {
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.getSeason(with: request)
+        let endpoint = APIEndpoint.SeasonsRepository.getSeason(with: request)
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):

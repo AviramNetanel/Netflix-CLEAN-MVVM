@@ -84,7 +84,12 @@ final class DetailPanelViewItemConfiguration: Configuration {
         switch tag {
         case .myList:
             let media = view.viewModel.media!
-            viewModel.shouldAddOrRemoveToMyList(media, uponSelection: view.viewModel.isSelected.value)
+            if viewModel.myList.value.isEmpty {
+                viewModel.myListDidCreate()
+            }
+            viewModel.shouldAddOrRemoveToMyList(
+                media,
+                uponSelection: view.viewModel.isSelected.value)
         case .rate: print("rate")
         case .share: print("share")
         }

@@ -79,9 +79,11 @@ final class DetailCollectionView: UIView, View {
     }
     
     fileprivate func dataDidLoad() {
-        let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
-        let requestDTO = SeasonRequestDTO.GET(slug: cellViewModel.media.slug, season: 1)
-        viewModel.getSeason(with: requestDTO) { [weak self] in self?.dataSourceDidChange() }
+        if viewModel.navigationViewState.value == .episodes {
+            let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
+            let requestDTO = SeasonRequestDTO.GET(slug: cellViewModel.media.slug, season: 1)
+            viewModel.getSeason(with: requestDTO) { [weak self] in self?.dataSourceDidChange() }
+        }
     }
     
     fileprivate func viewDidLoad() { dataDidLoad() }

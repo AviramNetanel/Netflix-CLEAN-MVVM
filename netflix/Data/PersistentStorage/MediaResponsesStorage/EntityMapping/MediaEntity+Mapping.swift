@@ -137,7 +137,7 @@ extension MediaEntity {
     func toDTO() -> MediaDTO {
         return .init(
             id: id,
-            type: type!,
+            type: MediaType(rawValue: type!)!,
             title: title!,
             slug: slug!,
             createdAt: createdAt!,

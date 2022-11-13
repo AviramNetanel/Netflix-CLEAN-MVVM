@@ -26,9 +26,9 @@ struct MediaResources {
 // MARK: - Media struct
 
 struct Media {
-    
+  
     let id: String?
-    let type: String
+    let type: MediaType
     let title: String
     let slug: String
     

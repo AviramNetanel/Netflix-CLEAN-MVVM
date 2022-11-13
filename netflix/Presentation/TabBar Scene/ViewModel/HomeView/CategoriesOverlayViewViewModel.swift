@@ -17,7 +17,7 @@ private protocol ViewModelInput {
 
 private protocol ViewModelOutput {
     var isPresented: Observable<Bool> { get }
-    var state: NavigationView.State { get }
+//    var state: NavigationView.State { get }
     var category: CategoriesOverlayView.Category { get }
 }
 
@@ -30,7 +30,8 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 final class CategoriesOverlayViewViewModel: ViewModel {
     
     fileprivate(set) var isPresented: Observable<Bool> = Observable(false)
-    var state: NavigationView.State = .tvShows
+    var navigationViewState: NavigationView.State = .tvShows
+    var state: CategoriesOverlayViewTableViewDataSource.State = .mainMenu
     fileprivate var category: CategoriesOverlayView.Category = .home
     var _isPresentedDidChange: (() -> Void)?
     

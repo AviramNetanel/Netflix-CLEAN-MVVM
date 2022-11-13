@@ -102,7 +102,12 @@ final class PanelViewItemConfiguration: Configuration {
         switch tag {
         case .myList:
             let media = view.homeViewModel.presentedDisplayMedia.value!
-            view.homeViewModel.shouldAddOrRemoveToMyList(media, uponSelection: view.viewModel.isSelected.value)
+            if view.homeViewModel.myList.value.isEmpty {
+                view.homeViewModel.myListDidCreate()
+            }
+            view.homeViewModel.shouldAddOrRemoveToMyList(
+                media,
+                uponSelection: view.viewModel.isSelected.value)
         case .info:
             let section = view.homeViewModel.section(at: .display)
             let media = view.homeViewModel.presentedDisplayMedia.value!

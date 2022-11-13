@@ -15,7 +15,7 @@ private protocol DataSourceInput {}
 
 private protocol DataSourceOutput {
     var numberOfSections: Int { get }
-    var items: [Valuable]! { get }
+    var items: Observable<[Valuable]> { get }
     var viewModel: CategoriesOverlayViewViewModel! { get }
 }
 
@@ -30,14 +30,18 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
     
-    var items: [Valuable]!
+    enum State {
+        case none
+        case mainMenu
+        case categories
+    }
+    
+    fileprivate(set) var items: Observable<[Valuable]> = .init([])
     fileprivate var viewModel: CategoriesOverlayViewViewModel!
     fileprivate let numberOfSections: Int = 1
     
-    static func create(items: [Valuable],
-                       with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
+    static func create(with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
         let dataSource = CategoriesOverlayViewTableViewDataSource()
-        dataSource.items = items
         createViewModel(on: dataSource, with: viewModel)
         return dataSource
     }
@@ -52,17 +56,21 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     func numberOfSections(in tableView: UITableView) -> Int { numberOfSections }
     
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int { items.count }
+                   numberOfRowsInSection section: Int) -> Int { items.value.count }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return CategoriesOverlayViewTableViewCell.create(on: tableView,
                                                          for: indexPath,
-                                                         with: items)
+                                                         with: items.value)
     }
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
+        
+//        switch viewModel.
+        print(viewModel.state)
+        
         viewModel.isPresented.value = false
     }
 }

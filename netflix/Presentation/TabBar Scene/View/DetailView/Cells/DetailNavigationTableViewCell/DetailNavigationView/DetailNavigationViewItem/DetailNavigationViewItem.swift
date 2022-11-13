@@ -56,13 +56,14 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
     
     fileprivate func viewDidConfigure() {
-        guard let item = DetailNavigationView.State(rawValue: view.tag) else { return }
-        switch item {
-        case .episodes:
-            navigationView.viewModel.state == .tvShows ? view.isHidden(true) : view.isHidden(false)
-        case .trailers:
-            navigationView.viewModel.state == .tvShows ? view.isHidden(false) : view.isHidden(true)
-        default: break
+      if navigationView.viewModel.media.type == .series {
+            navigationView.viewModel.navigationViewState.value = .episodes
+            navigationView.leadingViewContainer.isHidden(false)
+            navigationView.centerViewContainer.isHidden(true)
+        } else {
+            navigationView.viewModel.navigationViewState.value = .trailers
+            navigationView.leadingViewContainer.isHidden(true)
+            navigationView.centerViewContainer.isHidden(false)
         }
     }
     

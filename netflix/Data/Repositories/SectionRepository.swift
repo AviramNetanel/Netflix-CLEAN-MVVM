@@ -43,7 +43,7 @@ extension SectionRepository {
         
         guard !task.isCancelled else { return nil }
         
-        let endpoint = APIEndpoint.getAllSections()
+        let endpoint = APIEndpoint.SectionsRepository.getAllSections()
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):

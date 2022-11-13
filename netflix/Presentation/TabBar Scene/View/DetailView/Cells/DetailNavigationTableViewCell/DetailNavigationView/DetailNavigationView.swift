@@ -39,9 +39,9 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         case similarContent
     }
     
-    @IBOutlet private weak var leadingViewContainer: UIView!
-    @IBOutlet private weak var centerViewContainer: UIView!
-    @IBOutlet private weak var trailingViewContrainer: UIView!
+    @IBOutlet private(set) weak var leadingViewContainer: UIView!
+    @IBOutlet private(set) weak var centerViewContainer: UIView!
+    @IBOutlet private(set) weak var trailingViewContrainer: UIView!
     
     fileprivate(set) var leadingItem: DetailNavigationViewItem!
     fileprivate(set) var centerItem: DetailNavigationViewItem!
@@ -91,7 +91,7 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     fileprivate func viewDidLoad() {
         setupSubviews()
         
-        stateDidChange(view: leadingItem)
+        stateDidChange(view: viewModel.navigationViewState.value == .episodes ? leadingItem : centerItem)
     }
     
     private func setupSubviews() {
