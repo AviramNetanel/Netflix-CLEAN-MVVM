@@ -88,7 +88,7 @@ final class CollectionViewDataSource<Cell>: NSObject,
                                          reuseIdentifier: Cell.reuseIdentifier,
                                          section: section,
                                          for: indexPath,
-                                         with: viewModel.state.value)
+                                         with: viewModel.tableViewState.value)
     }
     
     func collectionView(_ collectionView: UICollectionView,

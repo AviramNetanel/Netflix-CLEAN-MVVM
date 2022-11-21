@@ -10,7 +10,7 @@ import Foundation
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
-    var _isPresentedDidChange: (() -> Void)? { get }
+    var isPresentedDidChange: (() -> Void)? { get }
 }
 
 // MARK: - ViewModelOutput protocol
@@ -33,7 +33,7 @@ final class CategoriesOverlayViewViewModel: ViewModel {
     var navigationViewState: NavigationView.State = .tvShows
     var state: CategoriesOverlayViewTableViewDataSource.State = .mainMenu
     fileprivate var category: CategoriesOverlayView.Category = .home
-    var _isPresentedDidChange: (() -> Void)?
+    var isPresentedDidChange: (() -> Void)?
     
-    deinit { _isPresentedDidChange = nil }
+    deinit { isPresentedDidChange = nil }
 }

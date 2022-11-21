@@ -42,7 +42,7 @@ struct DetailInfoViewViewModel: ViewModel {
     init(with viewModel: DetailViewModel) {
         self.state = viewModel.state
         
-        let media = viewModel.media!
+        let media = viewModel.dependencies.media
         
         self.mediaType = media.type == .series
             ? "S E R I E" : "F I L M"

@@ -50,7 +50,7 @@ class CollectionViewCell: UICollectionViewCell, View {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
-        let media = state == .tvShows
+        let media = state == .series
             ? section.media[indexPath.row]
             : section.media[indexPath.row]
         view.viewDidLoad(media: media,

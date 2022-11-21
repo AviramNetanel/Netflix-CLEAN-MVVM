@@ -71,11 +71,11 @@ final class DetailCollectionViewDataSource<T>: NSObject,
         case .trailers:
             return TrailerCollectionViewCell.create(on: collectionView,
                                                     for: indexPath,
-                                                    with: viewModel.media)
+                                                    with: viewModel.dependencies.media)
         default:
             return CollectionViewCell.create(on: collectionView,
                                              reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
-                                             section: viewModel.section,
+                                             section: viewModel.dependencies.section,
                                              for: indexPath,
                                              with: viewModel.state)
         }

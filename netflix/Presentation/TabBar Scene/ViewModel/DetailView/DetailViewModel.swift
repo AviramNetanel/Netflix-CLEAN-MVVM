@@ -10,7 +10,6 @@ import Foundation
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
-    func dataDidLoad<T>(response: T)
     func viewDidLoad()
     func contentSize(with state: DetailNavigationView.State) -> Float
     func getSeason(with request: SeasonRequestDTO.GET,
@@ -20,13 +19,13 @@ private protocol ViewModelInput {
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    var detailUseCase: DetailUseCase! { get }
     var task: Cancellable? { get }
-    var section: Section! { get }
-    var media: Media! { get }
+    var dependencies: DetailViewModel.Dependencies! { get }
     var state: TableViewDataSource.State! { get }
     var navigationViewState: Observable<DetailNavigationView.State>! { get }
     var season: Observable<Season?>! { get }
+    var myList: MyList! { get }
+    var myListSection: Section! { get }
 }
 
 // MARK: - ViewModel typealias
@@ -36,37 +35,39 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 // MARK: - DetailViewModel class
 
 final class DetailViewModel: ViewModel {
+
+    struct Dependencies {
+        let detailUseCase: DetailUseCase
+        let section: Section
+        let media: Media
+        let viewModel: HomeViewModel
+    }
     
-    var detailUseCase: DetailUseCase!
-    var task: Cancellable? { willSet { task?.cancel() } }
-    
-    var section: Section!
-    var media: Media!
-    var state: TableViewDataSource.State!
-    
-    var navigationViewState: Observable<DetailNavigationView.State>! = .init(.episodes)
-    var season: Observable<Season?>! = .init(nil)
+    fileprivate var task: Cancellable? { willSet { task?.cancel() } }
+    fileprivate(set) var dependencies: Dependencies!
+    fileprivate(set) var state: TableViewDataSource.State!
+    fileprivate(set) var navigationViewState: Observable<DetailNavigationView.State>! = Observable(.episodes)
+    fileprivate(set) var season: Observable<Season?>! = Observable(nil)
+    fileprivate(set) var myList: MyList!
+    fileprivate(set) var myListSection: Section!
     
     deinit {
+        myList = nil
+        myListSection = nil
         season.value = nil
+        navigationViewState = nil
         state = nil
-        media = nil
-        section = nil
+        dependencies = nil
         task = nil
     }
     
-    static func create(detailUseCase: DetailUseCase) -> DetailViewModel {
+    static func create(dependencies: Dependencies) -> DetailViewModel {
         let viewModel = DetailViewModel()
-        viewModel.detailUseCase = detailUseCase
+        viewModel.dependencies = dependencies
+        viewModel.state = dependencies.viewModel.tableViewState.value
+        viewModel.myList = dependencies.viewModel.myList
+        viewModel.myListSection = viewModel.myList.section
         return viewModel
-    }
-    
-    fileprivate func dataDidLoad<T>(response: T) {
-        switch response {
-        case let response as SeasonResponse.GET:
-            season.value = response.data
-        default: break
-        }
     }
     
     func viewDidLoad() {}
@@ -81,7 +82,7 @@ final class DetailViewModel: ViewModel {
             let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
             return Float(value)
         case .trailers:
-            guard let trailers = media.resources.trailers as [String]? else { return .zero }
+            guard let trailers = dependencies.media.resources.trailers as [String]? else { return .zero }
             let cellHeight = Float(224.0)
             let lineSpacing = Float(8.0)
             let itemsCount = Float(trailers.count)
@@ -92,9 +93,9 @@ final class DetailViewModel: ViewModel {
             let lineSpacing = Float(8.0)
             let itemsPerLine = Float(3.0)
             let topContentInset = Float(16.0)
-            let itemsCount = self.state == .tvShows
-                ? Float(section.media.count)
-                : Float(section.media.count)
+            let itemsCount = self.state == .series
+                ? Float(dependencies.section.media.count)
+                : Float(dependencies.section.media.count)
             let roundedItemsOutput = (itemsCount / itemsPerLine).rounded(.awayFromZero)
             let value =
                 roundedItemsOutput * cellHeight
@@ -106,15 +107,13 @@ final class DetailViewModel: ViewModel {
     
     func getSeason(with request: SeasonRequestDTO.GET,
                    completion: @escaping () -> Void) {
-        task = detailUseCase.execute(for: SeasonResponse.self,
-                                     with: request) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.dataDidLoad(response: response)
+        task = dependencies.detailUseCase.execute(for: SeasonResponse.self,
+                                                  with: request) { [weak self] result in
+            if case let .success(responseDTO) = result {
+                self?.season.value = responseDTO.data
                 completion()
-            case .failure(let error):
-                print(error)
             }
+            if case let .failure(error) = result { print(error) }
         }
     }
 }

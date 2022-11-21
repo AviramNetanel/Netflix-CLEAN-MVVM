@@ -57,7 +57,7 @@ final class DetailPanelViewItemViewModel: ViewModel {
          with viewModel: DetailViewModel) {
         self.tag = item.tag
         self.isSelected = .init(item.isSelected)
-        self.media = viewModel.media
+        self.media = viewModel.dependencies.media
         self.bind(on: item)
     }
     

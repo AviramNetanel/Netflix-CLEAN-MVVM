@@ -7,70 +7,93 @@
 
 import UIKit
 
-// MARK: - HomeFlowCoordinatorDependencies protocol
+// MARK: - HomeFlowDependencies protocol
 
-protocol HomeFlowCoordinatorDependencies {
+protocol HomeFlowDependencies {
+    func createHomeTabBarController(actions: HomeViewModelActions) -> HomeTabBarController
     func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
     func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel
-    
-    func createDetailViewController() -> DetailViewController
-    func createDetailViewModel() -> DetailViewModel
 }
+
+// MARK: - DetailFlowDependencies protocol
+
+protocol DetailFlowDependencies {
+    func createDetailUseCase() -> DetailUseCase
+    func createDetailViewDependencies(section: Section,
+                                      media: Media,
+                                      with viewModel: HomeViewModel) -> DetailViewModel.Dependencies
+    func createDetailViewController(dependencies: DetailViewModel.Dependencies) -> DetailViewController
+    func createDetailViewModel(dependencies: DetailViewModel.Dependencies) -> DetailViewModel
+}
+
+// MARK: - HomeFlowCoordinatorDependencies typealias
+
+typealias HomeFlowCoordinatorDependencies = HomeFlowDependencies & DetailFlowDependencies
 
 // MARK: - HomeFlowCoordinator class
 
 final class HomeFlowCoordinator {
     
     private let dependencies: HomeFlowCoordinatorDependencies
-    
     private weak var navigationController: UINavigationController?
-    private(set) weak var viewController: UIViewController?
-    
-    weak var detailViewController: DetailViewController?
+    private weak var homeTabBarController: HomeTabBarController?
+    private weak var detailViewController: DetailViewController?
     
     init(navigationController: UINavigationController,
          dependencies: HomeFlowCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
+        self.create()
     }
+}
+
+// MARK: - FlowCoordinatorInput implementation
+
+extension HomeFlowCoordinator: FlowCoordinatorInput {
     
-    func coordinate() -> HomeFlowCoordinator {
+    func create() {
         let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
-        
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        let viewController = dependencies.createHomeViewController(actions: actions)
-        self.viewController = viewController
-        
-        return self
+        homeTabBarController = dependencies.createHomeTabBarController(actions: actions)
     }
     
-    func presentMediaDetails(section: Section, media: Media) {
-        guard let homeViewController = viewController as? HomeViewController else { return }
-        detailViewController = dependencies.createDetailViewController()
-        detailViewController?.modalPresentationCapturesStatusBarAppearance = true
-        detailViewController?.modalTransitionStyle = .coverVertical
-        detailViewController?.modalPresentationStyle = .automatic
-        detailViewController?.viewModel.section = section
-        detailViewController?.viewModel.media = media
-        detailViewController?.viewModel.state = homeViewController.viewModel.state.value
-        detailViewController?.homeViewModel = homeViewController.viewModel
-        homeViewController.present(detailViewController!, animated: true)
+    func coordinate() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.pushViewController(homeTabBarController!, animated: true)
     }
     
     func sceneDidDisconnect() {
-        guard
-            let homeViewController = viewController as? HomeViewController,
-            let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView,
-            let navigationView = homeViewController.navigationView,
-            let categoriesOverlayView = homeViewController.categoriesOverlayView
-        else { return }
-        homeViewController.viewDidUnobserve()
-        panelView.viewDidUnobserve()
-        navigationView.viewDidUnobserve()
-        categoriesOverlayView.viewDidUnobserve()
+        if let detailViewController = detailViewController {
+            detailViewController.removeObservers()
+        }
         
-        guard let detailViewController = detailViewController else { return }
-        detailViewController.removeObservers()
+        if let homeViewController = homeTabBarController?.homeViewController {
+            homeViewController.unbindObservers()
+            homeViewController.viewModel.myList.unbindObservers()
+            
+            if let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView {
+                panelView.viewDidUnobserve()
+            }
+            if let navigationView = homeViewController.navigationView {
+                navigationView.viewDidUnobserve()
+            }
+            if let categoriesOverlayView = homeViewController.categoriesOverlayView {
+                categoriesOverlayView.viewDidUnobserve()
+            }
+        }
+    }
+}
+
+// MARK: - HomeViewModelActions implementation
+
+extension HomeFlowCoordinator {
+    
+    func presentMediaDetails(section: Section, media: Media) {
+        guard let homeViewController = homeTabBarController?.homeViewController else { return }
+        let detailViewDependencies = dependencies.createDetailViewDependencies(
+            section: section,
+            media: media,
+            with: homeViewController.viewModel)
+        detailViewController = dependencies.createDetailViewController(dependencies: detailViewDependencies)
+        homeViewController.present(detailViewController!, animated: true)
     }
 }

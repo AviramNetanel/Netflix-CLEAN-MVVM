@@ -35,9 +35,26 @@ private typealias Storage = StorageInput & StorageOutput
 final class AuthResponseStorage: Storage {
     
     fileprivate let coreDataStorage: CoreDataStorage
+    fileprivate let authService: AuthService
     
-    init(coreDataStorage: CoreDataStorage = .shared) {
+    var lastKnownUser: UserDTO? {
+        let request = AuthRequestEntity.fetchRequest()
+        do {
+            let entities = try coreDataStorage.context().fetch(request)
+            guard let lastKnownEntity = entities.last else { return nil }
+            let userDTO = UserDTO(email: lastKnownEntity.user!.email,
+                                  password: lastKnownEntity.user!.password)
+            return userDTO
+        } catch {
+            printIfDebug("Unresolved error \(error) ")
+        }
+        return nil
+    }
+    
+    init(coreDataStorage: CoreDataStorage = .shared,
+         authService: AuthService) {
         self.coreDataStorage = coreDataStorage
+        self.authService = authService
     }
     
     fileprivate func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity> {
@@ -49,18 +66,14 @@ final class AuthResponseStorage: Storage {
     }
     
     func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void) {
-        let request = AuthRequestEntity.fetchRequest()
-        do {
-            let entities = try coreDataStorage.context().fetch(request)
-            let userDTO = UserDTO(email: entities.first?.user?.email ?? "",
-                                  password: entities.first?.user?.password ?? "")
-            let requestDTO = AuthRequestDTO(user: userDTO)
-            let requestQuery = AuthRequestDTO(user: requestDTO.user)
-            
-            completion(requestQuery.toDomain())
-        } catch {
-            printIfDebug("Unresolved error \(error) ")
-        }
+        let userDTO = UserDTO(email: lastKnownUser?.email,
+                              password: lastKnownUser?.password)
+        let requestDTO = AuthRequestDTO(user: userDTO)
+        let requestQuery = AuthRequestDTO(user: requestDTO.user)
+        
+        authService.user = userDTO
+        
+        completion(requestQuery.toDomain())
     }
 }
 
@@ -70,10 +83,13 @@ extension AuthResponseStorage {
     
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void) {
-        coreDataStorage.performBackgroundTask { context in
+        coreDataStorage.performBackgroundTask { [weak self] context in
+            guard let self = self else { return }
             do {
                 let fetchRequest = self.fetchRequest(for: request)
                 let requestEntity = try context.fetch(fetchRequest).first
+                
+                self.authService.user = requestEntity?.response?.data
                 
                 completion(.success(requestEntity?.response?.toDTO()))
             } catch {
@@ -83,7 +99,8 @@ extension AuthResponseStorage {
     }
     
     func save(response: AuthResponseDTO, for request: AuthRequestDTO) {
-        coreDataStorage.performBackgroundTask { context in
+        coreDataStorage.performBackgroundTask { [weak self] context in
+            guard let self = self else { return }
             do {
                 self.deleteResponse(for: request, in: context)
                 
@@ -96,6 +113,8 @@ extension AuthResponseStorage {
                 responseEntity.request = requestEntity
                 responseEntity.token = response.token
                 responseEntity.data = response.data
+                
+                self.authService.user = response.data
                 
                 try context.save()
             } catch {

@@ -63,7 +63,7 @@ final class CategoriesOverlayView: UIView, View {
     }()
     
     fileprivate var dataSource: CategoriesOverlayViewTableViewDataSource!
-    fileprivate(set) lazy var opaqueView: OpaqueView = { .init(frame: UIScreen.main.bounds) }()
+    lazy var opaqueView: OpaqueView = { .init(frame: UIScreen.main.bounds) }()
     fileprivate var footerView: CategoriesOverlayViewFooterView!
     private(set) var viewModel: CategoriesOverlayViewViewModel = .init()
     
@@ -163,14 +163,14 @@ extension CategoriesOverlayView {
             isHidden(false)
             tableView.isHidden(false)
             footerView.isHidden(false)
-            viewModel._isPresentedDidChange?()
+            viewModel.isPresentedDidChange?()
             dataSourceDidChange()
             return
         }
         isHidden(true)
         footerView.isHidden(true)
         tableView.isHidden(true)
-        viewModel._isPresentedDidChange?()
+        viewModel.isPresentedDidChange?()
         
         tableView.delegate = nil
         tableView.dataSource = nil

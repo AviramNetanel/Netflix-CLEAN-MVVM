@@ -56,7 +56,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
     
     fileprivate func viewDidConfigure() {
-      if navigationView.viewModel.media.type == .series {
+        if navigationView.viewModel.dependencies.media.type == .series {
             navigationView.viewModel.navigationViewState.value = .episodes
             navigationView.leadingViewContainer.isHidden(false)
             navigationView.centerViewContainer.isHidden(true)

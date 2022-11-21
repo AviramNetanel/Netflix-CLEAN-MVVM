@@ -11,17 +11,15 @@ import UIKit
 
 final class HomeTabBarController: UITabBarController {
     
-    private var appFlowCoordinator: AppFlowCoordinator! { sceneDelegate?.appFlowCoordinator }
+    private(set) var homeViewController: HomeViewController!
     
-    private var sceneDependencies: SceneDependencies! { appFlowCoordinator?.sceneDependencies }
-    
-    var homeViewController: HomeViewController! {
-        appFlowCoordinator?.homeFlowCoordinator?.viewController as? HomeViewController
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        appFlowCoordinator?.create(for: .home)
-        setViewControllers([homeViewController], animated: false)
+    static func create(with homeViewController: HomeViewController) -> HomeTabBarController {
+        let view = Storyboard(
+            withOwner: HomeTabBarController.self,
+            launchingViewController: HomeTabBarController.self)
+            .instantiate() as! HomeTabBarController
+        view.homeViewController = homeViewController
+        view.setViewControllers([view.homeViewController], animated: false)
+        return view
     }
 }

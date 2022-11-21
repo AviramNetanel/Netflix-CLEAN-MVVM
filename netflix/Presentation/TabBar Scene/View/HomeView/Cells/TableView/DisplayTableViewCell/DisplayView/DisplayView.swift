@@ -112,8 +112,8 @@ final class DisplayView: UIView, View, ViewInstantiable {
     }
     
     @discardableResult
-    fileprivate static func createViewModel(in view: DisplayView,
-                                with homeViewModel: HomeViewModel) -> DisplayViewViewModel {
+    private static func createViewModel(in view: DisplayView,
+                                        with homeViewModel: HomeViewModel) -> DisplayViewViewModel {
         let viewModel = DisplayViewViewModel(with: homeViewModel.presentedDisplayMedia.value!)
         view.viewModel = viewModel
         view.homeViewModel = homeViewModel
@@ -121,13 +121,13 @@ final class DisplayView: UIView, View, ViewInstantiable {
     }
     
     @discardableResult
-    fileprivate static func createConfiguration(in view: DisplayView) -> DisplayViewConfiguration {
+    private static func createConfiguration(in view: DisplayView) -> DisplayViewConfiguration {
         view.configuration = .create(on: view, with: view.viewModel)
         return view.configuration
     }
     
     @discardableResult
-    fileprivate static func createPanelView(on view: DisplayView) -> PanelView {
+    private static func createPanelView(on view: DisplayView) -> PanelView {
         view.panelView = .create(on: view.panelViewContainer,
                                  with: view.homeViewModel)
         return view.panelView

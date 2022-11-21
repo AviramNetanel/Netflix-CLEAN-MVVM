@@ -25,7 +25,7 @@ private protocol UseCaseInput {
 private protocol UseCaseOutput {
     var sectionsRepository: SectionRepository { get }
     var mediaRepository: MediaRepository { get }
-    var myListRepository: MyListRepository { get }
+    var listRepository: ListRepository { get }
 }
 
 // MARK: - UseCase typealias
@@ -38,14 +38,14 @@ final class HomeUseCase: UseCase {
     
     fileprivate let sectionsRepository: SectionRepository
     fileprivate(set) var mediaRepository: MediaRepository
-    fileprivate(set) var myListRepository: MyListRepository
+    fileprivate(set) var listRepository: ListRepository
     
     init(sectionsRepository: SectionRepository,
          mediaRepository: MediaRepository,
-         myListRepository: MyListRepository) {
+         listRepository: ListRepository) {
         self.sectionsRepository = sectionsRepository
         self.mediaRepository = mediaRepository
-        self.myListRepository = myListRepository
+        self.listRepository = listRepository
     }
     
     fileprivate func request<T, U>(for response: T.Type,
@@ -89,9 +89,9 @@ final class HomeUseCase: UseCase {
                         completion?(.failure(error))
                     }
                 })
-        case is MyListResponseDTO.GET.Type:
-            guard let request = request as? MyListRequestDTO.GET else { return nil }
-            return myListRepository.getOne(
+        case is ListResponseDTO.GET.Type:
+            guard let request = request as? ListRequestDTO.GET else { return nil }
+            return listRepository.getOne(
                 request: request,
                 completion: { result in
                     switch result {
@@ -101,9 +101,9 @@ final class HomeUseCase: UseCase {
                         completion?(.failure(error))
                     }
                 })
-        case is MyListResponseDTO.POST.Type:
-            guard let request = request as? MyListRequestDTO.POST else { return nil }
-            return myListRepository.createOne(
+        case is ListResponseDTO.POST.Type:
+            guard let request = request as? ListRequestDTO.POST else { return nil }
+            return listRepository.createOne(
                 request: request,
                 completion: { result in
                     switch result {
@@ -113,9 +113,9 @@ final class HomeUseCase: UseCase {
                         completion?(.failure(error))
                     }
                 })
-        case is MyListResponseDTO.PATCH.Type:
-            guard let request = request as? MyListRequestDTO.PATCH else { return nil }
-            return myListRepository.updateOne(request: request) { result in
+        case is ListResponseDTO.PATCH.Type:
+            guard let request = request as? ListRequestDTO.PATCH else { return nil }
+            return listRepository.updateOne(request: request) { result in
                 switch result {
                 case .success(let response):
                     completion?(.success(response as! T))

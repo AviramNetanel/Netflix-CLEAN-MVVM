@@ -38,29 +38,22 @@ final class DetailPanelView: UIView, View, ViewInstantiable {
     fileprivate(set) var trailingItem: DetailPanelViewItem!
     
     static func create(on parent: UIView,
-                       viewModel: DetailViewModel,
-                       homeViewModel: HomeViewModel) -> DetailPanelView {
+                       viewModel: DetailViewModel) -> DetailPanelView {
         let view = DetailPanelView(frame: parent.bounds)
         view.nibDidLoad()
-        createItems(on: view,
-                    viewModel: viewModel,
-                    homeViewModel: homeViewModel)
+        createItems(on: view, viewModel: viewModel)
         view.viewDidLoad()
         return view
     }
     
     private static func createItems(on view: DetailPanelView,
-                                    viewModel: DetailViewModel,
-                                    homeViewModel: HomeViewModel) {
+                                    viewModel: DetailViewModel) {
         view.leadingItem = .create(on: view.leadingViewContainer,
-                                   viewModel: viewModel,
-                                   homeViewModel: homeViewModel)
+                                   viewModel: viewModel)
         view.centerItem = .create(on: view.centerViewContainer,
-                                  viewModel: viewModel,
-                                  homeViewModel: homeViewModel)
+                                  viewModel: viewModel)
         view.trailingItem = .create(on: view.trailingViewContainer,
-                                    viewModel: viewModel,
-                                    homeViewModel: homeViewModel)
+                                    viewModel: viewModel)
     }
     
     fileprivate func viewDidLoad() { setupSubviews() }

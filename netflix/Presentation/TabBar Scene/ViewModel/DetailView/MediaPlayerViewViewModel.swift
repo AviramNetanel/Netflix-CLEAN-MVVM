@@ -32,8 +32,8 @@ struct MediaPlayerViewViewModel: ViewModel {
     var isPlaying: Bool
     
     init(with viewModel: DetailViewModel) {
-        self.media = viewModel.media
-        self.item = .init(with: viewModel.media)
+        self.media = viewModel.dependencies.media
+        self.item = .init(with: self.media)
         self.isPlaying = false
     }
 }

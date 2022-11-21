@@ -1,5 +1,5 @@
 //
-//  MyListRepository.swift
+//  ListRepository.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -10,13 +10,13 @@ import Foundation
 // MARK: - RepositoryInput protocol
 
 private protocol RepositoryInput {
-    func getAll(completion: @escaping (Result<MyListResponseDTO.GET, Error>) -> Void) -> Cancellable?
-    func getOne(request: MyListRequestDTO.GET,
-                completion: @escaping (Result<MyListResponseDTO.GET, Error>) -> Void) -> Cancellable?
-    func createOne(request: MyListRequestDTO.POST,
-                   completion: @escaping (Result<MyListResponseDTO.POST, Error>) -> Void) -> Cancellable?
-    func updateOne(request: MyListRequestDTO.PATCH,
-                   completion: @escaping (Result<MyListResponseDTO.PATCH, Error>) -> Void) -> Cancellable?
+    func getAll(completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable?
+    func getOne(request: ListRequestDTO.GET,
+                completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable?
+    func createOne(request: ListRequestDTO.POST,
+                   completion: @escaping (Result<ListResponseDTO.POST, Error>) -> Void) -> Cancellable?
+    func updateOne(request: ListRequestDTO.PATCH,
+                   completion: @escaping (Result<ListResponseDTO.PATCH, Error>) -> Void) -> Cancellable?
 }
 
 // MARK: - RepositoryOutput protocol
@@ -29,13 +29,13 @@ private protocol RepositoryOutput {
 
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - MyListRepository struct
+// MARK: - ListRepository struct
 
-struct MyListRepository: Repository {
+struct ListRepository: Repository {
     
     let dataTransferService: DataTransferService
     
-    func getAll(completion: @escaping (Result<MyListResponseDTO.GET, Error>) -> Void) -> Cancellable? {
+    func getAll(completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
@@ -53,9 +53,9 @@ struct MyListRepository: Repository {
         return task
     }
     
-    func getOne(request: MyListRequestDTO.GET,
-                completion: @escaping (Result<MyListResponseDTO.GET, Error>) -> Void) -> Cancellable? {
-        let requestDTO = MyListRequestDTO.GET(user: request.user)
+    func getOne(request: ListRequestDTO.GET,
+                completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable? {
+        let requestDTO = ListRequestDTO.GET(user: request.user)
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
@@ -73,8 +73,8 @@ struct MyListRepository: Repository {
         return task
     }
     
-    func createOne(request: MyListRequestDTO.POST,
-                   completion: @escaping (Result<MyListResponseDTO.POST, Error>) -> Void) -> Cancellable? {
+    func createOne(request: ListRequestDTO.POST,
+                   completion: @escaping (Result<ListResponseDTO.POST, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }
@@ -94,8 +94,8 @@ struct MyListRepository: Repository {
         return task
     }
     
-    func updateOne(request: MyListRequestDTO.PATCH,
-                   completion: @escaping (Result<MyListResponseDTO.PATCH, Error>) -> Void) -> Cancellable? {
+    func updateOne(request: ListRequestDTO.PATCH,
+                   completion: @escaping (Result<ListResponseDTO.PATCH, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         
         guard !task.isCancelled else { return nil }

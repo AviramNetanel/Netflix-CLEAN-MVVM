@@ -30,10 +30,12 @@ final class HomeViewController: UIViewController {
     }
     
     static func create(with viewModel: HomeViewModel) -> HomeViewController {
-        let view = Storyboard(withOwner: HomeTabBarController.self,
-                              launchingViewController: HomeViewController.self)
+        let view = Storyboard(
+            withOwner: HomeTabBarController.self,
+            launchingViewController: HomeViewController.self)
             .instantiate() as! HomeViewController
         view.viewModel = viewModel
+        view.viewModel.myListDidSetup = view.setupList
         return view
     }
     
@@ -41,12 +43,8 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupBehaviors()
         setupSubviews()
-        setupBindings()
-        viewModel.dataWillLoad()
-        
-        
-        
-        viewModel._reloadData = { [weak self] in self?.reloadData() }
+        setupObservers()
+        viewModel.viewWillLoad()
     }
     
     private func setupBehaviors() {
@@ -60,15 +58,13 @@ final class HomeViewController: UIViewController {
         setupCategoriesOverlayView()
     }
     
-    private func setupBindings() {
-        state(in: viewModel)
-        navigationViewDidAppear(in: viewModel)
+    private func setupObservers() {
+        tableViewState(in: viewModel)
         presentedDisplayMedia(in: viewModel)
-        myList(in: viewModel)
     }
     
     private func setupDataSource() {
-        viewModel.filter(sections: viewModel.sections.value)
+        viewModel.filter(sections: viewModel.sections)
         dataSource = .create(on: tableView, with: viewModel)
         heightForRowAt(in: dataSource)
         tableViewDidScroll(in: dataSource)
@@ -77,6 +73,7 @@ final class HomeViewController: UIViewController {
     
     private func setupNavigationView() {
         navigationView = .create(on: navigationViewContainer)
+        navigationViewDidAppear(in: viewModel)
         stateDidChange(in: navigationView)
     }
     
@@ -85,46 +82,31 @@ final class HomeViewController: UIViewController {
         isPresentedDidChange(in: categoriesOverlayView)
     }
     
+    private func setupList() {
+        viewModel.myList = .init(with: viewModel)
+        listDidReload(in: viewModel)
+    }
+    
     private func setupSubviewsDependencies() {
         OpaqueView.createViewModel(on: categoriesOverlayView.opaqueView,
                                    with: viewModel)
     }
     
-    func viewDidUnobserve() {
+    func unbindObservers() {
         if let viewModel = viewModel {
             printIfDebug("Removed `HomeViewModel` observers.")
-            viewModel.state.remove(observer: self)
-            viewModel.media.remove(observer: self)
-            viewModel.myList.remove(observer: self)
+            viewModel.tableViewState.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
     }
-    
-    
-    
-    
-    
-    private func myList(in viewModel: HomeViewModel) {
-        viewModel.myList.observe(on: self) { [weak self] _ in self?.reloadData() }
-    }
-    
-    func reloadData() {
-        guard
-            tableView.numberOfSections > 0,
-            let myListIndex = TableViewDataSource.Index(rawValue: 6)
-        else { return }
-        tableView.reloadSections(IndexSet(integer: myListIndex.rawValue), with: .automatic)
-    }
 }
 
-// MARK: - Bindings
+// MARK: - Closure bindings
 
 extension HomeViewController {
     
-    // MARK: HomeViewModel bindings
-    
     private func navigationViewDidAppear(in viewModel: HomeViewModel) {
-        viewModel._navigationViewDidAppear = { [weak self] in
+        viewModel.navigationViewDidAppear = { [weak self] in
             guard let self = self else { return }
             self.navigationViewTopConstraint.constant = 0.0
             self.navigationView.alpha = 1.0
@@ -134,7 +116,19 @@ extension HomeViewController {
         }
     }
     
-    // MARK: TableViewDataSource bindings
+    private func listDidReload(in viewModel: HomeViewModel) {
+        viewModel.myList.listDidReload = { [weak self] in
+            guard
+                let self = self,
+                self.tableView.numberOfSections > 0,
+                let myListIndex = TableViewDataSource.Index(rawValue: 6)
+            else { return }
+            let section = self.viewModel.section(at: .myList)
+            self.viewModel.filter(section: section)
+            let index = IndexSet(integer: myListIndex.rawValue)
+            self.tableView.reloadSections(index, with: .automatic)
+        }
+    }
     
     private func heightForRowAt(in dataSource: TableViewDataSource) {
         dataSource.heightForRowAt = { [weak self] indexPath in
@@ -150,8 +144,7 @@ extension HomeViewController {
         dataSource.tableViewDidScroll = { [weak self] scrollView in
             guard
                 let self = self,
-                let translation = scrollView.panGestureRecognizer
-                    .translation(in: self.view) as CGPoint?
+                let translation = scrollView.panGestureRecognizer.translation(in: self.view) as CGPoint?
             else { return }
             self.view.animateUsingSpring(withDuration: 0.66,
                                          withDamping: 1.0,
@@ -171,17 +164,11 @@ extension HomeViewController {
     private func didSelectItem(in dataSource: TableViewDataSource) {
         dataSource.didSelectItem = { [weak self] section, row in
             guard let self = self else { return }
-            let section = self.viewModel.state.value == .tvShows
-                ? self.viewModel.sections.value[section]
-                : self.viewModel.sections.value[section]
-            let media = self.viewModel.state.value == .tvShows
-                ? section.media[row]
-                : section.media[row]
+            let section = self.viewModel.sections[section]
+            let media = section.media[row]
             self.viewModel.actions.presentMediaDetails(section, media)
         }
     }
-    
-    // MARK: NavigationView bindings
     
     private func stateDidChange(in navigationView: NavigationView) {
         navigationView.viewModel.stateDidChangeDidBindToHomeViewController = { [weak self] state in
@@ -189,70 +176,60 @@ extension HomeViewController {
             
             self.categoriesOverlayView.viewModel.navigationViewState = state
             
-            switch self.categoriesOverlayView.viewModel.navigationViewState {
-            case .tvShows,
-                    .movies:
-                self.categoriesOverlayView.viewModel.state = .mainMenu
-            case .categories:
-                self.categoriesOverlayView.viewModel.state = .categories
-            default:
-                break
-            }
-            
             switch state {
             case .home:
-                guard self.viewModel.state.value != .all else {
+                guard self.viewModel.tableViewState.value != .all else {
                     guard navigationView.homeItemView.viewModel.hasInteracted else {
                         return self.categoriesOverlayView.viewModel.isPresented.value = false
                     }
                     return self.categoriesOverlayView.viewModel.isPresented.value = true
                 }
                 
-                self.viewModel.state.value = .all
+                self.viewModel.tableViewState.value = .all
+                self.categoriesOverlayView.viewModel.state = .mainMenu
             case .tvShows:
-                guard self.viewModel.state.value != .tvShows else {
+                guard self.viewModel.tableViewState.value != .series else {
                     guard navigationView.tvShowsItemView.viewModel.hasInteracted else {
                         return self.categoriesOverlayView.viewModel.isPresented.value = false
                     }
                     return self.categoriesOverlayView.viewModel.isPresented.value = true
                 }
                 
-                self.viewModel.state.value = .tvShows
+                self.viewModel.tableViewState.value = .series
+                self.categoriesOverlayView.viewModel.state = .mainMenu
             case .movies:
-                guard self.viewModel.state.value != .movies else {
+                guard self.viewModel.tableViewState.value != .films else {
                     guard navigationView.moviesItemView.viewModel.hasInteracted else {
                         return self.categoriesOverlayView.viewModel.isPresented.value = false
                     }
                     return self.categoriesOverlayView.viewModel.isPresented.value = true
                 }
                 
-                self.viewModel.state.value = .movies
+                self.viewModel.tableViewState.value = .films
+                self.categoriesOverlayView.viewModel.state = .mainMenu
             case .categories:
-                self.categoriesOverlayView?.viewModel.isPresented.value = true
+                self.categoriesOverlayView.viewModel.isPresented.value = true
+                self.categoriesOverlayView.viewModel.state = .categories
             default: return
             }
         }
     }
     
-    // MARK: CategoriesOverlayView bindings
-    
     private func isPresentedDidChange(in categoriesOverlayView: CategoriesOverlayView) {
-        categoriesOverlayView.viewModel._isPresentedDidChange = { [weak self] in
+        categoriesOverlayView.viewModel.isPresentedDidChange = { [weak self] in
             categoriesOverlayView.viewModel.isPresented.value == true
-            ? self?.tabBarController?.tabBar.isHidden(true)
-            : self?.tabBarController?.tabBar.isHidden(false)
+                ? self?.tabBarController?.tabBar.isHidden(true)
+                : self?.tabBarController?.tabBar.isHidden(false)
         }
     }
 }
 
-// MARK: - Observers
+// MARK: - Observer bindings
 
 extension HomeViewController {
     
-    // MARK: HomeViewModel observers
-    
-    private func state(in viewModel: HomeViewModel) {
-        viewModel.state.observe(on: self) { [weak self] _ in
+    private func tableViewState(in viewModel: HomeViewModel) {
+        viewModel.tableViewState.observe(on: self) { [weak self] _ in
             self?.setupDataSource()
         }
     }
@@ -263,3 +240,28 @@ extension HomeViewController {
         }
     }
 }
+
+/*
+ // MARK: - Observers struct
+
+ private struct Observers {
+     
+     var tableViewState: (() -> Void)?
+     var presentedDisplayMedia: (() -> Void)?
+     
+     static func create(on viewModel: HomeViewModel,
+                        tableViewState: @escaping () -> Void,
+                        presentedDisplayMedia: @escaping () -> Void) -> Observers {
+         var observers = Observers()
+         observers.tableViewState = tableViewState
+         viewModel.tableViewState.observe(on: viewModel) { _ in
+             tableViewState()
+         }
+         observers.presentedDisplayMedia = presentedDisplayMedia
+         viewModel.presentedDisplayMedia.observe(on: viewModel) { _ in
+             presentedDisplayMedia()
+         }
+         return observers
+     }
+ }
+ */

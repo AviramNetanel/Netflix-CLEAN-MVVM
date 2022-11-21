@@ -10,8 +10,7 @@ import Foundation
 // MARK: - Array extension
 
 extension Array where Element == Media {
-    
     func slice(_ maxLength: Int) -> [Element] { Array(prefix(maxLength)) }
-    
     func toObjectIDs() -> [String] { map { String($0.id!) } }
+    func toSet() -> Set<Element> { Set(self) }
 }

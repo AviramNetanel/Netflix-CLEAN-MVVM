@@ -1,5 +1,5 @@
 //
-//  MyListRequest.swift
+//  ListRequest.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - MyListRequest struct
+// MARK: - ListRequest struct
 
-struct MyListRequest {
+struct ListRequest {
     
     struct GET {
         let user: User

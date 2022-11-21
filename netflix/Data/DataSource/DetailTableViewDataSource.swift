@@ -49,7 +49,6 @@ final class DetailTableViewDataSource: NSObject,
     
     fileprivate var tableView: UITableView!
     fileprivate var viewModel: DetailViewModel!
-    fileprivate var homeViewModel: HomeViewModel!
     
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
@@ -57,9 +56,7 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    var _heightForRow: ((IndexPath) -> CGFloat)? {
-        didSet { tableView.reloadData() }
-    }
+    var _heightForRow: ((IndexPath) -> CGFloat)? { didSet { tableView.reloadData() } }
     
     deinit {
         infoCell = nil
@@ -70,16 +67,13 @@ final class DetailTableViewDataSource: NSObject,
         _heightForRow = nil
         tableView = nil
         viewModel = nil
-        homeViewModel = nil
     }
     
     static func create(on tableView: UITableView,
-                       viewModel: DetailViewModel,
-                       homeViewModel: HomeViewModel) -> DetailTableViewDataSource {
+                       viewModel: DetailViewModel) -> DetailTableViewDataSource {
         let dataSource = DetailTableViewDataSource()
         dataSource.tableView = tableView
         dataSource.viewModel = viewModel
-        dataSource.homeViewModel = homeViewModel
         return dataSource
     }
     
@@ -108,8 +102,7 @@ final class DetailTableViewDataSource: NSObject,
             guard panelCell == nil else { return panelCell }
             panelCell = DetailPanelTableViewCell.create(on: tableView,
                                                         for: indexPath,
-                                                        viewModel: viewModel,
-                                                        homeViewModel: homeViewModel)
+                                                        viewModel: viewModel)
             return panelCell
         case .navigation:
             guard navigationCell == nil else { return navigationCell }

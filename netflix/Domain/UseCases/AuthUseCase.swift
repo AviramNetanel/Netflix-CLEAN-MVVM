@@ -68,7 +68,6 @@ final class AuthUseCase: UseCase {
                                          cached: cached) { result in
                 switch result {
                 case .success(let response):
-                    cached(response)
                     completion(.success(response))
                 case .failure(let error):
                     completion(.failure(error))

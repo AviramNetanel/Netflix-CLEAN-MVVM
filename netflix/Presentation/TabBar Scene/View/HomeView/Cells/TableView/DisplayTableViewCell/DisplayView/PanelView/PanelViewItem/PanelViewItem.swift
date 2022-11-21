@@ -82,7 +82,7 @@ final class PanelViewItemConfiguration: Configuration {
     fileprivate func selectIfNeeded() {
         guard let item = Item(rawValue: view.tag) else { return }
         if case .myList = item {
-            view.viewModel.isSelected.value = view.homeViewModel.contains(
+            view.viewModel.isSelected.value = view.homeViewModel.myList.contains(
                 view.viewModel.media,
                 in: view.homeViewModel.section(at: .myList).media)
         }
@@ -102,10 +102,10 @@ final class PanelViewItemConfiguration: Configuration {
         switch tag {
         case .myList:
             let media = view.homeViewModel.presentedDisplayMedia.value!
-            if view.homeViewModel.myList.value.isEmpty {
-                view.homeViewModel.myListDidCreate()
+            if view.homeViewModel.myList.list.value.isEmpty {
+                view.homeViewModel.myList.createList()
             }
-            view.homeViewModel.shouldAddOrRemoveToMyList(
+            view.homeViewModel.myList.shouldAddOrRemove(
                 media,
                 uponSelection: view.viewModel.isSelected.value)
         case .info:

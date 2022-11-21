@@ -40,18 +40,11 @@ final class AuthViewController: UIViewController {
            let signInViewController = destinationVC as SignInViewController? {
             
             signInViewController.viewModel = viewModel
-            
         } else if segue.identifier == String(describing: SignUpViewController.self),
                   let destinationVC = segue.destination as? SignUpViewController,
                   let signUpViewController = destinationVC as SignUpViewController? {
             
             signUpViewController.viewModel = viewModel
-            
-        } else if segue.identifier == String(describing: HomeViewController.self),
-                  let destinationVC = segue.destination as? HomeTabBarController {
-            
-            view.alpha = 0.0
-            destinationVC.homeViewController.viewModel.user = viewModel.user
         }
     }
     

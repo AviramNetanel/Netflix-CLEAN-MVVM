@@ -20,8 +20,11 @@ final class AppDependencies {
         return DataTransferService(with: networkService)
     }()
     
+    private(set) lazy var authService = AuthService()
+    
     func createSceneDependencies() -> SceneDependencies {
-        let dependencies = SceneDependencies.Dependencies(dataTransferService: dataTransferService)
+        let dependencies = SceneDependencies.Dependencies(dataTransferService: dataTransferService,
+                                                          authService: authService)
         return SceneDependencies(dependencies: dependencies)
     }
 }

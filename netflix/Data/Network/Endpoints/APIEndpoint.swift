@@ -36,10 +36,10 @@ private protocol SeasonsRepositoryEndpoints {
 // MARK: - MyListRepositoryEndpoints protocol
 
 private protocol MyListRepositoryEndpoints {
-    static func getAllMyLists() -> Endpoint<MyListResponseDTO.GET>
-    static func getMyList(with request: MyListRequestDTO.GET) -> Endpoint<MyListResponseDTO.GET>
-    static func createMyList(with request: MyListRequestDTO.POST) -> Endpoint<MyListResponseDTO.POST>
-    static func updateMyList(with request: MyListRequestDTO.PATCH) -> Endpoint<MyListResponseDTO.PATCH>
+    static func getAllMyLists() -> Endpoint<ListResponseDTO.GET>
+    static func getMyList(with request: ListRequestDTO.GET) -> Endpoint<ListResponseDTO.GET>
+    static func createMyList(with request: ListRequestDTO.POST) -> Endpoint<ListResponseDTO.POST>
+    static func updateMyList(with request: ListRequestDTO.PATCH) -> Endpoint<ListResponseDTO.PATCH>
 }
 
 // MARK: - APIEndpoint struct
@@ -111,17 +111,17 @@ struct APIEndpoint {
     
     struct MyListRepository: MyListRepositoryEndpoints {
         
-        static func getAllMyLists() -> Endpoint<MyListResponseDTO.GET> {
+        static func getAllMyLists() -> Endpoint<ListResponseDTO.GET> {
             return Endpoint(path: "api/v1/mylists",
                             method: .get)
         }
         
-        static func getMyList(with request: MyListRequestDTO.GET) -> Endpoint<MyListResponseDTO.GET> {
+        static func getMyList(with request: ListRequestDTO.GET) -> Endpoint<ListResponseDTO.GET> {
             return Endpoint(path: "api/v1/mylists/\(request.user._id ?? "")",
                             method: .get)
         }
         
-        static func createMyList(with request: MyListRequestDTO.POST) -> Endpoint<MyListResponseDTO.POST> {
+        static func createMyList(with request: ListRequestDTO.POST) -> Endpoint<ListResponseDTO.POST> {
             return Endpoint(path: "api/v1/mylists/\(request.user)",
                             method: .post,
                             bodyParameters: ["user": request.user,
@@ -129,7 +129,7 @@ struct APIEndpoint {
                             bodyEncoding: .jsonSerializationData)
         }
         
-        static func updateMyList(with request: MyListRequestDTO.PATCH) -> Endpoint<MyListResponseDTO.PATCH> {
+        static func updateMyList(with request: ListRequestDTO.PATCH) -> Endpoint<ListResponseDTO.PATCH> {
             return Endpoint(path: "api/v1/mylists/\(request.user)",
                             method: .patch,
                             bodyParameters: ["user": request.user,

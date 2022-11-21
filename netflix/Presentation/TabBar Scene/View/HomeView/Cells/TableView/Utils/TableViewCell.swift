@@ -89,9 +89,4 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
             collectionView.setCollectionViewLayout(layout, animated: false)
         }
     }
-    
-    func reload() {
-        print("reloadinggg")
-        collectionView.reloadData()
-    }
 }

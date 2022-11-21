@@ -1,5 +1,5 @@
 //
-//  MyListRequestDTO+Mapping.swift
+//  ListRequestDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - MyListRequestDTO struct
+// MARK: - ListRequestDTO struct
 
-struct MyListRequestDTO {
+struct ListRequestDTO {
     
     struct GET: Decodable {
         let user: UserDTO
@@ -29,8 +29,8 @@ struct MyListRequestDTO {
 
 // MARK: - Mapping
 
-extension MyListRequestDTO.GET {
-    func toDomain() -> MyListRequest.GET {
+extension ListRequestDTO.GET {
+    func toDomain() -> ListRequest.GET {
         return .init(user: user.toDomain())
     }
 }

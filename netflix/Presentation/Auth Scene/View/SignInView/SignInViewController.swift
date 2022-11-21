@@ -50,10 +50,7 @@ final class SignInViewController: UIViewController {
         viewModel.signIn(request: requestDTO.toDomain()) { [weak self] result in
             if case .success = result {
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: String(describing: HomeViewController.self),
-                                      sender: self)
-                }
+                asynchrony { self.viewModel.actions?.presentHomeViewController() }
             } else {
                 printIfDebug("failure")
             }

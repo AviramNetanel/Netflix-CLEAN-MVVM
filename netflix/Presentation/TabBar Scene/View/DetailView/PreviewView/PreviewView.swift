@@ -53,7 +53,7 @@ final class PreviewView: UIView, View {
     @discardableResult
     private static func createViewModel(on view: PreviewView,
                                         with viewModel: DetailViewModel) -> PreviewViewViewModel {
-        view.viewModel = .init(with: viewModel.media)
+        view.viewModel = .init(with: viewModel.dependencies.media)
         return view.viewModel
     }
     

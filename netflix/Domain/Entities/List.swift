@@ -1,5 +1,5 @@
 //
-//  MyList.swift
+//  List.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - MyList struct
+// MARK: - List struct
 
-struct MyList {
+struct List {
     let user: String
     var media: [Media]
 }

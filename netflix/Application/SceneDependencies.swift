@@ -10,7 +10,8 @@ import UIKit
 // MARK: - SceneDependable protocol
 
 protocol SceneDependable {
-    func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator
+    func createAuthFlowCoordinator(appFlowCoordinator: AppFlowCoordinator,
+                                   navigationController: UINavigationController) -> AuthFlowCoordinator
     func createHomeFlowCoordinator(navigationController: UINavigationController) -> HomeFlowCoordinator
 }
 
@@ -20,11 +21,11 @@ final class SceneDependencies {
     
     struct Dependencies {
         let dataTransferService: DataTransferService
+        let authService: AuthService
     }
     
     private let dependencies: Dependencies
-    
-    lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage()
+    lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage(authService: dependencies.authService)
     lazy var mediaResponseCache: MediaResponseStorage = MediaResponseStorage()
     
     init(dependencies: Dependencies) {
@@ -38,76 +39,37 @@ final class SceneDependencies {
     }
     
     func createHomeUseCase() -> HomeUseCase {
-        return HomeUseCase(
-            sectionsRepository: createSectionsRepository(),
-            mediaRepository: createMediaRepository(),
-            myListRepository: createMyListRepository())
+        return HomeUseCase(sectionsRepository: createSectionsRepository(),
+                           mediaRepository: createMediaRepository(),
+                           listRepository: createMyListRepository())
     }
     
     func createDetailUseCase() -> DetailUseCase {
-        return DetailUseCase(
-            seasonsRepository: createSeasonsRepoistory())
+        return DetailUseCase(seasonsRepository: createSeasonsRepoistory())
     }
     
     // MARK: Repositories
     
     func createAuthRepository() -> AuthRepository {
-        return AuthRepository(
-            dataTransferService: dependencies.dataTransferService,
-            cache: authResponseCache)
+        return AuthRepository(dataTransferService: dependencies.dataTransferService,
+                              cache: authResponseCache)
     }
     
     func createSectionsRepository() -> SectionRepository {
-        return SectionRepository(
-            dataTransferService: dependencies.dataTransferService)
+        return SectionRepository(dataTransferService: dependencies.dataTransferService)
     }
     
     func createMediaRepository() -> MediaRepository {
-        return MediaRepository(
-            dataTransferService: dependencies.dataTransferService,
-            cache: mediaResponseCache)
+        return MediaRepository(dataTransferService: dependencies.dataTransferService,
+                               cache: mediaResponseCache)
     }
     
     func createSeasonsRepoistory() -> SeasonRepository {
         return SeasonRepository(dataTransferService: dependencies.dataTransferService)
     }
     
-    func createMyListRepository() -> MyListRepository {
-        return MyListRepository(dataTransferService: dependencies.dataTransferService)
-    }
-    
-    // MARK: - Scenes
-    
-    // MARK: AuthScene
-    
-    func createAuthViewController(actions: AuthViewModelActions) -> AuthViewController {
-        return .create(with: createAuthViewModel(actions: actions))
-    }
-    
-    func createAuthViewModel(actions: AuthViewModelActions) -> AuthViewModel {
-        return .create(authUseCase: createAuthUseCase(),
-                       actions: actions)
-    }
-    
-    // MARK: HomeView
-    
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
-        return .create(with: createHomeViewModel(actions: actions))
-    }
-    
-    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
-        return .create(homeUseCase: createHomeUseCase(),
-                       actions: actions)
-    }
-    
-    // MARK: DetailView
-    
-    func createDetailViewController() -> DetailViewController {
-        return .create(with: createDetailViewModel())
-    }
-    
-    func createDetailViewModel() -> DetailViewModel {
-        return .create(detailUseCase: createDetailUseCase())
+    func createMyListRepository() -> ListRepository {
+        return ListRepository(dataTransferService: dependencies.dataTransferService)
     }
 }
 
@@ -115,8 +77,10 @@ final class SceneDependencies {
 
 extension SceneDependencies: SceneDependable {
     
-    func createAuthFlowCoordinator(navigationController: UINavigationController) -> AuthFlowCoordinator {
-        return AuthFlowCoordinator(navigationController: navigationController,
+    func createAuthFlowCoordinator(appFlowCoordinator: AppFlowCoordinator,
+                                   navigationController: UINavigationController) -> AuthFlowCoordinator {
+        return AuthFlowCoordinator(appFlowCoordinator: appFlowCoordinator,
+                                   navigationController: navigationController,
                                    dependencies: self)
     }
     
@@ -128,8 +92,53 @@ extension SceneDependencies: SceneDependable {
 
 // MARK: - AuthFlowCoordinatorDependencies implementation
 
-extension SceneDependencies: AuthFlowCoordinatorDependencies {}
+extension SceneDependencies: AuthFlowCoordinatorDependencies {
+    
+    func createAuthViewController(actions: AuthViewModel.Actions) -> AuthViewController {
+        return .create(with: createAuthViewModel(actions: actions))
+    }
+    
+    func createAuthViewModel(actions: AuthViewModel.Actions) -> AuthViewModel {
+        return .create(authUseCase: createAuthUseCase(), actions: actions)
+    }
+}
 
 // MARK: - HomeFlowCoordinatorDependencies implementation
 
-extension SceneDependencies: HomeFlowCoordinatorDependencies {}
+extension SceneDependencies: HomeFlowCoordinatorDependencies {
+    
+    // MARK: HomeView
+    
+    func createHomeTabBarController(actions: HomeViewModelActions) -> HomeTabBarController {
+        return .create(with: createHomeViewController(actions: actions))
+    }
+    
+    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController {
+        return .create(with: createHomeViewModel(actions: actions))
+    }
+    
+    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel {
+        return .create(authService: dependencies.authService,
+                       homeUseCase: createHomeUseCase(),
+                       actions: actions)
+    }
+    
+    // MARK: DetailView
+    
+    func createDetailViewDependencies(section: Section,
+                                      media: Media,
+                                      with viewModel: HomeViewModel) -> DetailViewModel.Dependencies {
+        return DetailViewModel.Dependencies(detailUseCase: createDetailUseCase(),
+                                            section: section,
+                                            media: media,
+                                            viewModel: viewModel)
+    }
+    
+    func createDetailViewController(dependencies: DetailViewModel.Dependencies) -> DetailViewController {
+        return .create(with: createDetailViewModel(dependencies: dependencies))
+    }
+    
+    func createDetailViewModel(dependencies: DetailViewModel.Dependencies) -> DetailViewModel {
+        return .create(dependencies: dependencies)
+    }
+}

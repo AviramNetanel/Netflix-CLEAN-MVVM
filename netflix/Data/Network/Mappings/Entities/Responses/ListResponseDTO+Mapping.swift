@@ -1,5 +1,5 @@
 //
-//  MyListResponseDTO+Mapping.swift
+//  ListResponseDTO+Mapping.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -7,31 +7,31 @@
 
 import Foundation
 
-// MARK: - MyListResponseDTO struct
+// MARK: - ListResponseDTO struct
 
-struct MyListResponseDTO {
+struct ListResponseDTO {
     
     struct GET: Decodable {
         let status: String
-        let data: MyListDTO
+        let data: ListDTO
     }
     
     struct POST: Decodable {
         let status: String
-        var data: MyListDTO
+        var data: ListDTO
     }
     
     struct PATCH: Decodable {
         let status: String
-        var data: MyListDTO
+        var data: ListDTO
     }
 }
 
 // MARK: - Mapping
 
-extension MyListResponseDTO.GET {
+extension ListResponseDTO.GET {
     
-    func toDomain() -> MyListResponse.GET {
+    func toDomain() -> ListResponse.GET {
         return .init(status: status, data: data.toDomain())
     }
 }

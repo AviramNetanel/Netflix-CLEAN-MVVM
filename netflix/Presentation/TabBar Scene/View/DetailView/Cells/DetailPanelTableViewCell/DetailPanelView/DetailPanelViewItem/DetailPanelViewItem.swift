@@ -38,19 +38,20 @@ final class DetailPanelViewItemConfiguration: Configuration {
     }
     
     fileprivate weak var view: DetailPanelViewItem!
-    fileprivate var viewModel: HomeViewModel!
+    fileprivate let myList: MyList
+    fileprivate let section: Section
     
     init(view: DetailPanelViewItem,
-         viewModel: HomeViewModel) {
+         with viewModel: DetailViewModel) {
         self.view = view
-        self.viewModel = viewModel
+        self.myList = viewModel.myList
+        self.section = viewModel.myListSection
     }
     
     deinit { view = nil }
     
-    static func create(view: DetailPanelViewItem,
-                       with viewModel: HomeViewModel) -> DetailPanelViewItemConfiguration {
-        let configuration = DetailPanelViewItemConfiguration(view: view, viewModel: viewModel)
+    static func create(view: DetailPanelViewItem, with viewModel: DetailViewModel) -> DetailPanelViewItemConfiguration {
+        let configuration = DetailPanelViewItemConfiguration(view: view, with: viewModel)
         configuration.viewDidConfigure()
         configuration.viewDidRegisterRecognizers()
         return configuration
@@ -65,9 +66,9 @@ final class DetailPanelViewItemConfiguration: Configuration {
     fileprivate func selectIfNeeded() {
         guard let tag = Item(rawValue: view.tag) else { return }
         if case .myList = tag {
-            view.viewModel.isSelected.value = viewModel.contains(
+            view.viewModel.isSelected.value = myList.contains(
                 view.viewModel.media,
-                in: viewModel.section(at: .myList).media)
+                in: section.media)
         }
     }
     
@@ -84,10 +85,10 @@ final class DetailPanelViewItemConfiguration: Configuration {
         switch tag {
         case .myList:
             let media = view.viewModel.media!
-            if viewModel.myList.value.isEmpty {
-                viewModel.myListDidCreate()
+            if myList.list.value.isEmpty {
+                myList.createList()
             }
-            viewModel.shouldAddOrRemoveToMyList(
+            myList.shouldAddOrRemove(
                 media,
                 uponSelection: view.viewModel.isSelected.value)
         case .rate: print("rate")
@@ -148,14 +149,13 @@ final class DetailPanelViewItem: UIView, View {
     }
     
     static func create(on parent: UIView,
-                       viewModel: DetailViewModel,
-                       homeViewModel: HomeViewModel) -> DetailPanelViewItem {
+                       viewModel: DetailViewModel) -> DetailPanelViewItem {
         let view = DetailPanelViewItem(frame: parent.bounds)
         view.tag = parent.tag
         parent.addSubview(view)
         view.chainConstraintToCenter(linking: view.imageView, to: view.label)
         createViewModel(on: view, with: viewModel)
-        createConfiguration(on: view, with: homeViewModel)
+        createConfiguration(on: view, with: viewModel)
         return view
     }
     
@@ -168,7 +168,7 @@ final class DetailPanelViewItem: UIView, View {
     
     @discardableResult
     private static func createConfiguration(on view: DetailPanelViewItem,
-                                            with viewModel: HomeViewModel) -> DetailPanelViewItemConfiguration {
+                                            with viewModel: DetailViewModel) -> DetailPanelViewItemConfiguration {
         view.configuration = .create(view: view, with: viewModel)
         return view.configuration
     }

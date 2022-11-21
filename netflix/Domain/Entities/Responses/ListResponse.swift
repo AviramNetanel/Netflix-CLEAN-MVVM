@@ -1,5 +1,5 @@
 //
-//  MyListResponse.swift
+//  ListResponse.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/10/2022.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-// MARK: - MyListResponse struct
+// MARK: - ListResponse struct
 
-struct MyListResponse {
+struct ListResponse {
     
     struct GET {
         let status: String
-        let data: MyList
+        let data: List
     }
 }

@@ -102,16 +102,16 @@ final class DetailCollectionView: UIView, View {
             layout = CollectionViewLayout(layout: .descriptive, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         case .trailers:
-            guard let trailers = viewModel.media.resources.trailers.toDomain() as [Trailer]? else { return }
+            guard let trailers = viewModel.dependencies.media.resources.trailers.toDomain() as [Trailer]? else { return }
             dataSource = .create(on: collectionView,
                                  items: trailers,
                                  with: viewModel)
             layout = CollectionViewLayout(layout: .trailer, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            guard let media = viewModel.state == .tvShows
-                    ? viewModel.section!.media
-                    : viewModel.section!.media as [Media]?
+            guard let media = viewModel.state == .series
+                    ? viewModel.dependencies.section.media
+                    : viewModel.dependencies.section.media as [Media]?
             else { return }
             dataSource = .create(on: collectionView,
                                  items: media,

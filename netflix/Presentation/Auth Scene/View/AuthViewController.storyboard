@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZhT-Gs-772">
-                                <rect key="frame" x="0.0" y="44" width="414" height="24"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="KXF-DV-jVq"/>
                                 </constraints>
@@ -117,7 +117,6 @@
                         <outlet property="topGradientView" destination="BzR-2i-DYB" id="MCH-yH-8f7"/>
                         <segue destination="PCR-Hq-oCg" kind="show" identifier="SignInViewController" id="Y6g-Nm-CRE"/>
                         <segue destination="DPY-tv-6UP" kind="show" identifier="SignUpViewController" id="BoD-g5-Dtp"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="BVQ-LE-MV0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -212,7 +211,6 @@
                         <outlet property="emailTextField" destination="sau-4d-6HP" id="KXx-n4-vCH"/>
                         <outlet property="passwordTextField" destination="fIo-Ec-tSS" id="Rs1-X6-Ddq"/>
                         <outlet property="signInButton" destination="eyt-xA-PX0" id="dVV-5A-Odc"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bhi-vr-xdk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6dg-7q-zzn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -313,27 +311,13 @@
                         <outlet property="passwordConfirmTextField" destination="kY4-Ly-B7c" id="xWD-R0-HgN"/>
                         <outlet property="passwordTextField" destination="kzM-AV-eFV" id="EKp-Ud-3hT"/>
                         <outlet property="signUpButton" destination="Ivb-Ea-dQI" id="Vy6-GS-J15"/>
-                        <segue destination="Kgb-7U-kSQ" kind="presentation" identifier="HomeViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="bva-pn-vyf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3y-1V-cTp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1893" y="435"/>
         </scene>
-        <!--HomeTabBarController-->
-        <scene sceneID="FUM-q3-EWr">
-            <objects>
-                <viewControllerPlaceholder storyboardName="HomeTabBarController" referencedIdentifier="HomeTabBarController" id="Kgb-7U-kSQ" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="a3O-Wt-pZg"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5YW-d6-rkN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2622" y="65"/>
-        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="bhi-vr-xdk"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="intro-bg" width="2000" height="1125"/>

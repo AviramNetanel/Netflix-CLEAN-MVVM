@@ -11,7 +11,7 @@ import UIKit
 
 class SceneDelegate: UIResponder {
     var appFlowCoordinator: AppFlowCoordinator?
-    var navigationController: UINavigationController!
+    var navigationController: UINavigationController?
     var window: UIWindow?
 }
 
@@ -19,7 +19,9 @@ class SceneDelegate: UIResponder {
 
 extension SceneDelegate: UIWindowSceneDelegate {
     
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         AppAppearance.setupAppearance()
@@ -27,15 +29,15 @@ extension SceneDelegate: UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         navigationController = UINavigationController()
         
-        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController)
-        appFlowCoordinator?.create(for: .auth)
+        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController!)
+        appFlowCoordinator?.createAuthSceneFlow()
         
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
-        appFlowCoordinator?.homeFlowCoordinator?.sceneDidDisconnect()
+        appFlowCoordinator?.homeFlowCoordinator.sceneDidDisconnect()
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {}

@@ -17,7 +17,7 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var titleLabel: UILabel { get }
+    var viewModel: TableViewHeaderFooterViewViewModel { get }
 }
 
 // MARK: - View typealias
@@ -27,6 +27,8 @@ private typealias View = ViewInput & ViewOutput
 // MARK: - TableViewHeaderFooterView class
 
 final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
+    
+    fileprivate var viewModel: TableViewHeaderFooterViewViewModel = .init()
     
     fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -49,11 +51,11 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
     }
     
     fileprivate func viewDidConfigure(at index: Int,
-                                      with viewModel: HomeViewModel) {
+                                      with homeViewModel: HomeViewModel) {
         backgroundView = .init()
         backgroundView?.backgroundColor = .black
         
-        let title = String(describing: viewModel.sections.value[index].title)
-        titleLabel.text = title
+        titleLabel.text = viewModel.title(homeViewModel.sections,
+                                          forHeaderAt: index)
     }
 }

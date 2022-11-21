@@ -40,7 +40,7 @@ final class DetailDescriptionView: UIView, View, ViewInstantiable {
     }
     
     private static func createViewModel(with viewModel: DetailViewModel) -> DetailDescriptionViewViewModel {
-        return .init(with: viewModel.media)
+        return .init(with: viewModel.dependencies.media)
     }
     
     fileprivate func viewDidLoad() { setupSubviews() }
