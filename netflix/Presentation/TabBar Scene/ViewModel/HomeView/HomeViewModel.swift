@@ -10,7 +10,14 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
+    
+    let navigationViewDidAppear: () -> Void
     let presentMediaDetails: (Section, Media) -> Void
+    
+    init(homeFlowCoordinator: TabBarFlowCoordinator) {
+        self.navigationViewDidAppear = homeFlowCoordinator.navigationViewDidAppear
+        self.presentMediaDetails = homeFlowCoordinator.presentMediaDetails(section:media:)
+    }
 }
 
 // MARK: - ViewModelInput protocol
@@ -21,21 +28,17 @@ private protocol ViewModelInput {
     func fetchSections()
     func fetchMedia()
     func filter(sections: [Section])
-    func section(at index: TableViewDataSource.Index) -> Section
-    func generateMedia(for state: TableViewDataSource.State) -> Media
+    func section(at index: HomeTableViewDataSource.Index) -> Section
+    func generateMedia(for state: HomeTableViewDataSource.State) -> Media
     func presentedDisplayMediaDidChange()
-    var navigationViewDidAppear: (() -> Void)? { get }
 }
 
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    var authService: AuthService! { get }
-    var homeUseCase: HomeUseCase! { get }
-    var actions: HomeViewModelActions! { get }
-    var tableViewState: Observable<TableViewDataSource.State> { get }
     var sections: [Section] { get }
     var media: [Media] { get }
+    var tableViewState: Observable<HomeTableViewDataSource.State> { get }
     var presentedDisplayMedia: Observable<Media?> { get }
     var isEmpty: Bool { get }
     var myList: MyList! { get }
@@ -49,44 +52,35 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 final class HomeViewModel: ViewModel {
     
+    struct Dependencies {
+        let authService: AuthService
+        let homeUseCase: HomeUseCase
+        let actions: HomeViewModelActions
+    }
+    
+    var homeViewDIProvider: HomeViewDIProvider!
+    let dependencies: Dependencies
+    
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
     private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
     
-    fileprivate(set) var authService: AuthService!
-    fileprivate(set) var homeUseCase: HomeUseCase!
-    fileprivate(set) var actions: HomeViewModelActions!
     fileprivate(set) var sections: [Section] = []
     fileprivate(set) var media: [Media] = []
-    fileprivate(set) var tableViewState: Observable<TableViewDataSource.State> = Observable(.series)
-    private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
+    fileprivate(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+    fileprivate(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     fileprivate var isEmpty: Bool { sections.isEmpty }
+    fileprivate(set) var myList: MyList!
+    private var displayMediaCache: [HomeTableViewDataSource.State: Media] = [:]
     
-    var navigationViewDidAppear: (() -> Void)?
-    
-    var myList: MyList!
-    var myListDidSetup: (() -> Void)?
-    
-    var displayMediaCache: [TableViewDataSource.State: Media] = [:]
-    
-    deinit {
-        myListDidSetup = nil
-        myList = nil
-        navigationViewDidAppear = nil
-        mediaTask = nil
-        sectionsTask = nil
-        authService = nil
-        actions = nil
-        homeUseCase = nil
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
     }
     
-    static func create(authService: AuthService,
-                       homeUseCase: HomeUseCase,
-                       actions: HomeViewModelActions) -> HomeViewModel {
-        let viewModel = HomeViewModel()
-        viewModel.homeUseCase = homeUseCase
-        viewModel.actions = actions
-        viewModel.authService = authService
-        return viewModel
+    deinit {
+        homeViewDIProvider = nil
+        myList = nil
+        mediaTask = nil
+        sectionsTask = nil
     }
 }
 
@@ -95,21 +89,22 @@ final class HomeViewModel: ViewModel {
 extension HomeViewModel {
     
     func viewWillLoad() {
-        // Invokes request for sections data.
+        /// Invokes request for sections data.
         fetchSections()
     }
     
     fileprivate func viewDidLoad() {
-        // Invokes navigation bar presentation.
-        navigationViewDidAppear?()
-        // Invokes tableview presentation.
+        /// Invokes navigation bar presentation.
+        dependencies.actions.navigationViewDidAppear()
+        /// Invokes tableview presentation.
         tableViewState.value = .all
-        // Invokes user's list.
-        myListDidSetup?()
+        /// Creates an instance of `MyList`.
+        myList = MyList(using: homeViewDIProvider)
+        myList.viewDidLoad()
     }
     
     fileprivate func fetchSections() {
-        sectionsTask = homeUseCase.execute(
+        sectionsTask = dependencies.homeUseCase.execute(
             for: SectionResponse.GET.self,
             request: Any.self,
             cached: { _ in },
@@ -123,7 +118,7 @@ extension HomeViewModel {
     }
     
     fileprivate func fetchMedia() {
-        mediaTask = homeUseCase.execute(
+        mediaTask = dependencies.homeUseCase.execute(
             for: MediaResponse.GET.Many.self,
             request: MediaRequestDTO.self,
             cached: { _ in },
@@ -149,14 +144,14 @@ extension HomeViewModel {
             case .films:
                 media = media.filter { $0.type == .film }
             }
-            sections[section.id].media = Array(media)
+            sections[section.id].media = media.toArray()
         }
     }
     
     func filter(sections: [Section]) {
         guard !isEmpty else { return }
         
-        TableViewDataSource.Index.allCases.forEach { index in
+        HomeTableViewDataSource.Index.allCases.forEach { index in
             switch index {
             case .ratable:
                 var media = media
@@ -196,6 +191,7 @@ extension HomeViewModel {
                 }
                 sections[index.rawValue].media = media
             case .myList:
+                guard let myList = myList else { return }
                 var media = myList.list.value
                 switch tableViewState.value {
                 case .all:
@@ -205,7 +201,7 @@ extension HomeViewModel {
                 case .films:
                     media = media.filter { $0.type == .film }
                 }
-                sections[index.rawValue].media = Array(media)
+                sections[index.rawValue].media = media.toArray()
             case .action, .sciFi,
                     .crime, .thriller,
                     .adventure, .comedy,
@@ -248,11 +244,11 @@ extension HomeViewModel {
         }
     }
     
-    func section(at index: TableViewDataSource.Index) -> Section {
+    func section(at index: HomeTableViewDataSource.Index) -> Section {
         sections[index.rawValue]
     }
     
-    fileprivate func generateMedia(for state: TableViewDataSource.State) -> Media {
+    fileprivate func generateMedia(for state: HomeTableViewDataSource.State) -> Media {
         guard displayMediaCache[state] == nil else { return displayMediaCache[state]! }
         switch state {
         case .all:

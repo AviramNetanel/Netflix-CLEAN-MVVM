@@ -11,8 +11,7 @@ import UIKit
 
 private protocol CellInput {
     func viewDidLoad()
-    func viewDidConfigure(section: Section,
-                          with viewModel: HomeViewModel)
+    func viewDidConfigure(section: Section, viewModel: HomeViewModel, with actions: CollectionViewDataSourceActions?)
 }
 
 // MARK: - CellOutput protocol
@@ -37,8 +36,7 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
     }
     
     fileprivate lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: bounds,
-                                              collectionViewLayout: .init())
+        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: .init())
         collectionView.backgroundColor = .black
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -56,28 +54,28 @@ class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCell {
         dataSource = nil
     }
     
-    class func create(on tableView: UITableView,
+    class func create(using homeSceneDependencies: HomeViewDIProvider,
                       for indexPath: IndexPath,
-                      with viewModel: HomeViewModel) -> TableViewCell<T>? {
-        guard let view = tableView.dequeueReusableCell(
+                      with actions: CollectionViewDataSourceActions? = nil) -> TableViewCell<T>? {
+        guard let view = homeSceneDependencies.dependencies.tableView.dequeueReusableCell(
             withIdentifier: reuseIdentifier,
             for: indexPath) as? TableViewCell<T>
         else { return nil }
         view.viewDidLoad()
-        let section = viewModel.section(at: .init(rawValue: indexPath.section)!)
-        view.viewDidConfigure(section: section, with: viewModel)
+        let index = HomeTableViewDataSource.Index(rawValue: indexPath.section)!
+        let section = homeSceneDependencies.dependencies.homeViewModel.section(at: index)
+        view.viewDidConfigure(section: section, viewModel: homeSceneDependencies.dependencies.homeViewModel, with: actions)
         return view
     }
     
     fileprivate func viewDidLoad() { backgroundColor = .black }
     
     func viewDidConfigure(section: Section,
-                          with viewModel: HomeViewModel) {
-        guard let indices = TableViewDataSource.Index(rawValue: section.id) else { return }
+                          viewModel: HomeViewModel,
+                          with actions: CollectionViewDataSourceActions? = nil) {
+        guard let indices = HomeTableViewDataSource.Index(rawValue: section.id) else { return }
         
-        dataSource = .create(on: collectionView,
-                             section: section,
-                             with: viewModel)
+        dataSource = CollectionViewDataSource(on: collectionView, section: section, viewModel: viewModel, with: actions)
         
         switch indices {
         case .display: break

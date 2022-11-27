@@ -21,8 +21,9 @@ private protocol ConfigurationInput {
 // MARK: - ConfigurationOutput protocol
 
 private protocol ConfigurationOutput {
-    var view: PanelViewItem! { get }
-    var gestureRecognizers: [PanelViewItemConfiguration.GestureGecognizer]! { get }
+    var view: PanelViewItem? { get }
+    var viewModel: DisplayTableViewCellViewModel { get }
+    var gestureRecognizers: [PanelViewItemConfiguration.GestureGecognizer] { get }
     var tapRecognizer: UITapGestureRecognizer! { get }
     var longPressRecognizer: UILongPressGestureRecognizer! { get }
 }
@@ -45,25 +46,24 @@ final class PanelViewItemConfiguration: Configuration {
         case info
     }
     
-    fileprivate weak var view: PanelViewItem!
-    fileprivate var gestureRecognizers: [GestureGecognizer]!
+    fileprivate weak var view: PanelViewItem?
+    fileprivate var viewModel: DisplayTableViewCellViewModel
+    fileprivate var gestureRecognizers: [GestureGecognizer]
     fileprivate var tapRecognizer: UITapGestureRecognizer!
     fileprivate var longPressRecognizer: UILongPressGestureRecognizer!
     
-    static func create(view: PanelViewItem,
-                       gestureRecognizers: [GestureGecognizer],
-                       with viewModel: HomeViewModel) -> PanelViewItemConfiguration {
-        let configuration = PanelViewItemConfiguration()
-        configuration.view = view
-        configuration.gestureRecognizers = gestureRecognizers
-        configuration.viewDidRegisterRecognizers()
-        configuration.viewDidConfigure()
-        return configuration
+    init(view: PanelViewItem,
+         gestureRecognizers: [GestureGecognizer],
+         with viewModel: DisplayTableViewCellViewModel) {
+        self.viewModel = viewModel
+        self.view = view
+        self.gestureRecognizers = gestureRecognizers
+        self.viewDidRegisterRecognizers()
+        self.viewDidConfigure()
     }
     
     deinit {
         view = nil
-        gestureRecognizers = nil
         tapRecognizer = nil
         longPressRecognizer = nil
     }
@@ -71,20 +71,23 @@ final class PanelViewItemConfiguration: Configuration {
     fileprivate func viewDidRegisterRecognizers() {
         if gestureRecognizers.contains(.tap) {
             tapRecognizer = .init(target: self, action: #selector(viewDidTap))
-            view.addGestureRecognizer(tapRecognizer)
+            view?.addGestureRecognizer(tapRecognizer)
         }
         if gestureRecognizers.contains(.longPress) {
             longPressRecognizer = .init(target: self, action: #selector(viewDidLongPress))
-            view.addGestureRecognizer(longPressRecognizer)
+            view?.addGestureRecognizer(longPressRecognizer)
         }
     }
     
     fileprivate func selectIfNeeded() {
-        guard let item = Item(rawValue: view.tag) else { return }
+        guard
+            let view = view,
+            let item = Item(rawValue: view.tag)
+        else { return }
         if case .myList = item {
-            view.viewModel.isSelected.value = view.homeViewModel.myList.contains(
+            view.viewModel.isSelected.value = viewModel.myList.contains(
                 view.viewModel.media,
-                in: view.homeViewModel.section(at: .myList).media)
+                in: viewModel.sectionAt(.myList).media)
         }
     }
     
@@ -98,24 +101,27 @@ final class PanelViewItemConfiguration: Configuration {
     
     @objc
     func viewDidTap() {
-        guard let tag = Item(rawValue: view.tag) else { return }
+        guard
+            let view = view,
+            let tag = Item(rawValue: view.tag)
+        else { return }
         switch tag {
         case .myList:
-            let media = view.homeViewModel.presentedDisplayMedia.value!
-            if view.homeViewModel.myList.list.value.isEmpty {
-                view.homeViewModel.myList.createList()
+            let media = viewModel.presentedDisplayMedia.value!
+            
+            if viewModel.myList.list.value.isEmpty {
+                viewModel.myList.createList()
             }
-            view.homeViewModel.myList.shouldAddOrRemove(
-                media,
-                uponSelection: view.viewModel.isSelected.value)
+            
+            viewModel.myList.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
         case .info:
-            let section = view.homeViewModel.section(at: .display)
-            let media = view.homeViewModel.presentedDisplayMedia.value!
-            view.homeViewModel.actions.presentMediaDetails(section, media)
+            let section = viewModel.sectionAt(.display)
+            let media = viewModel.presentedDisplayMedia.value!
+            viewModel.actions.presentMediaDetails(section, media)
         }
         
-        view.setAlphaAnimation(using: view.gestureRecognizers!.first) { [weak self] in
-            self?.view.viewModel.isSelected.value.toggle()
+        view.setAlphaAnimation(using: view.gestureRecognizers!.first) {
+            view.viewModel.isSelected.value.toggle()
         }
     }
     
@@ -132,7 +138,6 @@ private protocol ViewInput {}
 private protocol ViewOutput {
     var configuration: PanelViewItemConfiguration! { get }
     var viewModel: PanelViewItemViewModel! { get }
-    var homeViewModel: HomeViewModel! { get }
     var isSelected: Bool { get }
 }
 
@@ -149,41 +154,23 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
     
     fileprivate(set) var configuration: PanelViewItemConfiguration!
     fileprivate(set) var viewModel: PanelViewItemViewModel!
-    fileprivate var homeViewModel: HomeViewModel!
     fileprivate(set) var isSelected = false
     
     deinit {
         configuration = nil
         viewModel = nil
-        homeViewModel = nil
     }
     
     static func create(on parent: UIView,
-                       with viewModel: HomeViewModel) -> PanelViewItem {
+                       viewModel: DisplayTableViewCellViewModel,
+                       homeSceneDependencies: HomeViewDIProvider) -> PanelViewItem {
         let view = PanelViewItem(frame: parent.bounds)
         view.nibDidLoad()
         view.tag = parent.tag
         parent.addSubview(view)
         view.constraintToSuperview(parent)
-        createViewModel(on: view, with: viewModel)
-        createConfiguration(on: view)
+        view.viewModel = homeSceneDependencies.createPanelViewItemViewModel(on: view, with: viewModel)
+        view.configuration = homeSceneDependencies.createPanelViewItemConfiguration(on: view, with: viewModel)
         return view
-    }
-    
-    @discardableResult
-    private static func createViewModel(on view: PanelViewItem,
-                                        with homeViewModel: HomeViewModel) -> PanelViewItemViewModel {
-        let viewModel = PanelViewItemViewModel(item: view, with: homeViewModel.presentedDisplayMedia.value!)
-        view.viewModel = viewModel
-        view.homeViewModel = homeViewModel
-        return viewModel
-    }
-    
-    @discardableResult
-    private static func createConfiguration(on view: PanelViewItem) -> PanelViewItemConfiguration {
-        view.configuration = .create(view: view,
-                                     gestureRecognizers: [.tap],
-                                     with: view.homeViewModel)
-        return view.configuration
     }
 }

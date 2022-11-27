@@ -48,12 +48,9 @@ final class SignInViewController: UIViewController {
         let requestDTO = AuthRequestDTO(user: userDTO)
         
         viewModel.signIn(request: requestDTO.toDomain()) { [weak self] result in
-            if case .success = result {
-                guard let self = self else { return }
-                asynchrony { self.viewModel.actions?.presentHomeViewController() }
-            } else {
-                printIfDebug("failure")
-            }
+            guard let self = self else { return }
+            if case .success = result { asynchrony { self.viewModel.actions.presentHomeViewController() } }
+            if case let .failure(error) = result { print(error) }
         }
     }
 }

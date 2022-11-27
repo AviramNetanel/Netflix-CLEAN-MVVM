@@ -7,6 +7,10 @@
 
 import Foundation
 
+// MARK: - DetailViewModelActions struct
+
+struct DetailViewModelActions {}
+
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
@@ -20,8 +24,8 @@ private protocol ViewModelInput {
 
 private protocol ViewModelOutput {
     var task: Cancellable? { get }
-    var dependencies: DetailViewModel.Dependencies! { get }
-    var state: TableViewDataSource.State! { get }
+    var dependencies: DetailViewModel.Dependencies { get }
+    var state: HomeTableViewDataSource.State! { get }
     var navigationViewState: Observable<DetailNavigationView.State>! { get }
     var season: Observable<Season?>! { get }
     var myList: MyList! { get }
@@ -44,12 +48,19 @@ final class DetailViewModel: ViewModel {
     }
     
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
-    fileprivate(set) var dependencies: Dependencies!
-    fileprivate(set) var state: TableViewDataSource.State!
+    fileprivate(set) var dependencies: Dependencies
+    fileprivate(set) var state: HomeTableViewDataSource.State!
     fileprivate(set) var navigationViewState: Observable<DetailNavigationView.State>! = Observable(.episodes)
     fileprivate(set) var season: Observable<Season?>! = Observable(nil)
     fileprivate(set) var myList: MyList!
     fileprivate(set) var myListSection: Section!
+    
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+        self.state = dependencies.viewModel.tableViewState.value
+        self.myList = dependencies.viewModel.myList
+        self.myListSection = dependencies.viewModel.myList.section
+    }
     
     deinit {
         myList = nil
@@ -57,17 +68,7 @@ final class DetailViewModel: ViewModel {
         season.value = nil
         navigationViewState = nil
         state = nil
-        dependencies = nil
         task = nil
-    }
-    
-    static func create(dependencies: Dependencies) -> DetailViewModel {
-        let viewModel = DetailViewModel()
-        viewModel.dependencies = dependencies
-        viewModel.state = dependencies.viewModel.tableViewState.value
-        viewModel.myList = dependencies.viewModel.myList
-        viewModel.myListSection = viewModel.myList.section
-        return viewModel
     }
     
     func viewDidLoad() {}

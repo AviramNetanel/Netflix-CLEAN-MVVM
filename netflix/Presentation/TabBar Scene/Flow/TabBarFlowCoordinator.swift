@@ -1,5 +1,5 @@
 //
-//  HomeFlowCoordinator.swift
+//  TabBarFlowCoordinator.swift
 //  netflix
 //
 //  Created by Zach Bazov on 06/09/2022.
@@ -10,9 +10,18 @@ import UIKit
 // MARK: - HomeFlowDependencies protocol
 
 protocol HomeFlowDependencies {
-    func createHomeTabBarController(actions: HomeViewModelActions) -> HomeTabBarController
-    func createHomeViewController(actions: HomeViewModelActions) -> HomeViewController
-    func createHomeViewModel(actions: HomeViewModelActions) -> HomeViewModel
+    func createHomeUseCase() -> HomeUseCase
+    func createSectionsRepository() -> SectionRepository
+    func createMediaRepository() -> MediaRepository
+    func createSeasonsRepoistory() -> SeasonRepository
+    func createMyListRepository() -> ListRepository
+    func createHomeViewModelActions() -> HomeViewModelActions
+    func createHomeTabBarController() -> TabBarController
+    func createHomeViewController() -> HomeViewController
+    func createHomeViewModel(dependencies: HomeViewModel.Dependencies) -> HomeViewModel
+    func createHomeViewModelDependencies() -> HomeViewModel.Dependencies
+    func createHomeViewDIProvider(launchingViewController homeViewController: HomeViewController) -> HomeViewDIProvider
+    func createHomeViewDIProviderDependencies(launchingViewController homeViewController: HomeViewController) -> HomeViewDIProvider.Dependencies
 }
 
 // MARK: - DetailFlowDependencies protocol
@@ -26,34 +35,32 @@ protocol DetailFlowDependencies {
     func createDetailViewModel(dependencies: DetailViewModel.Dependencies) -> DetailViewModel
 }
 
-// MARK: - HomeFlowCoordinatorDependencies typealias
+// MARK: - TabBarFlowCoordinatorDependencies typealias
 
-typealias HomeFlowCoordinatorDependencies = HomeFlowDependencies & DetailFlowDependencies
+typealias TabBarFlowCoordinatorDependencies = HomeFlowDependencies & DetailFlowDependencies
 
-// MARK: - HomeFlowCoordinator class
+// MARK: - TabBarFlowCoordinator class
 
-final class HomeFlowCoordinator {
+final class TabBarFlowCoordinator {
     
-    private let dependencies: HomeFlowCoordinatorDependencies
+    private let dependencies: TabBarFlowCoordinatorDependencies
     private weak var navigationController: UINavigationController?
-    private weak var homeTabBarController: HomeTabBarController?
+    private(set) weak var homeTabBarController: TabBarController?
     private weak var detailViewController: DetailViewController?
     
     init(navigationController: UINavigationController,
-         dependencies: HomeFlowCoordinatorDependencies) {
+         dependencies: TabBarFlowCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
-        self.create()
     }
 }
 
 // MARK: - FlowCoordinatorInput implementation
 
-extension HomeFlowCoordinator: FlowCoordinatorInput {
+extension TabBarFlowCoordinator: FlowCoordinatorInput {
     
-    func create() {
-        let actions = HomeViewModelActions(presentMediaDetails: presentMediaDetails)
-        homeTabBarController = dependencies.createHomeTabBarController(actions: actions)
+    func launch() {
+        homeTabBarController = dependencies.createHomeTabBarController()
     }
     
     func coordinate() {
@@ -67,17 +74,17 @@ extension HomeFlowCoordinator: FlowCoordinatorInput {
         }
         
         if let homeViewController = homeTabBarController?.homeViewController {
-            homeViewController.unbindObservers()
-            homeViewController.viewModel.myList.unbindObservers()
+            homeViewController.removeObservers()
+            homeViewController.viewModel.myList.removeObservers()
             
             if let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView {
-                panelView.viewDidUnobserve()
+                panelView.removeObservers()
             }
             if let navigationView = homeViewController.navigationView {
-                navigationView.viewDidUnobserve()
+                navigationView.removeObservers()
             }
             if let categoriesOverlayView = homeViewController.categoriesOverlayView {
-                categoriesOverlayView.viewDidUnobserve()
+                categoriesOverlayView.removeObservers()
             }
         }
     }
@@ -85,7 +92,7 @@ extension HomeFlowCoordinator: FlowCoordinatorInput {
 
 // MARK: - HomeViewModelActions implementation
 
-extension HomeFlowCoordinator {
+extension TabBarFlowCoordinator {
     
     func presentMediaDetails(section: Section, media: Media) {
         guard let homeViewController = homeTabBarController?.homeViewController else { return }
@@ -95,5 +102,12 @@ extension HomeFlowCoordinator {
             with: homeViewController.viewModel)
         detailViewController = dependencies.createDetailViewController(dependencies: detailViewDependencies)
         homeViewController.present(detailViewController!, animated: true)
+    }
+    
+    func navigationViewDidAppear() {
+        guard let homeViewController = homeTabBarController?.homeViewController else { return }
+        homeViewController.navigationViewTopConstraint.constant = 0.0
+        homeViewController.navigationView.alpha = 1.0
+        homeViewController.view.animateUsingSpring(withDuration: 0.66, withDamping: 1.0, initialSpringVelocity: 1.0)
     }
 }

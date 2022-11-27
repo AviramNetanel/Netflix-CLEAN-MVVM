@@ -7,6 +7,15 @@
 
 import UIKit
 
+// MARK: - NavigationViewDependencies protocol
+
+protocol NavigationViewDependencies {
+    func createNavigationView(on view: UIView) -> NavigationView
+    func createNavigationViewViewModel(with items: [NavigationViewItem]) -> NavigationViewViewModel
+    func createNavigationViewItems(on navigationView: NavigationView) -> [NavigationViewItem]
+    func createNavigationViewViewModelActions() -> NavigationViewViewModelActions
+}
+
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
@@ -17,6 +26,7 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
+    var homeSceneDependencies: HomeViewDIProvider! { get }
     var homeItemView: NavigationViewItem! { get }
     var airPlayItemView: NavigationViewItem! { get }
     var accountItemView: NavigationViewItem! { get }
@@ -44,68 +54,69 @@ final class NavigationView: UIView, View, ViewInstantiable {
     }
     
     @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private weak var homeItemViewContainer: UIView!
-    @IBOutlet private weak var airPlayItemViewContainer: UIView!
-    @IBOutlet private weak var accountItemViewContainer: UIView!
+    @IBOutlet private(set) weak var homeItemViewContainer: UIView!
+    @IBOutlet private(set) weak var airPlayItemViewContainer: UIView!
+    @IBOutlet private(set) weak var accountItemViewContainer: UIView!
     @IBOutlet private(set) weak var tvShowsItemViewContainer: UIView!
     @IBOutlet private(set) weak var moviesItemViewContainer: UIView!
-    @IBOutlet private weak var categoriesItemViewContainer: UIView!
-    @IBOutlet private weak var itemsCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet private(set) weak var categoriesItemViewContainer: UIView!
+    @IBOutlet private(set) weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    fileprivate(set) var homeItemView: NavigationViewItem!
-    fileprivate var airPlayItemView: NavigationViewItem!
-    fileprivate var accountItemView: NavigationViewItem!
-    fileprivate(set) var tvShowsItemView: NavigationViewItem!
-    fileprivate(set) var moviesItemView: NavigationViewItem!
-    fileprivate var categoriesItemView: NavigationViewItem!
-    
+    fileprivate var homeSceneDependencies: HomeViewDIProvider!
+    var homeItemView: NavigationViewItem!
+    var airPlayItemView: NavigationViewItem!
+    var accountItemView: NavigationViewItem!
+    var tvShowsItemView: NavigationViewItem!
+    var moviesItemView: NavigationViewItem!
+    var categoriesItemView: NavigationViewItem!
     fileprivate(set) var viewModel: NavigationViewViewModel!
     
     deinit {
-        homeItemView = nil
-        airPlayItemView = nil
-        accountItemView = nil
-        tvShowsItemView = nil
-        moviesItemView = nil
-        categoriesItemView = nil
         viewModel = nil
+        categoriesItemView = nil
+        moviesItemView = nil
+        tvShowsItemView = nil
+        accountItemView = nil
+        airPlayItemView = nil
+        homeItemView = nil
+        homeSceneDependencies = nil
     }
     
-    static func create(on parent: UIView) -> NavigationView {
+    static func create(onParent parent: UIView, homeSceneDependencies: HomeViewDIProvider) -> NavigationView {
         let view = NavigationView(frame: parent.bounds)
+        view.homeSceneDependencies = homeSceneDependencies
         view.nibDidLoad()
         parent.addSubview(view)
         view.constraintToSuperview(parent)
-        createItems(on: view)
-        createViewModel(on: view)
+        let items = homeSceneDependencies.createNavigationViewItems(on: view)
+        view.viewModel = homeSceneDependencies.createNavigationViewViewModel(with: items)
         view.viewDidLoad()
         return view
     }
     
-    @discardableResult
-    private static func createViewModel(on view: NavigationView) -> NavigationViewViewModel {
-        let items: [NavigationViewItem] = [view.homeItemView,
-                                           view.airPlayItemView,
-                                           view.accountItemView,
-                                           view.tvShowsItemView,
-                                           view.moviesItemView,
-                                           view.categoriesItemView]
-        view.viewModel = .init(items: items)
-        return view.viewModel
+    private func setupBindings() {
+        viewDidTap(in: viewModel.items)
     }
     
-    private static func createItems(on view: NavigationView) {
-        view.homeItemView = .create(on: view.homeItemViewContainer)
-        view.airPlayItemView = .create(on: view.airPlayItemViewContainer)
-        view.accountItemView = .create(on: view.accountItemViewContainer)
-        view.tvShowsItemView = .create(on: view.tvShowsItemViewContainer)
-        view.moviesItemView = .create(on: view.moviesItemViewContainer)
-        view.categoriesItemView = .create(on: view.categoriesItemViewContainer)
+    private func setupObservers() {
+        viewModel.state.observe(on: self) { [weak self] state in
+            self?.viewModel.actions.stateDidChangeOnViewModel(self!.homeSceneDependencies.dependencies.homeViewController, state)
+        }
+    }
+    
+    private func setupGradientView() {
+        gradientView.addGradientLayer(
+            frame: gradientView.bounds,
+            colors:
+                [.black.withAlphaComponent(0.8),
+                 .black.withAlphaComponent(0.6),
+                 .clear],
+            locations: [0.0, 0.5, 1.0])
     }
     
     fileprivate func viewDidLoad() {
-        viewDidBind()
-        viewDidObserve()
+        setupBindings()
+        setupObservers()
         viewDidConfigure()
     }
     
@@ -113,87 +124,15 @@ final class NavigationView: UIView, View, ViewInstantiable {
         setupGradientView()
     }
     
-    private func setupGradientView() {
-        gradientView.addGradientLayer(frame: gradientView.bounds,
-                                      colors:
-                                        [.black.withAlphaComponent(0.8),
-                                         .black.withAlphaComponent(0.6),
-                                         .clear],
-                                      locations: [0.0, 0.5, 1.0])
-    }
-}
-
-// MARK: -
-
-extension NavigationView: ObservableDelegate {
-    
-    func viewDidObserve() {
-        viewModel.state.observe(on: self) { [weak self] state in
-            self?.viewModel.stateDidChangeDidBindToViewModel?(state)
-        }
-    }
-    
-    func viewDidUnobserve() {
+    func removeObservers() {
         printIfDebug("Removed `NavigationView` observers.")
         viewModel.state.remove(observer: self)
     }
-    
-    func viewDidBind() {
-        stateDidChange(in: viewModel)
-        viewDidTap(in: viewModel.items)
-    }
 }
 
-// MARK: - Bindings implementation
+// MARK: - Closure bindings
 
 extension NavigationView {
-    
-    // MARK: NavigationViewViewModel bindings
-    
-    private func stateDidChange(in viewModel: NavigationViewViewModel) {
-        viewModel.stateDidChangeDidBindToViewModel = { [weak self] state in
-            guard let self = self else { return }
-            
-            self.viewModel.stateDidChangeDidBindToHomeViewController?(state)
-            
-            self.categoriesItemView.viewDidConfigure(with: state)
-            
-            switch state {
-            case .home:
-                self.tvShowsItemViewContainer.isHidden(false)
-                self.moviesItemViewContainer.isHidden(false)
-                self.categoriesItemViewContainer.isHidden(false)
-                self.itemsCenterXConstraint.constant = .zero
-                
-                self.tvShowsItemView.viewModel.hasInteracted = false
-                self.moviesItemView.viewModel.hasInteracted = false
-            case .airPlay:
-                break
-            case .account:
-                break
-            case .tvShows:
-                self.tvShowsItemViewContainer.isHidden(false)
-                self.moviesItemViewContainer.isHidden(true)
-                self.categoriesItemViewContainer.isHidden(false)
-                self.itemsCenterXConstraint.constant = -24.0
-                
-                self.tvShowsItemView.viewModel.hasInteracted = true
-            case .movies:
-                self.tvShowsItemViewContainer.isHidden(true)
-                self.moviesItemViewContainer.isHidden(false)
-                self.categoriesItemViewContainer.isHidden(false)
-                self.itemsCenterXConstraint.constant = -32.0
-                
-                self.moviesItemView.viewModel.hasInteracted = true
-            case .categories:
-                break
-            }
-            
-            self.animateUsingSpring(withDuration: 0.33,
-                                    withDamping: 0.7,
-                                    initialSpringVelocity: 0.7)
-        }
-    }
     
     // MARK: NavigationViewItem bindings
     
@@ -209,6 +148,7 @@ extension NavigationView {
 // MARK: - Valuable implementation
 
 extension NavigationView.State: Valuable {
+    
     var stringValue: String {
         switch self {
         case .home: return "Home"

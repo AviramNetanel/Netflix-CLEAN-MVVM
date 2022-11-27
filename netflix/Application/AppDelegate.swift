@@ -35,6 +35,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, Orientable {
                                     sessionRole: connectingSceneSession.role)
     }
     
-    func application(_ application: UIApplication,
-                     didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
 }

@@ -14,7 +14,7 @@ private protocol ViewModelInput {}
 // MARK: - ViewModelOutput protocol
 
 private protocol ViewModelOutput {
-    var state: TableViewDataSource.State { get }
+    var state: HomeTableViewDataSource.State { get }
     var mediaType: String { get }
     var title: String { get }
     var downloadButtonTitle: String { get }
@@ -31,7 +31,7 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 struct DetailInfoViewViewModel: ViewModel {
     
-    let state: TableViewDataSource.State
+    let state: HomeTableViewDataSource.State
     let mediaType: String
     let title: String
     let downloadButtonTitle: String

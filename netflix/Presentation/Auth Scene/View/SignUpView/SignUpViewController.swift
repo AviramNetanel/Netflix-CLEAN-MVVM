@@ -59,11 +59,8 @@ final class SignUpViewController: UIViewController {
         
         viewModel.signUp(request: requestDTO.toDomain()) { [weak self] result in
             guard let self = self else { return }
-            if case .success = result {
-                self.viewModel.actions?.presentHomeViewController()
-                return
-            }
-            printIfDebug("signUp failed")
+            if case .success = result { asynchrony { self.viewModel.actions.presentHomeViewController() } }
+            if case let .failure(error) = result { print(error) }
         }
     }
 }

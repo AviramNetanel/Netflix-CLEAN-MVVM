@@ -10,8 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidConfigure(at index: Int,
-                          with viewModel: HomeViewModel)
+    func viewDidConfigure(at index: Int, with viewModel: HomeViewModel)
 }
 
 // MARK: - ViewOutput protocol
@@ -28,7 +27,7 @@ private typealias View = ViewInput & ViewOutput
 
 final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
     
-    fileprivate var viewModel: TableViewHeaderFooterViewViewModel = .init()
+    fileprivate let viewModel = TableViewHeaderFooterViewViewModel()
     
     fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -40,22 +39,19 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
         return label
     }()
     
-    static func create(on tableView: UITableView,
-                       for section: Int,
-                       with viewModel: HomeViewModel) -> TableViewHeaderFooterView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
+    static func create(using homeSceneDependencies: HomeViewDIProvider,
+                       for section: Int) -> TableViewHeaderFooterView? {
+        guard let view = homeSceneDependencies.dependencies.tableView
+            .dequeueReusableHeaderFooterView(withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
         else { return nil }
-        view.viewDidConfigure(at: section, with: viewModel)
+        view.viewDidConfigure(at: section, with: homeSceneDependencies.dependencies.homeViewModel)
         return view
     }
     
-    fileprivate func viewDidConfigure(at index: Int,
-                                      with homeViewModel: HomeViewModel) {
+    fileprivate func viewDidConfigure(at index: Int, with homeViewModel: HomeViewModel) {
         backgroundView = .init()
         backgroundView?.backgroundColor = .black
         
-        titleLabel.text = viewModel.title(homeViewModel.sections,
-                                          forHeaderAt: index)
+        titleLabel.text = viewModel.title(homeViewModel.sections, forHeaderAt: index)
     }
 }

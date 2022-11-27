@@ -46,7 +46,7 @@ class CollectionViewCell: UICollectionViewCell, View {
                        reuseIdentifier: String,
                        section: Section,
                        for indexPath: IndexPath,
-                       with state: TableViewDataSource.State) -> CollectionViewCell {
+                       with state: HomeTableViewDataSource.State) -> CollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }

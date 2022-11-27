@@ -7,6 +7,14 @@
 
 import UIKit
 
+// MARK: - DisplayViewDependencies protocol
+
+protocol DisplayViewDependencies {
+    func createDisplayView(with viewModel: DisplayTableViewCellViewModel) -> DisplayView
+    func createDisplayViewViewModel(with cellViewModel: DisplayTableViewCellViewModel) -> DisplayViewViewModel
+    func createDisplayViewConfiguration(on view: DisplayView) -> DisplayViewConfiguration
+}
+
 // MARK: - ConfigurationInput protocol
 
 private protocol ConfigurationInput {
@@ -25,18 +33,16 @@ private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
 // MARK: - DisplayViewConfiguration struct
 
-private struct DisplayViewConfiguration: Configuration {
+struct DisplayViewConfiguration: Configuration {
     
     fileprivate weak var view: DisplayView!
     
-    static func create(on view: DisplayView,
-                       with viewModel: DisplayViewViewModel) -> DisplayViewConfiguration {
-        let configuration = DisplayViewConfiguration(view: view)
-        configuration.viewDidConfigure(with: viewModel)
-        return configuration
+    init(view: DisplayView, viewModel: DisplayViewViewModel) {
+        self.view = view
+        self.viewDidConfigure(with: viewModel)
     }
     
-    fileprivate func viewDidConfigure(with viewModel: DisplayViewViewModel) {
+    func viewDidConfigure(with viewModel: DisplayViewViewModel) {
         view.posterImageView.image = nil
         view.logoImageView.image = nil
         view.genresLabel.attributedText = nil
@@ -68,7 +74,6 @@ private protocol ViewInput {
 private protocol ViewOutput {
     var panelView: PanelView! { get }
     var viewModel: DisplayViewViewModel! { get }
-    var homeViewModel: HomeViewModel! { get }
     var configuration: DisplayViewConfiguration! { get }
 }
 
@@ -88,49 +93,25 @@ final class DisplayView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var panelViewContainer: UIView!
     
     fileprivate(set) var panelView: PanelView!
-    fileprivate var viewModel: DisplayViewViewModel!
-    fileprivate var homeViewModel: HomeViewModel!
-    fileprivate var configuration: DisplayViewConfiguration!
+    fileprivate(set) var viewModel: DisplayViewViewModel!
+    fileprivate(set) var configuration: DisplayViewConfiguration!
     
     deinit {
         panelView = nil
         viewModel = nil
-        homeViewModel = nil
         configuration = nil
     }
     
-    static func create(on parent: UIView,
-                       with viewModel: HomeViewModel) -> DisplayView {
+    static func create(with viewModel: DisplayTableViewCellViewModel,
+                       homeSceneDependencies: HomeViewDIProvider) -> DisplayView {
         let view = DisplayView(frame: .zero)
         view.nibDidLoad()
         viewModel.presentedDisplayMediaDidChange()
-        createViewModel(in: view, with: viewModel)
-        createConfiguration(in: view)
-        createPanelView(on: view)
+        view.viewModel = homeSceneDependencies.createDisplayViewViewModel(with: viewModel)
+        view.configuration = homeSceneDependencies.createDisplayViewConfiguration(on: view)
+        view.panelView = homeSceneDependencies.createPanelView(on: view, with: viewModel)
         view.viewDidLoad()
         return view
-    }
-    
-    @discardableResult
-    private static func createViewModel(in view: DisplayView,
-                                        with homeViewModel: HomeViewModel) -> DisplayViewViewModel {
-        let viewModel = DisplayViewViewModel(with: homeViewModel.presentedDisplayMedia.value!)
-        view.viewModel = viewModel
-        view.homeViewModel = homeViewModel
-        return viewModel
-    }
-    
-    @discardableResult
-    private static func createConfiguration(in view: DisplayView) -> DisplayViewConfiguration {
-        view.configuration = .create(on: view, with: view.viewModel)
-        return view.configuration
-    }
-    
-    @discardableResult
-    private static func createPanelView(on view: DisplayView) -> PanelView {
-        view.panelView = .create(on: view.panelViewContainer,
-                                 with: view.homeViewModel)
-        return view.panelView
     }
     
     fileprivate func viewDidLoad() { setupSubviews() }

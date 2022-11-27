@@ -10,25 +10,28 @@ import UIKit
 // MARK: - AuthFlowCoordinatorDependencies protocol
 
 protocol AuthFlowCoordinatorDependencies {
-    func createAuthViewController(actions: AuthViewModel.Actions) -> AuthViewController
+    func createAuthUseCase() -> AuthUseCase
+    func createAuthRepository() -> AuthRepository
+    func createAuthViewModelActions() -> AuthViewModelActions
+    func createAuthViewController() -> AuthViewController
+    func createAuthViewModel() -> AuthViewModel
 }
 
 // MARK: - AuthFlowCoordinator class
 
 final class AuthFlowCoordinator {
     
+    private let appFlowDependencies: AppFlowCoordinatorDependencies
     private let dependencies: AuthFlowCoordinatorDependencies
-    private weak var appFlowCoordinator: AppFlowCoordinator?
     private weak var navigationController: UINavigationController?
-    private weak var viewController: UIViewController?
+    private weak var authViewController: AuthViewController?
     
-    init(appFlowCoordinator: AppFlowCoordinator?,
+    init(appFlowDependencies: AppFlowCoordinatorDependencies,
          navigationController: UINavigationController,
          dependencies: AuthFlowCoordinatorDependencies) {
-        self.appFlowCoordinator = appFlowCoordinator
+        self.appFlowDependencies = appFlowDependencies
         self.navigationController = navigationController
         self.dependencies = dependencies
-        self.create()
     }
 }
 
@@ -36,17 +39,14 @@ final class AuthFlowCoordinator {
 
 extension AuthFlowCoordinator: FlowCoordinatorInput {
     
-    func create() {
-        let actions = AuthViewModel.Actions(presentSignInViewController: presentSignInViewController,
-                                            presentSignUpViewController: presentSignUpViewController,
-                                            presentHomeViewController: presentHomeViewController)
-        self.viewController = dependencies.createAuthViewController(actions: actions)
+    func launch() {
+        authViewController = dependencies.createAuthViewController()
     }
     
     func coordinate() {
-        guard let viewController = viewController else { return }
+        guard let authViewController = authViewController else { return }
         navigationController?.setNavigationBarHidden(false, animated: false)
-        navigationController?.pushViewController(viewController, animated: false)
+        navigationController?.pushViewController(authViewController, animated: false)
     }
     
     func sceneDidDisconnect() {}
@@ -56,17 +56,15 @@ extension AuthFlowCoordinator: FlowCoordinatorInput {
 
 extension AuthFlowCoordinator {
     
-    private func presentSignInViewController() {
-        viewController?.performSegue(withIdentifier: String(describing: SignInViewController.self),
-                                     sender: viewController)
+    func presentSignInViewController() {
+        authViewController?.performSegue(withIdentifier: String(describing: SignInViewController.self), sender: authViewController)
     }
     
-    private func presentSignUpViewController() {
-        viewController?.performSegue(withIdentifier: String(describing: SignUpViewController.self),
-                                     sender: viewController)
+    func presentSignUpViewController() {
+        authViewController?.performSegue(withIdentifier: String(describing: SignUpViewController.self), sender: authViewController)
     }
     
-    private func presentHomeViewController() {
-        appFlowCoordinator?.createHomeSceneFlow()
+    func presentHomeViewController() {
+        appFlowDependencies.createHomeSceneFlow()
     }
 }

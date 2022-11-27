@@ -7,12 +7,16 @@
 
 import Foundation
 
+// MARK: - NavigationViewViewModelActions struct
+
+struct NavigationViewViewModelActions {
+    let stateDidChangeOnViewModel: (HomeViewController, NavigationView.State) -> Void
+    let stateDidChangeOnViewController: (HomeViewController, NavigationView.State) -> Void
+}
+
 // MARK: - ViewModelInput protocol
 
-private protocol ViewModelInput {
-    var stateDidChangeDidBindToViewModel: ((NavigationView.State) -> Void)? { get }
-    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)? { get }
-}
+private protocol ViewModelInput {}
 
 // MARK: - ViewModelOutput protocol
 
@@ -29,19 +33,13 @@ private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 final class NavigationViewViewModel: ViewModel {
     
-    fileprivate(set) var state: Observable<NavigationView.State>
-    fileprivate(set) var items: [NavigationViewItem]
+    let state: Observable<NavigationView.State>
+    let items: [NavigationViewItem]
+    let actions: NavigationViewViewModelActions
     
-    var stateDidChangeDidBindToViewModel: ((NavigationView.State) -> Void)?
-    var stateDidChangeDidBindToHomeViewController: ((NavigationView.State) -> Void)?
-    
-    init(items: [NavigationViewItem]) {
+    init(items: [NavigationViewItem], actions: NavigationViewViewModelActions) {
+        self.actions = actions
         self.items = items
-        self.state = .init(.home)
-    }
-    
-    deinit {
-        stateDidChangeDidBindToViewModel = nil
-        stateDidChangeDidBindToHomeViewController = nil
+        self.state = Observable(.home)
     }
 }

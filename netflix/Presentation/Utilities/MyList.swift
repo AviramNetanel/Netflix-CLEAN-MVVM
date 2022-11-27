@@ -5,7 +5,19 @@
 //  Created by Zach Bazov on 14/11/2022.
 //
 
-import Foundation
+import UIKit
+
+// MARK: - MyListDependencies protocol
+
+protocol MyListDependencies {
+    func createMyListActions() -> MyListActions
+}
+
+// MARK: - MyListActions struct
+
+struct MyListActions {
+    let listDidReload: () -> Void
+}
 
 // MARK: - ListInput protocol
 
@@ -15,7 +27,6 @@ private protocol ListInput {
     func updateList()
     func shouldAddOrRemove(_ media: Media, uponSelection selected: Bool)
     func contains(_ media: Media, in list: [Media]) -> Bool
-    var listDidReload: (() -> Void)? { get }
 }
 
 // MARK: - ListOutput protocol
@@ -26,6 +37,7 @@ private protocol ListOutput {
     var user: UserDTO { get }
     var homeUseCase: HomeUseCase { get }
     var section: Section { get }
+    var actions: MyListActions { get }
 }
 
 // MARK: - ListProtocol typealias
@@ -41,33 +53,29 @@ final class MyList: ListProtocol {
     fileprivate let user: UserDTO
     fileprivate let homeUseCase: HomeUseCase
     fileprivate(set) var section: Section
+    fileprivate var actions: MyListActions
     
-    var listDidReload: (() -> Void)?
-    
-    init(with viewModel: HomeViewModel) {
-        self.user = viewModel.authService.user
-        self.homeUseCase = viewModel.homeUseCase
-        self.section = viewModel.section(at: .myList)
-        self.viewDidLoad()
+    init(using homeViewDIProvider: HomeViewDIProvider) {
+        self.user = homeViewDIProvider.dependencies.homeViewModel.dependencies.authService.user
+        self.homeUseCase = homeViewDIProvider.dependencies.homeViewModel.dependencies.homeUseCase
+        self.section = homeViewDIProvider.dependencies.homeViewModel.section(at: .myList)
+        self.actions = homeViewDIProvider.createMyListActions()
     }
     
     deinit {
-        listDidReload = nil
         task = nil
     }
     
-    private func viewDidLoad() {
+    func viewDidLoad() {
         bindObservers()
         fetchList()
     }
     
     private func bindObservers() {
-        list.observe(on: self) { [weak self] _ in
-            self?.listDidReload?()
-        }
+        list.observe(on: self) { [weak self] _ in self?.actions.listDidReload() }
     }
     
-    func unbindObservers() {
+    func removeObservers() {
         if let list = list as Observable<Set<Media>>? {
             printIfDebug("Removed `MyList` observers.")
             list.remove(observer: self)
@@ -79,7 +87,7 @@ final class MyList: ListProtocol {
 
 extension MyList {
     
-    fileprivate func fetchList() {
+    func fetchList() {
         let requestDTO = ListRequestDTO.GET(user: user)
         task = homeUseCase.execute(
             for: ListResponseDTO.GET.self,
@@ -141,7 +149,7 @@ extension MyList {
         }
         
         updateList()
-        listDidReload?()
+        actions.listDidReload()
     }
     
     func contains(_ media: Media, in list: [Media]) -> Bool { list.contains(media) }

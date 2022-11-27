@@ -11,14 +11,15 @@ import UIKit
 
 @objc
 private protocol ConfigurationInput {
-    func viewDidConfigure(view: NavigationViewItem)
+    func viewDidLoad()
+    func viewDidConfigure(item: NavigationViewItem)
     func viewDidTap()
 }
 
 // MARK: - ConfigurationOutput protocol
 
 private protocol ConfigurationOutput {
-    var view: NavigationViewItem! { get }
+    var item: NavigationViewItem! { get }
     var _viewDidTap: ((NavigationView.State) -> Void)? { get }
 }
 
@@ -30,29 +31,32 @@ private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
 final class NavigationViewItemConfiguration: Configuration {
     
-    fileprivate weak var view: NavigationViewItem!
+    fileprivate weak var item: NavigationViewItem!
     var _viewDidTap: ((NavigationView.State) -> Void)?
     
+    init(configurationWithItem item: NavigationViewItem) {
+        self.item = item
+        self.viewDidLoad()
+    }
+    
     deinit {
-        view = nil
+        item = nil
         _viewDidTap = nil
     }
     
-    static func create(with view: NavigationViewItem) -> NavigationViewItemConfiguration {
-        let configuration = NavigationViewItemConfiguration()
-        configuration.viewDidConfigure(view: view)
-        return configuration
+    fileprivate func viewDidLoad() {
+        viewDidConfigure(item: item)
     }
     
-    fileprivate func viewDidConfigure(view: NavigationViewItem) {
-        self.view = view
+    fileprivate func viewDidConfigure(item: NavigationViewItem) {
+        self.item = item
         
-        guard let state = NavigationView.State(rawValue: view.tag) else { return }
+        guard let state = NavigationView.State(rawValue: item.tag) else { return }
         
-        view.addSubview(view.button)
-        view.button.frame = view.bounds
-        view.button.layer.shadow(.black, radius: 3.0, opacity: 0.4)
-        view.button.addTarget(self,
+        item.addSubview(item.button)
+        item.button.frame = item.bounds
+        item.button.layer.shadow(.black, radius: 3.0, opacity: 0.4)
+        item.button.addTarget(self,
                               action: #selector(viewDidTap),
                               for: .touchUpInside)
         
@@ -60,28 +64,28 @@ final class NavigationViewItemConfiguration: Configuration {
         let symbolConfiguration: UIImage.SymbolConfiguration!
         switch state {
         case .home:
-            image = UIImage(named: view.viewModel.image)?
+            image = UIImage(named: item.viewModel.image)?
                 .withRenderingMode(.alwaysOriginal)
-            view.button.setImage(image, for: .normal)
+            item.button.setImage(image, for: .normal)
         case .airPlay:
             symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 16.0)
-            image = UIImage(systemName: view.viewModel.image)?
+            image = UIImage(systemName: item.viewModel.image)?
                 .whiteRendering(with: symbolConfiguration)
-            view.button.setImage(image, for: .normal)
+            item.button.setImage(image, for: .normal)
         case .account:
             symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 17.0)
-            image = UIImage(systemName: view.viewModel.image)?
+            image = UIImage(systemName: item.viewModel.image)?
                 .whiteRendering(with: symbolConfiguration)
-            view.button.setImage(image, for: .normal)
+            item.button.setImage(image, for: .normal)
         default:
-            view.button.setTitleColor(.white, for: .normal)
-            view.button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
-            view.button.setTitle(view.viewModel.title, for: .normal)
+            item.button.setTitleColor(.white, for: .normal)
+            item.button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+            item.button.setTitle(item.viewModel.title, for: .normal)
         }
     }
     
     fileprivate func viewDidTap() {
-        guard let state = NavigationView.State(rawValue: view.tag) else { return }
+        guard let state = NavigationView.State(rawValue: item.tag) else { return }
         _viewDidTap?(state)
     }
 }
@@ -107,56 +111,43 @@ private typealias View = ViewInput & ViewOutput
 
 final class NavigationViewItem: UIView, View {
     
-    fileprivate(set) lazy var button: UIButton = { UIButton(type: .system) }()
+    fileprivate(set) lazy var button = UIButton(type: .system)
     
     private(set) var configuration: NavigationViewItemConfiguration!
     var viewModel: NavigationViewItemViewModel!
+    
+    init(onParent parent: UIView) {
+        super.init(frame: parent.bounds)
+        self.tag = parent.tag
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.viewModel = .init(tag: self.tag)
+        self.configuration = .init(configurationWithItem: self)
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
     
     deinit {
         configuration = nil
         viewModel = nil
     }
     
-    static func create(on parent: UIView) -> NavigationViewItem {
-        let view = NavigationViewItem(frame: parent.bounds)
-        view.tag = parent.tag
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        createViewModel(on: view)
-        createConfiguration(on: view)
-        return view
-    }
-    
-    @discardableResult
-    private static func createViewModel(on view: NavigationViewItem) -> NavigationViewItemViewModel {
-        view.viewModel = .init(tag: view.tag)
-        return view.viewModel
-    }
-    
-    @discardableResult
-    private static func createConfiguration(on view: NavigationViewItem) -> NavigationViewItemConfiguration {
-        view.configuration = .create(with: view)
-        return view.configuration
-    }
-    
     func viewDidConfigure(with state: NavigationView.State) {
-        switch state {
-        case .home:
-            guard let tag = NavigationView.State(rawValue: tag) else { return }
-            switch tag {
-            case .categories:
-                button.setTitle(viewModel.title, for: .normal)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
-            default: break
-            }
-        case .tvShows,
-                .movies:
-            guard let tag = NavigationView.State(rawValue: tag) else { return }
-            if case .categories = tag {
-                button.setTitle("All \(viewModel.title!)", for: .normal)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-            }
-        default: break
+        guard let tag = NavigationView.State(rawValue: tag) else { return }
+        if case .home = state,
+           case .categories = tag {
+            button.setTitle(viewModel.title, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+        }
+        if case .tvShows = state,
+           case .categories = tag {
+            button.setTitle("All \(viewModel.title!)", for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+        }
+        if case .movies = state,
+           case .categories = tag {
+            button.setTitle("All \(viewModel.title!)", for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
         }
     }
 }

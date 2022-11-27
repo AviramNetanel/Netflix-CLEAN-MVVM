@@ -7,17 +7,25 @@
 
 import UIKit
 
+// MARK: - FlowDependencies protocol
+
+protocol FlowDependencies {
+    func createAuthFlowCoordinator(navigationController: UINavigationController,
+                                   appFlowDependencies: AppFlowCoordinatorDependencies) -> AuthFlowCoordinator
+    func createHomeFlowCoordinator(navigationController: UINavigationController) -> TabBarFlowCoordinator
+}
+
 // MARK: - FlowCoordinatorInput protocol
 
 protocol FlowCoordinatorInput {
-    func create()
+    func launch()
     func coordinate()
     func sceneDidDisconnect()
 }
 
 // MARK: - AppFlowCoordinatorDependencies protocol
 
-private protocol AppFlowCoordinatorDependencies {
+protocol AppFlowCoordinatorDependencies {
     func createAuthSceneFlow()
     func createHomeSceneFlow()
 }
@@ -26,27 +34,26 @@ private protocol AppFlowCoordinatorDependencies {
 
 final class AppFlowCoordinator {
     
-    private(set) var appDependencies: AppDependencies
-    private let sceneDependencies: SceneDependencies
-    private let navigationController: UINavigationController
-    private lazy var authFlowCoordinator: AuthFlowCoordinator = sceneDependencies
-.createAuthFlowCoordinator(appFlowCoordinator: self, navigationController: navigationController)
-    private(set) lazy var homeFlowCoordinator: HomeFlowCoordinator = sceneDependencies
-        .createHomeFlowCoordinator(navigationController: navigationController)
+    private(set) lazy var navigationController = UINavigationController()
+    private(set) lazy var appSceneDIProvider = AppSceneDIProvider(appFlowCoordinator: self)
     
-    init(navigationController: UINavigationController,
-         appDependencies: AppDependencies = AppDependencies()) {
-        self.navigationController = navigationController
-        self.appDependencies = appDependencies
-        self.sceneDependencies = appDependencies.createSceneDependencies()
-    }
+    private(set) lazy var authFlowCoordinator = appSceneDIProvider
+        .createAuthFlowCoordinator(navigationController: navigationController, appFlowDependencies: self)
+    private(set) lazy var homeFlowCoordinator = appSceneDIProvider
+        .createHomeFlowCoordinator(navigationController: navigationController)
 }
 
 // MARK: - AppFlowCoordinatorDependencies implementation
 
 extension AppFlowCoordinator: AppFlowCoordinatorDependencies {
     
-    func createAuthSceneFlow() { authFlowCoordinator.coordinate() }
+    func createAuthSceneFlow() {
+        authFlowCoordinator.launch()
+        authFlowCoordinator.coordinate()
+    }
     
-    func createHomeSceneFlow() { homeFlowCoordinator.coordinate() }
+    func createHomeSceneFlow() {
+        homeFlowCoordinator.launch()
+        homeFlowCoordinator.coordinate()
+    }
 }

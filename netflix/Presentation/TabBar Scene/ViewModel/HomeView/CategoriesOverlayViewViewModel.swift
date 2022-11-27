@@ -33,6 +33,7 @@ final class CategoriesOverlayViewViewModel: ViewModel {
     var navigationViewState: NavigationView.State = .tvShows
     var state: CategoriesOverlayViewTableViewDataSource.State = .mainMenu
     fileprivate var category: CategoriesOverlayView.Category = .home
+    fileprivate(set) var items: Observable<[Valuable]> = Observable([])
     var isPresentedDidChange: (() -> Void)?
     
     deinit { isPresentedDidChange = nil }

@@ -26,7 +26,7 @@ final class DetailViewController: UIViewController {
     }
     
     static func create(with viewModel: DetailViewModel) -> DetailViewController {
-        let view = Storyboard(withOwner: HomeTabBarController.self,
+        let view = Storyboard(withOwner: TabBarController.self,
                               launchingViewController: DetailViewController.self)
             .instantiate() as! DetailViewController
         view.viewModel = viewModel

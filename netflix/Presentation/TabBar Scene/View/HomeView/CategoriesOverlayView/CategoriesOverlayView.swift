@@ -7,21 +7,25 @@
 
 import UIKit
 
+// MARK: - CategoriesOverlayViewDependencies protocol
+
+protocol CategoriesOverlayViewDependencies {
+    func createCategoriesOverlayViewTableViewCell(using provider: CategoriesOverlayViewDIProvider,
+                                                  for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell
+}
+
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
     func viewDidLoad()
-    func viewDidObserve()
-    func viewDidUnobserve()
-    func dataSourceDidChange()
     func itemsDidChange()
+    func dataSourceDidChange()
     func isPresentedDidChange()
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var tableView: UITableView { get }
     var opaqueView: OpaqueView { get }
     var footerView: CategoriesOverlayViewFooterView! { get }
     var viewModel: CategoriesOverlayViewViewModel { get }
@@ -51,30 +55,21 @@ final class CategoriesOverlayView: UIView, View {
         case documentary
     }
     
-    private(set) lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.separatorStyle = .none
-        tableView.backgroundView = opaqueView
-        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
-        addSubview(tableView)
-        return tableView
-    }()
-    
+    private(set) var categoriesOverlayViewDependencies: CategoriesOverlayViewDIProvider!
     fileprivate var dataSource: CategoriesOverlayViewTableViewDataSource!
-    lazy var opaqueView: OpaqueView = { .init(frame: UIScreen.main.bounds) }()
     fileprivate var footerView: CategoriesOverlayViewFooterView!
-    private(set) var viewModel: CategoriesOverlayViewViewModel = .init()
+    let opaqueView: OpaqueView = OpaqueView(frame: UIScreen.main.bounds)
+    let viewModel = CategoriesOverlayViewViewModel()
     
     deinit {
         footerView = nil
         dataSource = nil
     }
     
-    static func create(on parent: UIView) -> CategoriesOverlayView {
+    static func create(using homeSceneDependencies: HomeViewDIProvider, on parent: UIView) -> CategoriesOverlayView {
         let view = CategoriesOverlayView(frame: UIScreen.main.bounds)
         parent.addSubview(view)
+        view.setupDependencies(using: homeSceneDependencies)
         createDataSource(on: view, with: view.viewModel)
         createFooter(on: parent, with: view)
         view.viewDidLoad()
@@ -84,7 +79,7 @@ final class CategoriesOverlayView: UIView, View {
     @discardableResult
     private static func createDataSource(on view: CategoriesOverlayView,
                                          with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
-        view.dataSource = .create(with: viewModel)
+        view.dataSource = CategoriesOverlayViewTableViewDataSource(with: viewModel)
         return view.dataSource
     }
     
@@ -95,55 +90,45 @@ final class CategoriesOverlayView: UIView, View {
         return view.footerView
     }
     
-    fileprivate func viewDidLoad() { viewDidObserve() }
-    
-    fileprivate func viewDidObserve() {
-        isPresented(in: viewModel)
-        items(in: dataSource)
+    private func setupDependencies(using tabBarSceneDIProvider: HomeViewDIProvider) {
+        categoriesOverlayViewDependencies = tabBarSceneDIProvider.createCategoriesOverlayViewDIProvider(using: createTableView(), viewModel: viewModel)
     }
     
-    fileprivate func dataSourceDidChange() {
+    private func createTableView() -> UITableView {
+        let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.separatorStyle = .none
+        tableView.backgroundView = opaqueView
+        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
+        addSubview(tableView)
+        return tableView
+    }
+    
+    fileprivate func viewDidLoad() {
+        setupObservers()
+    }
+    
+    fileprivate func setupObservers() {
+        isPresented(in: viewModel)
+        items(in: viewModel)
+    }
+    
+    fileprivate func itemsDidChange() {
         switch viewModel.state {
         case .none:
-            dataSource.items.value = []
+            viewModel.items.value = []
         case .mainMenu:
-            let items = NavigationView.State.allCases[3...5].toArray()
-            dataSource.items.value = items
+            let states = NavigationView.State.allCases[3...5].toArray()
+            viewModel.items.value = states
         case .categories:
-            let items = CategoriesOverlayView.Category.allCases
-            dataSource.items.value = items
+            let categories = CategoriesOverlayView.Category.allCases
+            viewModel.items.value = categories
         }
     }
     
-    func viewDidUnobserve() {
-        printIfDebug("Removed `CategoriesOverlayView` observers.")
-        viewModel.isPresented.remove(observer: self)
-        dataSource.items.remove(observer: self)
-    }
-}
-
-// MARK: - Observers implementation
-
-extension CategoriesOverlayView {
-    
-    // MARK: CategoriesOverlayViewViewModel observers
-    
-    fileprivate func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
-        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
-    }
-    
-    // MARK: CategoriesOverlayViewTableViewDataSource observers
-    
-    fileprivate func items(in dataSource: CategoriesOverlayViewTableViewDataSource) {
-        dataSource.items.observe(on: self) { [weak self] _ in self?.itemsDidChange() }
-    }
-}
-
-// MARK: - Observers methods
-
-extension CategoriesOverlayView {
-    
-    fileprivate func itemsDidChange() {
+    fileprivate func dataSourceDidChange() {
+        guard let tableView = categoriesOverlayViewDependencies.dependencies.tableView else { return }
         if tableView.delegate == nil {
             tableView.delegate = dataSource
             tableView.dataSource = dataSource
@@ -152,21 +137,23 @@ extension CategoriesOverlayView {
         tableView.reloadData()
         
         tableView.contentInset = .init(
-            top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 60.0,
+            top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 80.0,
             left: .zero,
             bottom: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2,
             right: .zero)
     }
     
     fileprivate func isPresentedDidChange() {
+        guard let tableView = categoriesOverlayViewDependencies.dependencies.tableView else { return }
         if case true = viewModel.isPresented.value {
             isHidden(false)
             tableView.isHidden(false)
             footerView.isHidden(false)
             viewModel.isPresentedDidChange?()
-            dataSourceDidChange()
+            itemsDidChange()
             return
         }
+        
         isHidden(true)
         footerView.isHidden(true)
         tableView.isHidden(true)
@@ -174,6 +161,25 @@ extension CategoriesOverlayView {
         
         tableView.delegate = nil
         tableView.dataSource = nil
+    }
+    
+    func removeObservers() {
+        printIfDebug("Removed `CategoriesOverlayView` observers.")
+        viewModel.isPresented.remove(observer: self)
+        viewModel.items.remove(observer: self)
+    }
+}
+
+// MARK: - Observers implementation
+
+extension CategoriesOverlayView {
+    
+    private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
+        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
+    }
+    
+    private func items(in viewModel: CategoriesOverlayViewViewModel) {
+        viewModel.items.observe(on: self) { [weak self] _ in self?.dataSourceDidChange() }
     }
 }
 

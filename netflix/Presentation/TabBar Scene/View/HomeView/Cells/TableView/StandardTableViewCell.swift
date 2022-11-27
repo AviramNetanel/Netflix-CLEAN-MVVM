@@ -11,19 +11,20 @@ import UIKit
 
 final class StandardTableViewCell: TableViewCell<StandardCollectionViewCell> {
     
-    override class func create(on tableView: UITableView,
+    override class func create(using homeSceneDependencies: HomeViewDIProvider,
                                for indexPath: IndexPath,
-                               with viewModel: HomeViewModel) -> StandardTableViewCell {
+                               with actions: CollectionViewDataSourceActions? = nil) -> StandardTableViewCell {
         let identifier = StandardTableViewCell.Identifier(rawValue: indexPath.section)
-        let view = tableView.dequeueReusableCell(
+        let view = homeSceneDependencies.dependencies.tableView.dequeueReusableCell(
             withIdentifier: identifier!.stringValue,
             for: indexPath) as! StandardTableViewCell
-        let section = viewModel.section(at: .init(rawValue: indexPath.section)!)
-        view.viewDidConfigure(section: section, with: viewModel)
+        let index = HomeTableViewDataSource.Index(rawValue: indexPath.section)!
+        let section = homeSceneDependencies.dependencies.homeViewModel.section(at: index)
+        view.viewDidConfigure(section: section, viewModel: homeSceneDependencies.dependencies.homeViewModel, with: actions)
         return view
     }
 
-    enum Identifier: Int, CaseIterable {
+    enum Identifier: Int, CaseIterable, Valuable {
         case action = 3,
              sciFi,
              blockbuster,

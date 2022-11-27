@@ -7,14 +7,6 @@
 
 import Foundation
 
-// MARK: - ObservableDelegate protocol
-
-protocol ObservableDelegate {
-  func viewDidObserve()
-  func viewDidUnobserve()
-  func viewDidBind()
-}
-
 // MARK: - ObservableInput protocol
 
 private protocol ObservableInput {
