@@ -55,7 +55,7 @@ final class HomeViewController: UIViewController {
         /// Invokes `HomeViewDIProvider` dependency inversion object.
         diProvider = tabBarSceneDIProvider.createHomeViewDIProvider(launchingViewController: self)
         /// Passes `diProvider` pointer to view model.
-        viewModel.homeViewDIProvider = diProvider
+        viewModel.diProvider = diProvider
     }
     
     private func setupBehaviors() {
@@ -77,18 +77,16 @@ final class HomeViewController: UIViewController {
     private func setupDataSource() {
         /// Filters the sections based on the data source state.
         viewModel.filter(sections: viewModel.sections)
-        /// Creates the table view data source's actions.
-        let actions = diProvider.createHomeTableViewDataSourceActions()
         /// Initializes the data source.
-        dataSource = HomeTableViewDataSource(tabBarSceneDIProvider: diProvider, actions: actions)
+        dataSource = diProvider.createHomeTableViewDataSource()
     }
     
     private func setupNavigationView() {
-        navigationView = diProvider.createNavigationView(on: navigationViewContainer)
+        navigationView = diProvider.createNavigationView()
     }
     
     private func setupCategoriesOverlayView() {
-        categoriesOverlayView = .create(using: diProvider, on: view)
+        categoriesOverlayView = diProvider.createCategoriesOverlayView()
         isPresentedDidChange(in: categoriesOverlayView)
     }
     
@@ -126,7 +124,7 @@ extension HomeViewController {
                 self.navigationView.alpha = 1.0
                 return self.view.layoutIfNeeded()
             }
-            self.navigationViewTopConstraint.constant = -162.0
+            self.navigationViewTopConstraint.constant = -self.navigationView.bounds.size.height
             self.navigationView.alpha = 0.0
             self.view.layoutIfNeeded()
         }

@@ -39,14 +39,12 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
         return label
     }()
     
-    static func create(using homeSceneDependencies: HomeViewDIProvider,
-                       for section: Int) -> TableViewHeaderFooterView? {
-        guard let view = homeSceneDependencies.dependencies.tableView
-            .dequeueReusableHeaderFooterView(withIdentifier: TableViewHeaderFooterView.reuseIdentifier) as? TableViewHeaderFooterView
-        else { return nil }
-        view.viewDidConfigure(at: section, with: homeSceneDependencies.dependencies.homeViewModel)
-        return view
+    init(using diProvider: HomeViewDIProvider, for section: Int) {
+        super.init(reuseIdentifier: String(describing: TableViewHeaderFooterView.reuseIdentifier))
+        self.viewDidConfigure(at: section, with: diProvider.dependencies.homeViewModel)
     }
+    
+    required init?(coder: NSCoder) { fatalError() }
     
     fileprivate func viewDidConfigure(at index: Int, with homeViewModel: HomeViewModel) {
         backgroundView = .init()

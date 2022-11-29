@@ -10,20 +10,31 @@ import UIKit
 // MARK: - HomeTableViewDataSourceDependencies protocol
 
 protocol HomeTableViewDataSourceDependencies {
+    func createHomeTableViewDataSource() -> HomeTableViewDataSource
     func createHomeTableViewDataSourceActions() -> HomeTableViewDataSourceActions
-    func createDisplayTableViewCell(for indexPath: IndexPath) -> DisplayTableViewCell
-    func createRatableTableViewCell(for indexPath: IndexPath, with actions: CollectionViewDataSourceActions) -> RatableTableViewCell
-    func createResumableTableViewCell(for indexPath: IndexPath, with actions: CollectionViewDataSourceActions) -> ResumableTableViewCell
-    func createStandardTableViewCell(for indexPath: IndexPath, with actions: CollectionViewDataSourceActions) -> StandardTableViewCell
-    func createTableViewHeaderFooterView(at section: Int) -> TableViewHeaderFooterView
+    func createHomeDisplayTableViewCell(for indexPath: IndexPath) -> DisplayTableViewCell
+    func createHomeRatedTableViewCell(for indexPath: IndexPath,
+                                      with actions: CollectionViewDataSourceActions) -> RatedTableViewCell
+    func createHomeResumableTableViewCell(for indexPath: IndexPath,
+                                          with actions: CollectionViewDataSourceActions) -> ResumableTableViewCell
+    func createHomeStandardTableViewCell(for indexPath: IndexPath,
+                                         with actions: CollectionViewDataSourceActions) -> StandardTableViewCell
+    func createHomeTableViewHeaderFooterView(at section: Int) -> TableViewHeaderFooterView
 }
 
 // MARK: - HomeTableViewDataSourceActions struct
 
 struct HomeTableViewDataSourceActions {
+    
     let heightForRowAt: (IndexPath) -> CGFloat
     let viewDidScroll: (UIScrollView) -> Void
     let didSelectItem: (Int, Int) -> Void
+    
+    init(using diProvider: HomeViewDIProvider) {
+        self.heightForRowAt = diProvider.dependencies.homeViewController.heightForRow(at:)
+        self.viewDidScroll = diProvider.dependencies.homeViewController.viewDidScroll(in:)
+        self.didSelectItem = diProvider.dependencies.homeViewController.didSelectItem(at:of:)
+    }
 }
 
 // MARK: - DataSourceInput protocol
@@ -37,8 +48,6 @@ private protocol DataSourceInput {
 // MARK: - DataSourceOutput protocol
 
 private protocol DataSourceOutput {
-    var tabBarSceneDIProvider: HomeViewDIProvider { get }
-    var actions: HomeTableViewDataSourceActions { get }
     var numberOfRows: Int { get }
     var displayCell: DisplayTableViewCell! { get }
 }
@@ -76,13 +85,14 @@ final class HomeTableViewDataSource: NSObject, DataSource {
         case films
     }
     
-    fileprivate let tabBarSceneDIProvider: HomeViewDIProvider
-    fileprivate let actions: HomeTableViewDataSourceActions
+    private let diProvider: HomeViewDIProvider
+    private let actions: HomeTableViewDataSourceActions
+    
     fileprivate let numberOfRows = 1
     fileprivate(set) var displayCell: DisplayTableViewCell!
     
-    init(tabBarSceneDIProvider: HomeViewDIProvider, actions: HomeTableViewDataSourceActions) {
-        self.tabBarSceneDIProvider = tabBarSceneDIProvider
+    init(using diProvider: HomeViewDIProvider, actions: HomeTableViewDataSourceActions) {
+        self.diProvider = diProvider
         self.actions = actions
         super.init()
         self.viewDidLoad()
@@ -98,19 +108,16 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
     
     fileprivate func viewsDidRegister() {
-        guard let tableView = tabBarSceneDIProvider.dependencies.tableView else { return }
+        guard let tableView = diProvider.dependencies.tableView else { return }
         tableView.register(headerFooter: TableViewHeaderFooterView.self)
         tableView.register(nib: DisplayTableViewCell.self)
-        tableView.register(class: RatableTableViewCell.self)
+        tableView.register(class: RatedTableViewCell.self)
         tableView.register(class: ResumableTableViewCell.self)
-        
-        StandardTableViewCell.Identifier.allCases.forEach {
-            tableView.register(StandardTableViewCell.self, forCellReuseIdentifier: $0.stringValue)
-        }
+        tableView.register(class: StandardTableViewCell.self)
     }
     
     fileprivate func dataSourceDidChange() {
-        guard let tableView = tabBarSceneDIProvider.dependencies.tableView else { return }
+        guard let tableView = diProvider.dependencies.tableView else { return }
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -122,7 +129,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
 extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return tabBarSceneDIProvider.dependencies.homeViewModel.sections.count
+        return diProvider.dependencies.homeViewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -132,18 +139,17 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         
-        let actions = tabBarSceneDIProvider
-            .createHomeCollectionViewDataSourceActions(for: index.rawValue, using: actions)
+        let actions = diProvider.createHomeCollectionViewDataSourceActions(for: index.rawValue, using: actions)
         
         if case .display = index {
-            displayCell = tabBarSceneDIProvider.createDisplayTableViewCell(for: indexPath)
+            displayCell = diProvider.createHomeDisplayTableViewCell(for: indexPath)
             return displayCell
         } else if case .ratable = index {
-            return tabBarSceneDIProvider.createRatableTableViewCell(for: indexPath, with: actions)
+            return diProvider.createHomeRatedTableViewCell(for: indexPath, with: actions)
         } else if case .resumable = index {
-            return tabBarSceneDIProvider.createResumableTableViewCell(for: indexPath, with: actions)
+            return diProvider.createHomeResumableTableViewCell(for: indexPath, with: actions)
         } else {
-            return tabBarSceneDIProvider.createStandardTableViewCell(for: indexPath, with: actions)
+            return diProvider.createHomeStandardTableViewCell(for: indexPath, with: actions)
         }
     }
     
@@ -152,7 +158,7 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tabBarSceneDIProvider.createTableViewHeaderFooterView(at: section)
+        return diProvider.createHomeTableViewHeaderFooterView(at: section)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

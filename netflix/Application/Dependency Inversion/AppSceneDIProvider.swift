@@ -11,7 +11,7 @@ import UIKit.UINavigationController
 
 final class AppSceneDIProvider {
     
-    private weak var appFlowCoordinator: AppFlowCoordinator!
+    private(set) weak var appFlowCoordinator: AppFlowCoordinator!
     
     private lazy var configuration = AppConfiguration()
     

@@ -58,7 +58,7 @@ final class HomeViewModel: ViewModel {
         let actions: HomeViewModelActions
     }
     
-    var homeViewDIProvider: HomeViewDIProvider!
+    var diProvider: HomeViewDIProvider!
     let dependencies: Dependencies
     
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
@@ -77,10 +77,21 @@ final class HomeViewModel: ViewModel {
     }
     
     deinit {
-        homeViewDIProvider = nil
+        diProvider = nil
         myList = nil
         mediaTask = nil
         sectionsTask = nil
+    }
+    
+    func reloadMyList() {
+        guard
+            diProvider.dependencies.homeViewController.tableView.numberOfSections > 0,
+            let myListIndex = HomeTableViewDataSource.Index(rawValue: 6)
+        else { return }
+        let section = diProvider.dependencies.homeViewModel.section(at: .myList)
+        diProvider.dependencies.homeViewModel.filter(section: section)
+        let index = IndexSet(integer: myListIndex.rawValue)
+        diProvider.dependencies.homeViewController.tableView.reloadSections(index, with: .automatic)
     }
 }
 
@@ -99,7 +110,7 @@ extension HomeViewModel {
         /// Invokes tableview presentation.
         tableViewState.value = .all
         /// Creates an instance of `MyList`.
-        myList = MyList(using: homeViewDIProvider)
+        myList = MyList(using: diProvider)
         myList.viewDidLoad()
     }
     

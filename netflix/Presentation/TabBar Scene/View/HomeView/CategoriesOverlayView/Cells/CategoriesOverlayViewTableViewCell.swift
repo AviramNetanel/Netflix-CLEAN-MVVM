@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
+    func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
 }
 
 // MARK: - ViewOutput protocol
@@ -39,25 +39,18 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
         return label
     }()
     
-    static func create(on tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with items: [Valuable]) -> CategoriesOverlayViewTableViewCell {
-        guard let view = tableView.dequeueReusableCell(
-            withIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier,
-            for: indexPath) as? CategoriesOverlayViewTableViewCell else { fatalError() }
-        view.backgroundColor = .clear
-        view.selectionStyle = .none
+    init(on tableView: UITableView, for indexPath: IndexPath, with items: [Valuable]) {
+        super.init(style: .default, reuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
+        self.backgroundColor = .clear
+        self.selectionStyle = .none
         let model = items[indexPath.row]
-        view.viewDidLoad(with: createViewModel(on: view, with: model))
-        return view
+        let viewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
+        self.viewDidConfigure(with: viewModel)
     }
     
-    private static func createViewModel(on view: CategoriesOverlayViewTableViewCell,
-                                        with model: Valuable) -> CategoriesOverlayViewCollectionViewCellViewModel {
-        return CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidLoad(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
+    fileprivate func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
         titleLabel.text = viewModel.title
     }
 }

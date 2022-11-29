@@ -10,7 +10,7 @@ import UIKit
 // MARK: - DisplayViewDependencies protocol
 
 protocol DisplayViewDependencies {
-    func createDisplayView(with viewModel: DisplayTableViewCellViewModel) -> DisplayView
+    func createDisplayView() -> DisplayView
     func createDisplayViewViewModel(with cellViewModel: DisplayTableViewCellViewModel) -> DisplayViewViewModel
     func createDisplayViewConfiguration(on view: DisplayView) -> DisplayViewConfiguration
 }
@@ -72,9 +72,9 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var panelView: PanelView! { get }
     var viewModel: DisplayViewViewModel! { get }
     var configuration: DisplayViewConfiguration! { get }
+    var panelView: PanelView! { get }
 }
 
 // MARK: - View typealias
@@ -92,31 +92,35 @@ final class DisplayView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelViewContainer: UIView!
     
-    fileprivate(set) var panelView: PanelView!
     fileprivate(set) var viewModel: DisplayViewViewModel!
     fileprivate(set) var configuration: DisplayViewConfiguration!
+    fileprivate(set) var panelView: PanelView!
+    
+    init(using diProvider: HomeViewDIProvider, with viewModel: DisplayTableViewCellViewModel) {
+        super.init(frame: .zero)
+        self.nibDidLoad()
+        viewModel.presentedDisplayMediaDidChange()
+        self.viewModel = diProvider.createDisplayViewViewModel(with: viewModel)
+        self.configuration = diProvider.createDisplayViewConfiguration(on: self)
+        self.panelView = diProvider.createPanelView(on: self, with: viewModel)
+        self.viewDidLoad()
+    }
     
     deinit {
         panelView = nil
-        viewModel = nil
         configuration = nil
+        viewModel = nil
     }
     
-    static func create(with viewModel: DisplayTableViewCellViewModel,
-                       homeSceneDependencies: HomeViewDIProvider) -> DisplayView {
-        let view = DisplayView(frame: .zero)
-        view.nibDidLoad()
-        viewModel.presentedDisplayMediaDidChange()
-        view.viewModel = homeSceneDependencies.createDisplayViewViewModel(with: viewModel)
-        view.configuration = homeSceneDependencies.createDisplayViewConfiguration(on: view)
-        view.panelView = homeSceneDependencies.createPanelView(on: view, with: viewModel)
-        view.viewDidLoad()
-        return view
+    required init?(coder: NSCoder) { fatalError() }
+    
+    fileprivate func viewDidLoad() {
+        setupSubviews()
     }
     
-    fileprivate func viewDidLoad() { setupSubviews() }
-    
-    private func setupSubviews() { setupGradientView() }
+    private func setupSubviews() {
+        setupGradientView()
+    }
     
     private func setupGradientView() {
         bottomGradientView.addGradientLayer(

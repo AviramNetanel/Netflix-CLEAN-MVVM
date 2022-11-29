@@ -10,9 +10,8 @@ import UIKit
 // MARK: - NavigationViewDependencies protocol
 
 protocol NavigationViewDependencies {
-    func createNavigationView(on view: UIView) -> NavigationView
+    func createNavigationView() -> NavigationView
     func createNavigationViewViewModel(with items: [NavigationViewItem]) -> NavigationViewViewModel
-    func createNavigationViewItems(on navigationView: NavigationView) -> [NavigationViewItem]
     func createNavigationViewViewModelActions() -> NavigationViewViewModelActions
 }
 
@@ -26,7 +25,6 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var homeSceneDependencies: HomeViewDIProvider! { get }
     var homeItemView: NavigationViewItem! { get }
     var airPlayItemView: NavigationViewItem! { get }
     var accountItemView: NavigationViewItem! { get }
@@ -62,36 +60,43 @@ final class NavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var categoriesItemViewContainer: UIView!
     @IBOutlet private(set) weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    fileprivate var homeSceneDependencies: HomeViewDIProvider!
-    var homeItemView: NavigationViewItem!
-    var airPlayItemView: NavigationViewItem!
-    var accountItemView: NavigationViewItem!
-    var tvShowsItemView: NavigationViewItem!
-    var moviesItemView: NavigationViewItem!
-    var categoriesItemView: NavigationViewItem!
+    private let diProvider: HomeViewDIProvider
+    fileprivate(set) var homeItemView: NavigationViewItem!
+    fileprivate var airPlayItemView: NavigationViewItem!
+    fileprivate var accountItemView: NavigationViewItem!
+    fileprivate(set) var tvShowsItemView: NavigationViewItem!
+    fileprivate(set) var moviesItemView: NavigationViewItem!
+    fileprivate(set) var categoriesItemView: NavigationViewItem!
     fileprivate(set) var viewModel: NavigationViewViewModel!
     
+    init(using diProvider: HomeViewDIProvider, on parent: UIView) {
+        self.diProvider = diProvider
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.homeItemView = NavigationViewItem(onParent: self.homeItemViewContainer)
+        self.airPlayItemView = NavigationViewItem(onParent: self.airPlayItemViewContainer)
+        self.accountItemView = NavigationViewItem(onParent: self.accountItemViewContainer)
+        self.tvShowsItemView = NavigationViewItem(onParent: self.tvShowsItemViewContainer)
+        self.moviesItemView = NavigationViewItem(onParent: self.moviesItemViewContainer)
+        self.categoriesItemView = NavigationViewItem(onParent: self.categoriesItemViewContainer)
+        let items: [NavigationViewItem] = [self.homeItemView, self.airPlayItemView, self.accountItemView,
+                                           self.tvShowsItemView, self.moviesItemView, self.categoriesItemView]
+        self.viewModel = diProvider.createNavigationViewViewModel(with: items)
+        self.viewDidLoad()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
     deinit {
-        viewModel = nil
         categoriesItemView = nil
         moviesItemView = nil
         tvShowsItemView = nil
         accountItemView = nil
         airPlayItemView = nil
         homeItemView = nil
-        homeSceneDependencies = nil
-    }
-    
-    static func create(onParent parent: UIView, homeSceneDependencies: HomeViewDIProvider) -> NavigationView {
-        let view = NavigationView(frame: parent.bounds)
-        view.homeSceneDependencies = homeSceneDependencies
-        view.nibDidLoad()
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        let items = homeSceneDependencies.createNavigationViewItems(on: view)
-        view.viewModel = homeSceneDependencies.createNavigationViewViewModel(with: items)
-        view.viewDidLoad()
-        return view
+        viewModel = nil
     }
     
     private func setupBindings() {
@@ -100,7 +105,7 @@ final class NavigationView: UIView, View, ViewInstantiable {
     
     private func setupObservers() {
         viewModel.state.observe(on: self) { [weak self] state in
-            self?.viewModel.actions.stateDidChangeOnViewModel(self!.homeSceneDependencies.dependencies.homeViewController, state)
+            self?.viewModel.actions.stateDidChangeOnViewModel(self!.diProvider.dependencies.homeViewController, state)
         }
     }
     

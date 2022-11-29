@@ -10,8 +10,13 @@ import UIKit
 // MARK: - CategoriesOverlayViewDependencies protocol
 
 protocol CategoriesOverlayViewDependencies {
-    func createCategoriesOverlayViewTableViewCell(using provider: CategoriesOverlayViewDIProvider,
-                                                  for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell
+    func createCategoriesOverlayView() -> CategoriesOverlayView
+    func createCategoriesOverlayViewViewModel() -> CategoriesOverlayViewViewModel
+    func createCategoriesOverlayViewTableViewDataSource(with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource
+    func createCategoriesOverlayViewTableViewCell(for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell
+    func createCategoriesOverlayViewFooterView(on parent: UIView,
+                                               with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView
+    func createCategoriesOverlayViewOpaqueView() -> OpaqueView
 }
 
 // MARK: - ViewInput protocol
@@ -26,10 +31,11 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
-    var opaqueView: OpaqueView { get }
-    var footerView: CategoriesOverlayViewFooterView! { get }
+    var tableView: UITableView { get }
     var viewModel: CategoriesOverlayViewViewModel { get }
-    var dataSource: CategoriesOverlayViewTableViewDataSource! { get }
+    var dataSource: CategoriesOverlayViewTableViewDataSource { get }
+    var opaqueView: OpaqueView { get }
+    var footerView: CategoriesOverlayViewFooterView { get }
 }
 
 // MARK: - View typealias
@@ -55,44 +61,25 @@ final class CategoriesOverlayView: UIView, View {
         case documentary
     }
     
-    private(set) var categoriesOverlayViewDependencies: CategoriesOverlayViewDIProvider!
-    fileprivate var dataSource: CategoriesOverlayViewTableViewDataSource!
-    fileprivate var footerView: CategoriesOverlayViewFooterView!
-    let opaqueView: OpaqueView = OpaqueView(frame: UIScreen.main.bounds)
-    let viewModel = CategoriesOverlayViewViewModel()
+    fileprivate(set) lazy var tableView: UITableView = createTableView()
+    let viewModel: CategoriesOverlayViewViewModel
+    let dataSource: CategoriesOverlayViewTableViewDataSource
+    let opaqueView: OpaqueView
+    fileprivate var footerView: CategoriesOverlayViewFooterView
     
-    deinit {
-        footerView = nil
-        dataSource = nil
+    init(using diProvider: HomeViewDIProvider) {
+        self.viewModel = diProvider.createCategoriesOverlayViewViewModel()
+        self.dataSource = diProvider.createCategoriesOverlayViewTableViewDataSource(with: viewModel)
+        self.opaqueView = diProvider.createCategoriesOverlayViewOpaqueView()
+        let parent = diProvider.dependencies.homeViewController.view!
+        self.footerView = diProvider.createCategoriesOverlayViewFooterView(on: parent, with: viewModel)
+        super.init(frame: UIScreen.main.bounds)
+        parent.addSubview(self)
+        parent.addSubview(footerView)
+        self.viewDidLoad()
     }
     
-    static func create(using homeSceneDependencies: HomeViewDIProvider, on parent: UIView) -> CategoriesOverlayView {
-        let view = CategoriesOverlayView(frame: UIScreen.main.bounds)
-        parent.addSubview(view)
-        view.setupDependencies(using: homeSceneDependencies)
-        createDataSource(on: view, with: view.viewModel)
-        createFooter(on: parent, with: view)
-        view.viewDidLoad()
-        return view
-    }
-    
-    @discardableResult
-    private static func createDataSource(on view: CategoriesOverlayView,
-                                         with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
-        view.dataSource = CategoriesOverlayViewTableViewDataSource(with: viewModel)
-        return view.dataSource
-    }
-    
-    @discardableResult
-    private static func createFooter(on parent: UIView,
-                                     with view: CategoriesOverlayView) -> CategoriesOverlayViewFooterView {
-        view.footerView = .create(on: parent, with: view.viewModel)
-        return view.footerView
-    }
-    
-    private func setupDependencies(using tabBarSceneDIProvider: HomeViewDIProvider) {
-        categoriesOverlayViewDependencies = tabBarSceneDIProvider.createCategoriesOverlayViewDIProvider(using: createTableView(), viewModel: viewModel)
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
     private func createTableView() -> UITableView {
         let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
@@ -128,7 +115,6 @@ final class CategoriesOverlayView: UIView, View {
     }
     
     fileprivate func dataSourceDidChange() {
-        guard let tableView = categoriesOverlayViewDependencies.dependencies.tableView else { return }
         if tableView.delegate == nil {
             tableView.delegate = dataSource
             tableView.dataSource = dataSource
@@ -144,7 +130,6 @@ final class CategoriesOverlayView: UIView, View {
     }
     
     fileprivate func isPresentedDidChange() {
-        guard let tableView = categoriesOverlayViewDependencies.dependencies.tableView else { return }
         if case true = viewModel.isPresented.value {
             isHidden(false)
             tableView.isHidden(false)
@@ -170,7 +155,7 @@ final class CategoriesOverlayView: UIView, View {
     }
 }
 
-// MARK: - Observers implementation
+// MARK: - Observer bindings
 
 extension CategoriesOverlayView {
     

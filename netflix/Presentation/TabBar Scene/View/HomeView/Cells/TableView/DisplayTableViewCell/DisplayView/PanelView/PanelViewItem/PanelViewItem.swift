@@ -156,21 +156,20 @@ final class PanelViewItem: UIView, View, ViewInstantiable {
     fileprivate(set) var viewModel: PanelViewItemViewModel!
     fileprivate(set) var isSelected = false
     
+    init(using diProvider: HomeViewDIProvider, on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        self.tag = parent.tag
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.viewModel = diProvider.createPanelViewItemViewModel(on: self, with: viewModel)
+        self.configuration = diProvider.createPanelViewItemConfiguration(on: self, with: viewModel)
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
     deinit {
         configuration = nil
         viewModel = nil
-    }
-    
-    static func create(on parent: UIView,
-                       viewModel: DisplayTableViewCellViewModel,
-                       homeSceneDependencies: HomeViewDIProvider) -> PanelViewItem {
-        let view = PanelViewItem(frame: parent.bounds)
-        view.nibDidLoad()
-        view.tag = parent.tag
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        view.viewModel = homeSceneDependencies.createPanelViewItemViewModel(on: view, with: viewModel)
-        view.configuration = homeSceneDependencies.createPanelViewItemConfiguration(on: view, with: viewModel)
-        return view
     }
 }

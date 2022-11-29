@@ -16,7 +16,7 @@ protocol HomeFlowDependencies {
     func createSeasonsRepoistory() -> SeasonRepository
     func createMyListRepository() -> ListRepository
     func createHomeViewModelActions() -> HomeViewModelActions
-    func createHomeTabBarController() -> TabBarController
+    func createTabBarController() -> TabBarController
     func createHomeViewController() -> HomeViewController
     func createHomeViewModel(dependencies: HomeViewModel.Dependencies) -> HomeViewModel
     func createHomeViewModelDependencies() -> HomeViewModel.Dependencies
@@ -60,7 +60,7 @@ final class TabBarFlowCoordinator {
 extension TabBarFlowCoordinator: FlowCoordinatorInput {
     
     func launch() {
-        homeTabBarController = dependencies.createHomeTabBarController()
+        homeTabBarController = dependencies.createTabBarController()
     }
     
     func coordinate() {
@@ -75,9 +75,9 @@ extension TabBarFlowCoordinator: FlowCoordinatorInput {
         
         if let homeViewController = homeTabBarController?.homeViewController {
             homeViewController.removeObservers()
-            homeViewController.viewModel.myList.removeObservers()
+            homeViewController.viewModel.myList?.removeObservers()
             
-            if let panelView = homeViewController.dataSource?.displayCell?.displayView?.panelView {
+            if let panelView = homeViewController.dataSource?.displayCell?.displayView.panelView {
                 panelView.removeObservers()
             }
             if let navigationView = homeViewController.navigationView {

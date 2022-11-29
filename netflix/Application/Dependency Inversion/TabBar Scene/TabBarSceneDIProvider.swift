@@ -57,16 +57,16 @@ extension TabBarSceneDIProvider: TabBarFlowCoordinatorDependencies {
     
     // MARK: HomeView (Presentation)
     
-    func createHomeViewModelActions() -> HomeViewModelActions {
-        return HomeViewModelActions(homeFlowCoordinator: appFlowCoordinator.homeFlowCoordinator)
-    }
-    
-    func createHomeTabBarController() -> TabBarController {
+    func createTabBarController() -> TabBarController {
         return .create(with: [createHomeViewController()])
     }
     
     func createHomeViewController() -> HomeViewController {
         return .create(with: createHomeViewModel(dependencies: createHomeViewModelDependencies()))
+    }
+    
+    func createHomeViewModel(dependencies: HomeViewModel.Dependencies) -> HomeViewModel {
+        return HomeViewModel(dependencies: dependencies)
     }
     
     func createHomeViewModelDependencies() -> HomeViewModel.Dependencies {
@@ -75,12 +75,13 @@ extension TabBarSceneDIProvider: TabBarFlowCoordinatorDependencies {
                                           actions: createHomeViewModelActions())
     }
     
-    func createHomeViewModel(dependencies: HomeViewModel.Dependencies) -> HomeViewModel {
-        return HomeViewModel(dependencies: dependencies)
+    func createHomeViewModelActions() -> HomeViewModelActions {
+        return HomeViewModelActions(homeFlowCoordinator: appFlowCoordinator.homeFlowCoordinator)
     }
     
-    /// `HomeViewDIProvider` is an encapsulation of this `TabBarSceneDIProvider` class.
-    /// It's holding all the relevant view dependencies for `TabBar Scene > HomeView` presentation group.
+    /// `HomeViewDIProvider` is an encapsulation for this `TabBarSceneDIProvider` class.
+    /// It's holding all the relevant view dependencies for `TabBar Scene > HomeView` presentation group,
+    /// In-order to instantiate `HomeViewController` subviews.
     /// - Parameter homeViewController: Launching view controller that holds all the the relevant presentation objects.
     /// - Returns: `HomeViewDIProvider` dependency inversion object.
     func createHomeViewDIProvider(

@@ -48,6 +48,7 @@ private typealias ListProtocol = ListInput & ListOutput
 
 final class MyList: ListProtocol {
     
+    private let diProvider: HomeViewDIProvider
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate(set) var list: Observable<Set<Media>> = Observable([])
     fileprivate let user: UserDTO
@@ -55,11 +56,12 @@ final class MyList: ListProtocol {
     fileprivate(set) var section: Section
     fileprivate var actions: MyListActions
     
-    init(using homeViewDIProvider: HomeViewDIProvider) {
-        self.user = homeViewDIProvider.dependencies.homeViewModel.dependencies.authService.user
-        self.homeUseCase = homeViewDIProvider.dependencies.homeViewModel.dependencies.homeUseCase
-        self.section = homeViewDIProvider.dependencies.homeViewModel.section(at: .myList)
-        self.actions = homeViewDIProvider.createMyListActions()
+    init(using diProvider: HomeViewDIProvider) {
+        self.diProvider = diProvider
+        self.user = diProvider.dependencies.homeViewModel.dependencies.authService.user
+        self.homeUseCase = diProvider.dependencies.homeViewModel.dependencies.homeUseCase
+        self.section = diProvider.dependencies.homeViewModel.section(at: .myList)
+        self.actions = diProvider.createMyListActions()
     }
     
     deinit {

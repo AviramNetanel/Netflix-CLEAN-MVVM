@@ -1,5 +1,5 @@
 //
-//  RatableCollectionViewCell.swift
+//  RatedCollectionViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -17,16 +17,16 @@ private protocol ViewInput {
 
 private protocol ViewOutput {
     var layerView: UIView { get }
-    var textLayer: RatableCollectionViewCell.TextLayer { get }
+    var textLayer: RatedCollectionViewCell.TextLayer { get }
 }
 
 // MARK: - View typealias
 
 private typealias View = ViewInput & ViewOutput
 
-// MARK: - RatableCollectionViewCell class
+// MARK: - RatedCollectionViewCell class
 
-final class RatableCollectionViewCell: CollectionViewCell, View {
+final class RatedCollectionViewCell: CollectionViewCell, View {
     
     fileprivate final class TextLayer: CATextLayer {
         override func draw(in ctx: CGContext) {
@@ -85,7 +85,9 @@ final class RatableCollectionViewCell: CollectionViewCell, View {
     
     fileprivate func viewDidLoad() {
         contentView.addSubview(layerView)
+        
         layerView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             layerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             layerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

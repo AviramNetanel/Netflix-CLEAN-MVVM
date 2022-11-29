@@ -11,7 +11,6 @@ import UIKit
 
 protocol PanelViewDependencies {
     func createPanelView(on view: DisplayView, with viewModel: DisplayTableViewCellViewModel) -> PanelView
-    func createPanelViewItems(on view: PanelView, with viewModel: DisplayTableViewCellViewModel)
     func createPanelViewItemViewModel(on view: PanelViewItem, with viewModel: DisplayTableViewCellViewModel) -> PanelViewItemViewModel
     func createPanelViewItemConfiguration(on view: PanelViewItem, with viewModel: DisplayTableViewCellViewModel) -> PanelViewItemConfiguration
 }
@@ -19,7 +18,6 @@ protocol PanelViewDependencies {
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
     func viewDidConfigure()
 }
 
@@ -42,29 +40,31 @@ final class PanelView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var leadingItemViewContainer: UIView!
     @IBOutlet private(set) weak var trailingItemViewContainer: UIView!
     
-    var leadingItemView: PanelViewItem!
-    var trailingItemView: PanelViewItem!
+    fileprivate(set) var leadingItemView: PanelViewItem!
+    fileprivate(set) var trailingItemView: PanelViewItem!
+    
+    init(using diProvider: HomeViewDIProvider,
+         on parent: UIView,
+         with viewModel: DisplayTableViewCellViewModel) {
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.leadingItemView = PanelViewItem(using: diProvider, on: self.leadingItemViewContainer, with: viewModel)
+        self.trailingItemView = PanelViewItem(using: diProvider, on: self.trailingItemViewContainer, with: viewModel)
+        self.viewDidConfigure()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
     
     deinit {
         leadingItemView = nil
         trailingItemView = nil
     }
     
-    static func create(on parent: UIView,
-                       viewModel: DisplayTableViewCellViewModel,
-                       homeSceneDependencies: HomeViewDIProvider) -> PanelView {
-        let view = PanelView(frame: parent.bounds)
-        view.nibDidLoad()
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        homeSceneDependencies.createPanelViewItems(on: view, with: viewModel)
-        view.viewDidLoad()
-        return view
+    fileprivate func viewDidConfigure() {
+        playButton.layer.cornerRadius = 6.0
     }
-    
-    fileprivate func viewDidLoad() { viewDidConfigure() }
-    
-    fileprivate func viewDidConfigure() { playButton.layer.cornerRadius = 6.0 }
     
     func removeObservers() {
         printIfDebug("Removed `PanelView` observers.")
