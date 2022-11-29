@@ -10,7 +10,9 @@ import UIKit
 // MARK: - SceneDelegate class
 
 class SceneDelegate: UIResponder {
+    
     private(set) lazy var appFlowCoordinator = AppFlowCoordinator()
+    
     var window: UIWindow?
 }
 

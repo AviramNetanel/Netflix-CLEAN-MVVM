@@ -26,10 +26,8 @@ struct AuthViewModelActions {
 
 private protocol ViewModelInput {
     func viewDidLoad()
-    func signUp(request: AuthRequest,
-                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
-    func signIn(request: AuthRequest,
-                completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+    func signUp(request: AuthRequest, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+    func signIn(request: AuthRequest, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
     func signInButtonDidTap()
     func signUpButtonDidTap()
 }

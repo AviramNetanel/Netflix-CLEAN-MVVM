@@ -40,6 +40,8 @@ final class RatedCollectionViewCell: CollectionViewCell, View {
     fileprivate let layerView = UIView()
     fileprivate var textLayer = TextLayer()
     
+    
+    
     deinit {
         textLayer.removeFromSuperlayer()
         layerView.removeFromSuperview()

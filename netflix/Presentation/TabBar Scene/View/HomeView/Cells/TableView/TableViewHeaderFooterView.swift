@@ -29,15 +29,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
     
     fileprivate let viewModel = TableViewHeaderFooterViewViewModel()
     
-    fileprivate lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
-        label.font = font
-        label.textColor = .white
-        contentView.addSubview(label)
-        label.constraintBottom(toParent: self, withLeadingAnchor: 8.0)
-        return label
-    }()
+    fileprivate lazy var titleLabel = createLabel()
     
     init(using diProvider: HomeViewDIProvider, for section: Int) {
         super.init(reuseIdentifier: String(describing: TableViewHeaderFooterView.reuseIdentifier))
@@ -45,6 +37,16 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView, View {
     }
     
     required init?(coder: NSCoder) { fatalError() }
+    
+    private func createLabel() -> UILabel {
+        let label = UILabel()
+        let font = UIFont.systemFont(ofSize: 17.0, weight: .heavy)
+        label.font = font
+        label.textColor = .white
+        contentView.addSubview(label)
+        label.constraintBottom(toParent: self, withLeadingAnchor: 8.0)
+        return label
+    }
     
     fileprivate func viewDidConfigure(at index: Int, with homeViewModel: HomeViewModel) {
         backgroundView = .init()

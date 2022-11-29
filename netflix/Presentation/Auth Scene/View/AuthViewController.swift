@@ -87,8 +87,7 @@ final class AuthViewController: UIViewController {
     private func setupTargets() {
         guard let viewModel = viewModel else { return }
         
-        signInButton.addTarget(viewModel,
-                               action: #selector(viewModel.signInButtonDidTap))
+        signInButton.addTarget(viewModel, action: #selector(viewModel.signInButtonDidTap))
         
         signUpButton.addTarget(viewModel,
                                action: #selector(viewModel.signUpButtonDidTap),

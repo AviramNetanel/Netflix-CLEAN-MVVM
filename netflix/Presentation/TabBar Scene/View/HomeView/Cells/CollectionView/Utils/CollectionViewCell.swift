@@ -10,12 +10,9 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
-                         completion: (() -> Void)?)
-    func viewDidLoad(media: Media,
-                     with viewModel: CollectionViewCellItemViewModel)
-    func logoDidAlign(_ constraint: NSLayoutConstraint,
-                      with viewModel: CollectionViewCellItemViewModel)
+    func dataDidDownload(with viewModel: CollectionViewCellItemViewModel, completion: (() -> Void)?)
+    func viewDidLoad(media: Media, with viewModel: CollectionViewCellItemViewModel)
+    func logoDidAlign(_ constraint: NSLayoutConstraint, with viewModel: CollectionViewCellItemViewModel)
     func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel)
 }
 
@@ -53,17 +50,9 @@ class CollectionViewCell: UICollectionViewCell, View {
         let media = state == .series
             ? section.media[indexPath.row]
             : section.media[indexPath.row]
-        view.viewDidLoad(media: media,
-                         with: createViewModel(on: view,
-                                               for: indexPath,
-                                               with: media))
+        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        view.viewDidLoad(media: media, with: cellViewModel)
         return view
-    }
-    
-    private static func createViewModel(on view: CollectionViewCell,
-                                        for indexPath: IndexPath,
-                                        with media: Media) -> CollectionViewCellItemViewModel {
-        return .init(media: media, indexPath: indexPath)
     }
     
     override func prepareForReuse() {

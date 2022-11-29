@@ -2,10 +2,10 @@
 //  StandardCollectionViewCell.swift
 //  netflix
 //
-//  Created by Zach Bazov on 13/09/2022.
+//  Created by Zach Bazov on 29/11/2022.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - StandardCollectionViewCell class
 
