@@ -10,7 +10,8 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad(with viewModel: OpaqueViewViewModel)
+    func viewDidLoad()
+    func viewModelDidUpdate(with media: Media)
 }
 
 // MARK: - ViewOutput protocol
@@ -31,7 +32,6 @@ final class OpaqueView: UIView, View {
     
     fileprivate var imageView: UIImageView!
     fileprivate var blurView: UIVisualEffectView!
-    
     fileprivate var viewModel: OpaqueViewViewModel!
     
     deinit {
@@ -40,16 +40,7 @@ final class OpaqueView: UIView, View {
         viewModel = nil
     }
     
-    @discardableResult
-    static func createViewModel(on view: OpaqueView,
-                                with viewModel: HomeViewModel) -> OpaqueViewViewModel? {
-        guard let presentedDisplayMedia = viewModel.presentedDisplayMedia.value as Media? else { return nil }
-        view.viewModel = .init(with: presentedDisplayMedia)
-        view.viewDidLoad(with: view.viewModel)
-        return view.viewModel
-    }
-    
-    fileprivate func viewDidLoad(with viewModel: OpaqueViewViewModel) {
+    fileprivate func viewDidLoad() {
         imageView?.removeFromSuperview()
         blurView?.removeFromSuperview()
         
@@ -68,5 +59,11 @@ final class OpaqueView: UIView, View {
             identifier: viewModel.identifier) { [weak self] image in
                 DispatchQueue.main.async { self?.imageView.image = image }
             }
+    }
+    
+    func viewModelDidUpdate(with media: Media) {
+        guard let presentedDisplayMedia = media as Media? else { return }
+        self.viewModel = .init(with: presentedDisplayMedia)
+        viewDidLoad()
     }
 }

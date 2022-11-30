@@ -87,11 +87,6 @@ final class HomeViewController: UIViewController {
     
     private func setupCategoriesOverlayView() {
         categoriesOverlayView = diProvider.createCategoriesOverlayView()
-        isPresentedDidChange(in: categoriesOverlayView)
-    }
-    
-    private func setupSubviewsDependencies() {
-        OpaqueView.createViewModel(on: categoriesOverlayView.opaqueView, with: viewModel)
     }
     
     func removeObservers() {
@@ -137,19 +132,6 @@ extension HomeViewController {
     }
 }
 
-// MARK: - Closure bindings
-
-extension HomeViewController {
-    
-    private func isPresentedDidChange(in categoriesOverlayView: CategoriesOverlayView) {
-        categoriesOverlayView.viewModel.isPresentedDidChange = { [weak self] in
-            categoriesOverlayView.viewModel.isPresented.value == true
-                ? self?.tabBarController?.tabBar.isHidden(true)
-                : self?.tabBarController?.tabBar.isHidden(false)
-        }
-    }
-}
-
 // MARK: - Observer bindings
 
 extension HomeViewController {
@@ -159,6 +141,9 @@ extension HomeViewController {
     }
     
     private func presentedDisplayMedia(in viewModel: HomeViewModel) {
-        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] _ in self?.setupSubviewsDependencies() }
+        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] media in
+            guard let media = media else { return }
+            self!.categoriesOverlayView.opaqueView.viewModelDidUpdate(with: media)
+        }
     }
 }

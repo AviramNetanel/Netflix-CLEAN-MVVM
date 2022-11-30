@@ -96,7 +96,8 @@ extension HomeViewDIProvider: DisplayViewDependencies {
     }
 
     func createDisplayViewConfiguration(on view: DisplayView) -> DisplayViewConfiguration {
-        return DisplayViewConfiguration(view: view, viewModel: createDisplayViewViewModel(with: createDisplayTableViewCellViewModel()))
+        return DisplayViewConfiguration(view: view,
+                                        viewModel: createDisplayViewViewModel(with: createDisplayTableViewCellViewModel()))
     }
 }
 
@@ -132,15 +133,18 @@ extension HomeViewDIProvider: CategoriesOverlayViewDependencies {
         return CategoriesOverlayViewViewModel()
     }
     
-    func createCategoriesOverlayViewTableViewDataSource(with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
-        return CategoriesOverlayViewTableViewDataSource(using: self, with: viewModel)
-    }
+    func createCategoriesOverlayViewTableViewDataSource(
+        with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource {
+            return CategoriesOverlayViewTableViewDataSource(using: self, with: viewModel)
+        }
     
-    func createCategoriesOverlayViewTableViewCell(for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell {
-        return CategoriesOverlayViewTableViewCell(on: dependencies.homeViewController.categoriesOverlayView.tableView,
-                                                  for: indexPath,
-                                                  with: dependencies.homeViewController.categoriesOverlayView.viewModel.items.value)
-    }
+    func createCategoriesOverlayViewTableViewCell(
+        for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell {
+            return CategoriesOverlayViewTableViewCell(
+                on: dependencies.homeViewController.categoriesOverlayView.tableView,
+                for: indexPath,
+                with: dependencies.homeViewController.categoriesOverlayView.viewModel.items.value)
+        }
     
     func createCategoriesOverlayViewFooterView(on parent: UIView,
                                                with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView {
@@ -166,18 +170,14 @@ extension HomeViewDIProvider: NavigationViewDependencies {
     
     func createNavigationViewViewModelActions() -> NavigationViewViewModelActions {
         return NavigationViewViewModelActions(
-            stateDidChangeOnViewModel: { homeViewController, state in
+            stateDidChange: { state in
+                self.dependencies.homeViewController.categoriesOverlayView?.viewModel
+                    .navigationViewStateDidChange(withOwner: self.dependencies.homeViewController,
+                                                  projectedValue: state)
                 
-                homeViewController.navigationView?.viewModel.actions
-                    .stateDidChangeOnViewController(homeViewController, state)
-                
-                homeViewController.categoriesOverlayView?.viewModel
-                    .stateDidChangeOnViewModel(homeViewController: homeViewController, state: state)
-                
-            }, stateDidChangeOnViewController: { homeViewController, state in
-                
-                homeViewController.categoriesOverlayView?.viewModel
-                    .stateDidChange(homeViewController: homeViewController, state: state)
+                self.dependencies.homeViewController.navigationView?.viewModel
+                    .stateDidChange(withOwner: self.dependencies.homeViewController,
+                                    projectedValue: state)
             })
     }
 }

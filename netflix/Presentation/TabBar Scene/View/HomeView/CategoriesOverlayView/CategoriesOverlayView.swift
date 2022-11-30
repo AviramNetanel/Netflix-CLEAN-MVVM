@@ -61,6 +61,7 @@ final class CategoriesOverlayView: UIView, View {
         case documentary
     }
     
+    private let tabBar: UITabBar
     fileprivate(set) lazy var tableView: UITableView = createTableView()
     let viewModel: CategoriesOverlayViewViewModel
     let dataSource: CategoriesOverlayViewTableViewDataSource
@@ -68,6 +69,7 @@ final class CategoriesOverlayView: UIView, View {
     fileprivate var footerView: CategoriesOverlayViewFooterView
     
     init(using diProvider: HomeViewDIProvider) {
+        self.tabBar = diProvider.dependencies.homeViewController.tabBarController!.tabBar
         self.viewModel = diProvider.createCategoriesOverlayViewViewModel()
         self.dataSource = diProvider.createCategoriesOverlayViewTableViewDataSource(with: viewModel)
         self.opaqueView = diProvider.createCategoriesOverlayViewOpaqueView()
@@ -134,7 +136,8 @@ final class CategoriesOverlayView: UIView, View {
             isHidden(false)
             tableView.isHidden(false)
             footerView.isHidden(false)
-            viewModel.isPresentedDidChange?()
+            tabBar.isHidden(true)
+            
             itemsDidChange()
             return
         }
@@ -142,7 +145,7 @@ final class CategoriesOverlayView: UIView, View {
         isHidden(true)
         footerView.isHidden(true)
         tableView.isHidden(true)
-        viewModel.isPresentedDidChange?()
+        tabBar.isHidden(false)
         
         tableView.delegate = nil
         tableView.dataSource = nil

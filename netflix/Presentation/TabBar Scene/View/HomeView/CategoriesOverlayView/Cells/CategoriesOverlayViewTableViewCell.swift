@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel)
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -27,7 +27,21 @@ private typealias View = ViewInput & ViewOutput
 
 final class CategoriesOverlayViewTableViewCell: UITableViewCell {
     
-    private lazy var titleLabel: UILabel = {
+    private lazy var titleLabel = createLabel()
+    private let viewModel: CategoriesOverlayViewCollectionViewCellViewModel
+    
+    init(on tableView: UITableView, for indexPath: IndexPath, with items: [Valuable]) {
+        let model = items[indexPath.row]
+        self.viewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
+        super.init(style: .default, reuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
+        self.backgroundColor = .clear
+        self.selectionStyle = .none
+        self.viewDidConfigure()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    private func createLabel() -> UILabel {
         let label = UILabel(frame: .init(x: .zero,
                                          y: .zero,
                                          width: UIScreen.main.bounds.width,
@@ -37,20 +51,9 @@ final class CategoriesOverlayViewTableViewCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
         addSubview(label)
         return label
-    }()
-    
-    init(on tableView: UITableView, for indexPath: IndexPath, with items: [Valuable]) {
-        super.init(style: .default, reuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
-        self.backgroundColor = .clear
-        self.selectionStyle = .none
-        let model = items[indexPath.row]
-        let viewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
-        self.viewDidConfigure(with: viewModel)
     }
     
-    required init?(coder: NSCoder) { fatalError() }
-    
-    fileprivate func viewDidConfigure(with viewModel: CategoriesOverlayViewCollectionViewCellViewModel) {
+    fileprivate func viewDidConfigure() {
         titleLabel.text = viewModel.title
     }
 }

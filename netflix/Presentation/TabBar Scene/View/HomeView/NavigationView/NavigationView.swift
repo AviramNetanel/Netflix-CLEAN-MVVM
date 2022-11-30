@@ -104,9 +104,7 @@ final class NavigationView: UIView, View, ViewInstantiable {
     }
     
     private func setupObservers() {
-        viewModel.state.observe(on: self) { [weak self] state in
-            self?.viewModel.actions.stateDidChangeOnViewModel(self!.diProvider.dependencies.homeViewController, state)
-        }
+        viewModel.state.observe(on: self) { [weak self] state in self?.viewModel.actions.stateDidChange(state) }
     }
     
     private func setupGradientView() {
