@@ -42,23 +42,47 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
         return DetailTableViewDataSource(using: self)
     }
     
-    func createDetailInfoTableViewCell(for indexPath: IndexPath) -> DetailInfoTableViewCell {
-        return DetailInfoTableViewCell(using: self, for: indexPath)
+    func createDetailInfoTableViewCell() -> DetailInfoTableViewCell {
+        return DetailInfoTableViewCell(using: self)
     }
     
-    func createDetailDescriptionTableViewCell(for indexPath: IndexPath) -> DetailDescriptionTableViewCell {
-        return DetailDescriptionTableViewCell(using: self, for: indexPath)
+    func createDetailDescriptionTableViewCell() -> DetailDescriptionTableViewCell {
+        return DetailDescriptionTableViewCell(using: self)
     }
     
-    func createDetailPanelTableViewCell(for indexPath: IndexPath) -> DetailPanelTableViewCell {
-        return DetailPanelTableViewCell(using: self, for: indexPath)
+    func createDetailPanelTableViewCell() -> DetailPanelTableViewCell {
+        return DetailPanelTableViewCell(using: self)
     }
     
-    func createDetailNavigationTableViewCell(for indexPath: IndexPath) -> DetailNavigationTableViewCell {
-        return DetailNavigationTableViewCell(using: self, for: indexPath)
+    func createDetailNavigationTableViewCell() -> DetailNavigationTableViewCell {
+        return DetailNavigationTableViewCell(using: self)
     }
     
-    func createDetailCollectionTableViewCell(for indexPath: IndexPath) -> DetailCollectionTableViewCell {
-        return DetailCollectionTableViewCell(using: self, for: indexPath)
+    func createDetailCollectionTableViewCell() -> DetailCollectionTableViewCell {
+        return DetailCollectionTableViewCell(using: self)
     }
 }
+
+extension DetailViewDIProvider {
+    
+    func createDetailNavigationViewViewModelActions(on view: DetailNavigationView) -> DetailNavigationViewViewModelActions {
+        return DetailNavigationViewViewModelActions(stateDidChange: view._stateDidChange(state:))
+    }
+}
+
+//// MARK: - DetailNavigationViewDependencies implementation
+//
+//extension DetailViewDIProvider: DetailNavigationViewDependencies {
+//
+//    func createDetailNavigationViewViewModel() -> DetailNavigationViewViewModel {
+//        return DetailNavigationViewViewModel(using: self, dependencies: createDetailNavigationViewViewModelDependencies())
+//    }
+//
+//    func createDetailNavigationViewViewModelDependencies() -> DetailNavigationViewViewModel.Dependencies {
+//        return DetailNavigationViewViewModel.Dependencies(actions: createDetailNavigationViewViewModelActions())
+//    }
+//
+//    func createDetailNavigationViewViewModelActions() -> DetailNavigationViewViewModelActions {
+//        return DetailNavigationViewViewModelActions(stateDidChange: dependencies.detailViewController.stateDidChange)
+//    }
+//}

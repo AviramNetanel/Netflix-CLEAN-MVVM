@@ -29,15 +29,17 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
     
     fileprivate(set) var navigationView: DetailNavigationView!
     
-    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+    init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)
-        self.navigationView = DetailNavigationView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
+        self.navigationView = DetailNavigationView(using: diProvider, on: self.contentView)
         self.viewDidConfigure()
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
-    deinit { navigationView = nil }
+    deinit {
+        navigationView = nil
+    }
     
     fileprivate func viewDidConfigure() {
         backgroundColor = .black

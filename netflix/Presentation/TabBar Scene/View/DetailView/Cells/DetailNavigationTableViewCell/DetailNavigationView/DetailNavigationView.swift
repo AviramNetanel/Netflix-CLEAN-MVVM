@@ -7,12 +7,16 @@
 
 import UIKit
 
+//struct DetailNavigationViewActions {
+//    let stateDidChange: (DetailNavigationView.State) -> Void
+//}
+
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
     func viewDidLoad()
     func stateDidChange(view: DetailNavigationViewItem)
-    var _stateDidChange: ((DetailNavigationView.State) -> Void)? { get }
+//    var _stateDidChange: ((DetailNavigationView.State) -> Void)? { get }
 }
 
 // MARK: - ViewOutput protocol
@@ -47,16 +51,23 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     fileprivate(set) var centerItem: DetailNavigationViewItem!
     fileprivate(set) var trailingItem: DetailNavigationViewItem!
     fileprivate(set) var viewModel: DetailViewModel!
+    var actions: DetailNavigationViewViewModelActions!
+    let diProvider: DetailViewDIProvider
+    
+//    let navigationView
     
     fileprivate var state: State!
-    var _stateDidChange: ((State) -> Void)?
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
+    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
+        self.diProvider = diProvider
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.nibDidLoad()
-        self.viewModel = viewModel
+        self.viewModel = diProvider.dependencies.detailViewModel
+        
+        self.actions = diProvider.createDetailNavigationViewViewModelActions(on: self)
+        
         self.leadingItem = DetailNavigationViewItem(on: self.leadingViewContainer, with: self)
         self.centerItem = DetailNavigationViewItem(on: self.centerViewContainer, with: self)
         self.trailingItem = DetailNavigationViewItem(on: self.trailingViewContrainer, with: self)
@@ -66,7 +77,6 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        _stateDidChange = nil
         state = nil
         leadingItem = nil
         centerItem = nil
@@ -103,6 +113,12 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         default: break
         }
         
-        _stateDidChange?(state)
+//        _stateDidChange(state: state)
+        
+        actions.stateDidChange(state)
+    }
+    
+    func _stateDidChange(state: DetailNavigationView.State) {
+        viewModel.navigationViewState.value = state
     }
 }

@@ -22,14 +22,14 @@ private protocol DataSourceOutput {
     var cache: NSCache<NSString, UIImage> { get }
 }
 
-// MARK: - DataSourcing typealias
+// MARK: - DataSource typealias
 
-private typealias DataSourcing = DataSourceInput & DataSourceOutput
+private typealias DataSource = DataSourceInput & DataSourceOutput
 
 // MARK: - DetailCollectionViewDataSource class
 
 final class DetailCollectionViewDataSource<T>: NSObject,
-                                               DataSourcing,
+                                               DataSource,
                                                UICollectionViewDelegate,
                                                UICollectionViewDataSource,
                                                UICollectionViewDataSourcePrefetching {
@@ -77,7 +77,7 @@ final class DetailCollectionViewDataSource<T>: NSObject,
                                              reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
                                              section: viewModel.dependencies.section,
                                              for: indexPath,
-                                             with: viewModel.state)
+                                             with: viewModel.homeDataSourceState)
         }
     }
     

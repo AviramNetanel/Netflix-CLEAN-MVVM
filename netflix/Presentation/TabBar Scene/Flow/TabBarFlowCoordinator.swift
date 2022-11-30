@@ -50,7 +50,7 @@ final class TabBarFlowCoordinator {
     private let dependencies: TabBarFlowCoordinatorDependencies
     private weak var navigationController: UINavigationController?
     private(set) weak var homeTabBarController: TabBarController?
-    private weak var detailViewController: DetailViewController?
+    private(set) weak var detailViewController: DetailViewController?
     
     init(navigationController: UINavigationController,
          dependencies: TabBarFlowCoordinatorDependencies) {

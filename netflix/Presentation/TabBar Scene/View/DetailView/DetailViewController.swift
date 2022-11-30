@@ -17,7 +17,7 @@ final class DetailViewController: UIViewController {
     private var diProvider: DetailViewDIProvider!
     private var previewView: PreviewView!
     private(set) var viewModel: DetailViewModel!
-    private var dataSource: DetailTableViewDataSource!
+    private(set) var dataSource: DetailTableViewDataSource!
     
     deinit {
         removeObservers()
@@ -73,7 +73,6 @@ final class DetailViewController: UIViewController {
     func removeObservers() {
         if let viewModel = viewModel {
             printIfDebug("Removed `DetailViewModel` observers.")
-            viewModel.navigationViewState.remove(observer: self)
             viewModel.season.remove(observer: self)
         }
         if let panelView = dataSource.panelCell.panelView {
@@ -82,6 +81,10 @@ final class DetailViewController: UIViewController {
             panelView.centerItem.viewModel.removeObservers()
             panelView.trailingItem.viewModel.removeObservers()
         }
+//        if let navigationView = dataSource.navigationCell.navigationView {
+//            printIfDebug("Removed `DetailNavigationView` observers.")
+//            navigationView.removeObservers()
+//        }
     }
 }
 

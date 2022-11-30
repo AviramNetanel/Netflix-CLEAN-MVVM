@@ -31,7 +31,7 @@ final class DetailPanelTableViewCell: UITableViewCell, View {
     
     deinit { panelView = nil }
     
-    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+    init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)
         self.panelView = DetailPanelView(on: self, with: diProvider.dependencies.detailViewModel)
         self.contentView.addSubview(self.panelView)

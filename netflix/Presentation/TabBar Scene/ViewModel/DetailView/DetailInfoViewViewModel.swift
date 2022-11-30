@@ -40,7 +40,7 @@ struct DetailInfoViewViewModel: ViewModel {
     let isHD: Bool
     
     init(with viewModel: DetailViewModel) {
-        self.state = viewModel.state
+        self.state = viewModel.homeDataSourceState
         
         let media = viewModel.dependencies.media
         

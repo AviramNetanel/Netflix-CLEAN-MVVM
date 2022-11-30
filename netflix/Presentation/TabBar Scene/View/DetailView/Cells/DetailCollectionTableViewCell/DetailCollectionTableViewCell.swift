@@ -29,7 +29,7 @@ final class DetailCollectionTableViewCell: UITableViewCell, View {
     
     fileprivate(set) var detailCollectionView: DetailCollectionView!
     
-    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+    init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)
         self.detailCollectionView = DetailCollectionView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
         self.contentView.addSubview(self.detailCollectionView)

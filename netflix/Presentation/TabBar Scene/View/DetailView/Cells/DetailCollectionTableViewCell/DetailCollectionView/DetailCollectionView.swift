@@ -106,7 +106,7 @@ final class DetailCollectionView: UIView, View {
             layout = CollectionViewLayout(layout: .trailer, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            guard let media = viewModel.state == .series
+            guard let media = viewModel.homeDataSourceState == .series
                     ? viewModel.dependencies.section.media
                     : viewModel.dependencies.section.media as [Media]?
             else { return }

@@ -16,8 +16,7 @@ struct DetailViewModelActions {}
 private protocol ViewModelInput {
     func viewDidLoad()
     func contentSize(with state: DetailNavigationView.State) -> Float
-    func getSeason(with request: SeasonRequestDTO.GET,
-                   completion: @escaping () -> Void)
+    func getSeason(with request: SeasonRequestDTO.GET, completion: @escaping () -> Void)
 }
 
 // MARK: - ViewModelOutput protocol
@@ -25,7 +24,7 @@ private protocol ViewModelInput {
 private protocol ViewModelOutput {
     var task: Cancellable? { get }
     var dependencies: DetailViewModel.Dependencies { get }
-    var state: HomeTableViewDataSource.State! { get }
+    var homeDataSourceState: HomeTableViewDataSource.State! { get }
     var navigationViewState: Observable<DetailNavigationView.State>! { get }
     var season: Observable<Season?>! { get }
     var myList: MyList! { get }
@@ -49,7 +48,7 @@ final class DetailViewModel: ViewModel {
     
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate(set) var dependencies: Dependencies
-    fileprivate(set) var state: HomeTableViewDataSource.State!
+    fileprivate(set) var homeDataSourceState: HomeTableViewDataSource.State!
     fileprivate(set) var navigationViewState: Observable<DetailNavigationView.State>! = Observable(.episodes)
     fileprivate(set) var season: Observable<Season?>! = Observable(nil)
     fileprivate(set) var myList: MyList!
@@ -57,7 +56,7 @@ final class DetailViewModel: ViewModel {
     
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        self.state = dependencies.viewModel.tableViewState.value
+        self.homeDataSourceState = dependencies.viewModel.tableViewState.value
         self.myList = dependencies.viewModel.myList
         self.myListSection = dependencies.viewModel.myList.section
     }
@@ -67,7 +66,7 @@ final class DetailViewModel: ViewModel {
         myListSection = nil
         season.value = nil
         navigationViewState = nil
-        state = nil
+        homeDataSourceState = nil
         task = nil
     }
     
@@ -94,7 +93,7 @@ final class DetailViewModel: ViewModel {
             let lineSpacing = Float(8.0)
             let itemsPerLine = Float(3.0)
             let topContentInset = Float(16.0)
-            let itemsCount = self.state == .series
+            let itemsCount = self.homeDataSourceState == .series
                 ? Float(dependencies.section.media.count)
                 : Float(dependencies.section.media.count)
             let roundedItemsOutput = (itemsCount / itemsPerLine).rounded(.awayFromZero)
@@ -106,8 +105,7 @@ final class DetailViewModel: ViewModel {
         }
     }
     
-    func getSeason(with request: SeasonRequestDTO.GET,
-                   completion: @escaping () -> Void) {
+    func getSeason(with request: SeasonRequestDTO.GET, completion: @escaping () -> Void) {
         task = dependencies.detailUseCase.execute(for: SeasonResponse.self,
                                                   with: request) { [weak self] result in
             if case let .success(responseDTO) = result {

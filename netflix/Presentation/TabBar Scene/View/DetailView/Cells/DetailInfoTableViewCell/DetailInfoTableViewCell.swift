@@ -25,7 +25,7 @@ private typealias View = ViewInput & ViewOutput
 
 final class DetailInfoTableViewCell: UITableViewCell, View {
     
-    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+    init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailInfoTableViewCell.reuseIdentifier)
         let infoView = DetailInfoView(on: self, with: diProvider.dependencies.detailViewModel)
         self.contentView.addSubview(infoView)

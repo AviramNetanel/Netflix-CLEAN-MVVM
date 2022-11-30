@@ -11,11 +11,11 @@ import UIKit.UITableView
 
 protocol DetailTableViewDataSourceDependencies {
     func createDetailTableViewDataSource() -> DetailTableViewDataSource
-    func createDetailInfoTableViewCell(for indexPath: IndexPath) -> DetailInfoTableViewCell
-    func createDetailDescriptionTableViewCell(for indexPath: IndexPath) -> DetailDescriptionTableViewCell
-    func createDetailPanelTableViewCell(for indexPath: IndexPath) -> DetailPanelTableViewCell
-    func createDetailNavigationTableViewCell(for indexPath: IndexPath) -> DetailNavigationTableViewCell
-    func createDetailCollectionTableViewCell(for indexPath: IndexPath) -> DetailCollectionTableViewCell
+    func createDetailInfoTableViewCell() -> DetailInfoTableViewCell
+    func createDetailDescriptionTableViewCell() -> DetailDescriptionTableViewCell
+    func createDetailPanelTableViewCell() -> DetailPanelTableViewCell
+    func createDetailNavigationTableViewCell() -> DetailNavigationTableViewCell
+    func createDetailCollectionTableViewCell() -> DetailCollectionTableViewCell
 }
 
 // MARK: - DataSourceInput protocol
@@ -30,6 +30,7 @@ private protocol DataSourceInput {
 
 private protocol DataSourceOutput {
     var tableView: UITableView { get }
+    var viewModel: DetailViewModel { get }
     var numberOfRows: Int { get }
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
@@ -58,6 +59,7 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     private let diProvider: DetailViewDIProvider
+    fileprivate var viewModel: DetailViewModel
     fileprivate let tableView: UITableView
     fileprivate let numberOfRows: Int = 1
     
@@ -73,6 +75,7 @@ final class DetailTableViewDataSource: NSObject,
     
     init(using diProvider: DetailViewDIProvider) {
         self.diProvider = diProvider
+        self.viewModel = diProvider.dependencies.detailViewModel
         self.tableView = diProvider.dependencies.tableView
         super.init()
         self.viewsDidRegister()
@@ -115,26 +118,23 @@ final class DetailTableViewDataSource: NSObject,
         switch index {
         case .info:
             guard infoCell == nil else { return infoCell }
-            infoCell = diProvider.createDetailInfoTableViewCell(for: indexPath)
+            infoCell = diProvider.createDetailInfoTableViewCell()
             return infoCell
         case .description:
             guard descriptionCell == nil else { return descriptionCell }
-            descriptionCell = diProvider.createDetailDescriptionTableViewCell(for: indexPath)
+            descriptionCell = diProvider.createDetailDescriptionTableViewCell()
             return descriptionCell
         case .panel:
             guard panelCell == nil else { return panelCell }
-            panelCell = diProvider.createDetailPanelTableViewCell(for: indexPath)
+            panelCell = diProvider.createDetailPanelTableViewCell()
             return panelCell
         case .navigation:
             guard navigationCell == nil else { return navigationCell }
-            navigationCell = diProvider.createDetailNavigationTableViewCell(for: indexPath)
-            navigationCell.navigationView._stateDidChange = { [weak self] state in
-                self?.diProvider.dependencies.detailViewModel.navigationViewState.value = state
-            }
+            navigationCell = diProvider.createDetailNavigationTableViewCell()
             return navigationCell
         case .collection:
             guard collectionCell == nil else { return collectionCell }
-            collectionCell = diProvider.createDetailCollectionTableViewCell(for: indexPath)
+            collectionCell = diProvider.createDetailCollectionTableViewCell()
             return collectionCell
         }
     }
