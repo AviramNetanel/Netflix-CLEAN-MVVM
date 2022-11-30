@@ -11,11 +11,12 @@ import UIKit
 
 final class DetailViewController: UIViewController {
     
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var previewContainer: UIView!
+    @IBOutlet private(set) weak var tableView: UITableView!
+    @IBOutlet private(set) weak var previewContainer: UIView!
     
+    private var diProvider: DetailViewDIProvider!
     private var previewView: PreviewView!
-    private var viewModel: DetailViewModel!
+    private(set) var viewModel: DetailViewModel!
     private var dataSource: DetailTableViewDataSource!
     
     deinit {
@@ -23,6 +24,7 @@ final class DetailViewController: UIViewController {
         previewView = nil
         dataSource = nil
         viewModel = nil
+        diProvider = nil
     }
     
     static func create(with viewModel: DetailViewModel) -> DetailViewController {
@@ -35,10 +37,15 @@ final class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupDependencies()
         setupSubviews()
         setupBindings()
         setupObservers()
         viewModel.viewDidLoad()
+    }
+    
+    private func setupDependencies() {
+        diProvider = tabBarSceneDIProvider.createDetailViewDIProvider(launchingViewController: self)
     }
     
     private func setupSubviews() {
@@ -56,19 +63,11 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupPreviewView() {
-        previewView = .create(on: previewContainer, with: viewModel)
+        previewView = diProvider.createPreviewView()
     }
     
     private func setupDataSource() {
-        dataSource = .create(on: tableView, viewModel: viewModel)
-        tableView.register(class: DetailInfoTableViewCell.self)
-        tableView.register(class: DetailDescriptionTableViewCell.self)
-        tableView.register(class: DetailPanelTableViewCell.self)
-        tableView.register(class: DetailNavigationTableViewCell.self)
-        tableView.register(class: DetailCollectionTableViewCell.self)
-        tableView.delegate = dataSource
-        tableView.dataSource = dataSource
-        tableView.reloadData()
+        dataSource = diProvider.createDetailTableViewDataSource()
     }
     
     func removeObservers() {
@@ -105,11 +104,10 @@ extension DetailViewController {
             case .navigation: return self.view.bounds.height * 0.0764
             case .collection:
                 switch self.viewModel.navigationViewState.value {
-                case .episodes,
-                        .trailers:
-                    return CGFloat(self.viewModel.contentSize(
-                        with: self.viewModel.navigationViewState.value))
-                default: return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
+                case .episodes, .trailers:
+                    return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
+                default:
+                    return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
                 }
             }
         }

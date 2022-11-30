@@ -10,8 +10,8 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
     func dataDidLoad()
+    func viewDidLoad()
     func dataSourceDidChange()
 }
 
@@ -32,9 +32,30 @@ private typealias View = ViewInput & ViewOutput
 
 final class DetailCollectionView: UIView, View {
     
-    fileprivate lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: bounds,
-                                              collectionViewLayout: .init())
+    fileprivate lazy var collectionView = createCollectionView()
+    fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
+    fileprivate var layout: CollectionViewLayout!
+    fileprivate var viewModel: DetailViewModel!
+    
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        super.init(frame: .zero)
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.collectionView.constraintToSuperview(self)
+        self.viewModel = viewModel
+        self.viewDidLoad()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    deinit {
+        layout = nil
+        dataSource = nil
+        viewModel = nil
+    }
+    
+    private func createCollectionView() -> UICollectionView {
+        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: .init())
         collectionView.backgroundColor = .black
         collectionView.registerNib(StandardCollectionViewCell.self,
                                    EpisodeCollectionViewCell.self,
@@ -48,45 +69,21 @@ final class DetailCollectionView: UIView, View {
                                             right: .zero)
         addSubview(collectionView)
         return collectionView
-    }()
-    
-    fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
-    fileprivate var layout: CollectionViewLayout!
-    fileprivate var viewModel: DetailViewModel!
-    
-    deinit {
-        layout = nil
-        dataSource = nil
-        viewModel = nil
-    }
-    
-    static func create(on parent: UIView,
-                       with viewModel: DetailViewModel) -> DetailCollectionView {
-        let view = DetailCollectionView(frame: .zero)
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        view.collectionView.constraintToSuperview(view)
-        createViewModel(on: view, with: viewModel)
-        view.viewDidLoad()
-        return view
-    }
-    
-    @discardableResult
-    private static func createViewModel(on view: DetailCollectionView,
-                                        with viewModel: DetailViewModel) -> DetailViewModel {
-        view.viewModel = viewModel
-        return view.viewModel
     }
     
     fileprivate func dataDidLoad() {
         if viewModel.navigationViewState.value == .episodes {
             let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
             let requestDTO = SeasonRequestDTO.GET(slug: cellViewModel.media.slug, season: 1)
-            viewModel.getSeason(with: requestDTO) { [weak self] in self?.dataSourceDidChange() }
+            viewModel.getSeason(with: requestDTO) { [weak self] in
+                self?.dataSourceDidChange()
+            }
         }
     }
     
-    fileprivate func viewDidLoad() { dataDidLoad() }
+    fileprivate func viewDidLoad() {
+        dataDidLoad()
+    }
     
     func dataSourceDidChange() {
         collectionView.delegate = nil

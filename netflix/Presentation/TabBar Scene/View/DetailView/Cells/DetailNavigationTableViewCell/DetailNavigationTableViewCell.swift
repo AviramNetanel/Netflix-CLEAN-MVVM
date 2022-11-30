@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -29,27 +29,17 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
     
     fileprivate(set) var navigationView: DetailNavigationView!
     
+    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+        super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)
+        self.navigationView = DetailNavigationView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
+        self.viewDidConfigure()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
     deinit { navigationView = nil }
     
-    static func create(on tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> DetailNavigationTableViewCell {
-        let view = tableView.dequeueReusableCell(
-            withIdentifier: String(describing: DetailNavigationTableViewCell.reuseIdentifier),
-            for: indexPath) as! DetailNavigationTableViewCell
-        createView(on: view, with: viewModel)
-        view.viewDidLoad()
-        return view
-    }
-    
-    @discardableResult
-    private static func createView(on view: DetailNavigationTableViewCell,
-                                   with viewModel: DetailViewModel) -> DetailNavigationView {
-        view.navigationView = .create(on: view, with: viewModel)
-        return view.navigationView
-    }
-    
-    fileprivate func viewDidLoad() {
+    fileprivate func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

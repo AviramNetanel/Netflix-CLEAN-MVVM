@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -31,25 +31,16 @@ final class DetailPanelTableViewCell: UITableViewCell, View {
     
     deinit { panelView = nil }
     
-    static func create(on tableView: UITableView,
-                       for indexPath: IndexPath,
-                       viewModel: DetailViewModel) -> DetailPanelTableViewCell {
-        let view = tableView.dequeueReusableCell(
-            withIdentifier: String(describing: DetailPanelTableViewCell.reuseIdentifier),
-            for: indexPath) as! DetailPanelTableViewCell
-        let panelView = createView(on: view, viewModel: viewModel)
-        view.addSubview(panelView)
-        view.viewDidLoad()
-        return view
+    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+        super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)
+        self.panelView = DetailPanelView(on: self, with: diProvider.dependencies.detailViewModel)
+        self.contentView.addSubview(self.panelView)
+        self.viewDidConfigure()
     }
     
-    private static func createView(on view: DetailPanelTableViewCell,
-                                   viewModel: DetailViewModel) -> DetailPanelView {
-        view.panelView = .create(on: view, viewModel: viewModel)
-        return view.panelView
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidLoad() {
+    fileprivate func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

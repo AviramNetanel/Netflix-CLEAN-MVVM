@@ -51,6 +51,20 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     fileprivate var state: State!
     var _stateDidChange: ((State) -> Void)?
     
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        super.init(frame: .zero)
+        parent.addSubview(self)
+        self.constraintToSuperview(parent)
+        self.nibDidLoad()
+        self.viewModel = viewModel
+        self.leadingItem = DetailNavigationViewItem(on: self.leadingViewContainer, with: self)
+        self.centerItem = DetailNavigationViewItem(on: self.centerViewContainer, with: self)
+        self.trailingItem = DetailNavigationViewItem(on: self.trailingViewContrainer, with: self)
+        self.viewDidLoad()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
     deinit {
         _stateDidChange = nil
         state = nil
@@ -60,42 +74,10 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         viewModel = nil
     }
     
-    static func create(on parent: UIView,
-                       with viewModel: DetailViewModel) -> DetailNavigationView {
-        let view = DetailNavigationView(frame: .zero)
-        parent.addSubview(view)
-        view.constraintToSuperview(parent)
-        view.nibDidLoad()
-        createViewModel(on: view, with: viewModel)
-        createItems(on: view)
-        view.viewDidLoad()
-        return view
-    }
-    
-    private static func createItems(on view: DetailNavigationView) {
-        view.leadingItem = .create(on: view.leadingViewContainer,
-                                   navigationView: view)
-        view.centerItem = .create(on: view.centerViewContainer,
-                                  navigationView: view)
-        view.trailingItem = .create(on: view.trailingViewContrainer,
-                                    navigationView: view)
-    }
-    
-    @discardableResult
-    private static func createViewModel(on view: DetailNavigationView,
-                                        with viewModel: DetailViewModel) -> DetailViewModel {
-        view.viewModel = viewModel
-        return view.viewModel
-    }
-    
     fileprivate func viewDidLoad() {
-        setupSubviews()
+        backgroundColor = .black
         
         stateDidChange(view: viewModel.navigationViewState.value == .episodes ? leadingItem : centerItem)
-    }
-    
-    private func setupSubviews() {
-        backgroundColor = .black
     }
     
     func stateDidChange(view: DetailNavigationViewItem) {

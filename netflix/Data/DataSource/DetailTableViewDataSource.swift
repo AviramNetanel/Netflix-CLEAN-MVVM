@@ -5,19 +5,31 @@
 //  Created by Zach Bazov on 30/09/2022.
 //
 
-import UIKit
+import UIKit.UITableView
 
-// MARK: - DataSourcingInput protocol
+// MARK: - DetailTableViewDataSourceDependencies protocol
 
-private protocol DataSourcingInput {
+protocol DetailTableViewDataSourceDependencies {
+    func createDetailTableViewDataSource() -> DetailTableViewDataSource
+    func createDetailInfoTableViewCell(for indexPath: IndexPath) -> DetailInfoTableViewCell
+    func createDetailDescriptionTableViewCell(for indexPath: IndexPath) -> DetailDescriptionTableViewCell
+    func createDetailPanelTableViewCell(for indexPath: IndexPath) -> DetailPanelTableViewCell
+    func createDetailNavigationTableViewCell(for indexPath: IndexPath) -> DetailNavigationTableViewCell
+    func createDetailCollectionTableViewCell(for indexPath: IndexPath) -> DetailCollectionTableViewCell
+}
+
+// MARK: - DataSourceInput protocol
+
+private protocol DataSourceInput {
+    func viewsDidRegister()
+    func dataSourceDidChange()
     var _heightForRow: ((IndexPath) -> CGFloat)? { get }
 }
 
-// MARK: - DataSourcingOutput protocol
+// MARK: - DataSourceOutput protocol
 
-private protocol DataSourcingOutput {
-    var tableView: UITableView! { get }
-    var viewModel: DetailViewModel! { get }
+private protocol DataSourceOutput {
+    var tableView: UITableView { get }
     var numberOfRows: Int { get }
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
@@ -26,14 +38,14 @@ private protocol DataSourcingOutput {
     var collectionCell: DetailCollectionTableViewCell! { get }
 }
 
-// MARK: - DataSourcing typealias
+// MARK: - DataSource typealias
 
-private typealias DataSourcing = DataSourcingInput & DataSourcingOutput
+private typealias DataSource = DataSourceInput & DataSourceOutput
 
 // MARK: - DetailTableViewDataSource class
 
 final class DetailTableViewDataSource: NSObject,
-                                       DataSourcing,
+                                       DataSource,
                                        UITableViewDelegate,
                                        UITableViewDataSource {
     
@@ -45,10 +57,9 @@ final class DetailTableViewDataSource: NSObject,
         case collection
     }
     
+    private let diProvider: DetailViewDIProvider
+    fileprivate let tableView: UITableView
     fileprivate let numberOfRows: Int = 1
-    
-    fileprivate var tableView: UITableView!
-    fileprivate var viewModel: DetailViewModel!
     
     fileprivate var infoCell: DetailInfoTableViewCell!
     fileprivate var descriptionCell: DetailDescriptionTableViewCell!
@@ -56,72 +67,79 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    var _heightForRow: ((IndexPath) -> CGFloat)? { didSet { tableView.reloadData() } }
+    var _heightForRow: ((IndexPath) -> CGFloat)? {
+        didSet { tableView.reloadData() }
+    }
+    
+    init(using diProvider: DetailViewDIProvider) {
+        self.diProvider = diProvider
+        self.tableView = diProvider.dependencies.tableView
+        super.init()
+        self.viewsDidRegister()
+        self.dataSourceDidChange()
+    }
     
     deinit {
+        _heightForRow = nil
         infoCell = nil
         descriptionCell = nil
         panelCell = nil
         navigationCell = nil
         collectionCell = nil
-        _heightForRow = nil
-        tableView = nil
-        viewModel = nil
     }
     
-    static func create(on tableView: UITableView,
-                       viewModel: DetailViewModel) -> DetailTableViewDataSource {
-        let dataSource = DetailTableViewDataSource()
-        dataSource.tableView = tableView
-        dataSource.viewModel = viewModel
-        return dataSource
+    fileprivate func viewsDidRegister() {
+        tableView.register(class: DetailInfoTableViewCell.self)
+        tableView.register(class: DetailDescriptionTableViewCell.self)
+        tableView.register(class: DetailPanelTableViewCell.self)
+        tableView.register(class: DetailNavigationTableViewCell.self)
+        tableView.register(class: DetailCollectionTableViewCell.self)
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int { Index.allCases.count }
+    fileprivate func dataSourceDidChange() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.reloadData()
+    }
     
-    func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int { numberOfRows }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Index.allCases.count
+    }
     
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfRows
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         switch index {
         case .info:
             guard infoCell == nil else { return infoCell }
-            infoCell = DetailInfoTableViewCell.create(on: tableView,
-                                                      for: indexPath,
-                                                      with: viewModel)
+            infoCell = diProvider.createDetailInfoTableViewCell(for: indexPath)
             return infoCell
         case .description:
             guard descriptionCell == nil else { return descriptionCell }
-            descriptionCell = DetailDescriptionTableViewCell.create(on: tableView,
-                                                                    for: indexPath,
-                                                                    with: viewModel)
+            descriptionCell = diProvider.createDetailDescriptionTableViewCell(for: indexPath)
             return descriptionCell
         case .panel:
             guard panelCell == nil else { return panelCell }
-            panelCell = DetailPanelTableViewCell.create(on: tableView,
-                                                        for: indexPath,
-                                                        viewModel: viewModel)
+            panelCell = diProvider.createDetailPanelTableViewCell(for: indexPath)
             return panelCell
         case .navigation:
             guard navigationCell == nil else { return navigationCell }
-            navigationCell = DetailNavigationTableViewCell.create(on: tableView,
-                                                                  for: indexPath,
-                                                                  with: viewModel)
+            navigationCell = diProvider.createDetailNavigationTableViewCell(for: indexPath)
             navigationCell.navigationView._stateDidChange = { [weak self] state in
-                self?.viewModel.navigationViewState.value = state
+                self?.diProvider.dependencies.detailViewModel.navigationViewState.value = state
             }
             return navigationCell
         case .collection:
             guard collectionCell == nil else { return collectionCell }
-            collectionCell = DetailCollectionTableViewCell.create(on: tableView,
-                                                                  for: indexPath,
-                                                                  with: viewModel)
+            collectionCell = diProvider.createDetailCollectionTableViewCell(for: indexPath)
             return collectionCell
         }
     }
     
-    func tableView(_ tableView: UITableView,
-                   heightForRowAt indexPath: IndexPath) -> CGFloat { _heightForRow!(indexPath) }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return _heightForRow!(indexPath)
+    }
 }

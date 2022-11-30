@@ -114,4 +114,17 @@ extension TabBarSceneDIProvider: TabBarFlowCoordinatorDependencies {
                                             media: media,
                                             viewModel: viewModel)
     }
+    
+    func createDetailViewDIProvider(
+        launchingViewController detailViewController: DetailViewController) -> DetailViewDIProvider {
+            return DetailViewDIProvider(
+                dependencies: createDetailViewDIProviderDependencies(launchingViewController: detailViewController))
+        }
+    
+    func createDetailViewDIProviderDependencies(
+        launchingViewController detailViewController: DetailViewController) -> DetailViewDIProvider.Dependencies {
+            return DetailViewDIProvider.Dependencies(detailViewController: detailViewController,
+                                                     detailViewModel: detailViewController.viewModel,
+                                                     tableView: detailViewController.tableView)
+        }
 }

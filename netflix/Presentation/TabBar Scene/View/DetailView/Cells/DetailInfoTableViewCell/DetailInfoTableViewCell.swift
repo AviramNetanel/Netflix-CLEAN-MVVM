@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -25,23 +25,17 @@ private typealias View = ViewInput & ViewOutput
 
 final class DetailInfoTableViewCell: UITableViewCell, View {
     
-    static func create(on tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> DetailInfoTableViewCell {
-        guard let view = tableView.dequeueReusableCell(
-            withIdentifier: String(describing: DetailInfoTableViewCell.reuseIdentifier),
-            for: indexPath) as? DetailInfoTableViewCell else { fatalError() }
-        view.addSubview(createView(on: view, with: viewModel))
-        view.viewDidLoad()
-        return view
+    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+        super.init(style: .default, reuseIdentifier: DetailInfoTableViewCell.reuseIdentifier)
+        let infoView = DetailInfoView(on: self, with: diProvider.dependencies.detailViewModel)
+        self.contentView.addSubview(infoView)
+        infoView.constraintToSuperview(self.contentView)
+        self.viewDidConfigure()
     }
     
-    private static func createView(on view: UIView,
-                                   with viewModel: DetailViewModel) -> DetailInfoView {
-        return .create(on: view, with: viewModel)
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidLoad() {
+    fileprivate func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

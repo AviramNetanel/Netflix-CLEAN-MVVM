@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -37,26 +37,18 @@ final class DetailPanelView: UIView, View, ViewInstantiable {
     fileprivate(set) var centerItem: DetailPanelViewItem!
     fileprivate(set) var trailingItem: DetailPanelViewItem!
     
-    static func create(on parent: UIView,
-                       viewModel: DetailViewModel) -> DetailPanelView {
-        let view = DetailPanelView(frame: parent.bounds)
-        view.nibDidLoad()
-        createItems(on: view, viewModel: viewModel)
-        view.viewDidLoad()
-        return view
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        self.leadingItem = DetailPanelViewItem(on: self.leadingViewContainer, with: viewModel)
+        self.centerItem = DetailPanelViewItem(on: self.centerViewContainer, with: viewModel)
+        self.trailingItem = DetailPanelViewItem(on: self.trailingViewContainer, with: viewModel)
+        self.viewDidConfigure()
     }
     
-    private static func createItems(on view: DetailPanelView,
-                                    viewModel: DetailViewModel) {
-        view.leadingItem = .create(on: view.leadingViewContainer,
-                                   viewModel: viewModel)
-        view.centerItem = .create(on: view.centerViewContainer,
-                                  viewModel: viewModel)
-        view.trailingItem = .create(on: view.trailingViewContainer,
-                                    viewModel: viewModel)
+    required init?(coder: NSCoder) { fatalError() }
+    
+    fileprivate func viewDidConfigure() {
+        backgroundColor = .black
     }
-    
-    fileprivate func viewDidLoad() { setupSubviews() }
-    
-    private func setupSubviews() { backgroundColor = .black }
 }

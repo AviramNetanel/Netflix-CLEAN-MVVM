@@ -11,7 +11,7 @@ import UIKit
 
 private protocol ViewInput {
     func viewDidLoad()
-    func viewDidConfigure(with viewModel: DetailInfoViewViewModel)
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -36,22 +36,25 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    static func create(on parent: UIView,
-                       with viewModel: DetailViewModel) -> DetailInfoView {
-        let view = DetailInfoView(frame: parent.bounds)
-        view.nibDidLoad()
-        view.viewDidLoad()
-        view.viewDidConfigure(with: createViewModel(with: viewModel))
-        return view
+    private let viewModel: DetailInfoViewViewModel
+    
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        self.viewModel = DetailInfoViewViewModel(with: viewModel)
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        self.viewDidLoad()
     }
     
-    private static func createViewModel(with viewModel: DetailViewModel) -> DetailInfoViewViewModel {
-        return .init(with: viewModel)
+    required init?(coder: NSCoder) { fatalError() }
+    
+    fileprivate func viewDidLoad() {
+        setupSubviews()
+        viewDidConfigure()
     }
     
-    fileprivate func viewDidLoad() { setupSubviews() }
-    
-    fileprivate func viewDidConfigure(with viewModel: DetailInfoViewViewModel) {
+    fileprivate func viewDidConfigure() {
+        backgroundColor = .black
+        
         mediaTypeLabel.text = viewModel.mediaType
         titlelabel.text = viewModel.title
         downloadButton.setTitle(viewModel.downloadButtonTitle, for: .normal)
@@ -61,21 +64,17 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     }
     
     private func setupSubviews() {
-        backgroundColor = .black
-        
         setupHDView()
         setupAgeRestrictionView()
         setupGradientView()
     }
     
     private func setupHDView() {
-        let ageRestrictionView = AgeRestrictionView.create(with: ageRestrictionViewContainer.bounds)
-        ageRestrictionViewContainer.addSubview(ageRestrictionView)
+        let ageRestrictionView = AgeRestrictionView(on: ageRestrictionViewContainer)
     }
     
     private func setupAgeRestrictionView() {
-        let hdView = HDView.create(with: hdViewContainer.bounds)
-        hdViewContainer.addSubview(hdView)
+        let hdView = HDView(on: hdViewContainer)
     }
     
     private func setupGradientView() {

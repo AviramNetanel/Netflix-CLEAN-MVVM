@@ -33,6 +33,10 @@ protocol DetailFlowDependencies {
                                       with viewModel: HomeViewModel) -> DetailViewModel.Dependencies
     func createDetailViewController(dependencies: DetailViewModel.Dependencies) -> DetailViewController
     func createDetailViewModel(dependencies: DetailViewModel.Dependencies) -> DetailViewModel
+    func createDetailViewDIProvider(
+        launchingViewController detailViewController: DetailViewController) -> DetailViewDIProvider
+    func createDetailViewDIProviderDependencies(
+        launchingViewController detailViewController: DetailViewController) -> DetailViewDIProvider.Dependencies
 }
 
 // MARK: - TabBarFlowCoordinatorDependencies typealias

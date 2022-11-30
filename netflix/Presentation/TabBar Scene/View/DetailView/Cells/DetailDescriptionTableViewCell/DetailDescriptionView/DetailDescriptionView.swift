@@ -10,13 +10,14 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
-    func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel)
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var viewModel: DetailDescriptionViewViewModel { get }
+}
 
 // MARK: - View typealias
 
@@ -30,26 +31,22 @@ final class DetailDescriptionView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var castLabel: UILabel!
     @IBOutlet private weak var writersLabel: UILabel!
     
-    static func create(on parent: UIView,
-                       with viewModel: DetailViewModel) -> DetailDescriptionView {
-        let view = DetailDescriptionView(frame: parent.bounds)
-        view.nibDidLoad()
-        view.viewDidLoad()
-        view.viewDidConfigure(with: createViewModel(with: viewModel))
-        return view
+    fileprivate let viewModel: DetailDescriptionViewViewModel
+    
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        self.viewModel = .init(with: viewModel.dependencies.media)
+        super.init(frame: parent.bounds)
+        self.nibDidLoad()
+        self.viewDidConfigure()
     }
     
-    private static func createViewModel(with viewModel: DetailViewModel) -> DetailDescriptionViewViewModel {
-        return .init(with: viewModel.dependencies.media)
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidLoad() { setupSubviews() }
-    
-    fileprivate func viewDidConfigure(with viewModel: DetailDescriptionViewViewModel) {
+    fileprivate func viewDidConfigure() {
+        backgroundColor = .black
+        
         descriptionTextView.text = viewModel.description
         castLabel.text = viewModel.cast
         writersLabel.text = viewModel.writers
     }
-    
-    private func setupSubviews() { backgroundColor = .black }
 }

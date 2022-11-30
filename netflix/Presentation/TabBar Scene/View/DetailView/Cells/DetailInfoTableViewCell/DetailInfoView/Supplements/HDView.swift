@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -27,25 +27,27 @@ private typealias View = ViewInput & ViewOutput
 
 final class HDView: UIView, View {
     
-    fileprivate lazy var label: UILabel = {
+    fileprivate lazy var label = createLabel()
+    
+    init(on parent: UIView) {
+        super.init(frame: parent.bounds)
+        parent.addSubview(self)
+        self.addSubview(self.label)
+        self.viewDidConfigure()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    private func createLabel() -> UILabel {
         let label = UILabel(frame: bounds)
         label.font = UIFont.systemFont(ofSize: 11.0, weight: .heavy)
         label.textColor = .white
         label.textAlignment = .center
         label.text = "HD"
         return label
-    }()
-    
-    static func create(with frame: CGRect) -> HDView {
-        let view = HDView(frame: frame)
-        view.addSubview(view.label)
-        view.viewDidLoad()
-        return view
     }
     
-    fileprivate func viewDidLoad() { setupSubviews() }
-    
-    private func setupSubviews() {
+    fileprivate func viewDidConfigure() {
         layer.cornerRadius = 2.0
         backgroundColor = .hexColor("#414141")
     }

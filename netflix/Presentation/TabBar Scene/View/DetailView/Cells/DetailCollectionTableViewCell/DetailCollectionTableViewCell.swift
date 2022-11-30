@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func viewDidLoad()
+    func viewDidConfigure()
 }
 
 // MARK: - ViewOutput protocol
@@ -29,26 +29,18 @@ final class DetailCollectionTableViewCell: UITableViewCell, View {
     
     fileprivate(set) var detailCollectionView: DetailCollectionView!
     
+    init(using diProvider: DetailViewDIProvider, for indexPath: IndexPath) {
+        super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)
+        self.detailCollectionView = DetailCollectionView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
+        self.contentView.addSubview(self.detailCollectionView)
+        self.viewDidConfigure()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
     deinit { detailCollectionView = nil }
     
-    static func create(on tableView: UITableView,
-                       for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> DetailCollectionTableViewCell {
-        guard let view = tableView.dequeueReusableCell(
-            withIdentifier: String(describing: DetailCollectionTableViewCell.reuseIdentifier),
-            for: indexPath) as? DetailCollectionTableViewCell else { fatalError() }
-        view.addSubview(createView(on: view, with: viewModel))
-        view.viewDidLoad()
-        return view
-    }
-    
-    private static func createView(on view: DetailCollectionTableViewCell,
-                                   with viewModel: DetailViewModel) -> DetailCollectionView {
-        view.detailCollectionView = .create(on: view, with: viewModel)
-        return view.detailCollectionView
-    }
-    
-    fileprivate func viewDidLoad() {
+    fileprivate func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

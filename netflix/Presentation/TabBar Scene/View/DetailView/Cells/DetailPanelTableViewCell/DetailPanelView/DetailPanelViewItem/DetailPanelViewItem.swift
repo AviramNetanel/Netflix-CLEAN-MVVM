@@ -46,20 +46,14 @@ final class DetailPanelViewItemConfiguration: Configuration {
         self.view = view
         self.myList = viewModel.myList
         self.section = viewModel.myListSection
+        self.viewDidConfigure()
+        self.viewDidRegisterRecognizers()
     }
     
     deinit { view = nil }
     
-    static func create(view: DetailPanelViewItem, with viewModel: DetailViewModel) -> DetailPanelViewItemConfiguration {
-        let configuration = DetailPanelViewItemConfiguration(view: view, with: viewModel)
-        configuration.viewDidConfigure()
-        configuration.viewDidRegisterRecognizers()
-        return configuration
-    }
-    
     fileprivate func viewDidRegisterRecognizers() {
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(viewDidTap))
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapRecognizer)
     }
     
@@ -124,52 +118,41 @@ final class DetailPanelViewItem: UIView, View {
     fileprivate(set) var configuration: DetailPanelViewItemConfiguration!
     fileprivate(set) var viewModel: DetailPanelViewItemViewModel!
     
-    fileprivate lazy var imageView: UIImageView = {
-        let image = UIImage()
-        let imageView = UIImageView(image: image)
-        imageView.image = image.whiteRendering()
-        addSubview(imageView)
-        return imageView
-    }()
-    
-    fileprivate lazy var label: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
-        label.textAlignment = .center
-        addSubview(label)
-        return label
-    }()
+    fileprivate lazy var imageView = createImageView()
+    fileprivate lazy var label = createLabel()
     
     var isSelected = false
+    
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        super.init(frame: parent.bounds)
+        self.tag = parent.tag
+        parent.addSubview(self)
+        self.chainConstraintToCenter(linking: self.imageView, to: self.label)
+        self.viewModel = .init(item: self, with: viewModel)
+        self.configuration = .init(view: self, with: viewModel)
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
     
     deinit {
         configuration = nil
         viewModel = nil
     }
     
-    static func create(on parent: UIView,
-                       viewModel: DetailViewModel) -> DetailPanelViewItem {
-        let view = DetailPanelViewItem(frame: parent.bounds)
-        view.tag = parent.tag
-        parent.addSubview(view)
-        view.chainConstraintToCenter(linking: view.imageView, to: view.label)
-        createViewModel(on: view, with: viewModel)
-        createConfiguration(on: view, with: viewModel)
-        return view
+    private func createLabel() -> UILabel {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+        label.textAlignment = .center
+        addSubview(label)
+        return label
     }
     
-    @discardableResult
-    private static func createViewModel(on view: DetailPanelViewItem,
-                                        with viewModel: DetailViewModel) -> DetailPanelViewItemViewModel {
-        view.viewModel = .init(item: view, with: viewModel)
-        return view.viewModel
-    }
-    
-    @discardableResult
-    private static func createConfiguration(on view: DetailPanelViewItem,
-                                            with viewModel: DetailViewModel) -> DetailPanelViewItemConfiguration {
-        view.configuration = .create(view: view, with: viewModel)
-        return view.configuration
+    private func createImageView() -> UIImageView {
+        let image = UIImage()
+        let imageView = UIImageView(image: image)
+        imageView.image = image.whiteRendering()
+        addSubview(imageView)
+        return imageView
     }
 }
