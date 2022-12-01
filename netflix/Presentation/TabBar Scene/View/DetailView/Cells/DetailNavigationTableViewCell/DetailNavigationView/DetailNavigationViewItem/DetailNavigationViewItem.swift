@@ -51,24 +51,18 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
     
     fileprivate func viewDidConfigure() {
-        if navigationView.viewModel?.dependencies.media.type == .series {
-            navigationView.viewModel?.navigationViewState.value = .episodes
+        if navigationView.viewModel.dependencies.media.type == .series {
+            navigationView.viewModel.navigationViewState.value = .episodes
             navigationView.leadingViewContainer.isHidden(false)
             navigationView.centerViewContainer.isHidden(true)
         } else {
-            navigationView.viewModel?.navigationViewState.value = .trailers
+            navigationView.viewModel.navigationViewState.value = .trailers
             navigationView.leadingViewContainer.isHidden(true)
             navigationView.centerViewContainer.isHidden(false)
         }
     }
     
     func viewDidTap() {
-        if view.isSelected {
-            view.widthConstraint?.constant = view.bounds.width
-        } else {
-            view.widthConstraint?.constant = .zero
-        }
-        
         view.isSelected.toggle()
         
         navigationView.stateDidChange(view: view)

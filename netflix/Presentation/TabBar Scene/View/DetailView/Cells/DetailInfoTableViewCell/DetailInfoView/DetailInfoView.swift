@@ -37,15 +37,24 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var downloadButton: UIButton!
     
     private let viewModel: DetailInfoViewViewModel
+    private var ageRestrictionView: AgeRestrictionView!
+    private var hdView: HDView!
     
     init(on parent: UIView, with viewModel: DetailViewModel) {
         self.viewModel = DetailInfoViewViewModel(with: viewModel)
         super.init(frame: parent.bounds)
         self.nibDidLoad()
+        self.ageRestrictionView = AgeRestrictionView(on: ageRestrictionViewContainer)
+        self.hdView = HDView(on: hdViewContainer)
         self.viewDidLoad()
     }
     
     required init?(coder: NSCoder) { fatalError() }
+    
+    deinit {
+        ageRestrictionView = nil
+        hdView = nil
+    }
     
     fileprivate func viewDidLoad() {
         setupSubviews()
@@ -64,17 +73,7 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     }
     
     private func setupSubviews() {
-        setupHDView()
-        setupAgeRestrictionView()
         setupGradientView()
-    }
-    
-    private func setupHDView() {
-        let ageRestrictionView = AgeRestrictionView(on: ageRestrictionViewContainer)
-    }
-    
-    private func setupAgeRestrictionView() {
-        let hdView = HDView(on: hdViewContainer)
     }
     
     private func setupGradientView() {

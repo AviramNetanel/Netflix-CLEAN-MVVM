@@ -38,8 +38,12 @@ extension DetailViewDIProvider: PreviewViewDependencies {
 
 extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
     
+    func createDetailTableViewDataSourceActions() -> DetailTableViewDataSourceActions {
+        return DetailTableViewDataSourceActions(heightForRowAt: dependencies.detailViewController.heightForRow())
+    }
+    
     func createDetailTableViewDataSource() -> DetailTableViewDataSource {
-        return DetailTableViewDataSource(using: self)
+        return DetailTableViewDataSource(using: self, actions: createDetailTableViewDataSourceActions())
     }
     
     func createDetailInfoTableViewCell() -> DetailInfoTableViewCell {
@@ -62,27 +66,3 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
         return DetailCollectionTableViewCell(using: self)
     }
 }
-
-extension DetailViewDIProvider {
-    
-    func createDetailNavigationViewViewModelActions(on view: DetailNavigationView) -> DetailNavigationViewViewModelActions {
-        return DetailNavigationViewViewModelActions(stateDidChange: view._stateDidChange(state:))
-    }
-}
-
-//// MARK: - DetailNavigationViewDependencies implementation
-//
-//extension DetailViewDIProvider: DetailNavigationViewDependencies {
-//
-//    func createDetailNavigationViewViewModel() -> DetailNavigationViewViewModel {
-//        return DetailNavigationViewViewModel(using: self, dependencies: createDetailNavigationViewViewModelDependencies())
-//    }
-//
-//    func createDetailNavigationViewViewModelDependencies() -> DetailNavigationViewViewModel.Dependencies {
-//        return DetailNavigationViewViewModel.Dependencies(actions: createDetailNavigationViewViewModelActions())
-//    }
-//
-//    func createDetailNavigationViewViewModelActions() -> DetailNavigationViewViewModelActions {
-//        return DetailNavigationViewViewModelActions(stateDidChange: dependencies.detailViewController.stateDidChange)
-//    }
-//}

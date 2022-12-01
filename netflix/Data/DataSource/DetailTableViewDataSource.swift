@@ -7,9 +7,16 @@
 
 import UIKit.UITableView
 
+// MARK: - DetailTableViewDataSourceActions struct
+
+struct DetailTableViewDataSourceActions {
+    let heightForRowAt: (IndexPath) -> CGFloat
+}
+
 // MARK: - DetailTableViewDataSourceDependencies protocol
 
 protocol DetailTableViewDataSourceDependencies {
+    func createDetailTableViewDataSourceActions() -> DetailTableViewDataSourceActions
     func createDetailTableViewDataSource() -> DetailTableViewDataSource
     func createDetailInfoTableViewCell() -> DetailInfoTableViewCell
     func createDetailDescriptionTableViewCell() -> DetailDescriptionTableViewCell
@@ -23,7 +30,6 @@ protocol DetailTableViewDataSourceDependencies {
 private protocol DataSourceInput {
     func viewsDidRegister()
     func dataSourceDidChange()
-    var _heightForRow: ((IndexPath) -> CGFloat)? { get }
 }
 
 // MARK: - DataSourceOutput protocol
@@ -31,6 +37,7 @@ private protocol DataSourceInput {
 private protocol DataSourceOutput {
     var tableView: UITableView { get }
     var viewModel: DetailViewModel { get }
+    var actions: DetailTableViewDataSourceActions { get }
     var numberOfRows: Int { get }
     var infoCell: DetailInfoTableViewCell! { get }
     var descriptionCell: DetailDescriptionTableViewCell! { get }
@@ -59,7 +66,9 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     private let diProvider: DetailViewDIProvider
-    fileprivate var viewModel: DetailViewModel
+    
+    fileprivate let viewModel: DetailViewModel
+    fileprivate let actions: DetailTableViewDataSourceActions
     fileprivate let tableView: UITableView
     fileprivate let numberOfRows: Int = 1
     
@@ -69,11 +78,8 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    var _heightForRow: ((IndexPath) -> CGFloat)? {
-        didSet { tableView.reloadData() }
-    }
-    
-    init(using diProvider: DetailViewDIProvider) {
+    init(using diProvider: DetailViewDIProvider, actions: DetailTableViewDataSourceActions) {
+        self.actions = actions
         self.diProvider = diProvider
         self.viewModel = diProvider.dependencies.detailViewModel
         self.tableView = diProvider.dependencies.tableView
@@ -83,7 +89,6 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     deinit {
-        _heightForRow = nil
         infoCell = nil
         descriptionCell = nil
         panelCell = nil
@@ -115,24 +120,23 @@ final class DetailTableViewDataSource: NSObject,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
-        switch index {
-        case .info:
+        if case .info = index {
             guard infoCell == nil else { return infoCell }
             infoCell = diProvider.createDetailInfoTableViewCell()
             return infoCell
-        case .description:
+        } else if case .description = index {
             guard descriptionCell == nil else { return descriptionCell }
             descriptionCell = diProvider.createDetailDescriptionTableViewCell()
             return descriptionCell
-        case .panel:
+        } else if case .panel = index {
             guard panelCell == nil else { return panelCell }
             panelCell = diProvider.createDetailPanelTableViewCell()
             return panelCell
-        case .navigation:
+        } else if case .navigation = index {
             guard navigationCell == nil else { return navigationCell }
             navigationCell = diProvider.createDetailNavigationTableViewCell()
             return navigationCell
-        case .collection:
+        } else {
             guard collectionCell == nil else { return collectionCell }
             collectionCell = diProvider.createDetailCollectionTableViewCell()
             return collectionCell
@@ -140,6 +144,6 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return _heightForRow!(indexPath)
+        return actions.heightForRowAt(indexPath)
     }
 }

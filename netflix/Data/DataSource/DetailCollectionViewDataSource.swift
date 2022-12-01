@@ -56,22 +56,21 @@ final class DetailCollectionViewDataSource<T>: NSObject,
         return dataSource
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int { numberOfSections }
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return numberOfSections
+    }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int { items.count }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return items.count
+    }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch viewModel.navigationViewState.value {
         case .episodes:
-            return EpisodeCollectionViewCell.create(on: collectionView,
-                                                    for: indexPath,
-                                                    with: viewModel)
+            return EpisodeCollectionViewCell.create(on: collectionView, for: indexPath, with: viewModel)
         case .trailers:
-            return TrailerCollectionViewCell.create(on: collectionView,
-                                                    for: indexPath,
-                                                    with: viewModel.dependencies.media)
+            return TrailerCollectionViewCell.create(on: collectionView, for: indexPath, with: viewModel.dependencies.media)
         default:
             return CollectionViewCell.create(on: collectionView,
                                              reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
@@ -81,17 +80,9 @@ final class DetailCollectionViewDataSource<T>: NSObject,
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        willDisplay cell: UICollectionViewCell,
-                        forItemAt indexPath: IndexPath) {}
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        didEndDisplaying cell: UICollectionViewCell,
-                        forItemAt indexPath: IndexPath) {}
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {}
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        prefetchItemsAt indexPaths: [IndexPath]) {}
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {}
 }

@@ -7,26 +7,21 @@
 
 import UIKit
 
-//struct DetailNavigationViewActions {
-//    let stateDidChange: (DetailNavigationView.State) -> Void
-//}
-
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
     func viewDidLoad()
     func stateDidChange(view: DetailNavigationViewItem)
-//    var _stateDidChange: ((DetailNavigationView.State) -> Void)? { get }
+    func didSelectItem(view: DetailNavigationViewItem)
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
+    var viewModel: DetailViewModel { get }
     var leadingItem: DetailNavigationViewItem! { get }
     var centerItem: DetailNavigationViewItem! { get }
     var trailingItem: DetailNavigationViewItem! { get }
-    var state: DetailNavigationView.State! { get }
-    var viewModel: DetailViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -47,27 +42,17 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var centerViewContainer: UIView!
     @IBOutlet private(set) weak var trailingViewContrainer: UIView!
     
+    fileprivate(set) var viewModel: DetailViewModel
     fileprivate(set) var leadingItem: DetailNavigationViewItem!
     fileprivate(set) var centerItem: DetailNavigationViewItem!
     fileprivate(set) var trailingItem: DetailNavigationViewItem!
-    fileprivate(set) var viewModel: DetailViewModel!
-    var actions: DetailNavigationViewViewModelActions!
-    let diProvider: DetailViewDIProvider
-    
-//    let navigationView
-    
-    fileprivate var state: State!
     
     init(using diProvider: DetailViewDIProvider, on parent: UIView) {
-        self.diProvider = diProvider
+        self.viewModel = diProvider.dependencies.detailViewModel
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.nibDidLoad()
-        self.viewModel = diProvider.dependencies.detailViewModel
-        
-        self.actions = diProvider.createDetailNavigationViewViewModelActions(on: self)
-        
         self.leadingItem = DetailNavigationViewItem(on: self.leadingViewContainer, with: self)
         self.centerItem = DetailNavigationViewItem(on: self.centerViewContainer, with: self)
         self.trailingItem = DetailNavigationViewItem(on: self.trailingViewContrainer, with: self)
@@ -77,11 +62,9 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        state = nil
         leadingItem = nil
         centerItem = nil
         trailingItem = nil
-        viewModel = nil
     }
     
     fileprivate func viewDidLoad() {
@@ -89,36 +72,35 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         
         stateDidChange(view: viewModel.navigationViewState.value == .episodes ? leadingItem : centerItem)
     }
+}
+
+// MARK: - DetailNavigationViewViewModelActions implementation
+
+extension DetailNavigationView {
     
     func stateDidChange(view: DetailNavigationViewItem) {
-        switch view {
-        case leadingItem:
-            state = .episodes
-            
-            view.widthConstraint.constant = view.bounds.width
-            centerItem.widthConstraint.constant = .zero
-            trailingItem.widthConstraint.constant = .zero
-        case centerItem:
-            state = .trailers
-            
-            leadingItem.widthConstraint.constant = .zero
-            view.widthConstraint.constant = view.bounds.width
-            trailingItem.widthConstraint.constant = .zero
-        case trailingItem:
-            state = .similarContent
-            
-            leadingItem.widthConstraint.constant = .zero
-            centerItem.widthConstraint.constant = .zero
-            view.widthConstraint.constant = view.bounds.width
-        default: break
-        }
+        guard let state = State(rawValue: view.tag) else { return }
+        viewModel.navigationViewState.value = state
         
-//        _stateDidChange(state: state)
-        
-        actions.stateDidChange(state)
+        didSelectItem(view: view)
     }
     
-    func _stateDidChange(state: DetailNavigationView.State) {
-        viewModel.navigationViewState.value = state
+    func didSelectItem(view: DetailNavigationViewItem) {
+        guard let state = State(rawValue: view.tag) else { return }
+        if case .episodes = state {
+            view.widthConstraint.constant = view.bounds.width
+            centerItem.widthConstraint.constant = .zero
+            trailingItem.widthConstraint.constant = .zero
+        }
+        if case .trailers = state {
+            leadingItem.widthConstraint.constant = .zero
+            view.widthConstraint.constant = view.bounds.width
+            trailingItem.widthConstraint.constant = .zero
+        }
+        if case .similarContent = state {
+            leadingItem.widthConstraint.constant = .zero
+            centerItem.widthConstraint.constant = .zero
+            view.widthConstraint.constant = view.bounds.width
+        }
     }
 }

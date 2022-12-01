@@ -39,7 +39,6 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         setupDependencies()
         setupSubviews()
-        setupBindings()
         setupObservers()
         viewModel.viewDidLoad()
     }
@@ -51,10 +50,6 @@ final class DetailViewController: UIViewController {
     private func setupSubviews() {
         setupPreviewView()
         setupDataSource()
-    }
-    
-    private func setupBindings() {
-        heightForRow(in: dataSource)
     }
     
     private func setupObservers() {
@@ -73,6 +68,7 @@ final class DetailViewController: UIViewController {
     func removeObservers() {
         if let viewModel = viewModel {
             printIfDebug("Removed `DetailViewModel` observers.")
+            viewModel.navigationViewState.remove(observer: self)
             viewModel.season.remove(observer: self)
         }
         if let panelView = dataSource.panelCell.panelView {
@@ -81,21 +77,34 @@ final class DetailViewController: UIViewController {
             panelView.centerItem.viewModel.removeObservers()
             panelView.trailingItem.viewModel.removeObservers()
         }
-//        if let navigationView = dataSource.navigationCell.navigationView {
-//            printIfDebug("Removed `DetailNavigationView` observers.")
-//            navigationView.removeObservers()
-//        }
     }
 }
 
-// MARK: - Bindings
+// MARK: - Observer bindings
 
 extension DetailViewController {
     
-    // MARK: DetailTableViewDataSource bindings
+    private func navigationViewState(in viewModel: DetailViewModel) {
+        viewModel.navigationViewState.observe(on: self) { [weak self] state in
+            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
+            self?.tableView.reloadData()
+        }
+    }
     
-    private func heightForRow(in dataSource: DetailTableViewDataSource) {
-        dataSource._heightForRow = { [weak self] indexPath in
+    private func season(in viewModel: DetailViewModel) {
+        viewModel.season.observe(on: self) { [weak self] season in
+            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
+            self?.tableView.reloadData()
+        }
+    }
+}
+
+// MARK: - DetailTableViewDataSourceActions implementation
+
+extension DetailViewController {
+    
+    func heightForRow() -> (IndexPath) -> CGFloat {
+        return { [weak self] indexPath in
             guard
                 let self = self,
                 let index = DetailTableViewDataSource.Index(rawValue: indexPath.section)
@@ -113,27 +122,6 @@ extension DetailViewController {
                     return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
                 }
             }
-        }
-    }
-}
-
-// MARK: - Observers
-
-extension DetailViewController {
-    
-    // MARK: DetailViewModel observers
-    
-    private func navigationViewState(in viewModel: DetailViewModel) {
-        viewModel.navigationViewState.observe(on: self) { [weak self] state in
-            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
-            self?.heightForRow(in: self!.dataSource)
-        }
-    }
-    
-    private func season(in viewModel: DetailViewModel) {
-        viewModel.season.observe(on: self) { [weak self] season in
-            self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
-            self?.heightForRow(in: self!.dataSource)
         }
     }
 }

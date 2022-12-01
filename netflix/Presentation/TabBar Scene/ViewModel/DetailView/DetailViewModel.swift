@@ -7,10 +7,6 @@
 
 import Foundation
 
-// MARK: - DetailViewModelActions struct
-
-struct DetailViewModelActions {}
-
 // MARK: - ViewModelInput protocol
 
 private protocol ViewModelInput {
