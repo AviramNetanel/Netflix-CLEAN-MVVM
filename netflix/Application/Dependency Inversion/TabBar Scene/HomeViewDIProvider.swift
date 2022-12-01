@@ -41,17 +41,17 @@ extension HomeViewDIProvider: HomeTableViewDataSourceDependencies {
     }
     
     func createHomeRatedTableViewCell(for indexPath: IndexPath,
-                                      with actions: CollectionViewDataSourceActions) -> RatedTableViewCell {
+                                      with actions: HomeCollectionViewDataSourceActions) -> RatedTableViewCell {
         return RatedTableViewCell(using: self, for: indexPath, actions: actions)
     }
     
     func createHomeResumableTableViewCell(for indexPath: IndexPath,
-                                          with actions: CollectionViewDataSourceActions) -> ResumableTableViewCell {
+                                          with actions: HomeCollectionViewDataSourceActions) -> ResumableTableViewCell {
         return ResumableTableViewCell(using: self, for: indexPath, actions: actions)
     }
     
     func createHomeStandardTableViewCell(for indexPath: IndexPath,
-                                         with actions: CollectionViewDataSourceActions) -> StandardTableViewCell {
+                                         with actions: HomeCollectionViewDataSourceActions) -> StandardTableViewCell {
         return StandardTableViewCell(using: self, for: indexPath, actions: actions)
     }
     
@@ -62,12 +62,12 @@ extension HomeViewDIProvider: HomeTableViewDataSourceDependencies {
 
 // MARK: - HomeCollectionViewDataSourceDependencies implementation
 
-extension HomeViewDIProvider: CollectionViewDataSourceDepenendencies {
+extension HomeViewDIProvider: HomeCollectionViewDataSourceDepenendencies {
     
     func createHomeCollectionViewDataSourceActions(
         for section: Int,
-        using actions: HomeTableViewDataSourceActions) -> CollectionViewDataSourceActions {
-            return CollectionViewDataSourceActions(
+        using actions: HomeTableViewDataSourceActions) -> HomeCollectionViewDataSourceActions {
+            return HomeCollectionViewDataSourceActions(
                 didSelectItem: { row in
                     actions.didSelectItem(section, row)
                 })

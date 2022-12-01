@@ -1,5 +1,5 @@
 //
-//  CollectionViewDataSource.swift
+//  HomeCollectionViewDataSource.swift
 //  netflix
 //
 //  Created by Zach Bazov on 13/09/2022.
@@ -7,16 +7,16 @@
 
 import UIKit
 
-// MARK: - CollectionViewDataSourceDependencies protocol
+// MARK: - HomeCollectionViewDataSourceDependencies protocol
 
-protocol CollectionViewDataSourceDepenendencies {
+protocol HomeCollectionViewDataSourceDepenendencies {
     func createHomeCollectionViewDataSourceActions(for section: Int,
-                                                   using actions: HomeTableViewDataSourceActions) -> CollectionViewDataSourceActions
+                                                   using actions: HomeTableViewDataSourceActions) -> HomeCollectionViewDataSourceActions
 }
 
-// MARK: - CollectionViewDataSourceActions struct
+// MARK: - HomeCollectionViewDataSourceActions struct
 
-struct CollectionViewDataSourceActions {
+struct HomeCollectionViewDataSourceActions {
     var didSelectItem: (Int) -> Void
 }
 
@@ -31,7 +31,7 @@ private protocol DataSourceInput {
 
 private protocol DataSourceOutput {
     var collectionView: UICollectionView! { get }
-    var actions: CollectionViewDataSourceActions? { get }
+    var actions: HomeCollectionViewDataSourceActions? { get }
     var section: Section { get }
     var cache: NSCache<NSString, UIImage> { get }
 }
@@ -40,16 +40,16 @@ private protocol DataSourceOutput {
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
 
-// MARK: - CollectionViewDataSource class
+// MARK: - HomeCollectionViewDataSource class
 
-final class CollectionViewDataSource<Cell>: NSObject,
-                                            DataSource,
-                                            UICollectionViewDelegate,
-                                            UICollectionViewDataSource,
-                                            UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
+final class HomeCollectionViewDataSource<Cell>: NSObject,
+                                                DataSource,
+                                                UICollectionViewDelegate,
+                                                UICollectionViewDataSource,
+                                                UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
     
     fileprivate weak var collectionView: UICollectionView!
-    fileprivate var actions: CollectionViewDataSourceActions?
+    fileprivate var actions: HomeCollectionViewDataSourceActions?
     fileprivate var section: Section
     fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     fileprivate let homeViewModel: HomeViewModel
@@ -57,7 +57,7 @@ final class CollectionViewDataSource<Cell>: NSObject,
     init(on collectionView: UICollectionView,
          section: Section,
          viewModel: HomeViewModel,
-         with actions: CollectionViewDataSourceActions? = nil) {
+         with actions: HomeCollectionViewDataSourceActions? = nil) {
         self.actions = actions
         self.section = section
         self.collectionView = collectionView
@@ -71,7 +71,9 @@ final class CollectionViewDataSource<Cell>: NSObject,
         actions = nil
     }
     
-    fileprivate func viewDidLoad() { dataSourceDidChange() }
+    fileprivate func viewDidLoad() {
+        dataSourceDidChange()
+    }
     
     fileprivate func dataSourceDidChange() {
         collectionView.delegate = self

@@ -14,11 +14,11 @@ protocol HomeTableViewDataSourceDependencies {
     func createHomeTableViewDataSourceActions() -> HomeTableViewDataSourceActions
     func createHomeDisplayTableViewCell(for indexPath: IndexPath) -> DisplayTableViewCell
     func createHomeRatedTableViewCell(for indexPath: IndexPath,
-                                      with actions: CollectionViewDataSourceActions) -> RatedTableViewCell
+                                      with actions: HomeCollectionViewDataSourceActions) -> RatedTableViewCell
     func createHomeResumableTableViewCell(for indexPath: IndexPath,
-                                          with actions: CollectionViewDataSourceActions) -> ResumableTableViewCell
+                                          with actions: HomeCollectionViewDataSourceActions) -> ResumableTableViewCell
     func createHomeStandardTableViewCell(for indexPath: IndexPath,
-                                         with actions: CollectionViewDataSourceActions) -> StandardTableViewCell
+                                         with actions: HomeCollectionViewDataSourceActions) -> StandardTableViewCell
     func createHomeTableViewHeaderFooterView(at section: Int) -> TableViewHeaderFooterView
 }
 

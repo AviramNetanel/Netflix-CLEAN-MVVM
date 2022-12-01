@@ -23,7 +23,7 @@ typealias StandardTableViewCell = TableViewCell<StandardCollectionViewCell>
 
 private protocol CellInput {
     func viewDidLoad()
-    func viewDidConfigure(section: Section, viewModel: HomeViewModel, with actions: CollectionViewDataSourceActions?)
+    func viewDidConfigure(section: Section, viewModel: HomeViewModel, with actions: HomeCollectionViewDataSourceActions?)
 }
 
 // MARK: - CellOutput protocol
@@ -31,7 +31,7 @@ private protocol CellInput {
 private protocol CellOutput {
     associatedtype T: UICollectionViewCell
     var collectionView: UICollectionView { get }
-    var dataSource: CollectionViewDataSource<T>! { get }
+    var dataSource: HomeCollectionViewDataSource<T>! { get }
     var layout: CollectionViewLayout! { get }
 }
 
@@ -48,16 +48,16 @@ final class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCel
     }
     
     fileprivate lazy var collectionView = createCollectionView()
-    fileprivate(set) var dataSource: CollectionViewDataSource<T>!
+    fileprivate(set) var dataSource: HomeCollectionViewDataSource<T>!
     fileprivate var layout: CollectionViewLayout!
     
     init(using diProvider: HomeViewDIProvider,
          for indexPath: IndexPath,
-         actions: CollectionViewDataSourceActions? = nil) {
+         actions: HomeCollectionViewDataSourceActions? = nil) {
         super.init(style: .default, reuseIdentifier: TableViewCell<T>.reuseIdentifier)
         let index = HomeTableViewDataSource.Index(rawValue: indexPath.section)!
         let section = diProvider.dependencies.homeViewModel.section(at: index)
-        self.dataSource = CollectionViewDataSource(on: collectionView,
+        self.dataSource = HomeCollectionViewDataSource(on: collectionView,
                                                    section: section,
                                                    viewModel: diProvider.dependencies.homeViewModel,
                                                    with: actions)
@@ -89,7 +89,7 @@ final class TableViewCell<T>: UITableViewCell, Cell where T: UICollectionViewCel
     
     func viewDidConfigure(section: Section,
                           viewModel: HomeViewModel,
-                          with actions: CollectionViewDataSourceActions? = nil) {
+                          with actions: HomeCollectionViewDataSourceActions? = nil) {
         guard let indices = HomeTableViewDataSource.Index(rawValue: section.id) else { return }
         if case .display = indices {
             ///
