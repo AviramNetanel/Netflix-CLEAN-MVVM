@@ -19,10 +19,24 @@ protocol DetailTableViewDataSourceDependencies {
     func createDetailTableViewDataSourceActions() -> DetailTableViewDataSourceActions
     func createDetailTableViewDataSource() -> DetailTableViewDataSource
     func createDetailInfoTableViewCell() -> DetailInfoTableViewCell
+    func createDetailInfoViewViewModel() -> DetailInfoViewViewModel
+    func createDetailInfoView(on view: UIView) -> DetailInfoView
     func createDetailDescriptionTableViewCell() -> DetailDescriptionTableViewCell
+    func createDetailDescriptionViewViewModel() -> DetailDescriptionViewViewModel
+    func createDetailDescriptionView(on view: UIView) -> DetailDescriptionView
     func createDetailPanelTableViewCell() -> DetailPanelTableViewCell
+    func createDetailPanelView(on view: UIView) -> DetailPanelView
+    func createDetailPanelViewItemConfiguration(on item: DetailPanelViewItem) -> DetailPanelViewItemConfiguration
+    func createDetailPanelViewItemViewModel(on item: DetailPanelViewItem) -> DetailPanelViewItemViewModel
+    func createDetailPanelViewItem(on view: UIView) -> DetailPanelViewItem
     func createDetailNavigationTableViewCell() -> DetailNavigationTableViewCell
+    func createDetailNavigationView(on view: UIView) -> DetailNavigationView
+    func createDetailNavigationViewItem(using navigationView: DetailNavigationView, on view: UIView) -> DetailNavigationViewItem
+    func createDetailNavigationViewItemConfiguration(using navigationView: DetailNavigationView,
+                                                     on item: DetailNavigationViewItem) -> DetailNavigationViewItemConfiguration
+    func createDetailNavigationViewItemViewModel(on item: DetailNavigationViewItem) -> DetailNavigationViewItemViewModel
     func createDetailCollectionTableViewCell() -> DetailCollectionTableViewCell
+    func createDetailCollectionView(on view: UIView) -> DetailCollectionView
 }
 
 // MARK: - DataSourceInput protocol

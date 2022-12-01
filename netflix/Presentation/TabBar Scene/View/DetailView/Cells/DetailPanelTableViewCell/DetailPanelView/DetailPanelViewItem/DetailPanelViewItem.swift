@@ -41,8 +41,7 @@ final class DetailPanelViewItemConfiguration: Configuration {
     fileprivate let myList: MyList
     fileprivate let section: Section
     
-    init(view: DetailPanelViewItem,
-         with viewModel: DetailViewModel) {
+    init(view: DetailPanelViewItem, with viewModel: DetailViewModel) {
         self.view = view
         self.myList = viewModel.myList
         self.section = viewModel.myListSection
@@ -123,13 +122,13 @@ final class DetailPanelViewItem: UIView, View {
     
     var isSelected = false
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
+    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
         super.init(frame: parent.bounds)
         self.tag = parent.tag
         parent.addSubview(self)
         self.chainConstraintToCenter(linking: self.imageView, to: self.label)
-        self.viewModel = .init(item: self, with: viewModel)
-        self.configuration = .init(view: self, with: viewModel)
+        self.viewModel = diProvider.createDetailPanelViewItemViewModel(on: self)
+        self.configuration = diProvider.createDetailPanelViewItemConfiguration(on: self)
     }
     
     required init?(coder: NSCoder) { fatalError() }

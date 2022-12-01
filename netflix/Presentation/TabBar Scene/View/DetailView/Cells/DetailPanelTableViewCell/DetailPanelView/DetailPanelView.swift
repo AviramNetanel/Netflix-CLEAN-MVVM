@@ -37,12 +37,12 @@ final class DetailPanelView: UIView, View, ViewInstantiable {
     fileprivate(set) var centerItem: DetailPanelViewItem!
     fileprivate(set) var trailingItem: DetailPanelViewItem!
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
+    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
         super.init(frame: parent.bounds)
         self.nibDidLoad()
-        self.leadingItem = DetailPanelViewItem(on: self.leadingViewContainer, with: viewModel)
-        self.centerItem = DetailPanelViewItem(on: self.centerViewContainer, with: viewModel)
-        self.trailingItem = DetailPanelViewItem(on: self.trailingViewContainer, with: viewModel)
+        self.leadingItem = diProvider.createDetailPanelViewItem(on: self.leadingViewContainer)
+        self.centerItem = diProvider.createDetailPanelViewItem(on: self.centerViewContainer)
+        self.trailingItem = diProvider.createDetailPanelViewItem(on: self.trailingViewContainer)
         self.viewDidConfigure()
     }
     

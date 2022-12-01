@@ -31,7 +31,7 @@ final class DetailCollectionTableViewCell: UITableViewCell, View {
     
     init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)
-        self.detailCollectionView = DetailCollectionView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
+        self.detailCollectionView = diProvider.createDetailCollectionView(on: self.contentView)
         self.contentView.addSubview(self.detailCollectionView)
         self.viewDidConfigure()
     }

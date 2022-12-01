@@ -33,8 +33,8 @@ final class DetailDescriptionView: UIView, View, ViewInstantiable {
     
     fileprivate let viewModel: DetailDescriptionViewViewModel
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
-        self.viewModel = .init(with: viewModel.dependencies.media)
+    init(on parent: UIView, with viewModel: DetailDescriptionViewViewModel) {
+        self.viewModel = viewModel
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         self.viewDidConfigure()

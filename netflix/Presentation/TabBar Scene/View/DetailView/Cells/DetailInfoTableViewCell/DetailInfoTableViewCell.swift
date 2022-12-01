@@ -27,7 +27,7 @@ final class DetailInfoTableViewCell: UITableViewCell, View {
     
     init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailInfoTableViewCell.reuseIdentifier)
-        let infoView = DetailInfoView(on: self, with: diProvider.dependencies.detailViewModel)
+        let infoView = diProvider.createDetailInfoView(on: self.contentView)
         self.contentView.addSubview(infoView)
         infoView.constraintToSuperview(self.contentView)
         self.viewDidConfigure()

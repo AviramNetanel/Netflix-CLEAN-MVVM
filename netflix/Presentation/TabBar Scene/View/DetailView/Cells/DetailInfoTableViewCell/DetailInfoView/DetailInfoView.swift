@@ -16,7 +16,11 @@ private protocol ViewInput {
 
 // MARK: - ViewOutput protocol
 
-private protocol ViewOutput {}
+private protocol ViewOutput {
+    var viewModel: DetailInfoViewViewModel { get }
+    var ageRestrictionView: AgeRestrictionView! { get }
+    var hdView: HDView! { get }
+}
 
 // MARK: - View typealias
 
@@ -36,12 +40,12 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    private let viewModel: DetailInfoViewViewModel
-    private var ageRestrictionView: AgeRestrictionView!
-    private var hdView: HDView!
+    fileprivate let viewModel: DetailInfoViewViewModel
+    fileprivate var ageRestrictionView: AgeRestrictionView!
+    fileprivate var hdView: HDView!
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
-        self.viewModel = DetailInfoViewViewModel(with: viewModel)
+    init(on parent: UIView, with viewModel: DetailInfoViewViewModel) {
+        self.viewModel = viewModel
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         self.ageRestrictionView = AgeRestrictionView(on: ageRestrictionViewContainer)

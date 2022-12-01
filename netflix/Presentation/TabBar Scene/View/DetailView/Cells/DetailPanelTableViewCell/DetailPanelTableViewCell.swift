@@ -33,7 +33,7 @@ final class DetailPanelTableViewCell: UITableViewCell, View {
     
     init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)
-        self.panelView = DetailPanelView(on: self.contentView, with: diProvider.dependencies.detailViewModel)
+        self.panelView = diProvider.createDetailPanelView(on: self.contentView)
         self.contentView.addSubview(self.panelView)
         self.viewDidConfigure()
     }

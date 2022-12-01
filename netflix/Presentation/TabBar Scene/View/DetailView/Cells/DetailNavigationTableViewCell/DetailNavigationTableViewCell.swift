@@ -31,7 +31,7 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
     
     init(using diProvider: DetailViewDIProvider) {
         super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)
-        self.navigationView = DetailNavigationView(using: diProvider, on: self.contentView)
+        self.navigationView = diProvider.createDetailNavigationView(on: self.contentView)
         self.viewDidConfigure()
     }
     

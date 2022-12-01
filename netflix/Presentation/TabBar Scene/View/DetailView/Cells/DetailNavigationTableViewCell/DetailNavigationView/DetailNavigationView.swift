@@ -53,9 +53,9 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.nibDidLoad()
-        self.leadingItem = DetailNavigationViewItem(on: self.leadingViewContainer, with: self)
-        self.centerItem = DetailNavigationViewItem(on: self.centerViewContainer, with: self)
-        self.trailingItem = DetailNavigationViewItem(on: self.trailingViewContrainer, with: self)
+        self.leadingItem = diProvider.createDetailNavigationViewItem(using: self, on: self.leadingViewContainer)
+        self.centerItem = diProvider.createDetailNavigationViewItem(using: self, on: self.centerViewContainer)
+        self.trailingItem = diProvider.createDetailNavigationViewItem(using: self, on: self.trailingViewContrainer)
         self.viewDidLoad()
     }
     

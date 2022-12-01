@@ -100,13 +100,13 @@ final class DetailNavigationViewItem: UIView, View {
     var isSelected = false
     var widthConstraint: NSLayoutConstraint!
     
-    init(on parent: UIView, with navigationView: DetailNavigationView) {
+    init(using diProvider: DetailViewDIProvider, navigationView: DetailNavigationView, on parent: UIView) {
         super.init(frame: parent.bounds)
         self.tag = parent.tag
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.viewModel = .init(with: self)
-        self.configuration = DetailNavigationViewItemConfiguration(on: self, with: navigationView)
+        self.viewModel = diProvider.createDetailNavigationViewItemViewModel(on: self)
+        self.configuration = diProvider.createDetailNavigationViewItemConfiguration(using: navigationView, on: self)
         self.viewDidConfigure()
     }
     
