@@ -10,20 +10,16 @@ import UIKit
 // MARK: - AppDelegate class
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, Orientable {
-    
-    static var orientation: UIInterfaceOrientationMask = .portrait
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
     }
     
-    // MARK: Orientable
-    
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return AppDelegate.orientation
+        return DeviceOrientation.shared.orientation
     }
 
     // MARK: UISceneSession Lifecycle

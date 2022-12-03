@@ -117,6 +117,15 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
     }
     
     func createDetailCollectionView(on view: UIView) -> DetailCollectionView {
-        return DetailCollectionView(on: view, with: dependencies.detailViewModel)
+        return DetailCollectionView(using: self, on: view)
+    }
+}
+
+// MARK: - DetailCollectionViewDataSourceDependencies implementation
+
+extension DetailViewDIProvider: DetailCollectionViewDataSourceDependencies {
+    
+    func createDetailCollectionViewDataSource(on collectionView: UICollectionView, with items: [Mediable]) -> DetailCollectionViewDataSource<Mediable> {
+        return DetailCollectionViewDataSource(using: self, collectionView: collectionView, items: items)
     }
 }

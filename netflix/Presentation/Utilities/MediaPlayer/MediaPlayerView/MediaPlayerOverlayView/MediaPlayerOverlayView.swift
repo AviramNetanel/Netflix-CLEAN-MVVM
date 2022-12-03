@@ -152,19 +152,10 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
         case .airPlay:
             print(item.rawValue)
         case .rotate:
-            if UIDevice.current.orientation == .portrait
-                || UIDevice.current.orientation == .unknown {
-                AppDelegate.orientation = .landscapeRight
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue,
-                                          forKey: "orientation")
-                return
+            if DeviceOrientation.shared.orientation == .all {
+                return DeviceOrientation.shared.orientation = .landscapeRight
             }
-            if UIDevice.current.orientation == .landscapeLeft
-                || UIDevice.current.orientation == .landscapeRight {
-                AppDelegate.orientation = .portrait
-                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue,
-                                          forKey: "orientation")
-            }
+            DeviceOrientation.shared.orientation = .all
         case .backward:
             if mediaPlayerView.mediaPlayer.player.currentItem?.currentTime() == .zero {
                 if let player = mediaPlayerView.mediaPlayer.player as AVPlayer?,

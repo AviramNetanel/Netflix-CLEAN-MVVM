@@ -32,17 +32,19 @@ private typealias View = ViewInput & ViewOutput
 
 final class DetailCollectionView: UIView, View {
     
+    private let diProvider: DetailViewDIProvider
     fileprivate lazy var collectionView = createCollectionView()
     fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
     fileprivate var layout: CollectionViewLayout!
     fileprivate var viewModel: DetailViewModel!
     
-    init(on parent: UIView, with viewModel: DetailViewModel) {
+    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
+        self.diProvider = diProvider
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.collectionView.constraintToSuperview(self)
-        self.viewModel = viewModel
+        self.viewModel = diProvider.dependencies.detailViewModel
         self.viewDidLoad()
     }
     
@@ -63,10 +65,7 @@ final class DetailCollectionView: UIView, View {
         collectionView.isScrollEnabled = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = .init(top: 16.0,
-                                            left: .zero,
-                                            bottom: .zero,
-                                            right: .zero)
+        collectionView.contentInset = .init(top: 16.0, left: .zero, bottom: .zero, right: .zero)
         addSubview(collectionView)
         return collectionView
     }
@@ -93,26 +92,17 @@ final class DetailCollectionView: UIView, View {
         switch viewModel.navigationViewState.value {
         case .episodes:
             guard let episodes = viewModel.season.value?.episodes else { return }
-            dataSource = .create(on: collectionView,
-                                 items: episodes,
-                                 with: viewModel)
+            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: episodes)
             layout = CollectionViewLayout(layout: .descriptive, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         case .trailers:
             guard let trailers = viewModel.dependencies.media.resources.trailers.toDomain() as [Trailer]? else { return }
-            dataSource = .create(on: collectionView,
-                                 items: trailers,
-                                 with: viewModel)
+            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: trailers)
             layout = CollectionViewLayout(layout: .trailer, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            guard let media = viewModel.homeDataSourceState == .series
-                    ? viewModel.dependencies.section.media
-                    : viewModel.dependencies.section.media as [Media]?
-            else { return }
-            dataSource = .create(on: collectionView,
-                                 items: media,
-                                 with: viewModel)
+            guard let media = viewModel.dependencies.section.media as [Media]? else { return }
+            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: media)
             layout = CollectionViewLayout(layout: .detail, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }

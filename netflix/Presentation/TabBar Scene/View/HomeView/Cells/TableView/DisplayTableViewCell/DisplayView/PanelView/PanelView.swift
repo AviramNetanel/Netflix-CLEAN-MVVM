@@ -19,11 +19,13 @@ protocol PanelViewDependencies {
 
 private protocol ViewInput {
     func viewDidConfigure()
+    func playDidTap()
 }
 
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
+    var viewModel: DisplayTableViewCellViewModel { get }
     var leadingItemView: PanelViewItem! { get }
     var trailingItemView: PanelViewItem! { get }
 }
@@ -40,12 +42,14 @@ final class PanelView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var leadingItemViewContainer: UIView!
     @IBOutlet private(set) weak var trailingItemViewContainer: UIView!
     
+    fileprivate let viewModel: DisplayTableViewCellViewModel
     fileprivate(set) var leadingItemView: PanelViewItem!
     fileprivate(set) var trailingItemView: PanelViewItem!
     
     init(using diProvider: HomeViewDIProvider,
          on parent: UIView,
          with viewModel: DisplayTableViewCellViewModel) {
+        self.viewModel = viewModel
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         parent.addSubview(self)
@@ -64,6 +68,16 @@ final class PanelView: UIView, View, ViewInstantiable {
     
     fileprivate func viewDidConfigure() {
         playButton.layer.cornerRadius = 6.0
+        playButton.addTarget(self, action: #selector(playDidTap), for: .touchUpInside)
+    }
+    
+    @objc
+    fileprivate func playDidTap() {
+        let section = viewModel.sectionAt(.display)
+        let media = viewModel.presentedDisplayMedia.value!
+        viewModel.actions.presentMediaDetails(section, media)
+        
+        DeviceOrientation.shared.orientation = .landscapeRight
     }
     
     func removeObservers() {

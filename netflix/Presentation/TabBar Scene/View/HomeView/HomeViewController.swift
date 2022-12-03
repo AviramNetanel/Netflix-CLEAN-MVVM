@@ -11,6 +11,8 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    
     @IBOutlet private(set) var tableView: UITableView!
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
@@ -20,8 +22,6 @@ final class HomeViewController: UIViewController {
     private(set) var dataSource: HomeTableViewDataSource!
     private(set) var navigationView: NavigationView!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     deinit {
         navigationView = nil

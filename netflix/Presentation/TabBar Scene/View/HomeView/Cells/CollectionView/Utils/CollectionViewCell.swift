@@ -47,9 +47,7 @@ class CollectionViewCell: UICollectionViewCell, View {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
-        let media = state == .series
-            ? section.media[indexPath.row]
-            : section.media[indexPath.row]
+        let media = section.media[indexPath.row]
         let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
         view.viewDidLoad(media: media, with: cellViewModel)
         return view

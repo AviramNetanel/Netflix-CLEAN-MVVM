@@ -13,7 +13,7 @@ final class AppSceneDIProvider {
     
     private(set) weak var appFlowCoordinator: AppFlowCoordinator!
     
-    private lazy var configuration = AppConfiguration()
+    private(set) lazy var configuration = AppConfiguration()
     
     private(set) lazy var dataTransferService: DataTransferService = {
         let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!

@@ -153,6 +153,7 @@
 		A1AD25C928D56BB100F793B3 /* NavigationViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25C828D56BB100F793B3 /* NavigationViewItem.swift */; };
 		A1AD25CB28D56BBA00F793B3 /* NavigationViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CA28D56BBA00F793B3 /* NavigationViewItemViewModel.swift */; };
 		A1AD25D028D6D31000F793B3 /* NavigationViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD25CF28D6D31000F793B3 /* NavigationViewViewModel.swift */; };
+		A1AE02D1293BA29A00AF0BD6 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AE02D0293BA29A00AF0BD6 /* DeviceOrientation.swift */; };
 		A1B3F98A28C54F510042DE9F /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98928C54F510042DE9F /* AuthRepository.swift */; };
 		A1B3F98C28C55B500042DE9F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */; };
 		A1B3F99028C5605B0042DE9F /* TabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B3F98F28C5605B0042DE9F /* TabBarController.storyboard */; };
@@ -361,6 +362,7 @@
 		A1AD25C828D56BB100F793B3 /* NavigationViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewItem.swift; sourceTree = "<group>"; };
 		A1AD25CA28D56BBA00F793B3 /* NavigationViewItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewItemViewModel.swift; sourceTree = "<group>"; };
 		A1AD25CF28D6D31000F793B3 /* NavigationViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewViewModel.swift; sourceTree = "<group>"; };
+		A1AE02D0293BA29A00AF0BD6 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
 		A1B3F98928C54F510042DE9F /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		A1B3F98B28C55B500042DE9F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A1B3F98F28C5605B0042DE9F /* TabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarController.storyboard; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 				A1F56A5B28C668100089BD4F /* AppAppearance.swift */,
 				A18B991828BEBE040077A5A6 /* AppFlowCoordinator.swift */,
 				A1C7E7AE292BEF14004690B9 /* Dependency Inversion */,
+				A1AE02CF293BA28A00AF0BD6 /* Utils */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -867,7 +870,6 @@
 		A18B993228BFC6FC0077A5A6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				A1C7E7A8292A784A004690B9 /* AuthService.swift */,
 				A186923C28CAD45A0087DE3B /* AsyncImageFetcher.swift */,
 				A1E81D0E28CFE21300D044EA /* CollectionViewLayout.swift */,
 				A18B997D28C03BB10077A5A6 /* Observable.swift */,
@@ -1208,6 +1210,15 @@
 			path = NavigationViewItem;
 			sourceTree = "<group>";
 		};
+		A1AE02CF293BA28A00AF0BD6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A1C7E7A8292A784A004690B9 /* AuthService.swift */,
+				A1AE02D0293BA29A00AF0BD6 /* DeviceOrientation.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A1B3F98828C54F160042DE9F /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1496,6 +1507,7 @@
 				A18B998428C03E1C0077A5A6 /* CoreDataStorage.swift in Sources */,
 				A18B997E28C03BB10077A5A6 /* Observable.swift in Sources */,
 				A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Configurable.swift in Sources */,
+				A1AE02D1293BA29A00AF0BD6 /* DeviceOrientation.swift in Sources */,
 				A1AA28D428F590B30011EE9D /* EpisodeCollectionViewCell.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
 				A127C1E228DD00F100CEE34F /* CategoriesOverlayViewFooterView.swift in Sources */,
@@ -1799,7 +1811,7 @@
 		A18B990D28BEB62E0077A5A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				API_HOST = "netflix-swift-api.herokuapp.com";
+				API_HOST = "netflix-rest-api.onrender.com";
 				API_SCHEME = https;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1830,7 +1842,7 @@
 		A18B990E28BEB62E0077A5A6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				API_HOST = "netflix-swift-api.herokuapp.com";
+				API_HOST = "netflix-rest-api.onrender.com";
 				API_SCHEME = https;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

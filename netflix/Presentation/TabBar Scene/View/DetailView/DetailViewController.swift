@@ -20,6 +20,7 @@ final class DetailViewController: UIViewController {
     private(set) var dataSource: DetailTableViewDataSource!
     
     deinit {
+        DeviceOrientation.shared.orientation = .portrait
         removeObservers()
         previewView = nil
         dataSource = nil
@@ -38,6 +39,7 @@ final class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDependencies()
+        setupView()
         setupSubviews()
         setupObservers()
         viewModel.viewDidLoad()
@@ -45,6 +47,10 @@ final class DetailViewController: UIViewController {
     
     private func setupDependencies() {
         diProvider = tabBarSceneDIProvider.createDetailViewDIProvider(launchingViewController: self)
+    }
+    
+    private func setupView() {
+        DeviceOrientation.shared.orientation = .all
     }
     
     private func setupSubviews() {
