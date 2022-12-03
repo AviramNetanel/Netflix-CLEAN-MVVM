@@ -78,13 +78,15 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
         return DetailPanelView(using: self, on: view)
     }
     
-    func createDetailPanelViewItemConfiguration(on item: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
-        return DetailPanelViewItemConfiguration(view: item, with: dependencies.detailViewModel)
-    }
+    func createDetailPanelViewItemConfiguration(
+        on item: DetailPanelViewItem) -> DetailPanelViewItemConfiguration {
+            return DetailPanelViewItemConfiguration(view: item, with: dependencies.detailViewModel)
+        }
     
-    func createDetailPanelViewItemViewModel(on item: DetailPanelViewItem) -> DetailPanelViewItemViewModel {
-        return DetailPanelViewItemViewModel(item: item, with: dependencies.detailViewModel)
-    }
+    func createDetailPanelViewItemViewModel(
+        on item: DetailPanelViewItem) -> DetailPanelViewItemViewModel {
+            return DetailPanelViewItemViewModel(item: item, with: dependencies.detailViewModel)
+        }
     
     func createDetailPanelViewItem(on view: UIView) -> DetailPanelViewItem {
         return DetailPanelViewItem(using: self, on: view)
@@ -103,14 +105,16 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
         return DetailNavigationViewItem(using: self, navigationView: navigationView, on: view)
     }
     
-    func createDetailNavigationViewItemConfiguration(using navigationView: DetailNavigationView,
-                                                     on item: DetailNavigationViewItem) -> DetailNavigationViewItemConfiguration {
-        return DetailNavigationViewItemConfiguration(on: item, with: navigationView)
-    }
+    func createDetailNavigationViewItemConfiguration(
+        using navigationView: DetailNavigationView,
+        on item: DetailNavigationViewItem) -> DetailNavigationViewItemConfiguration {
+            return DetailNavigationViewItemConfiguration(on: item, with: navigationView)
+        }
     
-    func createDetailNavigationViewItemViewModel(on item: DetailNavigationViewItem) -> DetailNavigationViewItemViewModel {
-        return DetailNavigationViewItemViewModel(with: item)
-    }
+    func createDetailNavigationViewItemViewModel(
+        on item: DetailNavigationViewItem) -> DetailNavigationViewItemViewModel {
+            return DetailNavigationViewItemViewModel(with: item)
+        }
     
     func createDetailCollectionTableViewCell() -> DetailCollectionTableViewCell {
         return DetailCollectionTableViewCell(using: self)
@@ -125,7 +129,42 @@ extension DetailViewDIProvider: DetailTableViewDataSourceDependencies {
 
 extension DetailViewDIProvider: DetailCollectionViewDataSourceDependencies {
     
-    func createDetailCollectionViewDataSource(on collectionView: UICollectionView, with items: [Mediable]) -> DetailCollectionViewDataSource<Mediable> {
-        return DetailCollectionViewDataSource(using: self, collectionView: collectionView, items: items)
+    func createDetailCollectionViewDataSource(
+        on collectionView: UICollectionView,
+        with items: [Mediable]) -> DetailCollectionViewDataSource<Mediable> {
+            return DetailCollectionViewDataSource(using: self,
+                                                  collectionView: collectionView,
+                                                  items: items)
+        }
+    
+    func createEpisodeCollectionViewCell(
+        on collectionView: UICollectionView,
+        for indexPath: IndexPath) -> EpisodeCollectionViewCell {
+            return .create(using: self, on: collectionView, for: indexPath)
+        }
+    
+    func createEpisodeCollectionViewCellViewModel() -> EpisodeCollectionViewCellViewModel {
+        return EpisodeCollectionViewCellViewModel(with: dependencies.detailViewModel)
     }
+    
+    func createTrailerCollectionViewCell(
+        on collectionView: UICollectionView,
+        for indexPath: IndexPath) -> TrailerCollectionViewCell {
+            return .create(using: self, on: collectionView, for: indexPath)
+        }
+    
+    func createTrailerCollectionViewCellViewModel() -> TrailerCollectionViewCellViewModel {
+        return TrailerCollectionViewCellViewModel(with: dependencies.detailViewModel.dependencies.media)
+    }
+    
+    func createCollectionViewCell(
+        on collectionView: UICollectionView,
+        reuseIdentifier: String,
+        section: Section,
+        for indexPath: IndexPath) -> CollectionViewCell {
+            return .create(on: collectionView,
+                           reuseIdentifier: reuseIdentifier,
+                           section: section,
+                           for: indexPath)
+        }
 }

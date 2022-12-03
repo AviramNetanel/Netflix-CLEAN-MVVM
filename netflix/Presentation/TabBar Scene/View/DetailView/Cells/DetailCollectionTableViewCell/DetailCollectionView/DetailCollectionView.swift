@@ -18,10 +18,10 @@ private protocol ViewInput {
 // MARK: - ViewOutput protocol
 
 private protocol ViewOutput {
+    var viewModel: DetailViewModel { get }
     var collectionView: UICollectionView { get }
     var dataSource: DetailCollectionViewDataSource<Mediable>! { get }
     var layout: CollectionViewLayout! { get }
-    var viewModel: DetailViewModel! { get }
 }
 
 // MARK: - View typealias
@@ -33,18 +33,18 @@ private typealias View = ViewInput & ViewOutput
 final class DetailCollectionView: UIView, View {
     
     private let diProvider: DetailViewDIProvider
+    fileprivate let viewModel: DetailViewModel
     fileprivate lazy var collectionView = createCollectionView()
     fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
     fileprivate var layout: CollectionViewLayout!
-    fileprivate var viewModel: DetailViewModel!
     
     init(using diProvider: DetailViewDIProvider, on parent: UIView) {
         self.diProvider = diProvider
+        self.viewModel = diProvider.dependencies.detailViewModel
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.collectionView.constraintToSuperview(self)
-        self.viewModel = diProvider.dependencies.detailViewModel
         self.viewDidLoad()
     }
     
@@ -53,7 +53,6 @@ final class DetailCollectionView: UIView, View {
     deinit {
         layout = nil
         dataSource = nil
-        viewModel = nil
     }
     
     private func createCollectionView() -> UICollectionView {
@@ -85,9 +84,9 @@ final class DetailCollectionView: UIView, View {
     }
     
     func dataSourceDidChange() {
+        layout = nil
         collectionView.delegate = nil
         collectionView.dataSource = nil
-        collectionView.prefetchDataSource = nil
         
         switch viewModel.navigationViewState.value {
         case .episodes:
@@ -109,7 +108,6 @@ final class DetailCollectionView: UIView, View {
         
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource
-        collectionView.prefetchDataSource = dataSource
         collectionView.reloadData()
     }
 }

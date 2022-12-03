@@ -90,8 +90,7 @@ final class HomeCollectionViewDataSource<Cell>: NSObject,
         return CollectionViewCell.create(on: collectionView,
                                          reuseIdentifier: Cell.reuseIdentifier,
                                          section: section,
-                                         for: indexPath,
-                                         with: homeViewModel.tableViewState.value)
+                                         for: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

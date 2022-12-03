@@ -37,19 +37,16 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    static func create(on collectionView: UICollectionView,
-                       for indexPath: IndexPath,
-                       with viewModel: DetailViewModel) -> EpisodeCollectionViewCell {
+    static func create(using diProvider: DetailViewDIProvider,
+                       on collectionView: UICollectionView,
+                       for indexPath: IndexPath) -> EpisodeCollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: EpisodeCollectionViewCell.reuseIdentifier,
             for: indexPath) as? EpisodeCollectionViewCell else { fatalError() }
+        let cellViewModel = diProvider.createEpisodeCollectionViewCellViewModel()
         view.setupSubviews()
-        view.viewDidLoad(at: indexPath, with: createViewModel(with: viewModel))
+        view.viewDidLoad(at: indexPath, with: cellViewModel)
         return view
-    }
-    
-    private static func createViewModel(with viewModel: DetailViewModel) -> EpisodeCollectionViewCellViewModel {
-        return .init(with: viewModel)
     }
     
     fileprivate func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
@@ -57,7 +54,7 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
         AsyncImageFetcher.shared.load(
             url: viewModel.posterImageURL,
             identifier: viewModel.posterImageIdentifier) { _ in
-                DispatchQueue.main.async { completion?() }
+                asynchrony { completion?() }
             }
     }
     

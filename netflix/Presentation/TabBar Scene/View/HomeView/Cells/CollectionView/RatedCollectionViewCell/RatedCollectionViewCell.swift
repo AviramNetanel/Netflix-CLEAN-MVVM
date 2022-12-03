@@ -55,7 +55,7 @@ final class RatedCollectionViewCell: CollectionViewCell, View {
         textLayer.string = nil
     }
     
-    override func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel) {
+    override func viewDidConfigure(with viewModel: CollectionViewCellViewModel) {
         super.viewDidConfigure(with: viewModel)
         
         guard let indexPath = viewModel.indexPath as IndexPath? else { return }

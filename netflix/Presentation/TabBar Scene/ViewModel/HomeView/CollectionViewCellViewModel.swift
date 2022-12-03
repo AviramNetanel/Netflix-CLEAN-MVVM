@@ -1,5 +1,5 @@
 //
-//  CollectionViewCellItemViewModel.swift
+//  CollectionViewCellViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 08/09/2022.
@@ -21,7 +21,7 @@ private protocol ViewModelInput {
     var logoImagePath: String { get }
     var logoImageIdentifier: NSString { get }
     var logoImageURL: URL! { get }
-    var presentedLogoAlignment: CollectionViewCellItemViewModel.PresentedLogoAlignment { get }
+    var presentedLogoAlignment: CollectionViewCellViewModel.PresentedLogoAlignment { get }
 }
 
 // MARK: - ViewModelOutput protocol
@@ -34,9 +34,9 @@ private protocol ViewModelOutput {
 
 private typealias ViewModel = ViewModelInput & ViewModelOutput
 
-// MARK: - CollectionViewCellItemViewModel struct
+// MARK: - CollectionViewCellViewModel struct
 
-struct CollectionViewCellItemViewModel: ViewModel {
+struct CollectionViewCellViewModel: ViewModel {
     
     enum PresentedLogoAlignment: String {
         case top

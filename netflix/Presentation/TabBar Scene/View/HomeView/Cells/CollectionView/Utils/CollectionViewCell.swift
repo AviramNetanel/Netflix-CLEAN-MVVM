@@ -10,10 +10,10 @@ import UIKit
 // MARK: - ViewInput protocol
 
 private protocol ViewInput {
-    func dataDidDownload(with viewModel: CollectionViewCellItemViewModel, completion: (() -> Void)?)
-    func viewDidLoad(media: Media, with viewModel: CollectionViewCellItemViewModel)
-    func logoDidAlign(_ constraint: NSLayoutConstraint, with viewModel: CollectionViewCellItemViewModel)
-    func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel)
+    func dataDidDownload(with viewModel: CollectionViewCellViewModel, completion: (() -> Void)?)
+    func viewDidLoad(media: Media, with viewModel: CollectionViewCellViewModel)
+    func logoDidAlign(_ constraint: NSLayoutConstraint, with viewModel: CollectionViewCellViewModel)
+    func viewDidConfigure(with viewModel: CollectionViewCellViewModel)
 }
 
 // MARK: - ViewOutput protocol
@@ -42,13 +42,12 @@ class CollectionViewCell: UICollectionViewCell, View {
     static func create(on collectionView: UICollectionView,
                        reuseIdentifier: String,
                        section: Section,
-                       for indexPath: IndexPath,
-                       with state: HomeTableViewDataSource.State) -> CollectionViewCell {
+                       for indexPath: IndexPath) -> CollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
         let media = section.media[indexPath.row]
-        let cellViewModel = CollectionViewCellItemViewModel(media: media, indexPath: indexPath)
+        let cellViewModel = CollectionViewCellViewModel(media: media, indexPath: indexPath)
         view.viewDidLoad(media: media, with: cellViewModel)
         return view
     }
@@ -61,7 +60,7 @@ class CollectionViewCell: UICollectionViewCell, View {
         representedIdentifier = nil
     }
     
-    fileprivate func dataDidDownload(with viewModel: CollectionViewCellItemViewModel,
+    fileprivate func dataDidDownload(with viewModel: CollectionViewCellViewModel,
                                      completion: (() -> Void)?) {
         AsyncImageFetcher.shared.load(
             url: viewModel.posterImageURL,
@@ -76,7 +75,7 @@ class CollectionViewCell: UICollectionViewCell, View {
     }
     
     fileprivate func viewDidLoad(media: Media,
-                                 with viewModel: CollectionViewCellItemViewModel) {
+                                 with viewModel: CollectionViewCellViewModel) {
         backgroundColor = .black
         placeholderLabel.alpha = 1.0
         coverImageView.layer.cornerRadius = 6.0
@@ -91,7 +90,7 @@ class CollectionViewCell: UICollectionViewCell, View {
     }
     
     fileprivate func logoDidAlign(_ constraint: NSLayoutConstraint,
-                                  with viewModel: CollectionViewCellItemViewModel) {
+                                  with viewModel: CollectionViewCellViewModel) {
         switch viewModel.presentedLogoAlignment {
         case .top: constraint.constant = bounds.maxY - logoImageView.bounds.height - 8.0
         case .midTop: constraint.constant = 64.0
@@ -101,7 +100,7 @@ class CollectionViewCell: UICollectionViewCell, View {
         }
     }
     
-    public func viewDidConfigure(with viewModel: CollectionViewCellItemViewModel) {
+    public func viewDidConfigure(with viewModel: CollectionViewCellViewModel) {
         guard representedIdentifier == viewModel.slug as NSString? else { return }
         
         let posterImage = AsyncImageFetcher.shared.object(for: viewModel.posterImageIdentifier)
