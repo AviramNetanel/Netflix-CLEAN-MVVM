@@ -7,25 +7,25 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var label: UILabel { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var label: UILabel { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - AgeRestrictionView class
 
-final class AgeRestrictionView: UIView, View {
+final class AgeRestrictionView: UIView {
     
     fileprivate lazy var label = createLabel()
     

@@ -17,8 +17,14 @@ final class HomeViewController: UIViewController {
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
     
-    private(set) var viewModel: HomeViewModel!
-    private var diProvider: HomeViewDIProvider!
+    var viewModel: HomeViewModel! {
+        didSet {
+            setupBehaviors()
+            setupSubviews()
+            setupObservers()
+            viewModel.viewWillLoad()
+        }
+    }
     private(set) var dataSource: HomeTableViewDataSource!
     private(set) var navigationView: NavigationView!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
@@ -27,35 +33,11 @@ final class HomeViewController: UIViewController {
         navigationView = nil
         categoriesOverlayView = nil
         dataSource = nil
-        diProvider = nil
         viewModel = nil
-    }
-    
-    /// Creates an `HomeViewController` instance using storyboard.
-    /// - Parameter viewModel: View controller's view model.
-    /// - Returns: `HomeViewController` instance.
-    static func create(with viewModel: HomeViewModel) -> HomeViewController {
-        let view = Storyboard(withOwner: TabBarController.self,
-                              launchingViewController: HomeViewController.self)
-            .instantiate() as! HomeViewController
-        view.viewModel = viewModel
-        return view
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDependencies()
-        setupBehaviors()
-        setupSubviews()
-        setupObservers()
-        viewModel.viewWillLoad()
-    }
-    
-    private func setupDependencies() {
-        /// Invokes `HomeViewDIProvider` dependency inversion object.
-        diProvider = tabBarSceneDIProvider.createHomeViewDIProvider(launchingViewController: self)
-        /// Passes `diProvider` pointer to view model.
-        viewModel.diProvider = diProvider
     }
     
     private func setupBehaviors() {
@@ -78,15 +60,15 @@ final class HomeViewController: UIViewController {
         /// Filters the sections based on the data source state.
         viewModel.filter(sections: viewModel.sections)
         /// Initializes the data source.
-        dataSource = diProvider.createHomeTableViewDataSource()
+        dataSource = HomeTableViewDataSource(tableView: tableView, viewModel: viewModel)
     }
     
     private func setupNavigationView() {
-        navigationView = diProvider.createNavigationView()
+        navigationView = NavigationView(on: navigationViewContainer, with: viewModel)
     }
     
     private func setupCategoriesOverlayView() {
-        categoriesOverlayView = diProvider.createCategoriesOverlayView()
+        categoriesOverlayView = CategoriesOverlayView(with: viewModel)
     }
     
     func removeObservers() {
@@ -128,7 +110,7 @@ extension HomeViewController {
     func didSelectItem(at section: Int, of row: Int) {
         let section = viewModel.sections[section]
         let media = section.media[row]
-        viewModel.dependencies.actions.presentMediaDetails(section, media)
+        viewModel.actions?.presentMediaDetails(section, media)
     }
 }
 
@@ -137,7 +119,9 @@ extension HomeViewController {
 extension HomeViewController {
     
     private func tableViewState(in viewModel: HomeViewModel) {
-        viewModel.tableViewState.observe(on: self) { [weak self] _ in self?.setupDataSource() }
+        viewModel.tableViewState.observe(on: self) { [weak self] _ in
+            self?.setupDataSource()
+        }
     }
     
     private func presentedDisplayMedia(in viewModel: HomeViewModel) {

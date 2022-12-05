@@ -15,32 +15,32 @@ protocol NavigationViewDependencies {
     func createNavigationViewViewModelActions() -> NavigationViewViewModelActions
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var homeItemView: NavigationViewItem! { get }
-    var airPlayItemView: NavigationViewItem! { get }
-    var accountItemView: NavigationViewItem! { get }
-    var tvShowsItemView: NavigationViewItem! { get }
-    var moviesItemView: NavigationViewItem! { get }
-    var categoriesItemView: NavigationViewItem! { get }
-    var viewModel: NavigationViewViewModel! { get }
-}
-
-// MARK: - View typelias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var homeItemView: NavigationViewItem! { get }
+//    var airPlayItemView: NavigationViewItem! { get }
+//    var accountItemView: NavigationViewItem! { get }
+//    var tvShowsItemView: NavigationViewItem! { get }
+//    var moviesItemView: NavigationViewItem! { get }
+//    var categoriesItemView: NavigationViewItem! { get }
+//    var viewModel: NavigationViewViewModel! { get }
+//}
+//
+//// MARK: - View typelias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - NavigationView class
 
-final class NavigationView: UIView, View, ViewInstantiable {
+final class NavigationView: UIView, ViewInstantiable {
     
     enum State: Int, CaseIterable {
         case home
@@ -60,17 +60,15 @@ final class NavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var categoriesItemViewContainer: UIView!
     @IBOutlet private(set) weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    private let diProvider: HomeViewDIProvider
     fileprivate(set) var homeItemView: NavigationViewItem!
     fileprivate var airPlayItemView: NavigationViewItem!
     fileprivate var accountItemView: NavigationViewItem!
     fileprivate(set) var tvShowsItemView: NavigationViewItem!
     fileprivate(set) var moviesItemView: NavigationViewItem!
     fileprivate(set) var categoriesItemView: NavigationViewItem!
-    fileprivate(set) var viewModel: NavigationViewViewModel!
+    var viewModel: NavigationViewViewModel!
     
-    init(using diProvider: HomeViewDIProvider, on parent: UIView) {
-        self.diProvider = diProvider
+    init(on parent: UIView, with viewModel: HomeViewModel) {
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         parent.addSubview(self)
@@ -83,7 +81,17 @@ final class NavigationView: UIView, View, ViewInstantiable {
         self.categoriesItemView = NavigationViewItem(onParent: self.categoriesItemViewContainer)
         let items: [NavigationViewItem] = [self.homeItemView, self.airPlayItemView, self.accountItemView,
                                            self.tvShowsItemView, self.moviesItemView, self.categoriesItemView]
-        self.viewModel = diProvider.createNavigationViewViewModel(with: items)
+        let actions = NavigationViewViewModelActions(
+            stateDidChange: { state in
+                viewModel.coordinator?.viewController?.categoriesOverlayView?.viewModel
+                    .navigationViewStateDidChange(withOwner: viewModel.coordinator!.viewController!,
+                                                  projectedValue: state)
+                
+                viewModel.coordinator?.viewController?.navigationView?.viewModel
+                    .stateDidChange(withOwner: viewModel.coordinator!.viewController!,
+                                    projectedValue: state)
+            })
+        self.viewModel = NavigationViewViewModel(items: items, actions: actions)
         self.viewDidLoad()
     }
     

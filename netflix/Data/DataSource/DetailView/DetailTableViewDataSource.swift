@@ -79,8 +79,6 @@ final class DetailTableViewDataSource: NSObject,
         case collection
     }
     
-    private let diProvider: DetailViewDIProvider
-    
     fileprivate let viewModel: DetailViewModel
     fileprivate let actions: DetailTableViewDataSourceActions
     fileprivate let tableView: UITableView
@@ -92,11 +90,10 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
     fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
     
-    init(using diProvider: DetailViewDIProvider, actions: DetailTableViewDataSourceActions) {
+    init(on tableView: UITableView, actions: DetailTableViewDataSourceActions, with viewModel: DetailViewModel) {
+        self.tableView = tableView
         self.actions = actions
-        self.diProvider = diProvider
-        self.viewModel = diProvider.dependencies.detailViewModel
-        self.tableView = diProvider.dependencies.tableView
+        self.viewModel = viewModel
         super.init()
         self.viewsDidRegister()
         self.dataSourceDidChange()
@@ -136,28 +133,64 @@ final class DetailTableViewDataSource: NSObject,
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         if case .info = index {
             guard infoCell == nil else { return infoCell }
-            infoCell = diProvider.createDetailInfoTableViewCell()
+            infoCell = DetailInfoTableViewCell(with: viewModel)
             return infoCell
         } else if case .description = index {
             guard descriptionCell == nil else { return descriptionCell }
-            descriptionCell = diProvider.createDetailDescriptionTableViewCell()
+            descriptionCell = DetailDescriptionTableViewCell(with: viewModel)
             return descriptionCell
         } else if case .panel = index {
             guard panelCell == nil else { return panelCell }
-            panelCell = diProvider.createDetailPanelTableViewCell()
+            panelCell = DetailPanelTableViewCell(with: viewModel)
             return panelCell
         } else if case .navigation = index {
             guard navigationCell == nil else { return navigationCell }
-            navigationCell = diProvider.createDetailNavigationTableViewCell()
+            navigationCell = DetailNavigationTableViewCell(with: viewModel)
             return navigationCell
         } else {
             guard collectionCell == nil else { return collectionCell }
-            collectionCell = diProvider.createDetailCollectionTableViewCell()
+            collectionCell = DetailCollectionTableViewCell(with: viewModel)
             return collectionCell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return actions.heightForRowAt(indexPath)
+    }
+}
+
+extension DetailTableViewDataSource {
+    
+    func contentSize(with state: DetailNavigationView.State) -> Float {
+        switch state {
+        case .episodes:
+            guard let season = viewModel.season.value as Season? else { return .zero }
+            let cellHeight = Float(156.0)
+            let lineSpacing = Float(8.0)
+            let itemsCount = Float(season.episodes.count)
+            let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
+            return Float(value)
+        case .trailers:
+            guard let trailers = viewModel.media.resources.trailers as [String]? else { return .zero }
+            let cellHeight = Float(224.0)
+            let lineSpacing = Float(8.0)
+            let itemsCount = Float(trailers.count)
+            let value = cellHeight * itemsCount + (lineSpacing * itemsCount)
+            return Float(value)
+        default:
+            let cellHeight = Float(146.0)
+            let lineSpacing = Float(8.0)
+            let itemsPerLine = Float(3.0)
+            let topContentInset = Float(16.0)
+            let itemsCount = viewModel.homeDataSourceState == .series
+                ? Float(viewModel.section.media.count)
+                : Float(viewModel.section.media.count)
+            let roundedItemsOutput = (itemsCount / itemsPerLine).rounded(.awayFromZero)
+            let value =
+                roundedItemsOutput * cellHeight
+                + lineSpacing * roundedItemsOutput
+                + topContentInset
+            return Float(value)
+        }
     }
 }

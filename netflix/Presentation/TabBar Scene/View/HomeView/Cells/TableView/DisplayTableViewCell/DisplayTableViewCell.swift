@@ -19,8 +19,9 @@ final class DisplayTableViewCell: UITableViewCell {
     
     let displayView: DisplayView
     
-    init(using diProvider: HomeViewDIProvider, for indexPath: IndexPath) {
-        let displayView = diProvider.createDisplayView()
+    init(for indexPath: IndexPath, with viewModel: HomeViewModel) {
+        let viewModel = DisplayTableViewCellViewModel(with: viewModel)
+        let displayView = DisplayView(with: viewModel)
         self.displayView = displayView
         super.init(style: .default, reuseIdentifier: DisplayTableViewCell.reuseIdentifier)
         self.contentView.addSubview(self.displayView)

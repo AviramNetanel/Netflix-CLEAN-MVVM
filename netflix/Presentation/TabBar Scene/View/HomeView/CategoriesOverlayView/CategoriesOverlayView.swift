@@ -19,32 +19,32 @@ protocol CategoriesOverlayViewDependencies {
     func createCategoriesOverlayViewOpaqueView() -> OpaqueView
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func itemsDidChange()
-    func dataSourceDidChange()
-    func isPresentedDidChange()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var tableView: UITableView { get }
-    var viewModel: CategoriesOverlayViewViewModel { get }
-    var dataSource: CategoriesOverlayViewTableViewDataSource { get }
-    var opaqueView: OpaqueView { get }
-    var footerView: CategoriesOverlayViewFooterView { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func itemsDidChange()
+//    func dataSourceDidChange()
+//    func isPresentedDidChange()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var tableView: UITableView { get }
+//    var viewModel: CategoriesOverlayViewViewModel { get }
+//    var dataSource: CategoriesOverlayViewTableViewDataSource { get }
+//    var opaqueView: OpaqueView { get }
+//    var footerView: CategoriesOverlayViewFooterView { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - CategoriesOverlayView class
 
-final class CategoriesOverlayView: UIView, View {
+final class CategoriesOverlayView: UIView {
     
     enum Category: Int, CaseIterable {
         case home
@@ -61,23 +61,23 @@ final class CategoriesOverlayView: UIView, View {
         case documentary
     }
     
-    private let tabBar: UITabBar
+    private var tabBar: UITabBar?
     fileprivate(set) lazy var tableView: UITableView = createTableView()
-    let viewModel: CategoriesOverlayViewViewModel
-    let dataSource: CategoriesOverlayViewTableViewDataSource
+    var viewModel: CategoriesOverlayViewViewModel!
+    var dataSource: CategoriesOverlayViewTableViewDataSource!
     let opaqueView: OpaqueView
     fileprivate var footerView: CategoriesOverlayViewFooterView
     
-    init(using diProvider: HomeViewDIProvider) {
-        self.tabBar = diProvider.dependencies.homeViewController.tabBarController!.tabBar
-        self.viewModel = diProvider.createCategoriesOverlayViewViewModel()
-        self.dataSource = diProvider.createCategoriesOverlayViewTableViewDataSource(with: viewModel)
-        self.opaqueView = diProvider.createCategoriesOverlayViewOpaqueView()
-        let parent = diProvider.dependencies.homeViewController.view!
-        self.footerView = diProvider.createCategoriesOverlayViewFooterView(on: parent, with: viewModel)
+    init(with viewModel: HomeViewModel) {
+        self.tabBar = viewModel.coordinator?.viewController?.tabBarController?.tabBar
+        self.viewModel = CategoriesOverlayViewViewModel()
+        self.opaqueView = OpaqueView(frame: UIScreen.main.bounds)
+        let parent = viewModel.coordinator?.viewController?.view
+        self.footerView = CategoriesOverlayViewFooterView(parent: parent ?? .init(), viewModel: self.viewModel)
         super.init(frame: UIScreen.main.bounds)
-        parent.addSubview(self)
-        parent.addSubview(footerView)
+        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: tableView, with: self.viewModel)
+        parent?.addSubview(self)
+        parent?.addSubview(footerView)
         self.viewDidLoad()
     }
     
@@ -136,7 +136,7 @@ final class CategoriesOverlayView: UIView, View {
             isHidden(false)
             tableView.isHidden(false)
             footerView.isHidden(false)
-            tabBar.isHidden(true)
+            tabBar?.isHidden(true)
             
             itemsDidChange()
             return
@@ -145,7 +145,7 @@ final class CategoriesOverlayView: UIView, View {
         isHidden(true)
         footerView.isHidden(true)
         tableView.isHidden(true)
-        tabBar.isHidden(false)
+        tabBar?.isHidden(false)
         
         tableView.delegate = nil
         tableView.dataSource = nil

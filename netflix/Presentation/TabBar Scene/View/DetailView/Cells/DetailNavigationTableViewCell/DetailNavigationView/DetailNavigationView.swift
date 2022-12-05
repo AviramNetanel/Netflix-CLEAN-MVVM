@@ -7,26 +7,26 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func stateDidChange(view: DetailNavigationViewItem)
-    func didSelectItem(view: DetailNavigationViewItem)
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var viewModel: DetailViewModel { get }
-    var leadingItem: DetailNavigationViewItem! { get }
-    var centerItem: DetailNavigationViewItem! { get }
-    var trailingItem: DetailNavigationViewItem! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func stateDidChange(view: DetailNavigationViewItem)
+//    func didSelectItem(view: DetailNavigationViewItem)
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var viewModel: DetailViewModel { get }
+//    var leadingItem: DetailNavigationViewItem! { get }
+//    var centerItem: DetailNavigationViewItem! { get }
+//    var trailingItem: DetailNavigationViewItem! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailNavigationView class
 
@@ -42,20 +42,20 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var centerViewContainer: UIView!
     @IBOutlet private(set) weak var trailingViewContrainer: UIView!
     
-    fileprivate(set) var viewModel: DetailViewModel
+    var viewModel: DetailViewModel!
     fileprivate(set) var leadingItem: DetailNavigationViewItem!
     fileprivate(set) var centerItem: DetailNavigationViewItem!
     fileprivate(set) var trailingItem: DetailNavigationViewItem!
     
-    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
-        self.viewModel = diProvider.dependencies.detailViewModel
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
         self.nibDidLoad()
-        self.leadingItem = diProvider.createDetailNavigationViewItem(using: self, on: self.leadingViewContainer)
-        self.centerItem = diProvider.createDetailNavigationViewItem(using: self, on: self.centerViewContainer)
-        self.trailingItem = diProvider.createDetailNavigationViewItem(using: self, on: self.trailingViewContrainer)
+        self.leadingItem = DetailNavigationViewItem(navigationView: self, on: self.leadingViewContainer, with: viewModel)
+        self.centerItem = DetailNavigationViewItem(navigationView: self, on: self.centerViewContainer, with: viewModel)
+        self.trailingItem = DetailNavigationViewItem(navigationView: self, on: self.trailingViewContrainer, with: viewModel)
         self.viewDidLoad()
     }
     

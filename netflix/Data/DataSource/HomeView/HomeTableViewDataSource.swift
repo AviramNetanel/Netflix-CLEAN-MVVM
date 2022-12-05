@@ -30,11 +30,17 @@ struct HomeTableViewDataSourceActions {
     let viewDidScroll: (UIScrollView) -> Void
     let didSelectItem: (Int, Int) -> Void
     
-    init(using diProvider: HomeViewDIProvider) {
-        self.heightForRowAt = diProvider.dependencies.homeViewController.heightForRow(at:)
-        self.viewDidScroll = diProvider.dependencies.homeViewController.viewDidScroll(in:)
-        self.didSelectItem = diProvider.dependencies.homeViewController.didSelectItem(at:of:)
-    }
+//    init(coordinator: HomeCoordinator) {
+//        self.heightForRowAt = coordinator.viewController!.heightForRow(at:)
+//        self.viewDidScroll = coordinator.viewController!.viewDidScroll(in:)
+//        self.didSelectItem = coordinator.viewController!.didSelectItem(at:of:)
+//    }
+    
+//    init() {
+//        self.heightForRowAt = { _ in return 100 }
+//        self.viewDidScroll = { _ in }
+//        self.didSelectItem = { _, _ in }
+//    }
 }
 
 // MARK: - DataSourceInput protocol
@@ -85,15 +91,45 @@ final class HomeTableViewDataSource: NSObject, DataSource {
         case films
     }
     
-    private let diProvider: HomeViewDIProvider
-    private let actions: HomeTableViewDataSourceActions
+    private weak var tableView: UITableView!
+    private let viewModel: HomeViewModel
+    private var actions: HomeTableViewDataSourceActions!
     
     fileprivate let numberOfRows = 1
     fileprivate(set) var displayCell: DisplayTableViewCell!
     
-    init(using diProvider: HomeViewDIProvider, actions: HomeTableViewDataSourceActions) {
-        self.diProvider = diProvider
-        self.actions = actions
+    init(tableView: UITableView, viewModel: HomeViewModel) {
+        self.tableView = tableView
+        self.viewModel = viewModel
+        self.actions = HomeTableViewDataSourceActions(
+            heightForRowAt: { indexPath in
+                guard let homeViewController = viewModel.coordinator?.viewController else { return .zero }
+                if case .display = HomeTableViewDataSource.Index(rawValue: indexPath.section) {
+                    return homeViewController.view.bounds.height * 0.76
+                }
+                return homeViewController.view.bounds.height * 0.19
+            }, viewDidScroll: { scrollView in
+                guard
+                    let homeViewController = viewModel.coordinator?.viewController,
+                    let translation = scrollView.panGestureRecognizer.translation(in: homeViewController.view) as CGPoint?
+                else { return }
+                homeViewController.view.animateUsingSpring(withDuration: 0.66,
+                                             withDamping: 1.0,
+                                             initialSpringVelocity: 1.0) {
+                    guard translation.y < 0 else {
+                        homeViewController.navigationViewTopConstraint.constant = 0.0
+                        homeViewController.navigationView.alpha = 1.0
+                        return homeViewController.view.layoutIfNeeded()
+                    }
+                    homeViewController.navigationViewTopConstraint.constant = -homeViewController.navigationView.bounds.size.height
+                    homeViewController.navigationView.alpha = 0.0
+                    homeViewController.view.layoutIfNeeded()
+                }
+            }, didSelectItem: { section, row in
+                let section = viewModel.sections[section]
+                let media = section.media[row]
+                viewModel.actions?.presentMediaDetails(section, media)
+            })
         super.init()
         self.viewDidLoad()
     }
@@ -108,7 +144,6 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
     
     fileprivate func viewsDidRegister() {
-        guard let tableView = diProvider.dependencies.tableView else { return }
         tableView.register(headerFooter: TableViewHeaderFooterView.self)
         tableView.register(nib: DisplayTableViewCell.self)
         tableView.register(class: RatedTableViewCell.self)
@@ -117,7 +152,6 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
     
     fileprivate func dataSourceDidChange() {
-        guard let tableView = diProvider.dependencies.tableView else { return }
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -129,7 +163,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
 extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return diProvider.dependencies.homeViewModel.sections.count
+        return viewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,26 +173,29 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let index = Index(rawValue: indexPath.section) else { fatalError() }
         
-        let actions = diProvider.createHomeCollectionViewDataSourceActions(for: index.rawValue, using: actions)
+        let actions = HomeCollectionViewDataSourceActions(
+            didSelectItem: { row in
+                self.actions.didSelectItem(index.rawValue, row)
+            })
         
         if case .display = index {
-            displayCell = diProvider.createHomeDisplayTableViewCell(for: indexPath)
+            displayCell = DisplayTableViewCell(for: indexPath, with: viewModel)
             return displayCell
         } else if case .ratable = index {
-            return diProvider.createHomeRatedTableViewCell(for: indexPath, with: actions)
+            return RatedTableViewCell(with: viewModel, for: indexPath, actions: actions)
         } else if case .resumable = index {
-            return diProvider.createHomeResumableTableViewCell(for: indexPath, with: actions)
+            return ResumableTableViewCell(with: viewModel, for: indexPath, actions: actions)
         } else {
-            return diProvider.createHomeStandardTableViewCell(for: indexPath, with: actions)
+            return StandardTableViewCell(with: viewModel, for: indexPath, actions: actions)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return actions.heightForRowAt(indexPath)
+        return viewModel.coordinator!.viewController!.heightForRow(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return diProvider.createHomeTableViewHeaderFooterView(at: section)
+        return TableViewHeaderFooterView(for: section, with: viewModel)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

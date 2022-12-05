@@ -7,28 +7,28 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var titleLabel: UILabel { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var titleLabel: UILabel { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - CategoriesOverlayViewTableViewCell class
 
 final class CategoriesOverlayViewTableViewCell: UITableViewCell {
     
     private lazy var titleLabel = createLabel()
-    private let viewModel: CategoriesOverlayViewCollectionViewCellViewModel
+    var viewModel: CategoriesOverlayViewCollectionViewCellViewModel!
     
     init(on tableView: UITableView, for indexPath: IndexPath, with items: [Valuable]) {
         let model = items[indexPath.row]

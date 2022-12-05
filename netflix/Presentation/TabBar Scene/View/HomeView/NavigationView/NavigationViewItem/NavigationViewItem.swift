@@ -90,26 +90,26 @@ final class NavigationViewItemConfiguration: Configuration {
     }
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure(with state: NavigationView.State)
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var configuration: NavigationViewItemConfiguration! { get }
-    var viewModel: NavigationViewItemViewModel! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure(with state: NavigationView.State)
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var configuration: NavigationViewItemConfiguration! { get }
+//    var viewModel: NavigationViewItemViewModel! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - NavigationViewItem class
 
-final class NavigationViewItem: UIView, View {
+final class NavigationViewItem: UIView {
     
     fileprivate(set) lazy var button = UIButton(type: .system)
     

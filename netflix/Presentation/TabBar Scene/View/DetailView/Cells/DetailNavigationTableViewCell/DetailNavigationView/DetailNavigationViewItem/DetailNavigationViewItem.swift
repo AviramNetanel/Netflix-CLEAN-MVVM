@@ -51,7 +51,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
     
     fileprivate func viewDidConfigure() {
-        if navigationView.viewModel.dependencies.media.type == .series {
+        if navigationView.viewModel.media.type == .series {
             navigationView.viewModel.navigationViewState.value = .episodes
             navigationView.leadingViewContainer.isHidden(false)
             navigationView.centerViewContainer.isHidden(true)
@@ -69,30 +69,30 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var configuration: DetailNavigationViewItemConfiguration! { get }
-    var viewModel: DetailNavigationViewItemViewModel! { get }
-    var isSelected: Bool { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var configuration: DetailNavigationViewItemConfiguration! { get }
+//    var viewModel: DetailNavigationViewItemViewModel! { get }
+//    var isSelected: Bool { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailNavigationViewItem class
 
-final class DetailNavigationViewItem: UIView, View {
+final class DetailNavigationViewItem: UIView {
     
     fileprivate(set) var configuration: DetailNavigationViewItemConfiguration!
-    fileprivate(set) var viewModel: DetailNavigationViewItemViewModel!
+    var viewModel: DetailNavigationViewItemViewModel!
     
     private lazy var indicatorView = createIndicatorView()
     fileprivate lazy var button = createButton()
@@ -100,13 +100,13 @@ final class DetailNavigationViewItem: UIView, View {
     var isSelected = false
     var widthConstraint: NSLayoutConstraint!
     
-    init(using diProvider: DetailViewDIProvider, navigationView: DetailNavigationView, on parent: UIView) {
+    init(navigationView: DetailNavigationView, on parent: UIView, with viewModel: DetailViewModel) {
         super.init(frame: parent.bounds)
         self.tag = parent.tag
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.viewModel = diProvider.createDetailNavigationViewItemViewModel(on: self)
-        self.configuration = diProvider.createDetailNavigationViewItemConfiguration(using: navigationView, on: self)
+        self.viewModel = DetailNavigationViewItemViewModel(with: self)
+        self.configuration = DetailNavigationViewItemConfiguration(on: self, with: navigationView)
         self.viewDidConfigure()
     }
     

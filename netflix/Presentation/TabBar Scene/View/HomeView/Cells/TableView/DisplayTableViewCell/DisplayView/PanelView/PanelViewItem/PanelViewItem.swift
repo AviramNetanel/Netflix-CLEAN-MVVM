@@ -117,7 +117,7 @@ final class PanelViewItemConfiguration: Configuration {
         case .info:
             let section = viewModel.sectionAt(.display)
             let media = viewModel.presentedDisplayMedia.value!
-            viewModel.actions.presentMediaDetails(section, media)
+            viewModel.actions?.presentMediaDetails(section, media)
         }
         
         view.setAlphaAnimation(using: view.gestureRecognizers!.first) {
@@ -129,41 +129,41 @@ final class PanelViewItemConfiguration: Configuration {
     func viewDidLongPress() {}
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var configuration: PanelViewItemConfiguration! { get }
-    var viewModel: PanelViewItemViewModel! { get }
-    var isSelected: Bool { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var configuration: PanelViewItemConfiguration! { get }
+//    var viewModel: PanelViewItemViewModel! { get }
+//    var isSelected: Bool { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - PanelViewItem class
 
-final class PanelViewItem: UIView, View, ViewInstantiable {
+final class PanelViewItem: UIView, ViewInstantiable {
     
     @IBOutlet private(set) weak var titleLabel: UILabel!
     @IBOutlet private(set) weak var imageView: UIImageView!
     
     fileprivate(set) var configuration: PanelViewItemConfiguration!
-    fileprivate(set) var viewModel: PanelViewItemViewModel!
+    private(set) var viewModel: PanelViewItemViewModel!
     fileprivate(set) var isSelected = false
     
-    init(using diProvider: HomeViewDIProvider, on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
+    init(on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         self.tag = parent.tag
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.viewModel = diProvider.createPanelViewItemViewModel(on: self, with: viewModel)
-        self.configuration = diProvider.createPanelViewItemConfiguration(on: self, with: viewModel)
+        self.viewModel = PanelViewItemViewModel(item: self, with: viewModel.presentedDisplayMedia.value!)
+        self.configuration = PanelViewItemConfiguration(view: self, gestureRecognizers: [.tap], with: viewModel)
     }
     
     required init?(coder: NSCoder) { fatalError() }

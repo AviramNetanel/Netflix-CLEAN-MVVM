@@ -53,16 +53,14 @@ final class DetailCollectionViewDataSource<T>: NSObject,
                                                UICollectionViewDelegate,
                                                UICollectionViewDataSource {
     
-    private let diProvider: DetailViewDIProvider
+    private let viewModel: DetailViewModel
     fileprivate let numberOfSections = 1
     fileprivate let collectionView: UICollectionView
     let items: [T]
     fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
-    init(using diProvider: DetailViewDIProvider,
-         collectionView: UICollectionView,
-         items: [T]) {
-        self.diProvider = diProvider
+    init(collectionView: UICollectionView, items: [T], with viewModel: DetailViewModel) {
+        self.viewModel = viewModel
         self.collectionView = collectionView
         self.items = items
     }
@@ -77,17 +75,16 @@ final class DetailCollectionViewDataSource<T>: NSObject,
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch diProvider.dependencies.detailViewModel.navigationViewState.value {
+        switch viewModel.navigationViewState.value {
         case .episodes:
-            return diProvider.createEpisodeCollectionViewCell(on: collectionView, for: indexPath)
+            return EpisodeCollectionViewCell.create(on: collectionView, for: indexPath, with: viewModel)
         case .trailers:
-            return diProvider.createTrailerCollectionViewCell(on: collectionView, for: indexPath)
+            return TrailerCollectionViewCell.create(on: collectionView, for: indexPath, with: viewModel)
         default:
-            return diProvider.createCollectionViewCell(
-                on: collectionView,
-                reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
-                section: diProvider.dependencies.detailViewModel.dependencies.section,
-                for: indexPath)
+            return CollectionViewCell.create(on: collectionView,
+                                             reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
+                                             section: viewModel.section,
+                                             for: indexPath)
         }
     }
     

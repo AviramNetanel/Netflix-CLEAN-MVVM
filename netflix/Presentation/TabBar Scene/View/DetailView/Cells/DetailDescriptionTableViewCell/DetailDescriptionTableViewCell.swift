@@ -7,27 +7,28 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailDescriptionTableViewCell class
 
-final class DetailDescriptionTableViewCell: UITableViewCell, View {
+final class DetailDescriptionTableViewCell: UITableViewCell {
     
-    init(using diProvider: DetailViewDIProvider) {
+    init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailDescriptionTableViewCell.reuseIdentifier)
-        let descriptionView = diProvider.createDetailDescriptionView(on: self.contentView)
+        let viewModel = DetailDescriptionViewViewModel(with: viewModel.media)
+        let descriptionView = DetailDescriptionView(on: self.contentView, with: viewModel)
         self.contentView.addSubview(descriptionView)
         descriptionView.constraintToSuperview(self.contentView)
         self.viewDidConfigure()

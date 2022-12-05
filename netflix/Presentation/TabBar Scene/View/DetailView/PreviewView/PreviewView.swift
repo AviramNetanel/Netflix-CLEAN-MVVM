@@ -13,32 +13,32 @@ protocol PreviewViewDependencies {
     func createPreviewView() -> PreviewView
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var imageView: UIImageView { get }
-    var viewModel: PreviewViewViewModel { get }
-}
-
-// MARK: - View typelias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var imageView: UIImageView { get }
+//    var viewModel: PreviewViewViewModel { get }
+//}
+//
+//// MARK: - View typelias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - PreviewView class
 
-final class PreviewView: UIView, View {
+final class PreviewView: UIView {
     
     fileprivate lazy var imageView = createImageView()
-    fileprivate let viewModel: PreviewViewViewModel
+    var viewModel: PreviewViewViewModel!
     
     init(on parent: UIView, with viewModel: DetailViewModel) {
-        self.viewModel = .init(with: viewModel.dependencies.media)
+        self.viewModel = .init(with: viewModel.media)
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)

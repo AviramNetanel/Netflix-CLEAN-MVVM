@@ -7,31 +7,31 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var detailCollectionView: DetailCollectionView! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var detailCollectionView: DetailCollectionView! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailCollectionTableViewCell class
 
-final class DetailCollectionTableViewCell: UITableViewCell, View {
+final class DetailCollectionTableViewCell: UITableViewCell {
     
     fileprivate(set) var detailCollectionView: DetailCollectionView!
     
-    init(using diProvider: DetailViewDIProvider) {
+    init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)
-        self.detailCollectionView = diProvider.createDetailCollectionView(on: self.contentView)
+        self.detailCollectionView = DetailCollectionView(on: self.contentView, with: viewModel)
         self.contentView.addSubview(self.detailCollectionView)
         self.viewDidConfigure()
     }

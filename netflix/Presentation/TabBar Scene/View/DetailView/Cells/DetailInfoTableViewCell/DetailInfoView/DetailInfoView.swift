@@ -7,28 +7,28 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var viewModel: DetailInfoViewViewModel { get }
-    var ageRestrictionView: AgeRestrictionView! { get }
-    var hdView: HDView! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var viewModel: DetailInfoViewViewModel { get }
+//    var ageRestrictionView: AgeRestrictionView! { get }
+//    var hdView: HDView! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailInfoView class
 
-final class DetailInfoView: UIView, View, ViewInstantiable {
+final class DetailInfoView: UIView, ViewInstantiable {
     
     @IBOutlet private weak var mediaTypeLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
@@ -40,7 +40,7 @@ final class DetailInfoView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    fileprivate let viewModel: DetailInfoViewViewModel
+    var viewModel: DetailInfoViewViewModel!
     fileprivate var ageRestrictionView: AgeRestrictionView!
     fileprivate var hdView: HDView!
     

@@ -9,17 +9,17 @@ import UIKit
 
 // MARK: - TabBarController class
 
-final class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController, View {
     
-    private(set) var homeViewController: HomeViewController!
+    var viewModel: TabBarViewModel!
     
-    static func create(with viewControllers: [UIViewController]) -> TabBarController {
-        let view = Storyboard(
-            withOwner: TabBarController.self,
-            launchingViewController: TabBarController.self)
-            .instantiate() as! TabBarController
-        view.homeViewController = viewControllers.first as? HomeViewController
-        view.setViewControllers(viewControllers, animated: false)
-        return view
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupUI()
+    }
+    
+    private func setupUI() {
+        tabBar.barStyle = .black
+        tabBar.isTranslucent = false
     }
 }

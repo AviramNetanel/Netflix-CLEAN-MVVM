@@ -18,8 +18,7 @@ final class SignInViewController: UIViewController {
     var viewModel: AuthViewModel!
     
     private var credentials: (String?, String?) {
-        return (email: emailTextField.text,
-                password: passwordTextField.text)
+        return (email: emailTextField.text, password: passwordTextField.text)
     }
     
     override func viewDidLoad() {
@@ -43,13 +42,13 @@ final class SignInViewController: UIViewController {
     
     @objc
     private func didSignIn() {
-        let userDTO = UserDTO(email: credentials.0,
-                              password: credentials.1)
+        let userDTO = UserDTO(email: credentials.0, password: credentials.1)
         let requestDTO = AuthRequestDTO(user: userDTO)
         
-        viewModel.signIn(request: requestDTO.toDomain()) { [weak self] result in
-            guard let self = self else { return }
-            if case .success = result { asynchrony { self.viewModel.actions.presentHomeViewController() } }
+        viewModel.signIn(request: requestDTO.toDomain()) { result in
+            if case .success = result {
+                asynchrony { Application.current.coordinator.showScreen(.tabBar) }
+            }
             if case let .failure(error) = result { print(error) }
         }
     }

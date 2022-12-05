@@ -63,27 +63,27 @@ struct DisplayViewConfiguration: Configuration {
     }
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var viewModel: DisplayViewViewModel! { get }
-    var configuration: DisplayViewConfiguration! { get }
-    var panelView: PanelView! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var viewModel: DisplayViewViewModel! { get }
+//    var configuration: DisplayViewConfiguration! { get }
+//    var panelView: PanelView! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DisplayView class
 
-final class DisplayView: UIView, View, ViewInstantiable {
+final class DisplayView: UIView, ViewInstantiable {
     
     @IBOutlet private(set) weak var posterImageView: UIImageView!
     @IBOutlet private(set) weak var logoImageView: UIImageView!
@@ -92,17 +92,17 @@ final class DisplayView: UIView, View, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelViewContainer: UIView!
     
-    fileprivate(set) var viewModel: DisplayViewViewModel!
+    private var viewModel: DisplayViewViewModel!
     fileprivate(set) var configuration: DisplayViewConfiguration!
     fileprivate(set) var panelView: PanelView!
     
-    init(using diProvider: HomeViewDIProvider, with viewModel: DisplayTableViewCellViewModel) {
+    init(with viewModel: DisplayTableViewCellViewModel) {
         super.init(frame: .zero)
         self.nibDidLoad()
         viewModel.presentedDisplayMediaDidChange()
-        self.viewModel = diProvider.createDisplayViewViewModel(with: viewModel)
-        self.configuration = diProvider.createDisplayViewConfiguration(on: self)
-        self.panelView = diProvider.createPanelView(on: self, with: viewModel)
+        self.viewModel = DisplayViewViewModel(with: viewModel.presentedDisplayMedia.value!)
+        self.configuration = DisplayViewConfiguration(view: self, viewModel: self.viewModel)
+        self.panelView = PanelView(on: panelViewContainer, with: viewModel)
         self.viewDidLoad()
     }
     

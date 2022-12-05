@@ -14,10 +14,9 @@ final class AuthViewController: UIViewController {
     @IBOutlet private weak var statusBarGradientView: UIView!
     @IBOutlet private weak var topGradientView: UIView!
     @IBOutlet private weak var bottomGradientView: UIView!
-    @IBOutlet private weak var signInButton: UIBarButtonItem!
     @IBOutlet private weak var signUpButton: UIButton!
     
-    private var viewModel: AuthViewModel!
+    var viewModel: AuthViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,36 +25,23 @@ final class AuthViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
-    static func create(with viewModel: AuthViewModel) -> AuthViewController {
-        let view = Storyboard(withOwner: AuthViewController.self,
-                              launchingViewController: AuthViewController.self)
-            .instantiate() as! AuthViewController
-        view.viewModel = viewModel
-        return view
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == String(describing: SignInViewController.self),
-           let destinationVC = segue.destination as? SignInViewController,
-           let signInViewController = destinationVC as SignInViewController? {
-            
-            signInViewController.viewModel = viewModel
-        } else if segue.identifier == String(describing: SignUpViewController.self),
-                  let destinationVC = segue.destination as? SignUpViewController,
-                  let signUpViewController = destinationVC as SignUpViewController? {
-            
-            signUpViewController.viewModel = viewModel
-        }
-    }
-    
     private func setupBehaviors() {
         addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
                       BlackStyleNavigationBarBehavior()])
     }
     
     private func setupSubviews() {
+        setupNavigationBarButtonItem()
         setupGradientViews()
         setupTargets()
+    }
+    
+    private func setupNavigationBarButtonItem() {
+        let button = UIBarButtonItem(title: "Sign In",
+                                     style: .plain,
+                                     target: viewModel.coordinator,
+                                     action: #selector(viewModel.coordinator!.presentSignInViewController))
+        navigationItem.rightBarButtonItem = button
     }
     
     private func setupGradientViews() {
@@ -85,12 +71,8 @@ final class AuthViewController: UIViewController {
     }
     
     private func setupTargets() {
-        guard let viewModel = viewModel else { return }
-        
-        signInButton.addTarget(viewModel, action: #selector(viewModel.signInButtonDidTap))
-        
-        signUpButton.addTarget(viewModel,
-                               action: #selector(viewModel.signUpButtonDidTap),
+        signUpButton.addTarget(viewModel.coordinator,
+                               action: #selector(viewModel.coordinator!.presentSignUpViewController),
                                for: .touchUpInside)
     }
 }

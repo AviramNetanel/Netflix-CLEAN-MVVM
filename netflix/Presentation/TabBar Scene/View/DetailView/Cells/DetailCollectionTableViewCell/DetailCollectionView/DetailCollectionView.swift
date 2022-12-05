@@ -7,40 +7,38 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func dataDidLoad()
-    func viewDidLoad()
-    func dataSourceDidChange()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var viewModel: DetailViewModel { get }
-    var collectionView: UICollectionView { get }
-    var dataSource: DetailCollectionViewDataSource<Mediable>! { get }
-    var layout: CollectionViewLayout! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func dataDidLoad()
+//    func viewDidLoad()
+//    func dataSourceDidChange()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var viewModel: DetailViewModel { get }
+//    var collectionView: UICollectionView { get }
+//    var dataSource: DetailCollectionViewDataSource<Mediable>! { get }
+//    var layout: CollectionViewLayout! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailCollectionView class
 
-final class DetailCollectionView: UIView, View {
+final class DetailCollectionView: UIView {
     
-    private let diProvider: DetailViewDIProvider
-    fileprivate let viewModel: DetailViewModel
+    private let viewModel: DetailViewModel
     fileprivate lazy var collectionView = createCollectionView()
     fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
     fileprivate var layout: CollectionViewLayout!
     
-    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
-        self.diProvider = diProvider
-        self.viewModel = diProvider.dependencies.detailViewModel
+    init(on parent: UIView, with viewModel: DetailViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
@@ -90,18 +88,18 @@ final class DetailCollectionView: UIView, View {
         
         switch viewModel.navigationViewState.value {
         case .episodes:
-            guard let episodes = viewModel.season.value?.episodes else { return }
-            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: episodes)
+            guard let episodes = viewModel.season?.value?.episodes else { return }
+            dataSource = DetailCollectionViewDataSource(collectionView: collectionView, items: episodes, with: viewModel)
             layout = CollectionViewLayout(layout: .descriptive, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         case .trailers:
-            guard let trailers = viewModel.dependencies.media.resources.trailers.toDomain() as [Trailer]? else { return }
-            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: trailers)
+            guard let trailers = viewModel.media.resources.trailers.toDomain() as [Trailer]? else { return }
+            dataSource = DetailCollectionViewDataSource(collectionView: collectionView, items: trailers, with: viewModel)
             layout = CollectionViewLayout(layout: .trailer, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         default:
-            guard let media = viewModel.dependencies.section.media as [Media]? else { return }
-            dataSource = diProvider.createDetailCollectionViewDataSource(on: collectionView, with: media)
+            guard let media = viewModel.section.media as [Media]? else { return }
+            dataSource = DetailCollectionViewDataSource(collectionView: collectionView, items: media, with: viewModel)
             layout = CollectionViewLayout(layout: .detail, scrollDirection: .vertical)
             collectionView.setCollectionViewLayout(layout, animated: false)
         }
@@ -109,5 +107,22 @@ final class DetailCollectionView: UIView, View {
         collectionView.delegate = dataSource
         collectionView.dataSource = dataSource
         collectionView.reloadData()
+    }
+}
+
+struct DetailCollectionViewViewModel {
+    
+    var navigationViewState: Observable<DetailNavigationView.State>!
+    var media: Media!
+    var section: Section!
+    var season: Observable<Season?>!
+    var fetchSeason: ((SeasonRequestDTO.GET, @escaping () -> Void) -> Void)?
+    
+    init(with viewModel: DetailViewModel) {
+        self.navigationViewState = viewModel.navigationViewState
+        self.media = viewModel.media
+        self.section = viewModel.section
+        self.season = viewModel.season
+        self.fetchSeason = viewModel.getSeason(with:completion:)
     }
 }

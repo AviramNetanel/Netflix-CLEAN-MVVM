@@ -7,33 +7,33 @@
 
 import AVKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func viewDidRegisterRecognizers(on parent: UIView)
-    var prepareToPlay: ((Bool) -> Void)? { get }
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var mediaPlayer: MediaPlayer! { get }
-    var overlayView: MediaPlayerOverlayView! { get }
-    var viewModel: MediaPlayerViewViewModel! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func viewDidRegisterRecognizers(on parent: UIView)
+//    var prepareToPlay: ((Bool) -> Void)? { get }
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var mediaPlayer: MediaPlayer! { get }
+//    var overlayView: MediaPlayerOverlayView! { get }
+//    var viewModel: MediaPlayerViewViewModel! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - MediaPlayerView class
 
-final class MediaPlayerView: UIView, View {
+final class MediaPlayerView: UIView {
     
     fileprivate(set) var mediaPlayer: MediaPlayer!
     fileprivate var overlayView: MediaPlayerOverlayView!
-    fileprivate(set) var viewModel: MediaPlayerViewViewModel!
+    var viewModel: MediaPlayerViewViewModel!
     
     var prepareToPlay: ((Bool) -> Void)?
     

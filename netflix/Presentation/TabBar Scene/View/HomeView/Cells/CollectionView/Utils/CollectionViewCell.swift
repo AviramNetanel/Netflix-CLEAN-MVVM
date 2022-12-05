@@ -7,34 +7,37 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func dataDidDownload(with viewModel: CollectionViewCellViewModel, completion: (() -> Void)?)
+//    func viewDidLoad(media: Media, with viewModel: CollectionViewCellViewModel)
+//    func logoDidAlign(_ constraint: NSLayoutConstraint, with viewModel: CollectionViewCellViewModel)
+//    func viewDidConfigure(with viewModel: CollectionViewCellViewModel)
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var representedIdentifier: NSString? { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
-private protocol ViewInput {
-    func dataDidDownload(with viewModel: CollectionViewCellViewModel, completion: (() -> Void)?)
-    func viewDidLoad(media: Media, with viewModel: CollectionViewCellViewModel)
-    func logoDidAlign(_ constraint: NSLayoutConstraint, with viewModel: CollectionViewCellViewModel)
-    func viewDidConfigure(with viewModel: CollectionViewCellViewModel)
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var representedIdentifier: NSString? { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+extension UICollectionViewCell: ViewInstantiable {}
 
 // MARK: - CollectionViewCell class
 
-class CollectionViewCell: UICollectionViewCell, View {
+class CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet private weak var coverImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderLabel: UILabel!
     @IBOutlet private weak var logoBottomConstraint: NSLayoutConstraint!
     
+    var viewModel: CollectionViewCellViewModel!
     fileprivate var representedIdentifier: NSString?
     
     deinit { representedIdentifier = nil }
@@ -47,8 +50,8 @@ class CollectionViewCell: UICollectionViewCell, View {
             withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell
         else { fatalError() }
         let media = section.media[indexPath.row]
-        let cellViewModel = CollectionViewCellViewModel(media: media, indexPath: indexPath)
-        view.viewDidLoad(media: media, with: cellViewModel)
+        view.viewModel = CollectionViewCellViewModel(media: media, indexPath: indexPath)
+        view.viewDidLoad(media: media, with: view.viewModel)
         return view
     }
     

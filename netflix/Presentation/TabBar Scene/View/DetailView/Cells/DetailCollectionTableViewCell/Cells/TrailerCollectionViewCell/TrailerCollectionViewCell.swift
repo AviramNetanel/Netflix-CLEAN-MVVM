@@ -32,13 +32,13 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var playButton: UIButton!
     
-    static func create(using diProvider: DetailViewDIProvider,
-                       on collectionView: UICollectionView,
-                       for indexPath: IndexPath) -> TrailerCollectionViewCell {
+    static func create(on collectionView: UICollectionView,
+                       for indexPath: IndexPath,
+                       with viewModel: DetailViewModel) -> TrailerCollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrailerCollectionViewCell.reuseIdentifier,
             for: indexPath) as? TrailerCollectionViewCell else { fatalError() }
-        let cellViewModel = diProvider.createTrailerCollectionViewCellViewModel()
+        let cellViewModel = TrailerCollectionViewCellViewModel(with: viewModel.media)
         view.viewDidLoad(with: cellViewModel)
         return view
     }

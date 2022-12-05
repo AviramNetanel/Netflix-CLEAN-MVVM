@@ -238,32 +238,32 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
     }
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidLoad()
-    func viewWillAppear()
-    func viewWillDisappear()
-    func didSelect(view: Any)
-    func valueDidChange(for slider: UISlider)
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var configuration: MediaPlayerOverlayViewConfiguration! { get }
-    var mediaPlayerView: MediaPlayerView! { get }
-    var viewModel: MediaPlayerOverlayViewViewModel! { get }
-    var mediaPlayerViewModel: MediaPlayerViewViewModel! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidLoad()
+//    func viewWillAppear()
+//    func viewWillDisappear()
+//    func didSelect(view: Any)
+//    func valueDidChange(for slider: UISlider)
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var configuration: MediaPlayerOverlayViewConfiguration! { get }
+//    var mediaPlayerView: MediaPlayerView! { get }
+//    var viewModel: MediaPlayerOverlayViewViewModel! { get }
+//    var mediaPlayerViewModel: MediaPlayerViewViewModel! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - MediaPlayerOverlayView class
 
-final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
+final class MediaPlayerOverlayView: UIView, ViewInstantiable {
     
     fileprivate enum Item: Int {
         case airPlay
@@ -290,7 +290,7 @@ final class MediaPlayerOverlayView: UIView, View, ViewInstantiable {
     
     fileprivate(set) var configuration: MediaPlayerOverlayViewConfiguration!
     fileprivate weak var mediaPlayerView: MediaPlayerView!
-    fileprivate var viewModel: MediaPlayerOverlayViewViewModel!
+    var viewModel: MediaPlayerOverlayViewViewModel!
     fileprivate var mediaPlayerViewModel: MediaPlayerViewViewModel!
     
     deinit {

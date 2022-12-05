@@ -1,15 +1,15 @@
+////
+////  Essentials.swift
+////  netflix
+////
+////  Created by Zach Bazov on 22/11/2022.
+////
 //
-//  Essentials.swift
-//  netflix
+//import UIKit.UIApplication
 //
-//  Created by Zach Bazov on 22/11/2022.
+//// MARK: - Essential variables
 //
-
-import UIKit.UIApplication
-
-// MARK: - Essential variables
-
-var sceneDelegate: SceneDelegate { UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate }
-var appFlowCoordinator: AppFlowCoordinator { sceneDelegate.appFlowCoordinator }
-var appSceneDIProvider: AppSceneDIProvider { appFlowCoordinator.appSceneDIProvider }
-var tabBarSceneDIProvider: TabBarSceneDIProvider { appSceneDIProvider.tabBarSceneDIProvider }
+//var sceneDelegate: SceneDelegate { UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate }
+//var appFlowCoordinator: AppFlowCoordinator { sceneDelegate.appFlowCoordinator }
+//var appSceneDIProvider: AppSceneDIProvider { appFlowCoordinator.appSceneDIProvider }
+////var tabBarSceneDIProvider: TabBarSceneDIProvider { appSceneDIProvider.tabBarSceneDIProvider }

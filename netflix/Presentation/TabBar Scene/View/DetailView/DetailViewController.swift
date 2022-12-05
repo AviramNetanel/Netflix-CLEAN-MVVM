@@ -14,9 +14,8 @@ final class DetailViewController: UIViewController {
     @IBOutlet private(set) weak var tableView: UITableView!
     @IBOutlet private(set) weak var previewContainer: UIView!
     
-    private var diProvider: DetailViewDIProvider!
     private var previewView: PreviewView!
-    private(set) var viewModel: DetailViewModel!
+    var viewModel: DetailViewModel!
     private(set) var dataSource: DetailTableViewDataSource!
     
     deinit {
@@ -25,28 +24,13 @@ final class DetailViewController: UIViewController {
         previewView = nil
         dataSource = nil
         viewModel = nil
-        diProvider = nil
-    }
-    
-    static func create(with viewModel: DetailViewModel) -> DetailViewController {
-        let view = Storyboard(withOwner: TabBarController.self,
-                              launchingViewController: DetailViewController.self)
-            .instantiate() as! DetailViewController
-        view.viewModel = viewModel
-        return view
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDependencies()
         setupView()
         setupSubviews()
         setupObservers()
-        viewModel.viewDidLoad()
-    }
-    
-    private func setupDependencies() {
-        diProvider = tabBarSceneDIProvider.createDetailViewDIProvider(launchingViewController: self)
     }
     
     private func setupView() {
@@ -64,11 +48,12 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupPreviewView() {
-        previewView = diProvider.createPreviewView()
+        previewView = PreviewView(on: previewContainer, with: viewModel)
     }
     
     private func setupDataSource() {
-        dataSource = diProvider.createDetailTableViewDataSource()
+        let actions = DetailTableViewDataSourceActions(heightForRowAt: heightForRow())
+        dataSource = DetailTableViewDataSource(on: tableView, actions: actions, with: viewModel)
     }
     
     func removeObservers() {
@@ -123,9 +108,9 @@ extension DetailViewController {
             case .collection:
                 switch self.viewModel.navigationViewState.value {
                 case .episodes, .trailers:
-                    return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
+                    return CGFloat(self.dataSource.contentSize(with: self.viewModel.navigationViewState.value))
                 default:
-                    return CGFloat(self.viewModel.contentSize(with: self.viewModel.navigationViewState.value))
+                    return CGFloat(self.dataSource.contentSize(with: self.viewModel.navigationViewState.value))
                 }
             }
         }

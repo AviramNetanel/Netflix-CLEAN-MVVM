@@ -7,31 +7,31 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var navigationView: DetailNavigationView! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var navigationView: DetailNavigationView! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailNavigationTableViewCell class
 
-final class DetailNavigationTableViewCell: UITableViewCell, View {
+final class DetailNavigationTableViewCell: UITableViewCell {
     
     fileprivate(set) var navigationView: DetailNavigationView!
     
-    init(using diProvider: DetailViewDIProvider) {
+    init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)
-        self.navigationView = diProvider.createDetailNavigationView(on: self.contentView)
+        self.navigationView = DetailNavigationView(on: self.contentView, with: viewModel)
         self.viewDidConfigure()
     }
     
@@ -46,4 +46,3 @@ final class DetailNavigationTableViewCell: UITableViewCell, View {
         selectionStyle = .none
     }
 }
-

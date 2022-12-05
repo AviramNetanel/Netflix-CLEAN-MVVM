@@ -35,12 +35,12 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
         case categories
     }
     
-    private let diProvider: HomeViewDIProvider
+    private weak var tableView: UITableView!
     fileprivate let viewModel: CategoriesOverlayViewViewModel
     fileprivate let numberOfSections: Int = 1
     
-    init(using diProvider: HomeViewDIProvider, with viewModel: CategoriesOverlayViewViewModel) {
-        self.diProvider = diProvider
+    init(on tableView: UITableView, with viewModel: CategoriesOverlayViewViewModel) {
+        self.tableView = tableView
         self.viewModel = viewModel
     }
     
@@ -53,7 +53,7 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return diProvider.createCategoriesOverlayViewTableViewCell(for: indexPath)
+        return CategoriesOverlayViewTableViewCell(on: tableView, for: indexPath, with: viewModel.items.value)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -7,27 +7,27 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var leadingItem: DetailPanelViewItem! { get }
-    var centerItem: DetailPanelViewItem! { get }
-    var trailingItem: DetailPanelViewItem! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var leadingItem: DetailPanelViewItem! { get }
+//    var centerItem: DetailPanelViewItem! { get }
+//    var trailingItem: DetailPanelViewItem! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailPanelView class
 
-final class DetailPanelView: UIView, View, ViewInstantiable {
+final class DetailPanelView: UIView, ViewInstantiable {
     
     @IBOutlet private weak var leadingViewContainer: UIView!
     @IBOutlet private weak var centerViewContainer: UIView!
@@ -37,12 +37,12 @@ final class DetailPanelView: UIView, View, ViewInstantiable {
     fileprivate(set) var centerItem: DetailPanelViewItem!
     fileprivate(set) var trailingItem: DetailPanelViewItem!
     
-    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
+    init(on parent: UIView, with viewModel: DetailViewModel) {
         super.init(frame: parent.bounds)
         self.nibDidLoad()
-        self.leadingItem = diProvider.createDetailPanelViewItem(on: self.leadingViewContainer)
-        self.centerItem = diProvider.createDetailPanelViewItem(on: self.centerViewContainer)
-        self.trailingItem = diProvider.createDetailPanelViewItem(on: self.trailingViewContainer)
+        self.leadingItem = DetailPanelViewItem(on: self.leadingViewContainer, with: viewModel)
+        self.centerItem = DetailPanelViewItem(on: self.centerViewContainer, with: viewModel)
+        self.trailingItem = DetailPanelViewItem(on: self.trailingViewContainer, with: viewModel)
         self.viewDidConfigure()
     }
     

@@ -10,9 +10,6 @@ import UIKit
 // MARK: - SceneDelegate class
 
 class SceneDelegate: UIResponder {
-    
-    private(set) lazy var appFlowCoordinator = AppFlowCoordinator()
-    
     var window: UIWindow?
 }
 
@@ -29,14 +26,13 @@ extension SceneDelegate: UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        appFlowCoordinator.createAuthSceneFlow()
+        Application.current.root(in: window)
         
-        window?.rootViewController = appFlowCoordinator.navigationController
         window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
-        appFlowCoordinator.homeFlowCoordinator.sceneDidDisconnect()
+//        appFlowCoordinator.homeFlowCoordinator.sceneDidDisconnect()
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {}

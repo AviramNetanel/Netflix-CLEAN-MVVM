@@ -94,41 +94,41 @@ final class DetailPanelViewItemConfiguration: Configuration {
     }
 }
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var configuration: DetailPanelViewItemConfiguration! { get }
-    var viewModel: DetailPanelViewItemViewModel! { get }
-    var isSelected: Bool { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var configuration: DetailPanelViewItemConfiguration! { get }
+//    var viewModel: DetailPanelViewItemViewModel! { get }
+//    var isSelected: Bool { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailPanelViewItem class
 
-final class DetailPanelViewItem: UIView, View {
+final class DetailPanelViewItem: UIView {
     
     fileprivate(set) var configuration: DetailPanelViewItemConfiguration!
-    fileprivate(set) var viewModel: DetailPanelViewItemViewModel!
+    var viewModel: DetailPanelViewItemViewModel!
     
     fileprivate lazy var imageView = createImageView()
     fileprivate lazy var label = createLabel()
     
     var isSelected = false
     
-    init(using diProvider: DetailViewDIProvider, on parent: UIView) {
+    init(on parent: UIView, with viewModel: DetailViewModel) {
         super.init(frame: parent.bounds)
         self.tag = parent.tag
         parent.addSubview(self)
         self.chainConstraintToCenter(linking: self.imageView, to: self.label)
-        self.viewModel = diProvider.createDetailPanelViewItemViewModel(on: self)
-        self.configuration = diProvider.createDetailPanelViewItemConfiguration(on: self)
+        self.viewModel = DetailPanelViewItemViewModel(item: self, with: viewModel)
+        self.configuration = DetailPanelViewItemConfiguration(view: self, with: viewModel)
     }
     
     required init?(coder: NSCoder) { fatalError() }

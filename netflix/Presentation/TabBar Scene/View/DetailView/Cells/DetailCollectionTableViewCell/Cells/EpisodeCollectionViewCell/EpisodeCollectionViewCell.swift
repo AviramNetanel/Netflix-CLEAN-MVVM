@@ -37,13 +37,13 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    static func create(using diProvider: DetailViewDIProvider,
-                       on collectionView: UICollectionView,
-                       for indexPath: IndexPath) -> EpisodeCollectionViewCell {
+    static func create(on collectionView: UICollectionView,
+                       for indexPath: IndexPath,
+                       with viewModel: DetailViewModel) -> EpisodeCollectionViewCell {
         guard let view = collectionView.dequeueReusableCell(
             withReuseIdentifier: EpisodeCollectionViewCell.reuseIdentifier,
             for: indexPath) as? EpisodeCollectionViewCell else { fatalError() }
-        let cellViewModel = diProvider.createEpisodeCollectionViewCellViewModel()
+        let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
         view.setupSubviews()
         view.viewDidLoad(at: indexPath, with: cellViewModel)
         return view

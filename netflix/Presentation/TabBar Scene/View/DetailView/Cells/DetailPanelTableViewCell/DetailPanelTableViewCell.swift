@@ -7,33 +7,33 @@
 
 import UIKit
 
-// MARK: - ViewInput protocol
-
-private protocol ViewInput {
-    func viewDidConfigure()
-}
-
-// MARK: - ViewOutput protocol
-
-private protocol ViewOutput {
-    var panelView: DetailPanelView! { get }
-}
-
-// MARK: - View typealias
-
-private typealias View = ViewInput & ViewOutput
+//// MARK: - ViewInput protocol
+//
+//private protocol ViewInput {
+//    func viewDidConfigure()
+//}
+//
+//// MARK: - ViewOutput protocol
+//
+//private protocol ViewOutput {
+//    var panelView: DetailPanelView! { get }
+//}
+//
+//// MARK: - View typealias
+//
+//private typealias View = ViewInput & ViewOutput
 
 // MARK: - DetailPanelTableViewCell class
 
-final class DetailPanelTableViewCell: UITableViewCell, View {
+final class DetailPanelTableViewCell: UITableViewCell {
     
     fileprivate(set) var panelView: DetailPanelView!
     
     deinit { panelView = nil }
     
-    init(using diProvider: DetailViewDIProvider) {
+    init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)
-        self.panelView = diProvider.createDetailPanelView(on: self.contentView)
+        self.panelView = DetailPanelView(on: self.contentView, with: viewModel)
         self.contentView.addSubview(self.panelView)
         self.viewDidConfigure()
     }
