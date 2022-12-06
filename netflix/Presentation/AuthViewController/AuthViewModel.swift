@@ -46,7 +46,7 @@ final class AuthViewModel: ViewModel {
         return Output()
     }
     
-    var coordinator: AuthCoordinator?
+    var coordinator: AuthViewCoordinator?
     
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate let authUseCase: AuthUseCase

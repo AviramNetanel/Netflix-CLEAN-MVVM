@@ -33,6 +33,26 @@ extension SceneDelegate: UIWindowSceneDelegate {
     
     func sceneDidDisconnect(_ scene: UIScene) {
 //        appFlowCoordinator.homeFlowCoordinator.sceneDidDisconnect()
+        //    func sceneDidDisconnect() {
+        //        if let detailViewController = detailViewController {
+        //            detailViewController.removeObservers()
+        //        }
+        //
+        //        if let homeViewController = homeTabBarController?.homeViewController {
+        //            homeViewController.removeObservers()
+        //            homeViewController.viewModel.myList?.removeObservers()
+        //
+        //            if let panelView = homeViewController.dataSource?.displayCell?.displayView.panelView {
+        //                panelView.removeObservers()
+        //            }
+        //            if let navigationView = homeViewController.navigationView {
+        //                navigationView.removeObservers()
+        //            }
+        //            if let categoriesOverlayView = homeViewController.categoriesOverlayView {
+        //                categoriesOverlayView.removeObservers()
+        //            }
+        //        }
+        //    }
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {}

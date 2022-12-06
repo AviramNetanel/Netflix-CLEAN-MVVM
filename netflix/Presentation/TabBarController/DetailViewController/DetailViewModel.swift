@@ -39,7 +39,7 @@ final class DetailViewModel: ViewModel {
     let section: Section
     let media: Media
     
-    var coordinator: DetailCoordinator?
+    var coordinator: DetailViewCoordinator?
     
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate(set) var homeDataSourceState: HomeTableViewDataSource.State!

@@ -69,7 +69,7 @@ final class HomeViewModel: ViewModel {
         return Output()
     }
     
-    var coordinator: HomeCoordinator?
+    var coordinator: HomeViewCoordinator?
     
     private(set) weak var authService: AuthService!
     private(set) var useCase: HomeUseCase

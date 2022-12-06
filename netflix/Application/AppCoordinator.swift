@@ -17,16 +17,13 @@ final class AppCoordinator: Coordinate {
     }
     
     private(set) lazy var configuration = AppConfiguration()
-    
+    private(set) var authService = AuthService()
     private(set) lazy var dataTransferService: DataTransferService = {
         let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
         let config = NetworkConfig(baseURL: url)
         let networkService = NetworkService(config: config)
         return DataTransferService(with: networkService)
     }()
-    
-    private(set) var authService = AuthService()
-    
     private(set) lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage(authService: authService)
     private(set) lazy var mediaResponseCache: MediaResponseStorage = MediaResponseStorage()
     
@@ -40,7 +37,7 @@ final class AppCoordinator: Coordinate {
     func showScreen(_ screen: Screen) {
         switch screen {
         case .auth:
-            let coordinator = AuthCoordinator()
+            let coordinator = AuthViewCoordinator()
             
             window?.rootViewController = coordinator.authNavigation()
         case .tabBar:

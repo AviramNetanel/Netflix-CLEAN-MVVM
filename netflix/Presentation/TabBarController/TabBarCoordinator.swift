@@ -40,7 +40,7 @@ final class TabBarCoordinator: Coordinate {
         let mediaRepository = MediaRepository(dataTransferService: dataTransferService, cache: mediaResponseCache)
         let listRepository = ListRepository(dataTransferService: dataTransferService)
         let useCase = HomeUseCase(sectionsRepository: sectionRepository, mediaRepository: mediaRepository, listRepository: listRepository)
-        let coordinator = HomeCoordinator()
+        let coordinator = HomeViewCoordinator()
         coordinator.viewController = controller
         //let actions = HomeViewModelActions()
         let viewModel = HomeViewModel(authService: authService, useCase: useCase)

@@ -1,5 +1,5 @@
 //
-//  HomeCoordinator.swift
+//  HomeViewCoordinator.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/12/2022.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class HomeCoordinator: Coordinate {
+// MARK: - HomeViewCoordinator class
+
+final class HomeViewCoordinator: Coordinate {
     
     enum Screen {
         case detail

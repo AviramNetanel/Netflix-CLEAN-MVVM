@@ -1,5 +1,5 @@
 //
-//  AuthCoordinator.swift
+//  AuthViewCoordinator.swift
 //  netflix
 //
 //  Created by Zach Bazov on 05/12/2022.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class AuthCoordinator: Coordinate {
+// MARK: - AuthViewCoordinator class
+
+final class AuthViewCoordinator: Coordinate {
     
     enum Screen {
         case intro
