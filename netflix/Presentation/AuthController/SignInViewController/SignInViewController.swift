@@ -44,10 +44,13 @@ final class SignInViewController: UIViewController {
     private func didSignIn() {
         let userDTO = UserDTO(email: credentials.0, password: credentials.1)
         let requestDTO = AuthRequestDTO(user: userDTO)
-        
+        print("didSignIn")
         viewModel.signIn(request: requestDTO.toDomain()) { result in
-            if case .success = result {
-                asynchrony { Application.current.coordinator.showScreen(.tabBar) }
+            if case let .success(responseDTO) = result {
+                Application.current.coordinator.authService.user = responseDTO.data
+                Application.current.coordinator.authService.user.token = responseDTO.token
+                Application.current.coordinator.showScreen(.tabBar)
+                print("didSignIn Completion", Application.current.coordinator.authService.user)
             }
             if case let .failure(error) = result { print(error) }
         }

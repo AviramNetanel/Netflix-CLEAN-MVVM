@@ -85,7 +85,8 @@ final class PanelViewItemConfiguration: Configuration {
             let item = Item(rawValue: view.tag)
         else { return }
         if case .myList = item {
-            view.viewModel.isSelected.value = viewModel.myList.contains(
+            guard let myList = viewModel.myList else { return }
+            view.viewModel.isSelected.value = myList.contains(
                 view.viewModel.media,
                 in: viewModel.sectionAt(.myList).media)
         }
@@ -107,13 +108,14 @@ final class PanelViewItemConfiguration: Configuration {
         else { return }
         switch tag {
         case .myList:
+//            guard let myList = viewModel.myList else { return }
             let media = viewModel.presentedDisplayMedia.value!
-            
-            if viewModel.myList.list.value.isEmpty {
-                viewModel.myList.createList()
+            print("mylistempty", viewModel.myList?.list.value.isEmpty)
+            if viewModel.myList!.list.value.isEmpty {
+                viewModel.myList?.createList()
             }
             
-            viewModel.myList.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
+            viewModel.myList?.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
         case .info:
             let section = viewModel.sectionAt(.display)
             let media = viewModel.presentedDisplayMedia.value!

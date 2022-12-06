@@ -7,40 +7,20 @@
 
 import Foundation
 
-
-//// MARK: - ViewModelInput protocol
-//
-//private protocol ViewModelInput {
-//    func viewDidLoad()
-//    func signUp(request: AuthRequest, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
-//    func signIn(request: AuthRequest, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
-//    func signInButtonDidTap()
-//    func signUpButtonDidTap()
-//}
-//
-//// MARK: - ViewModelOutput protocol
-//
-//private protocol ViewModelOutput {
-//    var task: Cancellable? { get }
-//    var authUseCase: AuthUseCase { get }
-//    var actions: AuthViewModelActions { get }
-//}
-//
-//// MARK: - ViewModel typealias
-//
-//private typealias ViewModel = ViewModelInput & ViewModelOutput
-
 // MARK: - AuthViewModel class
 final class AuthViewModel: ViewModel {
-    fileprivate var task: Cancellable? { willSet { task?.cancel() } }
+    private var task: Cancellable? {
+        willSet { task?.cancel() }
+    }
     
     var coordinator: AuthCoordinator?
-    private(set) var useCase: AuthUseCase
+    let useCase: AuthUseCase
+    var authResponseCache: AuthResponseStorage
     
     init() {
         let authService = Application.current.coordinator.authService
         let dataTransferService = Application.current.coordinator.dataTransferService
-        let authResponseCache = AuthResponseStorage(authService: authService)
+        self.authResponseCache = AuthResponseStorage(authService: authService)
         let authRepository = AuthRepository(dataTransferService: dataTransferService, cache: authResponseCache)
         self.useCase = AuthUseCase(authRepository: authRepository)
     }
@@ -56,18 +36,15 @@ final class AuthViewModel: ViewModel {
 
 extension AuthViewModel {
     
-    func viewDidLoad() {
-        if useCase.authRepository.cache.lastKnownUser != nil {
-            userDidAuthorize()
-        }
-    }
-    
-    func userDidAuthorize() {
-        useCase.authRepository.cache.performCachedAuthorizationSession { [weak self] query in
+    func cachedAuthorizationSession(_ completion: @escaping () -> Void) {
+        useCase.authRepository.cache.performCachedAuthorizationSession { [weak self] request in
             guard let self = self else { return }
-            self.signIn(request: query) { result in
-                if case .success = result {
-                    //asynchrony { Application.current.coordinator.showScreen(.tabBar) }
+            self.signIn(request: request) { result in
+                if case let .success(responseDTO) = result {
+                    Application.current.coordinator.authService.user = responseDTO.data
+                    Application.current.coordinator.authService.user.token = responseDTO.token
+                    
+                    asynchrony { completion() }
                 }
                 if case let .failure(error) = result { printIfDebug("Unresolved error \(error)") }
             }

@@ -63,7 +63,7 @@ public final class UserDTO: NSObject, Codable, NSSecureCoding {
         self.password = coder.decodeObject(of: [UserDTO.self, NSString.self], forKey: "password") as? String
         self.passwordConfirm = coder.decodeObject(of: [UserDTO.self, NSString.self], forKey: "passwordConfirm") as? String
         self.role = coder.decodeObject(of: [UserDTO.self, NSString.self], forKey: "role") as? String
-        self.active = coder.decodeObject(of: [UserDTO.self, NSString.self], forKey: "active") as? Bool
+        self.active = coder.decodeObject(of: [UserDTO.self, NSNumber.self], forKey: "active") as? Bool
         self.token = coder.decodeObject(of: [UserDTO.self, NSString.self], forKey: "token") as? String
     }
 }

@@ -19,7 +19,7 @@ final class HomeViewCoordinator: Coordinate {
     
     func showScreen(_ screen: Screen) {}
     
-    func presentDetailViewController(section: Section, media: Media) -> UIViewController {
+    func presentDetailViewController(section: Section, media: Media) {
         let dataTransferService = Application.current.coordinator.dataTransferService
         let repository = SeasonRepository(dataTransferService: dataTransferService)
         let useCase = DetailUseCase(seasonsRepository: repository)
@@ -28,6 +28,5 @@ final class HomeViewCoordinator: Coordinate {
         let viewModel = DetailViewModel(useCase: useCase, section: section, media: media, with: homeViewModel)
         controller.viewModel = viewModel
         viewController?.present(controller, animated: true)
-        return controller
     }
 }

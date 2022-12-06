@@ -71,8 +71,6 @@ final class AuthResponseStorage: Storage {
         let requestDTO = AuthRequestDTO(user: userDTO)
         let requestQuery = AuthRequestDTO(user: requestDTO.user)
         
-        authService.user = userDTO
-        
         completion(requestQuery.toDomain())
     }
 }

@@ -13,7 +13,7 @@ struct DisplayTableViewCellViewModel {
     
     let presentedDisplayMedia: Observable<Media?>
     let presentedDisplayMediaDidChange: () -> Void
-    let myList: MyList
+    var myList: MyList?
     let sectionAt: (HomeTableViewDataSource.Index) -> Section
     var actions: HomeViewModelActions?
     

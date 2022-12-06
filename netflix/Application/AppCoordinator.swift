@@ -38,7 +38,16 @@ final class AppCoordinator: Coordinate {
         switch screen {
         case .auth:
             let coordinator = AuthCoordinator()
-            window?.rootViewController = coordinator.controller()
+            let viewModel = AuthViewModel()
+            let controller = AuthController()
+            
+            coordinator.viewController = controller
+            viewModel.coordinator = coordinator
+            controller.viewModel = viewModel
+            
+            controller.setNavigationBarHidden(false, animated: false)
+            
+            window?.rootViewController = controller
             
             coordinator.showScreen(.intro)
         case .tabBar:
@@ -51,8 +60,8 @@ final class AppCoordinator: Coordinate {
             tabBar.viewModel = viewModel
             
             window?.rootViewController = tabBar
-
-            coordinator.setupTabBar()
+            
+            coordinator.auth()
         }
     }
 }

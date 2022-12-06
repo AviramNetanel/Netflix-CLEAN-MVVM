@@ -10,19 +10,8 @@ import Foundation
 // MARK: - HomeViewModelActions struct
 
 struct HomeViewModelActions {
-    
     let navigationViewDidAppear: () -> Void
     let presentMediaDetails: (Section, Media) -> Void
-//
-//    init(homeFlowCoordinator: TabBarFlowCoordinator) {
-//        self.navigationViewDidAppear = homeFlowCoordinator.navigationViewDidAppear
-//        self.presentMediaDetails = homeFlowCoordinator.presentMediaDetails(section:media:)
-//    }
-    
-//    init() {
-//        self.navigationViewDidAppear = {}
-//        self.presentMediaDetails = { _, _ in }
-//    }
 }
 
 //// MARK: - ViewModelInput protocol

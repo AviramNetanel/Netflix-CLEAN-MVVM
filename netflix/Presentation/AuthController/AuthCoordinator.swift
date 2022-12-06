@@ -30,18 +30,6 @@ final class AuthCoordinator: Coordinate {
         }
     }
     
-    func controller() -> AuthController {
-        let viewModel = AuthViewModel()
-        let controller = AuthController()
-        
-        viewController = controller
-        viewController?.viewModel = viewModel
-        viewController?.viewModel.coordinator = self
-        
-        controller.setNavigationBarHidden(false, animated: false)
-        return controller
-    }
-    
     func presentLandpage() {
         let landpage = LandpageViewController()
         landpage.viewModel = viewController?.viewModel

@@ -51,14 +51,14 @@ final class MyList: ListProtocol {
     private weak var viewModel: HomeViewModel!
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate(set) var list: Observable<Set<Media>> = Observable([])
-    fileprivate let user: UserDTO
+    fileprivate var user: UserDTO
     fileprivate let homeUseCase: HomeUseCase
     fileprivate(set) var section: Section
     fileprivate var actions: MyListActions
     
     init(with viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        self.user = viewModel.authService.user
+        self.user = Application.current.coordinator.authService.user
         self.homeUseCase = viewModel.useCase
         self.section = viewModel.section(at: .myList)
         self.actions = MyListActions(listDidReload: viewModel.reloadMyList)

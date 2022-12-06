@@ -25,34 +25,29 @@ extension SceneDelegate: UIWindowSceneDelegate {
         AppAppearance.setupAppearance()
         
         window = UIWindow(windowScene: windowScene)
-        
         Application.current.root(in: window)
-        
         window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
-//        appFlowCoordinator.homeFlowCoordinator.sceneDidDisconnect()
-        //    func sceneDidDisconnect() {
-        //        if let detailViewController = detailViewController {
-        //            detailViewController.removeObservers()
-        //        }
-        //
-        //        if let homeViewController = homeTabBarController?.homeViewController {
-        //            homeViewController.removeObservers()
-        //            homeViewController.viewModel.myList?.removeObservers()
-        //
-        //            if let panelView = homeViewController.dataSource?.displayCell?.displayView.panelView {
-        //                panelView.removeObservers()
-        //            }
-        //            if let navigationView = homeViewController.navigationView {
-        //                navigationView.removeObservers()
-        //            }
-        //            if let categoriesOverlayView = homeViewController.categoriesOverlayView {
-        //                categoriesOverlayView.removeObservers()
-        //            }
-        //        }
-        //    }
+        if let sceneDelegate = scene.delegate as? SceneDelegate,
+           let tabBar = sceneDelegate.window?.rootViewController as? TabBarController,
+           let navigationController = tabBar.viewModel.coordinator?.viewController?.viewControllers?.first! as? UINavigationController,
+           let homeViewController = navigationController.viewControllers.first! as? HomeViewController {
+            
+            homeViewController.removeObservers()
+            homeViewController.viewModel.myList?.removeObservers()
+            
+            if let panelView = homeViewController.dataSource?.displayCell?.displayView.panelView {
+                panelView.removeObservers()
+            }
+            if let navigationView = homeViewController.navigationView {
+                navigationView.removeObservers()
+            }
+            if let categoriesOverlayView = homeViewController.categoriesOverlayView {
+                categoriesOverlayView.removeObservers()
+            }
+        }
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {}

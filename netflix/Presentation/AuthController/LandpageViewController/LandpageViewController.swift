@@ -22,7 +22,6 @@ final class LandpageViewController: UIViewController {
         super.viewDidLoad()
         setupBehaviors()
         setupSubviews()
-        viewModel.viewDidLoad()
     }
     
     private func setupBehaviors() {

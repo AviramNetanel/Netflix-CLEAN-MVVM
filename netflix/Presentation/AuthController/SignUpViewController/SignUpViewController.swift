@@ -57,9 +57,12 @@ final class SignUpViewController: UIViewController {
                               passwordConfirm: credentials.3)
         let requestDTO = AuthRequestDTO(user: userDTO)
         
-        viewModel.signUp(request: requestDTO.toDomain()) { [weak self] result in
-            guard let self = self else { return }
-            if case .success = result { asynchrony {  } }
+        viewModel.signUp(request: requestDTO.toDomain()) { result in
+            if case let .success(responseDTO) = result {
+                Application.current.coordinator.authService.user = responseDTO.data
+                Application.current.coordinator.authService.user.token = responseDTO.token
+                Application.current.coordinator.showScreen(.tabBar)
+            }
             if case let .failure(error) = result { print(error) }
         }
     }
