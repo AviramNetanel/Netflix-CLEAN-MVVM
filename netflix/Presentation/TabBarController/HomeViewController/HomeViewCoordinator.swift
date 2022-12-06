@@ -19,8 +19,8 @@ final class HomeViewCoordinator: Coordinate {
     
     func showScreen(_ screen: Screen) {}
     
-    func presentDetailViewController(section: Section, media: Media) {
-        let dataTransferService = Application.current.coordinator.dataTransferService
+    func presentMediaDetails(in section: Section, for media: Media) {
+        let dataTransferService = Application.current.dataTransferService
         let repository = SeasonRepository(dataTransferService: dataTransferService)
         let useCase = DetailUseCase(seasonsRepository: repository)
         let controller = DetailViewController()

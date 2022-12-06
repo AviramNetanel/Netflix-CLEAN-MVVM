@@ -85,7 +85,7 @@ final class HomeViewModel: ViewModel {
                 homeViewController.navigationView.alpha = 1.0
                 homeViewController.view.animateUsingSpring(withDuration: 0.66, withDamping: 1.0, initialSpringVelocity: 1.0)
             }, presentMediaDetails: { [weak self] section, media in
-                self?.coordinator?.presentDetailViewController(section: section, media: media)
+                self?.coordinator?.presentMediaDetails(in: section, for: media)
             })
     }
     

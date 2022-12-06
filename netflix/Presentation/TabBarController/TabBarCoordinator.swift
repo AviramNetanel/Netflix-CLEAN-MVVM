@@ -25,19 +25,17 @@ final class TabBarCoordinator: Coordinate {
         }
     }
     
-    func auth() {
-        let authViewModel = AuthViewModel()
-        authViewModel.cachedAuthorizationSession { [weak self] in
-            self?.showScreen(.home)
-        }
+    func requestUserCredentials() {
+        let viewModel = AuthViewModel()
+        viewModel.cachedAuthorizationSession { [weak self] in self?.showScreen(.home) }
     }
     
     private func homeNavigation() -> UINavigationController {
-        let authService = Application.current.coordinator.authService
-        let dataTransferService = Application.current.coordinator.dataTransferService
+        let authService = Application.current.authService
+        let dataTransferService = Application.current.dataTransferService
         
         let controller = HomeViewController()
-        let mediaResponseCache = Application.current.coordinator.mediaResponseCache
+        let mediaResponseCache = Application.current.mediaResponseCache
         let sectionRepository = SectionRepository(dataTransferService: dataTransferService)
         let mediaRepository = MediaRepository(dataTransferService: dataTransferService,
                                               cache: mediaResponseCache)
@@ -46,7 +44,7 @@ final class TabBarCoordinator: Coordinate {
                                   mediaRepository: mediaRepository,
                                   listRepository: listRepository)
         let coordinator = HomeViewCoordinator()
-        //let actions = HomeViewModelActions()
+        
         let viewModel = HomeViewModel(authService: authService, useCase: useCase)
         controller.viewModel = viewModel
         controller.viewModel.coordinator = coordinator

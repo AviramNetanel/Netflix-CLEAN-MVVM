@@ -16,17 +16,6 @@ final class AppCoordinator: Coordinate {
         case tabBar
     }
     
-    private(set) lazy var configuration = AppConfiguration()
-    private(set) var authService = AuthService()
-    private(set) lazy var dataTransferService: DataTransferService = {
-        let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
-        let config = NetworkConfig(baseURL: url)
-        let networkService = NetworkService(config: config)
-        return DataTransferService(with: networkService)
-    }()
-    private(set) lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage(authService: authService)
-    private(set) lazy var mediaResponseCache: MediaResponseStorage = MediaResponseStorage()
-    
     weak var viewController: UIViewController?
     weak var window: UIWindow? {
         didSet {
@@ -61,7 +50,7 @@ final class AppCoordinator: Coordinate {
             
             window?.rootViewController = tabBar
             
-            coordinator.auth()
+            coordinator.requestUserCredentials()
         }
     }
 }

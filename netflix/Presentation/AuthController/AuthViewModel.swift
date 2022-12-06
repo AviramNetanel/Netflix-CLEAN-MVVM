@@ -18,8 +18,8 @@ final class AuthViewModel: ViewModel {
     var authResponseCache: AuthResponseStorage
     
     init() {
-        let authService = Application.current.coordinator.authService
-        let dataTransferService = Application.current.coordinator.dataTransferService
+        let authService = Application.current.authService
+        let dataTransferService = Application.current.dataTransferService
         self.authResponseCache = AuthResponseStorage(authService: authService)
         let authRepository = AuthRepository(dataTransferService: dataTransferService, cache: authResponseCache)
         self.useCase = AuthUseCase(authRepository: authRepository)
@@ -41,8 +41,8 @@ extension AuthViewModel {
             guard let self = self else { return }
             self.signIn(request: request) { result in
                 if case let .success(responseDTO) = result {
-                    Application.current.coordinator.authService.user = responseDTO.data
-                    Application.current.coordinator.authService.user.token = responseDTO.token
+                    Application.current.authService.user = responseDTO.data
+                    Application.current.authService.user.token = responseDTO.token
                     
                     asynchrony { completion() }
                 }

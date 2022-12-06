@@ -59,8 +59,8 @@ final class SignUpViewController: UIViewController {
         
         viewModel.signUp(request: requestDTO.toDomain()) { result in
             if case let .success(responseDTO) = result {
-                Application.current.coordinator.authService.user = responseDTO.data
-                Application.current.coordinator.authService.user.token = responseDTO.token
+                Application.current.authService.user = responseDTO.data
+                Application.current.authService.user.token = responseDTO.token
                 Application.current.coordinator.showScreen(.tabBar)
             }
             if case let .failure(error) = result { print(error) }
