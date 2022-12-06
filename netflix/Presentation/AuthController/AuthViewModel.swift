@@ -31,33 +31,25 @@ import Foundation
 //private typealias ViewModel = ViewModelInput & ViewModelOutput
 
 // MARK: - AuthViewModel class
-
 final class AuthViewModel: ViewModel {
-    
-    struct Input {
-        
-    }
-    
-    struct Output {
-        
-    }
-    
-    func transform(input: Input) -> Output {
-        return Output()
-    }
-    
-    var coordinator: AuthViewCoordinator?
-    
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
-    fileprivate let authUseCase: AuthUseCase
     
-    init(authUseCase: AuthUseCase) {
-        self.authUseCase = authUseCase
+    var coordinator: AuthCoordinator?
+    private(set) var useCase: AuthUseCase
+    
+    init() {
+        let authService = Application.current.coordinator.authService
+        let dataTransferService = Application.current.coordinator.dataTransferService
+        let authResponseCache = AuthResponseStorage(authService: authService)
+        let authRepository = AuthRepository(dataTransferService: dataTransferService, cache: authResponseCache)
+        self.useCase = AuthUseCase(authRepository: authRepository)
     }
     
     deinit {
         task = nil
     }
+    
+    func transform(input: Void) {}
 }
 
 // MARK: - ViewModelInput implementation
@@ -65,13 +57,13 @@ final class AuthViewModel: ViewModel {
 extension AuthViewModel {
     
     func viewDidLoad() {
-        if authUseCase.authRepository.cache.lastKnownUser != nil {
+        if useCase.authRepository.cache.lastKnownUser != nil {
             userDidAuthorize()
         }
     }
     
     func userDidAuthorize() {
-        authUseCase.authRepository.cache.performCachedAuthorizationSession { [weak self] query in
+        useCase.authRepository.cache.performCachedAuthorizationSession { [weak self] query in
             guard let self = self else { return }
             self.signIn(request: query) { result in
                 if case .success = result {
@@ -84,7 +76,7 @@ extension AuthViewModel {
     
     func signUp(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
-        task = authUseCase.execute(
+        task = useCase.execute(
             requestValue: .init(method: .signup, request: request),
             cached: { _ in },
             completion: { result in
@@ -95,7 +87,7 @@ extension AuthViewModel {
     
     func signIn(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
-        task = authUseCase.execute(
+        task = useCase.execute(
             requestValue: .init(method: .signin, request: request),
             cached: { response in
                 if let response = response { completion(.success(response)) }

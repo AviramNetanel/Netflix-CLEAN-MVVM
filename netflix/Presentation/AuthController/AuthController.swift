@@ -1,0 +1,15 @@
+//
+//  AuthController.swift
+//  netflix
+//
+//  Created by Zach Bazov on 06/12/2022.
+//
+
+import UIKit
+
+// MARK: - AuthController class
+
+final class AuthController: NavigationController, View {
+    
+    var viewModel: AuthViewModel!
+}

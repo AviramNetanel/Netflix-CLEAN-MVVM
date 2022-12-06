@@ -1,5 +1,5 @@
 //
-//  AuthViewController.swift
+//  LandpageViewController.swift
 //  netflix
 //
 //  Created by Zach Bazov on 31/08/2022.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - AuthViewController class
+// MARK: - LandpageViewController class
 
-final class AuthViewController: UIViewController {
+final class LandpageViewController: UIViewController {
     
     @IBOutlet private weak var statusBarGradientView: UIView!
     @IBOutlet private weak var topGradientView: UIView!
@@ -40,7 +40,7 @@ final class AuthViewController: UIViewController {
         let button = UIBarButtonItem(title: "Sign In",
                                      style: .plain,
                                      target: viewModel.coordinator,
-                                     action: #selector(viewModel.coordinator!.presentSignInViewController))
+                                     action: #selector(viewModel.coordinator!.presentSignIn))
         navigationItem.rightBarButtonItem = button
     }
     
@@ -72,7 +72,7 @@ final class AuthViewController: UIViewController {
     
     private func setupTargets() {
         signUpButton.addTarget(viewModel.coordinator,
-                               action: #selector(viewModel.coordinator!.presentSignUpViewController),
+                               action: #selector(viewModel.coordinator!.presentSignUp),
                                for: .touchUpInside)
     }
 }

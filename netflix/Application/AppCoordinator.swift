@@ -37,17 +37,19 @@ final class AppCoordinator: Coordinate {
     func showScreen(_ screen: Screen) {
         switch screen {
         case .auth:
-            let coordinator = AuthViewCoordinator()
+            let coordinator = AuthCoordinator()
+            window?.rootViewController = coordinator.controller()
             
-            window?.rootViewController = coordinator.authNavigation()
+            coordinator.showScreen(.intro)
         case .tabBar:
             let tabBar = TabBarController()
             let viewModel = TabBarViewModel()
             let coordinator = TabBarCoordinator()
 
-            tabBar.viewModel = viewModel
             coordinator.viewController = tabBar
             viewModel.coordinator = coordinator
+            tabBar.viewModel = viewModel
+            
             window?.rootViewController = tabBar
 
             coordinator.setupTabBar()

@@ -9,7 +9,7 @@ import UIKit.UINavigationController
 
 // MARK: - NavigationController class
 
-final class NavigationController: UINavigationController {
+class NavigationController: UINavigationController {
     
     weak var progress: UIProgressView!
     
