@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - AuthCoordinator class
-
 final class AuthCoordinator: Coordinate {
-    
     enum Screen {
         case intro
         case signIn
@@ -20,17 +17,16 @@ final class AuthCoordinator: Coordinate {
     var viewController: AuthController?
     
     func showScreen(_ screen: Screen) {
-        switch screen {
-        case .intro:
+        if case .intro = screen {
             presentLandpage()
-        case .signIn:
+        } else if case .signIn = screen {
             presentSignIn()
-        case .signUp:
+        } else {
             presentSignUp()
         }
     }
     
-    func presentLandpage() {
+    private func presentLandpage() {
         let landpage = LandpageViewController()
         landpage.viewModel = viewController?.viewModel
         viewController?.pushViewController(landpage, animated: false)
@@ -39,14 +35,16 @@ final class AuthCoordinator: Coordinate {
     @objc
     func presentSignIn() {
         let controller = SignInViewController()
-        controller.viewModel = viewController?.viewModel
+        let viewModel = SignInViewModel(with: viewController!.viewModel)
+        controller.viewModel = viewModel
         viewController?.pushViewController(controller, animated: true)
     }
     
     @objc
     func presentSignUp() {
         let controller = SignUpViewController()
-        controller.viewModel = viewController?.viewModel
+        let viewModel = SignUpViewModel(with: viewController!.viewModel)
+        controller.viewModel = viewModel
         viewController?.pushViewController(controller, animated: true)
     }
 }

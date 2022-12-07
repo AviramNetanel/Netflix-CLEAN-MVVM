@@ -7,8 +7,6 @@
 
 import UIKit.UINavigationController
 
-// MARK: - NavigationController class
-
 class NavigationController: UINavigationController {
     
     weak var progress: UIProgressView!
@@ -53,3 +51,21 @@ class NavigationController: UINavigationController {
     }
 }
 
+extension UIViewController {
+    func addNavigationItemTitleView() {
+        let asset = "netflix-logo-2"
+        
+        let point = CGPoint(x: 0.0, y: 0.0)
+        let size = CGSize(width: 80.0, height: 24.0)
+        let rect = CGRect(origin: point, size: size)
+        
+        let titleView = UIView(frame: rect)
+        let image = UIImage(named: asset)
+        let imageView = UIImageView(image: image)
+        imageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        imageView.center = CGPoint(x: titleView.center.x, y: titleView.center.y)
+        
+        titleView.addSubview(imageView)
+        navigationItem.titleView = titleView
+    }
+}

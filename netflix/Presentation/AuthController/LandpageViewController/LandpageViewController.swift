@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - LandpageViewController class
-
 final class LandpageViewController: UIViewController {
-    
     @IBOutlet private weak var statusBarGradientView: UIView!
     @IBOutlet private weak var topGradientView: UIView!
     @IBOutlet private weak var bottomGradientView: UIView!

@@ -7,19 +7,12 @@
 
 import UIKit
 
-// MARK: - SignInViewController class
-
 final class SignInViewController: UIViewController {
-    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     
-    var viewModel: AuthViewModel!
-    
-    private var credentials: (String?, String?) {
-        return (email: emailTextField.text, password: passwordTextField.text)
-    }
+    var viewModel: SignInViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,30 +21,24 @@ final class SignInViewController: UIViewController {
     }
     
     private func setupSubviews() {
-        setAttributes(for: [emailTextField,
-                            passwordTextField])
+        setAttributes(for: [emailTextField, passwordTextField])
         signInButton.setLayerBorder(.black, width: 1.5)
         setupTargets()
+        addNavigationItemTitleView()
     }
     
     private func setupTargets() {
-        signInButton.addTarget(self,
-                               action: #selector(didSignIn),
-                               for: .touchUpInside)
+        signInButton.addTarget(viewModel, action: #selector(viewModel?.signInButtonDidTap), for: .touchUpInside)
+        emailTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
     }
     
     @objc
-    private func didSignIn() {
-        let userDTO = UserDTO(email: credentials.0, password: credentials.1)
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        
-        viewModel.signIn(request: requestDTO.toDomain()) { result in
-            if case let .success(responseDTO) = result {
-                Application.current.authService.user = responseDTO.data
-                Application.current.authService.user.token = responseDTO.token
-                Application.current.coordinator.showScreen(.tabBar)
-            }
-            if case let .failure(error) = result { print(error) }
+    func textFieldValueDidChange(_ textField: UITextField) {
+        if emailTextField == textField {
+            viewModel?.email = textField.text
+            return
         }
+        viewModel?.password = textField.text
     }
 }

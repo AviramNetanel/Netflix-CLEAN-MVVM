@@ -56,7 +56,7 @@ final class MyList: ListProtocol {
     fileprivate var actions: MyListActions
     
     init(with viewModel: HomeViewModel) {
-        self.user = Application.current.authService.user
+        self.user = Application.current.authService.user ?? .init()
         self.homeUseCase = viewModel.useCase
         self.section = viewModel.section(at: .myList)
         self.actions = MyListActions(listDidReload: viewModel.reloadMyList)

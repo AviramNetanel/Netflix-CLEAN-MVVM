@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - AppConfiguration class
-
 final class AppConfiguration {
-    
     lazy var apiScheme: String = {
         guard let scheme = Bundle.main.object(forInfoDictionaryKey: "API Scheme") as? String else {
             fatalError("API Scheme must be set on the property list file.")

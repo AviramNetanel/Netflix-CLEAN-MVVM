@@ -11,7 +11,7 @@ import CoreData
 
 private protocol StorageInput {
     func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity>
-    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void)
+//    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void)
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void)
     func save(response: AuthResponseDTO,
@@ -37,20 +37,6 @@ final class AuthResponseStorage: Storage {
     fileprivate let coreDataStorage: CoreDataStorage
     fileprivate let authService: AuthService
     
-    var lastKnownUser: UserDTO? {
-        let request = AuthRequestEntity.fetchRequest()
-        do {
-            let entities = try coreDataStorage.context().fetch(request)
-            guard let lastKnownEntity = entities.last else { return nil }
-            let userDTO = UserDTO(email: lastKnownEntity.user!.email,
-                                  password: lastKnownEntity.user!.password)
-            return userDTO
-        } catch {
-            printIfDebug("Unresolved error \(error) ")
-        }
-        return nil
-    }
-    
     init(coreDataStorage: CoreDataStorage = .shared,
          authService: AuthService) {
         self.coreDataStorage = coreDataStorage
@@ -63,15 +49,6 @@ final class AuthResponseStorage: Storage {
                                         #keyPath(AuthRequestEntity.user),
                                         requestDTO.user)
         return request
-    }
-    
-    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void) {
-        let userDTO = UserDTO(email: lastKnownUser?.email,
-                              password: lastKnownUser?.password)
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        let requestQuery = AuthRequestDTO(user: requestDTO.user)
-        
-        completion(requestQuery.toDomain())
     }
 }
 

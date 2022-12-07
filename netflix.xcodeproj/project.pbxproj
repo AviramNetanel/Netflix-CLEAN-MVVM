@@ -172,6 +172,8 @@
 		A1B70A94293E9FA400C718C6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A93293E9FA400C718C6 /* NavigationController.swift */; };
 		A1B70A96293E9FF600C718C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A95293E9FF600C718C6 /* ViewController.swift */; };
 		A1B70A9E293EC5D600C718C6 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A9D293EC5D600C718C6 /* AuthController.swift */; };
+		A1B70AA529400ACE00C718C6 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70AA429400ACD00C718C6 /* SignInViewModel.swift */; };
+		A1B70AA729400B0E00C718C6 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70AA629400B0E00C718C6 /* SignUpViewModel.swift */; };
 		A1B93C6E28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */; };
 		A1B93C7228FF329800AF2C7F /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7128FF329800AF2C7F /* Array+Extension.swift */; };
 		A1B93C7828FF886500AF2C7F /* MediaEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B93C7728FF886500AF2C7F /* MediaEntity+Mapping.swift */; };
@@ -211,7 +213,6 @@
 		A1E81D4328D1600100D044EA /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81D4228D1600100D044EA /* UIColor+Extension.swift */; };
 		A1F56A5C28C668100089BD4F /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A5B28C668100089BD4F /* AppAppearance.swift */; };
 		A1F56A5E28C679980089BD4F /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A5D28C679980089BD4F /* UIView+Extension.swift */; };
-		A1F56A6728C68EAD0089BD4F /* NavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A6628C68EAD0089BD4F /* NavigationBarTitleView.swift */; };
 		A1F56A6928C68FB10089BD4F /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */; };
 		A1F56A6B28C6934B0089BD4F /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A6A28C6934B0089BD4F /* UIButton+Extension.swift */; };
 		A1F56A6F28C695FC0089BD4F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F56A6E28C695FC0089BD4F /* UITextField+Extension.swift */; };
@@ -385,6 +386,8 @@
 		A1B70A93293E9FA400C718C6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		A1B70A95293E9FF600C718C6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A1B70A9D293EC5D600C718C6 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		A1B70AA429400ACD00C718C6 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		A1B70AA629400B0E00C718C6 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		A1B93C6D28FF068600AF2C7F /* MediaResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		A1B93C7128FF329800AF2C7F /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		A1B93C7728FF886500AF2C7F /* MediaEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEntity+Mapping.swift"; sourceTree = "<group>"; };
@@ -424,7 +427,6 @@
 		A1E81D4228D1600100D044EA /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		A1F56A5B28C668100089BD4F /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		A1F56A5D28C679980089BD4F /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		A1F56A6628C68EAD0089BD4F /* NavigationBarTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarTitleView.swift; sourceTree = "<group>"; };
 		A1F56A6828C68FB10089BD4F /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		A1F56A6A28C6934B0089BD4F /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		A1F56A6E28C695FC0089BD4F /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
@@ -1142,6 +1144,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B3F99728C6278A0042DE9F /* SignUpViewController.swift */,
+				A1B70AA629400B0E00C718C6 /* SignUpViewModel.swift */,
 				A1B70A8D293E72D700C718C6 /* SignUpViewController.xib */,
 			);
 			path = SignUpViewController;
@@ -1151,6 +1154,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B3F99C28C631F90042DE9F /* SignInViewController.swift */,
+				A1B70AA429400ACD00C718C6 /* SignInViewModel.swift */,
 				A1B70A8B293E72D000C718C6 /* SignInViewController.xib */,
 			);
 			path = SignInViewController;
@@ -1200,7 +1204,6 @@
 				A1B70A9F293EC5E000C718C6 /* LandpageViewController */,
 				A1B3F99628C627710042DE9F /* SignUpViewController */,
 				A1B3F99B28C631D90042DE9F /* SignInViewController */,
-				A1F56A6528C68E850089BD4F /* Utils */,
 			);
 			path = AuthController;
 			sourceTree = "<group>";
@@ -1329,14 +1332,6 @@
 			path = UIViewController;
 			sourceTree = "<group>";
 		};
-		A1F56A6528C68E850089BD4F /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				A1F56A6628C68EAD0089BD4F /* NavigationBarTitleView.swift */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1453,6 +1448,7 @@
 				A18B994228BFD9C70077A5A6 /* Section.swift in Sources */,
 				A1C7E7A9292A784A004690B9 /* AuthService.swift in Sources */,
 				A1AA290028FB8ECE0011EE9D /* MediaRequest.swift in Sources */,
+				A1B70AA729400B0E00C718C6 /* SignUpViewModel.swift in Sources */,
 				A1BA1DAC28D9D42A00730EA8 /* CategoriesOverlayView.swift in Sources */,
 				A1B3F99D28C631F90042DE9F /* SignInViewController.swift in Sources */,
 				A186921628CA2D100087DE3B /* TableViewCellViewModel.swift in Sources */,
@@ -1587,8 +1583,8 @@
 				A1BA1DBB28DBE02C00730EA8 /* UIView+Constraints.swift in Sources */,
 				A18B994A28BFD9DD0077A5A6 /* User+Mapping.swift in Sources */,
 				A18B995728BFF66C0077A5A6 /* SectionDTO+Mapping.swift in Sources */,
-				A1F56A6728C68EAD0089BD4F /* NavigationBarTitleView.swift in Sources */,
 				A18691C528C7B0B20087DE3B /* HomeUseCase.swift in Sources */,
+				A1B70AA529400ACE00C718C6 /* SignInViewModel.swift in Sources */,
 				A1B68F2E2923DF2300FF5F18 /* Set+Extension.swift in Sources */,
 				A19956DD29019A3900B7D655 /* List.swift in Sources */,
 				A1B93C7828FF886500AF2C7F /* MediaEntity+Mapping.swift in Sources */,

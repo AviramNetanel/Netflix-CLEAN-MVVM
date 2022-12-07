@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - AuthViewModel class
 final class AuthViewModel: ViewModel {
     private var task: Cancellable? {
         willSet { task?.cancel() }
@@ -15,41 +14,24 @@ final class AuthViewModel: ViewModel {
     
     var coordinator: AuthCoordinator?
     let useCase: AuthUseCase
-    var authResponseCache: AuthResponseStorage
+    let authService = Application.current.authService
     
     init() {
-        let authService = Application.current.authService
         let dataTransferService = Application.current.dataTransferService
-        self.authResponseCache = AuthResponseStorage(authService: authService)
+        let authResponseCache = AuthResponseStorage(authService: authService)
         let authRepository = AuthRepository(dataTransferService: dataTransferService, cache: authResponseCache)
         self.useCase = AuthUseCase(authRepository: authRepository)
     }
     
     deinit {
+        coordinator = nil
         task = nil
     }
     
     func transform(input: Void) {}
 }
 
-// MARK: - ViewModelInput implementation
-
 extension AuthViewModel {
-    
-    func cachedAuthorizationSession(_ completion: @escaping () -> Void) {
-        useCase.authRepository.cache.performCachedAuthorizationSession { [weak self] request in
-            guard let self = self else { return }
-            self.signIn(request: request) { result in
-                if case let .success(responseDTO) = result {
-                    Application.current.authService.user = responseDTO.data
-                    Application.current.authService.user.token = responseDTO.token
-                    
-                    asynchrony { completion() }
-                }
-                if case let .failure(error) = result { printIfDebug("Unresolved error \(error)") }
-            }
-        }
-    }
     
     func signUp(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
@@ -73,5 +55,21 @@ extension AuthViewModel {
                 if case let .success(responseDTO) = result { completion(.success(responseDTO)) }
                 if case let .failure(error) = result { completion(.failure(error)) }
             })
+    }
+    
+    func cachedAuthorizationSession(_ completion: @escaping () -> Void) {
+        authService.performCachedAuthorizationSession { [weak self] request in
+            guard let self = self else { return }
+            self.signIn(request: request) { result in
+                if case let .success(responseDTO) = result {
+                    let userDTO = responseDTO.data
+                    userDTO?.token = responseDTO.token
+                    self.authService.assignUser(user: userDTO)
+                    
+                    asynchrony { completion() }
+                }
+                if case let .failure(error) = result { printIfDebug("Unresolved error \(error)") }
+            }
+        }
     }
 }

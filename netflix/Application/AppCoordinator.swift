@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - AppCoordinator class
-
 final class AppCoordinator: Coordinate {
-    
     enum Screen {
         case auth
         case tabBar
@@ -24,8 +21,7 @@ final class AppCoordinator: Coordinate {
     }
     
     func showScreen(_ screen: Screen) {
-        switch screen {
-        case .auth:
+        if case .auth = screen {
             let coordinator = AuthCoordinator()
             let viewModel = AuthViewModel()
             let controller = AuthController()
@@ -37,9 +33,9 @@ final class AppCoordinator: Coordinate {
             controller.setNavigationBarHidden(false, animated: false)
             
             window?.rootViewController = controller
-            
             coordinator.showScreen(.intro)
-        case .tabBar:
+            
+        } else if case .tabBar = screen {
             let tabBar = TabBarController()
             let viewModel = TabBarViewModel()
             let coordinator = TabBarCoordinator()
@@ -49,7 +45,6 @@ final class AppCoordinator: Coordinate {
             tabBar.viewModel = viewModel
             
             window?.rootViewController = tabBar
-            
             coordinator.requestUserCredentials()
         }
     }

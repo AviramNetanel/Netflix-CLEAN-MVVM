@@ -17,14 +17,7 @@ final class HomeViewController: UIViewController {
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
     
-    var viewModel: HomeViewModel! {
-        didSet {
-            setupBehaviors()
-            setupSubviews()
-            setupObservers()
-            viewModel.viewWillLoad()
-        }
-    }
+    var viewModel: HomeViewModel!
     private(set) var dataSource: HomeTableViewDataSource!
     private(set) var navigationView: NavigationView!
     private(set) var categoriesOverlayView: CategoriesOverlayView!
@@ -38,6 +31,10 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBehaviors()
+        setupSubviews()
+        setupObservers()
+        viewModel.viewWillLoad()
     }
     
     private func setupBehaviors() {

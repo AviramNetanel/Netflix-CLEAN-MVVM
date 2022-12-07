@@ -7,16 +7,12 @@
 
 import UIKit
 
-// MARK: - SceneDelegate class
-
 class SceneDelegate: UIResponder {
     var window: UIWindow?
 }
 
 // MARK: - UIWindowSceneDelegate implementation
-
 extension SceneDelegate: UIWindowSceneDelegate {
-    
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
@@ -47,6 +43,8 @@ extension SceneDelegate: UIWindowSceneDelegate {
             if let categoriesOverlayView = homeViewController.categoriesOverlayView {
                 categoriesOverlayView.removeObservers()
             }
+            
+            printIfDebug("Removed `HomeViewController` observers successfully.")
         }
     }
     

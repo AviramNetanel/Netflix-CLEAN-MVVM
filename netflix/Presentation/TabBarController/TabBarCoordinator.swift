@@ -37,26 +37,29 @@ final class TabBarCoordinator: Coordinate {
         let controller = HomeViewController()
         let mediaResponseCache = Application.current.mediaResponseCache
         let sectionRepository = SectionRepository(dataTransferService: dataTransferService)
-        let mediaRepository = MediaRepository(dataTransferService: dataTransferService,
-                                              cache: mediaResponseCache)
+        let mediaRepository = MediaRepository(dataTransferService: dataTransferService, cache: mediaResponseCache)
         let listRepository = ListRepository(dataTransferService: dataTransferService)
-        let useCase = HomeUseCase(sectionsRepository: sectionRepository,
-                                  mediaRepository: mediaRepository,
-                                  listRepository: listRepository)
+        let useCase = HomeUseCase(sectionsRepository: sectionRepository, mediaRepository: mediaRepository, listRepository: listRepository)
         let coordinator = HomeViewCoordinator()
-        
         let viewModel = HomeViewModel(authService: authService, useCase: useCase)
+        
         controller.viewModel = viewModel
         controller.viewModel.coordinator = coordinator
         coordinator.viewController = controller
+        
         let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.tabBarItem = UITabBarItem(title: "Home",
-                                                       image: UIImage(systemName: "house.fill")?.whiteRendering(),
-                                                       tag: 0)
-        navigationController.tabBarItem.setTitleTextAttributes([
+        setupNavigation(navigationController)
+        
+        return navigationController
+    }
+    
+    private func setupNavigation(_ controller: UINavigationController) {
+        controller.tabBarItem = UITabBarItem(title: "Home",
+                                             image: UIImage(systemName: "house.fill")?.whiteRendering(),
+                                             tag: 0)
+        controller.tabBarItem.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12.0, weight: .bold)], for: .normal)
-        navigationController.setNavigationBarHidden(true, animated: false)
-        return navigationController
+        controller.setNavigationBarHidden(true, animated: false)
     }
 }

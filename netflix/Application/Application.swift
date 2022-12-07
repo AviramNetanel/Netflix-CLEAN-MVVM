@@ -8,7 +8,6 @@
 import UIKit
 
 final class Application {
-    
     static let current = Application()
     
     let coordinator = AppCoordinator()
@@ -29,7 +28,7 @@ final class Application {
     func root(in window: UIWindow?) {
         coordinator.window = window
         
-        if authResponseCache.lastKnownUser != nil {
+        if authService.latestCachedUser != nil {
             coordinator.showScreen(.tabBar)
             return
         }

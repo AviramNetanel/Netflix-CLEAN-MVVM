@@ -7,24 +7,14 @@
 
 import UIKit
 
-// MARK: - SignUpViewController class
-
 final class SignUpViewController: UIViewController {
-    
     @IBOutlet private weak var nameTextField: UITextField!
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
     @IBOutlet private weak var passwordConfirmTextField: UITextField!
     @IBOutlet private weak var signUpButton: UIButton!
     
-    var viewModel: AuthViewModel!
-    
-    private var credentials: (String?, String?, String?, String?) {
-        return (name: nameTextField.text,
-                email: emailTextField.text,
-                password: passwordTextField.text,
-                passwordConfirm: passwordConfirmTextField.text)
-    }
+    var viewModel: SignUpViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,31 +29,27 @@ final class SignUpViewController: UIViewController {
                             passwordConfirmTextField])
         signUpButton.setLayerBorder(.black, width: 1.5)
         setupTargets()
+        addNavigationItemTitleView()
     }
     
     private func setupTargets() {
-        signUpButton.addTarget(self,
-                               action: #selector(didSignUp),
-                               for: .touchUpInside)
+        signUpButton.addTarget(viewModel, action: #selector(viewModel?.signUpButtonDidTap), for: .touchUpInside)
+        nameTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
+        passwordConfirmTextField.addTarget(self, action: #selector(textFieldValueDidChange), for: .editingChanged)
     }
     
     @objc
-    private func didSignUp() {
-        guard let viewModel = viewModel else { return }
-        
-        let userDTO = UserDTO(name: credentials.0,
-                              email: credentials.1,
-                              password: credentials.2,
-                              passwordConfirm: credentials.3)
-        let requestDTO = AuthRequestDTO(user: userDTO)
-        
-        viewModel.signUp(request: requestDTO.toDomain()) { result in
-            if case let .success(responseDTO) = result {
-                Application.current.authService.user = responseDTO.data
-                Application.current.authService.user.token = responseDTO.token
-                Application.current.coordinator.showScreen(.tabBar)
-            }
-            if case let .failure(error) = result { print(error) }
+    func textFieldValueDidChange(_ textField: UITextField) {
+        if nameTextField == textField {
+            viewModel?.name = textField.text
+        } else if emailTextField == textField {
+            viewModel?.email = textField.text
+        } else if passwordTextField == textField {
+            viewModel?.password = textField.text
+        } else {
+            viewModel?.passwordConfirm = textField.text
         }
     }
 }

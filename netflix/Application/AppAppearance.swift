@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - AppAppearance class
-
 final class AppAppearance {
-    
     static func setupAppearance() {
         if #available(iOS 15, *) {
             let barButtonItemAppearance = UIBarButtonItemAppearance()
