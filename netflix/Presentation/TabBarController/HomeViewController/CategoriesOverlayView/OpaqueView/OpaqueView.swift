@@ -7,29 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func viewModelDidUpdate(with media: Media)
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var imageView: UIImageView! { get }
-//    var blurView: UIVisualEffectView! { get }
-//    var viewModel: OpaqueViewViewModel! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - OpaqueView class
-
 final class OpaqueView: UIView {
-    
     fileprivate var imageView: UIImageView!
     fileprivate var blurView: UIVisualEffectView!
     var viewModel: OpaqueViewViewModel!

@@ -7,27 +7,14 @@
 
 import UIKit
 
-// MARK: - HomeCollectionViewDataSourceDependencies protocol
-
-protocol HomeCollectionViewDataSourceDepenendencies {
-    func createHomeCollectionViewDataSourceActions(for section: Int,
-                                                   using actions: HomeTableViewDataSourceActions) -> HomeCollectionViewDataSourceActions
-}
-
-// MARK: - HomeCollectionViewDataSourceActions struct
-
 struct HomeCollectionViewDataSourceActions {
     var didSelectItem: (Int) -> Void
 }
-
-// MARK: - DataSourceInput protocol
 
 private protocol DataSourceInput {
     func viewDidLoad()
     func dataSourceDidChange()
 }
-
-// MARK: - DataSourceOutput protocol
 
 private protocol DataSourceOutput {
     var collectionView: UICollectionView! { get }
@@ -36,18 +23,13 @@ private protocol DataSourceOutput {
     var cache: NSCache<NSString, UIImage> { get }
 }
 
-// MARK: - DataSource protocol
-
 private typealias DataSource = DataSourceInput & DataSourceOutput
-
-// MARK: - HomeCollectionViewDataSource class
 
 final class HomeCollectionViewDataSource<Cell>: NSObject,
                                                 DataSource,
                                                 UICollectionViewDelegate,
                                                 UICollectionViewDataSource,
                                                 UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
-    
     fileprivate weak var collectionView: UICollectionView!
     fileprivate var actions: HomeCollectionViewDataSourceActions?
     fileprivate var section: Section

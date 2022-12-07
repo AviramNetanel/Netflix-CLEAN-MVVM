@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - AuthResponse struct
-
 struct AuthResponse {
     var status: String?
     let token: String

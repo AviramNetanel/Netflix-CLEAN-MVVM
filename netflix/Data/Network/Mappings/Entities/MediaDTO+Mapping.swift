@@ -7,11 +7,8 @@
 
 import UIKit
 
-// MARK: - MediaResourcesDTO class
-
 @objc
 public final class MediaResourcesDTO: NSObject, Codable, NSSecureCoding {
-    
     let posters: [String]
     let logos: [String]
     let trailers: [String]
@@ -48,8 +45,6 @@ public final class MediaResourcesDTO: NSObject, Codable, NSSecureCoding {
         self.presentedLogoAlignment = presentedLogoAlignment
     }
     
-    // MARK: NSSecureCoding
-    
     public static var supportsSecureCoding: Bool { true }
     
     public init?(coder: NSCoder) {
@@ -81,19 +76,14 @@ public final class MediaResourcesDTO: NSObject, Codable, NSSecureCoding {
     }
 }
 
-//
-
 enum MediaType: String, Codable {
   case series
   case film
 }
 
-// MARK: - MediaDTO struct
-
 struct MediaDTO: Codable {
-    
     let id: String?
-  let type: MediaType
+    let type: MediaType
     let title: String
     let slug: String
     
@@ -119,8 +109,6 @@ struct MediaDTO: Codable {
     let numberOfEpisodes: Int?
 }
 
-// MARK: - MediaResourcesDTO + Mapping
-
 extension MediaResourcesDTO {
     func toDomain() -> MediaResources {
         return .init(posters: posters,
@@ -136,8 +124,6 @@ extension MediaResourcesDTO {
                      presentedLogoAlignment: presentedLogoAlignment)
     }
 }
-
-// MARK: - MediaDTO + Mapping
 
 extension MediaDTO {
     func toDomain() -> Media {

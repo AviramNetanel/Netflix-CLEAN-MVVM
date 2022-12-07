@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - AuthRequest struct
-
 struct AuthRequest {
     let user: User
 }

@@ -7,15 +7,11 @@
 
 import Foundation
 
-// MARK: - SectionDTO struct
-
 struct SectionDTO: Decodable {
     let id: Int
     let title: String
     var media: [MediaDTO]
 }
-
-// MARK: - Mapping
 
 extension SectionDTO {
     func toDomain() -> Section {

@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - ConfigurationInput protocol
-
 @objc
 private protocol ConfigurationInput {
     func viewDidLoad()
@@ -16,21 +14,14 @@ private protocol ConfigurationInput {
     func viewDidTap()
 }
 
-// MARK: - ConfigurationOutput protocol
-
 private protocol ConfigurationOutput {
     var item: NavigationViewItem! { get }
     var _viewDidTap: ((NavigationView.State) -> Void)? { get }
 }
 
-// MARK: - Configuration typealias
-
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
-// MARK: - NavigationViewItemConfiguration class
-
 final class NavigationViewItemConfiguration: Configuration {
-    
     fileprivate weak var item: NavigationViewItem!
     var _viewDidTap: ((NavigationView.State) -> Void)?
     
@@ -90,27 +81,7 @@ final class NavigationViewItemConfiguration: Configuration {
     }
 }
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure(with state: NavigationView.State)
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var configuration: NavigationViewItemConfiguration! { get }
-//    var viewModel: NavigationViewItemViewModel! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - NavigationViewItem class
-
 final class NavigationViewItem: UIView {
-    
     fileprivate(set) lazy var button = UIButton(type: .system)
     
     private(set) var configuration: NavigationViewItemConfiguration!

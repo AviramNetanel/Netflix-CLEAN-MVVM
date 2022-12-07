@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DisplayViewViewModel struct
-
 struct DisplayViewViewModel {
-    
     enum PresentedLogo: String {
         case first = "0"
         case second = "1"
@@ -80,4 +77,3 @@ struct DisplayViewViewModel {
         return mutableString
     }
 }
-

@@ -7,27 +7,18 @@
 
 import Foundation
 
-// MARK: - RepositoryInput protocol
-
 private protocol RepositoryInput {
     func getSeason(with request: SeasonRequestDTO.GET,
                    completion: @escaping (Result<SeasonResponseDTO.GET, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - RepositoryOutput protocol
-
 private protocol RepositoryOutput {
     var dataTransferService: DataTransferService { get }
 }
 
-// MARK: - Repository typealias
-
 private typealias Repository = RepositoryInput
 
-// MARK: - SeasonRepository struct
-
 struct SeasonRepository: Repository {
-    
     fileprivate let dataTransferService: DataTransferService
     
     init(dataTransferService: DataTransferService) {
@@ -35,10 +26,7 @@ struct SeasonRepository: Repository {
     }
 }
 
-// MARK: - RepositoryInput implementation
-
 extension SeasonRepository {
-    
     func getSeason(with request: SeasonRequestDTO.GET,
                    completion: @escaping (Result<SeasonResponseDTO.GET, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()

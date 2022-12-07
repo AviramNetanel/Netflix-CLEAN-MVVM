@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - RepositoryTask class
-
 final class RepositoryTask: Cancellable {
     var networkTask: NetworkCancellable?
     var isCancelled: Bool = false

@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - ConfigurationInput protocol
-
 @objc
 private protocol ConfigurationInput {
     func viewDidRegisterRecognizers()
@@ -16,21 +14,14 @@ private protocol ConfigurationInput {
     func viewDidTap()
 }
 
-// MARK: - ConfigurationOutput protocol
-
 private protocol ConfigurationOutput {
     var view: DetailNavigationViewItem! { get }
     var navigationView: DetailNavigationView! { get }
 }
 
-// MARK: - Configuration typealias
-
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
-// MARK: - DetailNavigationViewItemConfiguration class
-
 final class DetailNavigationViewItemConfiguration: Configuration {
-    
     fileprivate weak var view: DetailNavigationViewItem!
     fileprivate weak var navigationView: DetailNavigationView!
     
@@ -69,28 +60,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
     }
 }
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var configuration: DetailNavigationViewItemConfiguration! { get }
-//    var viewModel: DetailNavigationViewItemViewModel! { get }
-//    var isSelected: Bool { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailNavigationViewItem class
-
 final class DetailNavigationViewItem: UIView {
-    
     fileprivate(set) var configuration: DetailNavigationViewItemConfiguration!
     var viewModel: DetailNavigationViewItemViewModel!
     

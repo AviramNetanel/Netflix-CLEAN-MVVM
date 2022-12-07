@@ -7,33 +7,23 @@
 
 import Foundation
 
-// MARK: - AuthRepositoryEndpoints protocol
-
 private protocol AuthRepositoryEndpoints {
     static func signUp(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO>
     static func signIn(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO>
 }
 
-// MARK: - SectionsRepositoryEndpoints protocol
-
 private protocol SectionsRepositoryEndpoints {
     static func getAllSections() -> Endpoint<SectionResponseDTO.GET>
 }
-
-// MARK: - MediaRepositoryEndpoints protocol
 
 private protocol MediaRepositoryEndpoints {
     static func getAllMedia() -> Endpoint<MediaResponseDTO.GET.Many>
     static func getMedia(with request: MediaRequestDTO.GET.One) -> Endpoint<MediaResponseDTO.GET.One>
 }
 
-// MARK: - SeasonsRepositoryEndpoints protocol
-
 private protocol SeasonsRepositoryEndpoints {
     static func getSeason(with request: SeasonRequestDTO.GET) -> Endpoint<SeasonResponseDTO.GET>
 }
-
-// MARK: - MyListRepositoryEndpoints protocol
 
 private protocol MyListRepositoryEndpoints {
     static func getAllMyLists() -> Endpoint<ListResponseDTO.GET>
@@ -42,14 +32,8 @@ private protocol MyListRepositoryEndpoints {
     static func updateMyList(with request: ListRequestDTO.PATCH) -> Endpoint<ListResponseDTO.PATCH>
 }
 
-// MARK: - APIEndpoint struct
-
 struct APIEndpoint {
-    
-    // MARK: AuthRepository endpoints
-    
     struct AuthRepository: AuthRepositoryEndpoints {
-        
         static func signUp(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
             return Endpoint(path: "api/v1/users/signup",
                             method: .post,
@@ -69,10 +53,7 @@ struct APIEndpoint {
         }
     }
     
-    // MARK: SectionsRepository endpoints
-    
     struct SectionsRepository: SectionsRepositoryEndpoints {
-        
         static func getAllSections() -> Endpoint<SectionResponseDTO.GET> {
             return Endpoint(path: "api/v1/sections",
                             method: .get,
@@ -80,10 +61,7 @@ struct APIEndpoint {
         }
     }
     
-    // MARK: MediaRepository endpoints
-    
     struct MediaRepository: MediaRepositoryEndpoints {
-        
         static func getAllMedia() -> Endpoint<MediaResponseDTO.GET.Many> {
             return Endpoint(path: "api/v1/media",
                             method: .get,
@@ -97,20 +75,14 @@ struct APIEndpoint {
         }
     }
     
-    // MARK: SeasonsRepository endpoints
-    
     struct SeasonsRepository: SeasonsRepositoryEndpoints {
-        
         static func getSeason(with request: SeasonRequestDTO.GET) -> Endpoint<SeasonResponseDTO.GET> {
             return Endpoint(path: "api/v1/media/\(request.slug!)/seasons/\(request.season!)",
                             method: .get)
         }
     }
     
-    // MARK: MyListRepository endpoints
-    
     struct MyListRepository: MyListRepositoryEndpoints {
-        
         static func getAllMyLists() -> Endpoint<ListResponseDTO.GET> {
             return Endpoint(path: "api/v1/mylists",
                             method: .get)

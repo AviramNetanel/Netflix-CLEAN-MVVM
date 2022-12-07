@@ -8,7 +8,6 @@
 import UIKit.UINavigationController
 
 class NavigationController: UINavigationController {
-    
     weak var progress: UIProgressView!
     
     var isProgressHidden: Bool = true {

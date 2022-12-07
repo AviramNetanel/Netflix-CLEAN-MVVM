@@ -7,19 +7,9 @@
 
 import UIKit
 
-// MARK: - MyListDependencies protocol
-
-protocol MyListDependencies {
-    func createMyListActions() -> MyListActions
-}
-
-// MARK: - MyListActions struct
-
 struct MyListActions {
     let listDidReload: () -> Void
 }
-
-// MARK: - ListInput protocol
 
 private protocol ListInput {
     func fetchList()
@@ -28,8 +18,6 @@ private protocol ListInput {
     func shouldAddOrRemove(_ media: Media, uponSelection selected: Bool)
     func contains(_ media: Media, in list: [Media]) -> Bool
 }
-
-// MARK: - ListOutput protocol
 
 private protocol ListOutput {
     var task: Cancellable? { get }
@@ -40,14 +28,9 @@ private protocol ListOutput {
     var actions: MyListActions { get }
 }
 
-// MARK: - ListProtocol typealias
-
 private typealias ListProtocol = ListInput & ListOutput
 
-// MARK: - MyList class
-
 final class MyList: ListProtocol {
-    
     fileprivate var task: Cancellable? { willSet { task?.cancel() } }
     fileprivate(set) var list: Observable<Set<Media>> = Observable([])
     fileprivate let user: UserDTO
@@ -59,7 +42,7 @@ final class MyList: ListProtocol {
         self.user = Application.current.authService.user ?? .init()
         self.homeUseCase = viewModel.useCase
         self.section = viewModel.section(at: .myList)
-        self.actions = MyListActions(listDidReload: viewModel.reloadMyList)
+        self.actions = MyListActions(listDidReload: viewModel.actions.reloadList)
     }
     
     deinit {
@@ -83,10 +66,7 @@ final class MyList: ListProtocol {
     }
 }
 
-// MARK: - ListInput implementation
-
 extension MyList {
-    
     func fetchList() {
         let requestDTO = ListRequestDTO.GET(user: user)
         task = homeUseCase.execute(

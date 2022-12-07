@@ -7,12 +7,8 @@
 
 import CoreData
 
-// MARK: - MediaResponseDTO struct
-
 struct MediaResponseDTO {
-    
     struct GET {
-        
         struct One: Decodable {
             let status: String
             let data: MediaDTO
@@ -26,10 +22,7 @@ struct MediaResponseDTO {
     }
 }
 
-// MARK: - Mapping
-
 extension MediaResponseDTO.GET.One {
-    
     func toDomain() -> MediaResponse.GET.One {
         return .init(status: status,
                      data: data.toDomain())
@@ -38,7 +31,7 @@ extension MediaResponseDTO.GET.One {
     func toEntity(in context: NSManagedObjectContext) -> MediaResponseEntity {
         let entity: MediaResponseEntity = .init(context: context)
         entity.id = data.id
-      entity.type = data.type.rawValue
+        entity.type = data.type.rawValue
         entity.title = data.title
         entity.slug = data.slug
         entity.createdAt = data.createdAt

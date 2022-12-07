@@ -7,28 +7,19 @@
 
 import UIKit
 
-// MARK: - DataSourceInput protocol
-
 private protocol DataSourceInput {}
-
-// MARK: - DataSourceOutput protocol
 
 private protocol DataSourceOutput {
     var numberOfSections: Int { get }
     var viewModel: CategoriesOverlayViewViewModel { get }
 }
 
-// MARK: - DataSourcing typealias
-
 private typealias DataSourcing = DataSourceInput & DataSourceOutput
-
-// MARK: - CategoriesOverlayViewTableViewDataSource class
 
 final class CategoriesOverlayViewTableViewDataSource: NSObject,
                                                       DataSourcing,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
-    
     enum State {
         case none
         case mainMenu

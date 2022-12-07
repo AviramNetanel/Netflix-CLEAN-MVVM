@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - OpaqueViewViewModel struct
-
 struct OpaqueViewViewModel {
-    
     let imagePath: String
     let identifier: NSString
     let imageURL: URL

@@ -7,43 +7,11 @@
 
 import UIKit
 
-// MARK: - HomeTableViewDataSourceDependencies protocol
-
-protocol HomeTableViewDataSourceDependencies {
-    func createHomeTableViewDataSource() -> HomeTableViewDataSource
-    func createHomeTableViewDataSourceActions() -> HomeTableViewDataSourceActions
-    func createHomeDisplayTableViewCell(for indexPath: IndexPath) -> DisplayTableViewCell
-    func createHomeRatedTableViewCell(for indexPath: IndexPath,
-                                      with actions: HomeCollectionViewDataSourceActions) -> RatedTableViewCell
-    func createHomeResumableTableViewCell(for indexPath: IndexPath,
-                                          with actions: HomeCollectionViewDataSourceActions) -> ResumableTableViewCell
-    func createHomeStandardTableViewCell(for indexPath: IndexPath,
-                                         with actions: HomeCollectionViewDataSourceActions) -> StandardTableViewCell
-    func createHomeTableViewHeaderFooterView(at section: Int) -> TableViewHeaderFooterView
-}
-
-// MARK: - HomeTableViewDataSourceActions struct
-
 struct HomeTableViewDataSourceActions {
-    
     let heightForRowAt: (IndexPath) -> CGFloat
     let viewDidScroll: (UIScrollView) -> Void
     let didSelectItem: (Int, Int) -> Void
-    
-//    init(coordinator: HomeCoordinator) {
-//        self.heightForRowAt = coordinator.viewController!.heightForRow(at:)
-//        self.viewDidScroll = coordinator.viewController!.viewDidScroll(in:)
-//        self.didSelectItem = coordinator.viewController!.didSelectItem(at:of:)
-//    }
-    
-//    init() {
-//        self.heightForRowAt = { _ in return 100 }
-//        self.viewDidScroll = { _ in }
-//        self.didSelectItem = { _, _ in }
-//    }
 }
-
-// MARK: - DataSourceInput protocol
 
 private protocol DataSourceInput {
     func viewDidLoad()
@@ -51,21 +19,14 @@ private protocol DataSourceInput {
     func dataSourceDidChange()
 }
 
-// MARK: - DataSourceOutput protocol
-
 private protocol DataSourceOutput {
     var numberOfRows: Int { get }
     var displayCell: DisplayTableViewCell! { get }
 }
 
-// MARK: - DataSource protocol
-
 private typealias DataSource = DataSourceInput & DataSourceOutput
 
-// MARK: - HomeTableViewDataSource class
-
 final class HomeTableViewDataSource: NSObject, DataSource {
-    
     enum Index: Int, CaseIterable {
         case display
         case ratable
@@ -158,10 +119,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
 }
 
-// MARK: - UITableViewDelegate & UITableViewDataSource Implementation
-
 extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
@@ -210,19 +168,13 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-// MARK: - UIScrollViewDelegate implementation
-
 extension HomeTableViewDataSource {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         actions.viewDidScroll(scrollView)
     }
 }
 
-// MARK: - Valuable implementation
-
 extension HomeTableViewDataSource.Index: Valuable {
-    
     var stringValue: String {
         switch self {
         case .display, .ratable, .resumable: return ""

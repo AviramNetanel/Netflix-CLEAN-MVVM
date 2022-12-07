@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - HomeViewCoordinator class
-
 final class HomeViewCoordinator: Coordinate {
-    
     enum Screen {
         case detail
     }
@@ -20,13 +17,32 @@ final class HomeViewCoordinator: Coordinate {
     func showScreen(_ screen: Screen) {}
     
     func presentMediaDetails(in section: Section, for media: Media) {
-        let dataTransferService = Application.current.dataTransferService
-        let repository = SeasonRepository(dataTransferService: dataTransferService)
-        let useCase = DetailUseCase(seasonsRepository: repository)
         let controller = DetailViewController()
         let homeViewModel = viewController!.viewModel!
-        let viewModel = DetailViewModel(useCase: useCase, section: section, media: media, with: homeViewModel)
+        let viewModel = DetailViewModel(section: section, media: media, with: homeViewModel)
         controller.viewModel = viewModel
+        
         viewController?.present(controller, animated: true)
+    }
+    
+    func actions() -> HomeViewModelActions {
+        return HomeViewModelActions(
+            navigationViewDidAppear: { [weak self] in
+                self?.viewController?.navigationViewTopConstraint.constant = 0.0
+                self?.viewController?.navigationView.alpha = 1.0
+                self?.viewController?.view.animateUsingSpring(withDuration: 0.66, withDamping: 1.0, initialSpringVelocity: 1.0)
+            }, presentMediaDetails: { [weak self] section, media in
+                self?.presentMediaDetails(in: section, for: media)
+            }, reloadList: { [weak self] in
+                guard
+                    let self = self,
+                    self.viewController!.tableView.numberOfSections > 0,
+                    let myListIndex = HomeTableViewDataSource.Index(rawValue: 6),
+                    let section = self.viewController?.viewModel?.section(at: .myList)
+                else { return }
+                self.viewController?.viewModel?.filter(section: section)
+                let index = IndexSet(integer: myListIndex.rawValue)
+                self.viewController?.tableView.reloadSections(index, with: .automatic)
+            })
     }
 }

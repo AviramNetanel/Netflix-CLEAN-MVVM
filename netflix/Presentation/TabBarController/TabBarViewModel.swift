@@ -8,7 +8,6 @@
 import UIKit
 
 final class TabBarViewModel: ViewModel {
-    
     var coordinator: TabBarCoordinator?
     
     func transform(input: Void) {}

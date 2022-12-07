@@ -7,26 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: DetailDescriptionViewViewModel { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailDescriptionView class
-
 final class DetailDescriptionView: UIView, ViewInstantiable {
-    
     @IBOutlet private weak var descriptionTextView: UITextView!
     @IBOutlet private weak var castLabel: UILabel!
     @IBOutlet private weak var writersLabel: UILabel!

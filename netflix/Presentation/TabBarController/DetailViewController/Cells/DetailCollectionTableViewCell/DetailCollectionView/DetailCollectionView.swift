@@ -7,31 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func dataDidLoad()
-//    func viewDidLoad()
-//    func dataSourceDidChange()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: DetailViewModel { get }
-//    var collectionView: UICollectionView { get }
-//    var dataSource: DetailCollectionViewDataSource<Mediable>! { get }
-//    var layout: CollectionViewLayout! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailCollectionView class
-
 final class DetailCollectionView: UIView {
-    
     private let viewModel: DetailViewModel
     fileprivate lazy var collectionView = createCollectionView()
     fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
@@ -111,7 +87,6 @@ final class DetailCollectionView: UIView {
 }
 
 struct DetailCollectionViewViewModel {
-    
     var navigationViewState: Observable<DetailNavigationView.State>!
     var media: Media!
     var section: Section!

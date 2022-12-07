@@ -7,26 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var panelView: DetailPanelView! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailPanelTableViewCell class
-
 final class DetailPanelTableViewCell: UITableViewCell {
-    
     fileprivate(set) var panelView: DetailPanelView!
     
     deinit { panelView = nil }

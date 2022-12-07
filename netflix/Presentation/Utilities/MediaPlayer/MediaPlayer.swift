@@ -7,8 +7,6 @@
 
 import AVKit
 
-// MARK: - MediaPlayerDelegate protocol
-
 protocol MediaPlayerDelegate: AnyObject {
     func playerDidPlay(_ mediaPlayer: MediaPlayer)
     func playerDidStop(_ mediaPlayer: MediaPlayer)
@@ -16,21 +14,14 @@ protocol MediaPlayerDelegate: AnyObject {
     func player(_ mediaPlayer: MediaPlayer, willVerifyUrl url: URL) -> Bool
 }
 
-// MARK: - MediaPlayerOutput protocol
-
 private protocol MediaPlayerOutput {
     var player: AVPlayer { get }
     var mediaPlayerLayer: MediaPlayerLayer! { get }
 }
 
-// MARK: - MediaPlaying typealias
-
 private typealias MediaPlaying = MediaPlayerOutput
 
-// MARK: - MediaPlayer struct
-
 struct MediaPlayer: MediaPlaying {
-    
     let player = AVPlayer()
     var mediaPlayerLayer: MediaPlayerLayer!
     

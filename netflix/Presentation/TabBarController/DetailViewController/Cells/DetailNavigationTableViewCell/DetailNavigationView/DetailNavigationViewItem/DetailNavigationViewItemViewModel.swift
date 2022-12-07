@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DetailNavigationViewItemViewModel class
-
 final class DetailNavigationViewItemViewModel {
-    
     fileprivate let tag: Int
     fileprivate var isSelected: Bool
     

@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DetailDescriptionViewViewModel struct
-
 struct DetailDescriptionViewViewModel {
-    
     let description: String
     let cast: String
     let writers: String

@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - TrailerCollectionViewCellViewModel struct
-
 struct TrailerCollectionViewCellViewModel {
-    
     let title: String
     var posterImagePath: String
     var posterImageIdentifier: NSString

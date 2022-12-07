@@ -7,24 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailInfoTableViewCell class
-
 final class DetailInfoTableViewCell: UITableViewCell {
-    
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailInfoTableViewCell.reuseIdentifier)
         let viewModel = DetailInfoViewViewModel(with: viewModel)

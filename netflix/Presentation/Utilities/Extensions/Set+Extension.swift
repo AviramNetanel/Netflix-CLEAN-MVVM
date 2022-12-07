@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - Set extension
-
 extension Set where Element == Media {
     func toArray() -> [Element] { Array(self) }
 }

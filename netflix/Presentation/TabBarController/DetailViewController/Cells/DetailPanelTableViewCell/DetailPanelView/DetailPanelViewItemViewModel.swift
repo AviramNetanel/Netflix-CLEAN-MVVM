@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DetailPanelViewItemViewModel class
-
 final class DetailPanelViewItemViewModel {
-    
     let tag: Int
     var isSelected: Observable<Bool>
     var media: Media!

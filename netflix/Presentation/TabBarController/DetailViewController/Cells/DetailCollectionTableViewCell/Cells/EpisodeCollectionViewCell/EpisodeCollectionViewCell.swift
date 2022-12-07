@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - CellInput protocol
-
 private protocol CellInput {
     func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
                          completion: (() -> Void)?)
@@ -18,18 +16,11 @@ private protocol CellInput {
                           with viewModel: EpisodeCollectionViewCellViewModel)
 }
 
-// MARK: - CellOutput protocol
-
 private protocol CellOutput {}
-
-// MARK: - Cell typealias
 
 private typealias Cell = CellInput & CellOutput
 
-// MARK: - EpisodeCollectionViewCell class
-
 final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
-    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var timestampLabel: UILabel!

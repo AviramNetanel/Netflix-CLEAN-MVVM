@@ -7,12 +7,8 @@
 
 import Foundation
 
-// MARK: - MediaResponse struct
-
 struct MediaResponse {
-    
     struct GET {
-        
         struct One {
             let status: String
             let data: Media

@@ -7,41 +7,7 @@
 
 import UIKit
 
-// MARK: - NavigationViewDependencies protocol
-
-protocol NavigationViewDependencies {
-    func createNavigationView() -> NavigationView
-    func createNavigationViewViewModel(with items: [NavigationViewItem]) -> NavigationViewViewModel
-    func createNavigationViewViewModelActions() -> NavigationViewViewModelActions
-}
-
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var homeItemView: NavigationViewItem! { get }
-//    var airPlayItemView: NavigationViewItem! { get }
-//    var accountItemView: NavigationViewItem! { get }
-//    var tvShowsItemView: NavigationViewItem! { get }
-//    var moviesItemView: NavigationViewItem! { get }
-//    var categoriesItemView: NavigationViewItem! { get }
-//    var viewModel: NavigationViewViewModel! { get }
-//}
-//
-//// MARK: - View typelias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - NavigationView class
-
 final class NavigationView: UIView, ViewInstantiable {
-    
     enum State: Int, CaseIterable {
         case home
         case airPlay
@@ -141,12 +107,7 @@ final class NavigationView: UIView, ViewInstantiable {
     }
 }
 
-// MARK: - Closure bindings
-
 extension NavigationView {
-    
-    // MARK: NavigationViewItem bindings
-    
     private func viewDidTap(in items: [NavigationViewItem]) {
         items.forEach {
             $0.configuration._viewDidTap = { [weak self] state in
@@ -156,10 +117,7 @@ extension NavigationView {
     }
 }
 
-// MARK: - Valuable implementation
-
 extension NavigationView.State: Valuable {
-    
     var stringValue: String {
         switch self {
         case .home: return "Home"

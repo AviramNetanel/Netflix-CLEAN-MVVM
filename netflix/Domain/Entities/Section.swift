@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - Section class
-
 final class Section {
-    
     var id: Int
     var title: String
     var media: [Media]

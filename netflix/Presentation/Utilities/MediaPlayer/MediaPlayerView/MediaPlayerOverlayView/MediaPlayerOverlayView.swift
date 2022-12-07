@@ -7,15 +7,11 @@
 
 import AVKit
 
-// MARK: - ConfigurationInput protocol
-
 private protocol ConfigurationInput {
     func viewDidRegisterObservers()
     func viewDidConfigure()
     func viewDidTap(_ view: UIButton)
 }
-
-// MARK: - ConfigurationOutput protocol
 
 private protocol ConfigurationOutput {
     var durationThreshold: CGFloat! { get }
@@ -26,14 +22,9 @@ private protocol ConfigurationOutput {
     var timer: ScheduledTimer { get }
 }
 
-// MARK: - Configuration typealias
-
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
-// MARK: - MediaPlayerViewConfiguration
-
 final class MediaPlayerOverlayViewConfiguration: Configuration {
-    
     fileprivate var durationThreshold: CGFloat!
     fileprivate var repeats: Bool!
     fileprivate weak var mediaPlayerView: MediaPlayerView!
@@ -238,33 +229,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
     }
 }
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func viewWillAppear()
-//    func viewWillDisappear()
-//    func didSelect(view: Any)
-//    func valueDidChange(for slider: UISlider)
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var configuration: MediaPlayerOverlayViewConfiguration! { get }
-//    var mediaPlayerView: MediaPlayerView! { get }
-//    var viewModel: MediaPlayerOverlayViewViewModel! { get }
-//    var mediaPlayerViewModel: MediaPlayerViewViewModel! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - MediaPlayerOverlayView class
-
 final class MediaPlayerOverlayView: UIView, ViewInstantiable {
-    
     fileprivate enum Item: Int {
         case airPlay
         case rotate

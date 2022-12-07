@@ -7,14 +7,9 @@
 
 import UIKit
 
-// MARK: - ViewInstantiable protocol
-
 protocol ViewInstantiable: UIView, Reusable {}
 
-// MARK: - Default implementation
-
 extension ViewInstantiable {
-    
     static var nib: UINib { UINib(nibName: reuseIdentifier, bundle: nil) }
     
     func nibDidLoad() {

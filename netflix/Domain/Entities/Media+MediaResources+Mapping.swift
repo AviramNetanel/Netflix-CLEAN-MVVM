@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - MediaResources struct
-
 struct MediaResources {
     let posters: [String]
     let logos: [String]
@@ -23,10 +21,7 @@ struct MediaResources {
     let presentedLogoAlignment: String
 }
 
-// MARK: - Media struct
-
 struct Media {
-  
     let id: String?
     let type: MediaType
     let title: String
@@ -54,19 +49,13 @@ struct Media {
     let numberOfEpisodes: Int?
 }
 
-// MARK: - Media: Equatable implementation
-
 extension Media: Equatable {
     static func ==(lhs: Media, rhs: Media) -> Bool { lhs.id == rhs.id }
 }
 
-// MARK: - Media: Hashable implementation
-
 extension Media: Hashable {
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
-
-// MARK: - Mapping
 
 extension Media {
     func toDTO() -> MediaDTO {

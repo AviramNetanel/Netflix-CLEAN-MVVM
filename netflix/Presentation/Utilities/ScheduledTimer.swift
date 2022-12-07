@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - ScheduleInput protocol
-
 private protocol ScheduleInput {
     func schedule(timeInterval: TimeInterval,
                   target: Any,
@@ -17,20 +15,13 @@ private protocol ScheduleInput {
     func invalidate()
 }
 
-// MARK: - ScheduleOutput protocol
-
 private protocol ScheduleOutput {
     var timer: Timer! { get }
 }
 
-// MARK: - Schedule typealias
-
 private typealias Schedule = ScheduleInput & ScheduleOutput
 
-// MARK: - ScheduledTimer class
-
 final class ScheduledTimer: Schedule {
-    
     var timer: Timer!
     
     deinit { timer = nil }

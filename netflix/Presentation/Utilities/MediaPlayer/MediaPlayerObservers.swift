@@ -8,11 +8,7 @@
 import Foundation
 import Combine
 
-// MARK: - ObserverInput protocol
-
 private protocol ObserverInput {}
-
-// MARK: - ObserverOutput protocol
 
 protocol ObserverOutput {
     var timeObserverToken: Any! { get set }
@@ -25,11 +21,7 @@ protocol ObserverOutput {
     var cancelBag: Set<AnyCancellable>! { get set }
 }
 
-// MARK: - Observer typealias
-
 private typealias Observer = ObserverInput & ObserverOutput
-
-// MARK: - MediaPlayerObservers struct
 
 struct MediaPlayerObservers: Observer {
     var timeObserverToken: Any!

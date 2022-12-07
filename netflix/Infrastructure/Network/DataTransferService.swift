@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - DataTransferError enum
-
 enum DataTransferError: Error {
     case noResponse
     case parsing(Error)
@@ -16,10 +14,7 @@ enum DataTransferError: Error {
     case resolvedNetworlFailure(Error)
 }
 
-// MARK: - DataTransferServiceInput protocol
-
 protocol DataTransferServiceInput {
-    
     typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
     
     @discardableResult
@@ -33,28 +28,19 @@ protocol DataTransferServiceInput {
         completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E.Response == Void
 }
 
-// MARK: - DataTransferErrorResolverInput protocol
-
 protocol DataTransferErrorResolverInput {
     func resolve(error: NetworkError) -> Error
 }
-
-// MARK: - ResponseDecoder protocol
 
 protocol ResponseDecoder {
     func decode<T: Decodable>(_ data: Data) throws -> T
 }
 
-// MARK: - DataTransferErrorLoggerInput protocol
-
 protocol DataTransferErrorLoggerInput {
     func log(error: Error)
 }
 
-// MARK: - DataTransferService struct
-
 struct DataTransferService {
-    
     private let networkService: NetworkService
     private let errorResolver: DataTransferErrorResolver
     private let errorLogger: DataTransferErrorLogger
@@ -68,10 +54,7 @@ struct DataTransferService {
     }
 }
 
-// MARK: - DataTransferService - DataTransferService implementation
-
 extension DataTransferService: DataTransferServiceInput {
-    
     func request<T, E>(with endpoint: E,
                        completion: @escaping CompletionHandler<T>) -> NetworkCancellable?
     where T: Decodable, T == E.Response, E: ResponseRequestable {
@@ -131,27 +114,18 @@ extension DataTransferService: DataTransferServiceInput {
     }
 }
 
-// MARK: - DataTransferErrorLogger struct
-
 struct DataTransferErrorLogger: DataTransferErrorLoggerInput {
-    
     func log(error: Error) {
         printIfDebug("------------")
         printIfDebug("\(error)")
     }
 }
 
-// MARK: - DataTransferErrorResolver struct
-
 struct DataTransferErrorResolver: DataTransferErrorResolverInput {
-    
     func resolve(error: NetworkError) -> Error { error }
 }
 
-// MARK: - JSONResponseDecoder class
-
 final class JSONResponseDecoder: ResponseDecoder {
-    
     private let decoder = JSONDecoder()
     
     init() {}

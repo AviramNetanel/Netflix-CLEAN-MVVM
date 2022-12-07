@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - UIButton + Set Layer Border
-
 extension UIButton {
     func setLayerBorder(_ color: UIColor, width: CGFloat) {
         layer.borderWidth = width

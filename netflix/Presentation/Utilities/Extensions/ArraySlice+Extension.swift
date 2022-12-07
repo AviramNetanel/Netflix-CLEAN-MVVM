@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - ArraySlice extension
-
 extension ArraySlice where Element == NavigationView.State {
     func toArray() -> [Element] { Array(self) }
 }

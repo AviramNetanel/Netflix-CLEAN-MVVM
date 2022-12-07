@@ -7,33 +7,7 @@
 
 import UIKit
 
-// MARK: - PreviewViewDependencies protocol
-
-protocol PreviewViewDependencies {
-    func createPreviewView() -> PreviewView
-}
-
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var imageView: UIImageView { get }
-//    var viewModel: PreviewViewViewModel { get }
-//}
-//
-//// MARK: - View typelias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - PreviewView class
-
 final class PreviewView: UIView {
-    
     fileprivate lazy var imageView = createImageView()
     var viewModel: PreviewViewViewModel!
     

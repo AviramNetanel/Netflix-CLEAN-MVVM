@@ -7,15 +7,11 @@
 
 import CoreData
 
-// MARK: - CoreDataStorageError enum
-
 enum CoreDataStorageError: Error {
     case readError(Error)
     case saveError(Error)
     case deleteError(Error)
 }
-
-// MARK: - StorageInput protocol
 
 private protocol StorageInput {
     init()
@@ -26,21 +22,14 @@ private protocol StorageInput {
     func saveContext()
 }
 
-// MARK: - StorageOutput protocol
-
 private protocol StorageOutput {
     static var shared: CoreDataStorage { get }
     var persistentContainer: NSPersistentContainer { get }
 }
 
-// MARK: - Storage typealias
-
 private typealias Storage = StorageInput & StorageOutput
 
-// MARK: - CoreDataStorage class
-
 final class CoreDataStorage: Storage {
-    
     static let shared = CoreDataStorage()
     
     fileprivate lazy var persistentContainer: NSPersistentContainer = {

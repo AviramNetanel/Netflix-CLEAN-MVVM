@@ -7,6 +7,4 @@
 
 import Foundation
 
-// MARK: - Quality of State functions
-
 func asynchrony(_ block: @escaping () -> Void) { DispatchQueue.main.async { block() } }

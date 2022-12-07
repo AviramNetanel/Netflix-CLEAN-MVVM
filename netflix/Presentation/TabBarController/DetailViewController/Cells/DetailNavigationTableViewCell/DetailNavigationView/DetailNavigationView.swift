@@ -7,31 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func stateDidChange(view: DetailNavigationViewItem)
-//    func didSelectItem(view: DetailNavigationViewItem)
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: DetailViewModel { get }
-//    var leadingItem: DetailNavigationViewItem! { get }
-//    var centerItem: DetailNavigationViewItem! { get }
-//    var trailingItem: DetailNavigationViewItem! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailNavigationView class
-
 final class DetailNavigationView: UIView, View, ViewInstantiable {
-    
     enum State: Int {
         case episodes
         case trailers
@@ -74,10 +50,7 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     }
 }
 
-// MARK: - DetailNavigationViewViewModelActions implementation
-
 extension DetailNavigationView {
-    
     func stateDidChange(view: DetailNavigationViewItem) {
         guard let state = State(rawValue: view.tag) else { return }
         viewModel.navigationViewState.value = state

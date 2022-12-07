@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - DetailViewController class
-
 final class DetailViewController: UIViewController {
-    
     @IBOutlet private(set) weak var tableView: UITableView!
     @IBOutlet private(set) weak var previewContainer: UIView!
     
@@ -71,10 +68,7 @@ final class DetailViewController: UIViewController {
     }
 }
 
-// MARK: - Observer bindings
-
 extension DetailViewController {
-    
     private func navigationViewState(in viewModel: DetailViewModel) {
         viewModel.navigationViewState.observe(on: self) { [weak self] state in
             self?.dataSource?.collectionCell?.detailCollectionView?.dataSourceDidChange()
@@ -90,10 +84,7 @@ extension DetailViewController {
     }
 }
 
-// MARK: - DetailTableViewDataSourceActions implementation
-
 extension DetailViewController {
-    
     func heightForRow() -> (IndexPath) -> CGFloat {
         return { [weak self] indexPath in
             guard

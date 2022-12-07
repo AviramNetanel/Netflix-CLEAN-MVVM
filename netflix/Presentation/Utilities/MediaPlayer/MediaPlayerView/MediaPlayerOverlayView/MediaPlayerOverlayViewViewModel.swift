@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - MediaPlayerOverlayViewViewModel struct
-
 struct MediaPlayerOverlayViewViewModel {
-    
     let timeRemainingFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.zeroFormattingBehavior = .pad

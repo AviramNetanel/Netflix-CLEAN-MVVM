@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - List struct
-
 struct List {
     let user: String
     var media: [Media]

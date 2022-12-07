@@ -7,28 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//    func viewDidTap()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: CategoriesOverlayViewViewModel { get }
-//    var button: UIButton { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - CategoriesOverlayViewFooterView class
-
 final class CategoriesOverlayViewFooterView: UIView {
-    
     var viewModel: CategoriesOverlayViewViewModel!
     fileprivate lazy var button = createButton()
     

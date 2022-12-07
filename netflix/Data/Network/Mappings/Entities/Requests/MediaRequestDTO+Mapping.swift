@@ -7,12 +7,8 @@
 
 import CoreData
 
-// MARK: - MediaRequestDTO struct
-
 struct MediaRequestDTO {
-    
     struct GET {
-        
         struct One: Decodable {
             var user: UserDTO? = nil
             let id: String?
@@ -20,8 +16,6 @@ struct MediaRequestDTO {
         }
     }
 }
-
-// MARK: - Mapping
 
 extension MediaRequestDTO.GET.One {
     func toEntity(in context: NSManagedObjectContext) -> MediaRequestEntity {

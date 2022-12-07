@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - RepositoryInput protocol
-
 private protocol RepositoryInput {
     func getAll(completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable?
     func getOne(request: ListRequestDTO.GET,
@@ -19,20 +17,13 @@ private protocol RepositoryInput {
                    completion: @escaping (Result<ListResponseDTO.PATCH, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - RepositoryOutput protocol
-
 private protocol RepositoryOutput {
     var dataTransferService: DataTransferService { get }
 }
 
-// MARK: - Repository typealias
-
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - ListRepository struct
-
 struct ListRepository: Repository {
-    
     let dataTransferService: DataTransferService
     
     func getAll(completion: @escaping (Result<ListResponseDTO.GET, Error>) -> Void) -> Cancellable? {

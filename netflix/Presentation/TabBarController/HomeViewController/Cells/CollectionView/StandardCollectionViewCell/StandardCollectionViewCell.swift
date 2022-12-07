@@ -7,6 +7,4 @@
 
 import Foundation
 
-// MARK: - StandardCollectionViewCell class
-
 final class StandardCollectionViewCell: CollectionViewCell {}

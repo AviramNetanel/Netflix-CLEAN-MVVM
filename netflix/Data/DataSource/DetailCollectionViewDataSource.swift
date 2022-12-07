@@ -7,32 +7,7 @@
 
 import UIKit
 
-// MARK: - DetailCollectionViewDataSourceDependencies protocol
-
-protocol DetailCollectionViewDataSourceDependencies {
-    func createDetailCollectionViewDataSource(
-        on collectionView: UICollectionView,
-        with items: [Mediable]) -> DetailCollectionViewDataSource<Mediable>
-    func createEpisodeCollectionViewCell(
-        on collectionView: UICollectionView,
-        for indexPath: IndexPath) -> EpisodeCollectionViewCell
-    func createEpisodeCollectionViewCellViewModel() -> EpisodeCollectionViewCellViewModel
-    func createTrailerCollectionViewCell(
-        on collectionView: UICollectionView,
-        for indexPath: IndexPath) -> TrailerCollectionViewCell
-    func createTrailerCollectionViewCellViewModel() -> TrailerCollectionViewCellViewModel
-    func createCollectionViewCell(
-        on collectionView: UICollectionView,
-        reuseIdentifier: String,
-        section: Section,
-        for indexPath: IndexPath) -> CollectionViewCell
-}
-
-// MARK: - DataSourceInput protocol
-
 private protocol DataSourceInput {}
-
-// MARK: - DataSourceOutput protocol
 
 private protocol DataSourceOutput {
     associatedtype T
@@ -42,17 +17,12 @@ private protocol DataSourceOutput {
     var cache: NSCache<NSString, UIImage> { get }
 }
 
-// MARK: - DataSource typealias
-
 private typealias DataSource = DataSourceInput & DataSourceOutput
-
-// MARK: - DetailCollectionViewDataSource class
 
 final class DetailCollectionViewDataSource<T>: NSObject,
                                                DataSource,
                                                UICollectionViewDelegate,
                                                UICollectionViewDataSource {
-    
     private let viewModel: DetailViewModel
     fileprivate let numberOfSections = 1
     fileprivate let collectionView: UICollectionView
@@ -88,7 +58,5 @@ final class DetailCollectionViewDataSource<T>: NSObject,
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
 }

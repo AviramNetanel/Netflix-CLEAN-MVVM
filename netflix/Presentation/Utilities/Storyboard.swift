@@ -7,13 +7,9 @@
 
 import UIKit
 
-// MARK: - StoryboardInput protocol
-
 private protocol StoryboardInput {
     func instantiate() -> UIViewController
 }
-
-// MARK: - StoryboardOutput protocol
 
 private protocol StoryboardOutput {
     var owner: AnyObject.Type { get }
@@ -21,14 +17,9 @@ private protocol StoryboardOutput {
     var storyboard: UIStoryboard { get }
 }
 
-// MARK: - Storyboarding typealias
-
 private typealias Storyboarding = StoryboardInput & StoryboardOutput
 
-// MARK: - Storyboard struct
-
 struct Storyboard: Storyboarding {
-    
     let owner: AnyObject.Type
     let viewController: UIViewController.Type
     let storyboard: UIStoryboard

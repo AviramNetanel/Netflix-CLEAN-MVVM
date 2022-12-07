@@ -7,44 +7,11 @@
 
 import UIKit
 
-// MARK: - RatedTableViewCell typealias
-
 typealias RatedTableViewCell = TableViewCell<RatedCollectionViewCell>
-
-// MARK: - ResumableTableViewCell typealias
-
 typealias ResumableTableViewCell = TableViewCell<ResumableCollectionViewCell>
-
-// MARK: - StandardTableViewCell typealias
-
 typealias StandardTableViewCell = TableViewCell<StandardCollectionViewCell>
 
-//// MARK: - CellInput protocol
-//
-//private protocol CellInput {
-//    func viewDidLoad()
-//    func viewDidConfigure(section: Section, viewModel: HomeViewModel, with actions: HomeCollectionViewDataSourceActions?)
-//}
-//
-//// MARK: - CellOutput protocol
-//
-//private protocol CellOutput {
-//    associatedtype T: UICollectionViewCell
-//    var collectionView: UICollectionView { get }
-//    var dataSource: HomeCollectionViewDataSource<T>! { get }
-//    var layout: CollectionViewLayout! { get }
-//}
-//
-//// MARK: - Cell typealias
-//
-//private typealias Cell = CellInput & CellOutput
-
-extension UITableViewCell: ViewInstantiable {}
-
-// MARK: - TableViewCell class
-
 final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
-    
     enum SortOptions {
         case rating
     }
@@ -59,10 +26,11 @@ final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
         super.init(style: .default, reuseIdentifier: TableViewCell<T>.reuseIdentifier)
         let index = HomeTableViewDataSource.Index(rawValue: indexPath.section)!
         let section = viewModel.section(at: index)
-        self.dataSource = HomeCollectionViewDataSource(on: collectionView,
-                                                   section: section,
-                                                   viewModel: viewModel,
-                                                   with: actions)
+        self.dataSource = HomeCollectionViewDataSource(
+            on: collectionView,
+            section: section,
+            viewModel: viewModel,
+            with: actions)
         self.viewDidLoad()
         self.viewDidConfigure(section: section, viewModel: viewModel, with: actions)
     }

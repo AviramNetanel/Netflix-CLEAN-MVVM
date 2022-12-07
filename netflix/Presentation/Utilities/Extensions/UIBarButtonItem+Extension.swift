@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - UIBarButtonItem + Add Target
-
 extension UIBarButtonItem {
     func addTarget(_ target: AnyObject?, action: Selector) {
         self.target = target

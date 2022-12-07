@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - TableViewCellViewModel struct
-
 struct TableViewCellViewModel {
-    
     let id: Int
     let title: String
     let media: [Media]

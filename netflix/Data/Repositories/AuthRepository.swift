@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - RepositoryInput protocol
-
 private protocol RepositoryInput {
     func signUp(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
@@ -18,21 +16,14 @@ private protocol RepositoryInput {
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - RepositoryOutput protocol
-
 private protocol RepositoryOutput {
     var dataTransferService: DataTransferService { get }
     var cache: AuthResponseStorage { get }
 }
 
-// MARK: - Repository typealias
-
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - AuthRepository class
-
 final class AuthRepository {
-    
     private let dataTransferService: DataTransferService
     let cache: AuthResponseStorage
     
@@ -43,10 +34,7 @@ final class AuthRepository {
     }
 }
 
-// MARK: - RepositoryInput implementation
-
 extension AuthRepository: RepositoryInput {
-    
     func signUp(request: AuthRequest,
                 cached: @escaping (AuthResponseDTO?) -> Void,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable? {

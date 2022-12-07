@@ -7,62 +7,17 @@
 
 import Foundation
 
-// MARK: - HomeViewModelActions struct
-
 struct HomeViewModelActions {
     let navigationViewDidAppear: () -> Void
     let presentMediaDetails: (Section, Media) -> Void
+    let reloadList: () -> Void
 }
 
-//// MARK: - ViewModelInput protocol
-//
-//private protocol ViewModelInput {
-//    func viewWillLoad()
-//    func viewDidLoad()
-//    func fetchSections()
-//    func fetchMedia()
-//    func filter(sections: [Section])
-//    func section(at index: HomeTableViewDataSource.Index) -> Section
-//    func generateMedia(for state: HomeTableViewDataSource.State) -> Media
-//    func presentedDisplayMediaDidChange()
-//}
-//
-//// MARK: - ViewModelOutput protocol
-//
-//private protocol ViewModelOutput {
-//    var sections: [Section] { get }
-//    var media: [Media] { get }
-//    var tableViewState: Observable<HomeTableViewDataSource.State> { get }
-//    var presentedDisplayMedia: Observable<Media?> { get }
-//    var isEmpty: Bool { get }
-//    var myList: MyList! { get }
-//}
-//
-//// MARK: - ViewModel protocol
-//
-//private typealias ViewModel = ViewModelInput & ViewModelOutput
-
-// MARK: - HomeViewModel class
-
 final class HomeViewModel: ViewModel {
-    
-    struct Input {
-        
-    }
-    
-    struct Output {
-        
-    }
-    
-    func transform(input: Input) -> Output {
-        return Output()
-    }
-    
     var coordinator: HomeViewCoordinator?
     
-    private(set) weak var authService: AuthService!
-    private(set) var useCase: HomeUseCase
-    private(set) var actions: HomeViewModelActions!
+    let useCase: HomeUseCase
+    private(set) lazy var actions: HomeViewModelActions! = coordinator?.actions()
     
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
     private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
@@ -75,18 +30,14 @@ final class HomeViewModel: ViewModel {
     fileprivate(set) var myList: MyList!
     private var displayMediaCache: [HomeTableViewDataSource.State: Media] = [:]
     
-    init(authService: AuthService, useCase: HomeUseCase) {
-        self.authService = authService
+    init() {
+        let dataTransferService = Application.current.dataTransferService
+        let mediaResponseCache = Application.current.mediaResponseCache
+        let sectionRepository = SectionRepository(dataTransferService: dataTransferService)
+        let mediaRepository = MediaRepository(dataTransferService: dataTransferService, cache: mediaResponseCache)
+        let listRepository = ListRepository(dataTransferService: dataTransferService)
+        let useCase = HomeUseCase(sectionsRepository: sectionRepository, mediaRepository: mediaRepository, listRepository: listRepository)
         self.useCase = useCase
-        self.actions = HomeViewModelActions(
-            navigationViewDidAppear: { [weak self] in
-                guard let homeViewController = self?.coordinator?.viewController else { return }
-                homeViewController.navigationViewTopConstraint.constant = 0.0
-                homeViewController.navigationView.alpha = 1.0
-                homeViewController.view.animateUsingSpring(withDuration: 0.66, withDamping: 1.0, initialSpringVelocity: 1.0)
-            }, presentMediaDetails: { [weak self] section, media in
-                self?.coordinator?.presentMediaDetails(in: section, for: media)
-            })
     }
     
     deinit {
@@ -95,23 +46,10 @@ final class HomeViewModel: ViewModel {
         sectionsTask = nil
     }
     
-    func reloadMyList() {
-        guard
-            let coordinator = coordinator,
-            coordinator.viewController!.tableView.numberOfSections > 0,
-            let myListIndex = HomeTableViewDataSource.Index(rawValue: 6)
-        else { return }
-        let section = section(at: .myList)
-        filter(section: section)
-        let index = IndexSet(integer: myListIndex.rawValue)
-        coordinator.viewController!.tableView.reloadSections(index, with: .automatic)
-    }
+    func transform(input: Void) {}
 }
 
-// MARK: - ViewModelInput implementation
-
 extension HomeViewModel {
-    
     func viewWillLoad() {
         /// Invokes request for sections data.
         fetchSections()

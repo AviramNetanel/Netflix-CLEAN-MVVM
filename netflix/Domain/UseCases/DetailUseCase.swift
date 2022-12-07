@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - UseCaseInput protocol
-
 private protocol UseCaseInput {
     func request<T>(for response: T.Type,
                     with request: SeasonRequestDTO.GET,
@@ -18,20 +16,13 @@ private protocol UseCaseInput {
                     completion: @escaping (Result<SeasonResponse.GET, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - UseCaseOutput protocol
-
 private protocol UseCaseOutput {
     var seasonsRepository: SeasonRepository { get }
 }
 
-// MARK: - UseCase typealias
-
 private typealias UseCase = UseCaseInput & UseCaseOutput
 
-// MARK: - DetailUseCase class
-
 final class DetailUseCase: UseCase {
-    
     fileprivate let seasonsRepository: SeasonRepository
     
     init(seasonsRepository: SeasonRepository) {

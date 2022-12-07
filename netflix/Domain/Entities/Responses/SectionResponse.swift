@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - SectionResponse struct
-
 struct SectionResponse {
-    
     struct GET {
         let status: String
         let results: Int

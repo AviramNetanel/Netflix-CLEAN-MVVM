@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - SeasonResponse struct
-
 struct SeasonResponse {
-    
     struct GET {
         let status: String
         let data: Season

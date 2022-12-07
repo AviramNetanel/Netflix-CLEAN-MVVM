@@ -7,16 +7,12 @@
 
 import CoreData
 
-// MARK: - AuthResponseEntity + Mapping
-
 extension AuthResponseEntity {
     func toDTO() -> AuthResponseDTO? {
         guard let token = token else { return nil }
         return .init(token: token, data: data)
     }
 }
-
-// MARK: - AuthRequestDTO + Mapping
 
 extension AuthRequestDTO {
     func toEntity(in context: NSManagedObjectContext) -> AuthRequestEntity {
@@ -31,8 +27,6 @@ extension AuthRequestDTO {
         return entity
     }
 }
-
-// MARK: - AuthResponseDTO + Mapping
 
 extension AuthResponseDTO {
     func toEntity(in context: NSManagedObjectContext) -> AuthResponseEntity {

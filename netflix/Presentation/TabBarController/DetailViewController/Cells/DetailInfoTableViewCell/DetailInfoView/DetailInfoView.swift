@@ -7,29 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: DetailInfoViewViewModel { get }
-//    var ageRestrictionView: AgeRestrictionView! { get }
-//    var hdView: HDView! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailInfoView class
-
 final class DetailInfoView: UIView, ViewInstantiable {
-    
     @IBOutlet private weak var mediaTypeLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
     @IBOutlet private weak var titlelabel: UILabel!

@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - MediaResponseEntity extension
-
 extension MediaResponseEntity {
-    
     func toDTO() -> MediaResponseDTO.GET.One {
         let resources = MediaResourcesDTO(
             posters: resources!.posters,

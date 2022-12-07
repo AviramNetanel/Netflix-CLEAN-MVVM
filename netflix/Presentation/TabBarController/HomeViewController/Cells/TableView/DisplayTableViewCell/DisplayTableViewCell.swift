@@ -7,16 +7,7 @@
 
 import UIKit
 
-// MARK: - DisplayTableViewCellDependencies protocol
-
-protocol DisplayTableViewCellDependencies {
-    func createDisplayTableViewCellViewModel() -> DisplayTableViewCellViewModel
-}
-
-// MARK: - DisplayTableViewCell class
-
 final class DisplayTableViewCell: UITableViewCell {
-    
     let displayView: DisplayView
     
     init(for indexPath: IndexPath, with viewModel: HomeViewModel) {

@@ -5,10 +5,7 @@
 //  Created by Zach Bazov on 19/10/2022.
 //
 
-import Foundation
 import CoreData
-
-// MARK: - StorageInput protocol
 
 private protocol StorageInput {
     func getResponse(for request: MediaRequestDTO.GET.One,
@@ -19,20 +16,13 @@ private protocol StorageInput {
                         in context: NSManagedObjectContext)
 }
 
-// MARK: - StorageOutput protocol
-
 private protocol StorageOutput {
     var coreDataStorage: CoreDataStorage { get }
 }
 
-// MARK: - Storage typealias
-
 private typealias Storage = StorageInput & StorageOutput
 
-// MARK: - MediaResponseStorage class
-
 final class MediaResponseStorage: Storage {
-    
     fileprivate let coreDataStorage: CoreDataStorage
     
     init(coreDataStorage: CoreDataStorage = .shared) {
@@ -54,10 +44,7 @@ final class MediaResponseStorage: Storage {
     }
 }
 
-// MARK: - StorageInput implementation
-
 extension MediaResponseStorage {
-    
     func getResponse(for request: MediaRequestDTO.GET.One,
                      completion: @escaping (Result<MediaResponseDTO.GET.One?, CoreDataStorageError>) -> Void) {
         coreDataStorage.performBackgroundTask { context in

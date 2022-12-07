@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - UIImage + White Rendering
-
 extension UIImage {
     func whiteRendering(with symbolConfiguration: UIImage.SymbolConfiguration? = nil) -> UIImage? {
         return self

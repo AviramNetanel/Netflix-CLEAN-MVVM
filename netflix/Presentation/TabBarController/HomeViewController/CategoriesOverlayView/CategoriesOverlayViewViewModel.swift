@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - CategoriesOverlayViewViewModel class
-
 final class CategoriesOverlayViewViewModel {
-    
     fileprivate(set) var isPresented: Observable<Bool> = Observable(false)
     var navigationViewState: NavigationView.State = .home
     var state: CategoriesOverlayViewTableViewDataSource.State = .mainMenu

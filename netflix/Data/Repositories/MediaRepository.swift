@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - RepositoryInput protocol
-
 private protocol RepositoryInput {
     func getAll(completion: @escaping (Result<MediaResponseDTO.GET.Many, Error>) -> Void) -> Cancellable?
     func getOne(request: MediaRequestDTO.GET.One,
@@ -16,21 +14,14 @@ private protocol RepositoryInput {
                 completion: @escaping (Result<MediaResponseDTO.GET.One, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - RepositoryOutput protocol
-
 private protocol RepositoryOutput {
     var dataTransferService: DataTransferService { get }
     var cache: MediaResponseStorage { get }
 }
 
-// MARK: - Repository typealias
-
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - MediaRepository struct
-
 final class MediaRepository: Repository {
-    
     fileprivate let dataTransferService: DataTransferService
     fileprivate let cache: MediaResponseStorage
     

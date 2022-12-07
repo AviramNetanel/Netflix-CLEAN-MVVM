@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - MediaPlayerViewViewModel struct
-
 struct MediaPlayerViewViewModel {
-    
     let media: Media
     let item: MediaPlayerViewItem?
     var isPlaying: Bool

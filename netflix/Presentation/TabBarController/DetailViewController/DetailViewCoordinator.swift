@@ -7,17 +7,12 @@
 
 import UIKit
 
-// MARK: - DetailViewCoordinator class
-
 final class DetailViewCoordinator: Coordinate {
-    
     enum Screen {
         case detail
     }
     
     weak var viewController: DetailViewController?
     
-    func showScreen(_ screen: Screen) {
-        
-    }
+    func showScreen(_ screen: Screen) {}
 }

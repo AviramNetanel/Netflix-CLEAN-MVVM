@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - ObservableInput protocol
-
 private protocol ObservableInput {
     associatedtype Value
     init(_ value: Value)
@@ -18,21 +16,14 @@ private protocol ObservableInput {
     func notifyObservers()
 }
 
-// MARK: - ObservableOutput protocol
-
 private protocol ObservableOutput: ObservableInput {
     var observers: [Observable<Value>.Observer<Value>] { get }
     var value: Value { get }
 }
 
-// MARK: - Observing typealias
-
 private typealias Observing = ObservableInput & ObservableOutput
 
-// MARK: - Observable class
-
 final class Observable<Value>: Observing {
-    
     fileprivate struct Observer<Value> {
         private(set) weak var observer: AnyObject?
         let block: (Value) -> Void

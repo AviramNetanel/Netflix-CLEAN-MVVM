@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - SeasonRequest struct
-
 struct SeasonRequest {
-    
     struct GET {
         var id: String? = nil
         var slug: String? = nil

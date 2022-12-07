@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - CellInput protocol
-
 private protocol CellInput {
     func dataDidDownload(with viewModel: TrailerCollectionViewCellViewModel,
                          completion: (() -> Void)?)
@@ -16,18 +14,11 @@ private protocol CellInput {
     func viewDidConfigure(with viewModel: TrailerCollectionViewCellViewModel)
 }
 
-// MARK: - CellOutput protocol
-
 private protocol CellOutput {}
-
-// MARK: - Cell typealias
 
 private typealias Cell = CellInput & CellOutput
 
-// MARK: - TrailerCollectionViewCell class
-
 final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
-    
     @IBOutlet private weak var posterImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var playButton: UIButton!

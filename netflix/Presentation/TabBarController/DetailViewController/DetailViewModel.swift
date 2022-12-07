@@ -7,34 +7,7 @@
 
 import Foundation
 
-//// MARK: - ViewModelInput protocol
-//
-//private protocol ViewModelInput {
-//    func viewDidLoad()
-//    func contentSize(with state: DetailNavigationView.State) -> Float
-//    func getSeason(with request: SeasonRequestDTO.GET, completion: @escaping () -> Void)
-//}
-//
-//// MARK: - ViewModelOutput protocol
-//
-//private protocol ViewModelOutput {
-//    var task: Cancellable? { get }
-//    var dependencies: DetailViewModel.Dependencies { get }
-//    var homeDataSourceState: HomeTableViewDataSource.State! { get }
-//    var navigationViewState: Observable<DetailNavigationView.State>! { get }
-//    var season: Observable<Season?>! { get }
-//    var myList: MyList! { get }
-//    var myListSection: Section! { get }
-//}
-//
-//// MARK: - ViewModel typealias
-//
-//private typealias ViewModel = ViewModelInput & ViewModelOutput
-
-// MARK: - DetailViewModel class
-
 final class DetailViewModel: ViewModel {
-
     let useCase: DetailUseCase
     let section: Section
     let media: Media
@@ -48,7 +21,10 @@ final class DetailViewModel: ViewModel {
     fileprivate(set) var myList: MyList!
     fileprivate(set) var myListSection: Section!
     
-    init(useCase: DetailUseCase, section: Section, media: Media, with viewModel: HomeViewModel) {
+    init(section: Section, media: Media, with viewModel: HomeViewModel) {
+        let dataTransferService = Application.current.dataTransferService
+        let repository = SeasonRepository(dataTransferService: dataTransferService)
+        let useCase = DetailUseCase(seasonsRepository: repository)
         self.useCase = useCase
         self.section = section
         self.media = media

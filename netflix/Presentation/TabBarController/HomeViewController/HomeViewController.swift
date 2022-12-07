@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - HomeViewController class
-
 final class HomeViewController: UIViewController {
-    
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     @IBOutlet private(set) var tableView: UITableView!
@@ -77,10 +74,7 @@ final class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - HomeViewModelActions implementation
-
 extension HomeViewController {
-    
     func heightForRow(at indexPath: IndexPath) -> CGFloat {
         if case .display = HomeTableViewDataSource.Index(rawValue: indexPath.section) {
             return self.view.bounds.height * 0.76
@@ -111,10 +105,7 @@ extension HomeViewController {
     }
 }
 
-// MARK: - Observer bindings
-
 extension HomeViewController {
-    
     private func tableViewState(in viewModel: HomeViewModel) {
         viewModel.tableViewState.observe(on: self) { [weak self] _ in
             self?.setupDataSource()

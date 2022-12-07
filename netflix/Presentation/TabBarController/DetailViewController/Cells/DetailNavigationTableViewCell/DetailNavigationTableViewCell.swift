@@ -7,26 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var navigationView: DetailNavigationView! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailNavigationTableViewCell class
-
 final class DetailNavigationTableViewCell: UITableViewCell {
-    
     fileprivate(set) var navigationView: DetailNavigationView!
     
     init(with viewModel: DetailViewModel) {

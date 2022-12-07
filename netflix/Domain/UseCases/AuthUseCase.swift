@@ -7,21 +7,15 @@
 
 import Foundation
 
-// MARK: - AuthUseCaseRequestValue struct
-
 struct AuthUseCaseRequestValue {
     var method: AuthMethod
     let request: AuthRequest
 }
 
-// MARK: - AuthMethod struct
-
 enum AuthMethod {
     case signup
     case signin
 }
-
-// MARK: - UseCaseInput protocol
 
 private protocol UseCaseInput {
     func execute(requestValue: AuthUseCaseRequestValue,
@@ -29,20 +23,13 @@ private protocol UseCaseInput {
                  completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) -> Cancellable?
 }
 
-// MARK: - UseCaseOutput protocol
-
 private protocol UseCaseOutput {
     var authRepository: AuthRepository { get }
 }
 
-// MARK: - UseCase typealias
-
 private typealias UseCase = UseCaseInput & UseCaseOutput
 
-// MARK: - AuthUseCase class
-
 final class AuthUseCase: UseCase {
-    
     let authRepository: AuthRepository
     
     init(authRepository: AuthRepository) {

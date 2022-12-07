@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - UIView + Spring Animation
-
 extension UIView {
     func animateUsingSpring(withDuration duration: TimeInterval,
                             withDamping damping: CGFloat,
@@ -33,7 +31,6 @@ extension UIView {
 }
 
 extension UIView {
-    
     fileprivate var defaultAnimationDuration: TimeInterval { return 0.3 }
     fileprivate var semiTransparent: CGFloat { return 0.5 }
     fileprivate var nonTransparent: CGFloat { return 1.0 }

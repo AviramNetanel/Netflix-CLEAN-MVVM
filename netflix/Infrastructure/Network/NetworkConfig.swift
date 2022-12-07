@@ -7,18 +7,13 @@
 
 import Foundation
 
-// MARK: - NetworkConfigurable protocol
-
 protocol NetworkConfigurable {
     var baseURL: URL { get }
     var headers: [String: String] { get }
     var queryParameters: [String: String] { get }
 }
 
-// MARK: - NetworkConfig struct
-
 struct NetworkConfig: NetworkConfigurable {
-    
     let baseURL: URL
     let headers: [String: String]
     let queryParameters: [String: String]

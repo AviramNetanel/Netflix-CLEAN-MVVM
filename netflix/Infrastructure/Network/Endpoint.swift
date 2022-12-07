@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - HTTPMethodType enum
-
 enum HTTPMethodType: String {
     case get    = "GET"
     case head   = "HEAD"
@@ -18,17 +16,12 @@ enum HTTPMethodType: String {
     case delete = "DELETE"
 }
 
-// MARK: - BodyEncoding enum
-
 enum BodyEncoding {
     case jsonSerializationData
     case stringEncodingAscii
 }
 
-// MARK: - Endpoint class
-
 final class Endpoint<R>: ResponseRequestable {
-    
     typealias Response = R
     
     let path: String
@@ -65,8 +58,6 @@ final class Endpoint<R>: ResponseRequestable {
     }
 }
 
-// MARK: - Requestable protocol
-
 protocol Requestable {
     var path: String { get }
     var isFullPath: Bool { get }
@@ -81,10 +72,7 @@ protocol Requestable {
     func urlRequest(with config: NetworkConfigurable) throws -> URLRequest
 }
 
-// MARK: - Requestable's default implementation
-
 extension Requestable {
-    
     func url(with config: NetworkConfigurable) throws -> URL {
         let baseURL = config.baseURL.absoluteString.last != "/" ? config.baseURL.absoluteString + "/" : config.baseURL.absoluteString
         let endpoint = isFullPath ? path : baseURL.appending(path)
@@ -127,8 +115,6 @@ extension Requestable {
         return urlRequest
     }
     
-    // MARK: Private
-    
     private func encodeBody(bodyParameters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
         switch bodyEncoding {
         case .jsonSerializationData:
@@ -139,21 +125,15 @@ extension Requestable {
     }
 }
 
-// MARK: - ResponseRequestable protocol
-
 protocol ResponseRequestable: Requestable {
     associatedtype Response
     
     var responseDecoder: ResponseDecoder { get }
 }
 
-// MARK: - RequestGenerationError enum
-
 enum RequestGenerationError: Error {
     case components
 }
-
-// MARK: - Dictionary + `queryString`
 
 private extension Dictionary {
     var queryString: String {
@@ -162,8 +142,6 @@ private extension Dictionary {
             .addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) ?? ""
     }
 }
-
-// MARK: - Encodable + `toDictionary`
 
 private extension Encodable {
     func toDictionary() throws -> [String: Any]? {

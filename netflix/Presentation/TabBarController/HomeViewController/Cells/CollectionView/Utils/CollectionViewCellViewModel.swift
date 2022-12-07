@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - CollectionViewCellViewModel struct
-
 struct CollectionViewCellViewModel {
-    
     enum PresentedLogoAlignment: String {
         case top
         case midTop = "mid-top"

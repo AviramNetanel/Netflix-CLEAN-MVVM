@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - PreviewViewViewModel struct
-
 struct PreviewViewViewModel {
-    
     let title: String
     let slug: String
     let posterImagePath: String

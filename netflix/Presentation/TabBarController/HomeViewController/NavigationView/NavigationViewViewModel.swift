@@ -7,16 +7,11 @@
 
 import Foundation
 
-// MARK: - NavigationViewViewModelActions struct
-
 struct NavigationViewViewModelActions {
     let stateDidChange: (NavigationView.State) -> Void
 }
 
-// MARK: - NavigationViewViewModel class
-
 final class NavigationViewViewModel {
-    
     let state: Observable<NavigationView.State>
     let items: [NavigationViewItem]
     let actions: NavigationViewViewModelActions

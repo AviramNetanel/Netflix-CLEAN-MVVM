@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - UITextField + Set Placeholder Attributes
-
 extension UITextField {
     func setPlaceholderAtrributes(string: String, attributes: [NSAttributedString.Key: Any]?) {
         attributedPlaceholder = NSAttributedString(string: string, attributes: attributes)

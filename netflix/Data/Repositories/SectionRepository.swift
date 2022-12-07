@@ -7,26 +7,17 @@
 
 import Foundation
 
-// MARK: - RepositoryInput protocol
-
 private protocol RepositoryInput {
     func getAll(completion: @escaping (Result<SectionResponseDTO.GET, Error>) -> Void) -> Cancellable?
 }
-
-// MARK: - RepositoryOutput protocol
 
 private protocol RepositoryOutput {
     var dataTransferService: DataTransferService { get }
 }
 
-// MARK: - Repository typealias
-
 private typealias Repository = RepositoryInput & RepositoryOutput
 
-// MARK: - SectionRepository class
-
 final class SectionRepository: Repository {
-    
     fileprivate let dataTransferService: DataTransferService
     
     init(dataTransferService: DataTransferService) {
@@ -34,10 +25,7 @@ final class SectionRepository: Repository {
     }
 }
 
-// MARK: - RepositoryInput implementation
-
 extension SectionRepository {
-    
     func getAll(completion: @escaping (Result<SectionResponseDTO.GET, Error>) -> Void) -> Cancellable? {
         let task = RepositoryTask()
         

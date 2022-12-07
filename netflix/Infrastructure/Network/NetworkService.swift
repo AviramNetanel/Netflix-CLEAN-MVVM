@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - NetworkError enum
-
 enum NetworkError: Error {
     case error(statusCode: Int, data: Data?)
     case notConnected
@@ -17,17 +15,11 @@ enum NetworkError: Error {
     case urlGeneration
 }
 
-// MARK: - NetworkCancellable protocol
-
 protocol NetworkCancellable {
     func cancel()
 }
 
-// MARK: - URLSessionTask: NetworkCancellable implementation
-
 extension URLSessionTask: NetworkCancellable {}
-
-// MARK: - NetworkServiceInput protocol
 
 protocol NetworkServiceInput {
     typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
@@ -36,8 +28,6 @@ protocol NetworkServiceInput {
                  completion: @escaping CompletionHandler) -> NetworkCancellable?
 }
 
-// MARK: - NetworkSessionManagerInput protocol
-
 protocol NetworkSessionManagerInput {
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
@@ -45,18 +35,13 @@ protocol NetworkSessionManagerInput {
                  completion: @escaping CompletionHandler) -> NetworkCancellable
 }
 
-// MARK: - NetworkErrorLoggerInput protocol
-
 private protocol NetworkErrorLoggerInput {
     func log(request: URLRequest)
     func log(responseData data: Data?, response: URLResponse?)
     func log(error: Error)
 }
 
-// MARK: - DefaultNetworkService struct
-
 struct NetworkService {
-    
     private let config: NetworkConfigurable
     private let sessionManager: NetworkSessionManager
     private let logger: NetworkErrorLogger
@@ -105,8 +90,6 @@ struct NetworkService {
     }
 }
 
-// MARK: - NetworkService's NetworkServiceInput implementation
-
 extension NetworkService: NetworkServiceInput {
     func request(endpoint: Requestable,
                  completion: @escaping CompletionHandler) -> NetworkCancellable? {
@@ -120,10 +103,7 @@ extension NetworkService: NetworkServiceInput {
     }
 }
 
-// MARK: - NetworkSessionManager struct
-
 struct NetworkSessionManager: NetworkSessionManagerInput {
-    
     func request(_ request: URLRequest,
                  completion: @escaping CompletionHandler) -> NetworkCancellable {
         let task = URLSession.shared.dataTask(with: request, completionHandler: completion)
@@ -132,10 +112,7 @@ struct NetworkSessionManager: NetworkSessionManagerInput {
     }
 }
 
-// MARK: - NetworkErrorLogger struct
-
 struct NetworkErrorLogger: NetworkErrorLoggerInput {
-    
     func log(request: URLRequest) {
         printIfDebug("-------------")
         printIfDebug("request: \(request.url!)")

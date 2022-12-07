@@ -7,27 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var layerView: UIView { get }
-//    var textLayer: RatedCollectionViewCell.TextLayer { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - RatedCollectionViewCell class
-
 final class RatedCollectionViewCell: CollectionViewCell {
-    
     fileprivate final class TextLayer: CATextLayer {
         override func draw(in ctx: CGContext) {
             ctx.saveGState()

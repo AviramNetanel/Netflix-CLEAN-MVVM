@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - PanelViewItemViewModel class
-
 final class PanelViewItemViewModel {
-    
     let tag: Int
     let isSelected: Observable<Bool>
     let media: Media!

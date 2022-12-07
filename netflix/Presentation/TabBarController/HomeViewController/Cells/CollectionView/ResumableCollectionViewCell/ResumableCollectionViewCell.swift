@@ -7,24 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - ResumableCollectionViewCell class
-
 final class ResumableCollectionViewCell: CollectionViewCell {
-    
     @IBOutlet private weak var actionBoxView: UIView!
     @IBOutlet private weak var optionsButton: UIButton!
     @IBOutlet private weak var infoButton: UIButton!

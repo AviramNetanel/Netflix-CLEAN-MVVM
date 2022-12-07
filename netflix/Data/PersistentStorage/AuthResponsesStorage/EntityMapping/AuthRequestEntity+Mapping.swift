@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - AuthRequestEntity + Mapping
-
 extension AuthRequestEntity {
     func toDTO() -> AuthRequestDTO {
         let userDTO = UserDTO(name: user!.name,

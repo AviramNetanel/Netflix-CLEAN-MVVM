@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DetailInfoViewViewModel struct
-
 struct DetailInfoViewViewModel {
-    
     let state: HomeTableViewDataSource.State
     let mediaType: String
     let title: String

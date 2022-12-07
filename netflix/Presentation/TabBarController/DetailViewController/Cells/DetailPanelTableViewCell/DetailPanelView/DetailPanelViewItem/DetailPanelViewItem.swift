@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - ConfigurationInput protocol
-
 @objc
 private protocol ConfigurationInput {
     func viewDidConfigure()
@@ -17,20 +15,13 @@ private protocol ConfigurationInput {
     func selectIfNeeded()
 }
 
-// MARK: - ConfigurationOutput protocol
-
 private protocol ConfigurationOutput {
     var view: DetailPanelViewItem! { get }
 }
 
-// MARK: - Configuration typealias
-
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
-// MARK: - DetailPanelViewItemConfiguration class
-
 final class DetailPanelViewItemConfiguration: Configuration {
-    
     enum Item: Int {
         case myList
         case rate
@@ -94,26 +85,7 @@ final class DetailPanelViewItemConfiguration: Configuration {
     }
 }
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var configuration: DetailPanelViewItemConfiguration! { get }
-//    var viewModel: DetailPanelViewItemViewModel! { get }
-//    var isSelected: Bool { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailPanelViewItem class
-
 final class DetailPanelViewItem: UIView {
-    
     fileprivate(set) var configuration: DetailPanelViewItemConfiguration!
     var viewModel: DetailPanelViewItemViewModel!
     

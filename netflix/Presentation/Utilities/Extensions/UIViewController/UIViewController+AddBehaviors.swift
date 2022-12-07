@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - ViewControllerLifecycleBehavior protocol
-
 protocol ViewControllerLifecycleBehavior {
     func viewDidLoad(viewController: UIViewController)
     func viewWillAppear(viewController: UIViewController)
@@ -18,8 +16,6 @@ protocol ViewControllerLifecycleBehavior {
     func viewWillLayoutSubviews(viewController: UIViewController)
     func viewDidLayoutSubviews(viewController: UIViewController)
 }
-
-// MARK: - ViewControllerLifecycleBehavior's default implementation
 
 extension ViewControllerLifecycleBehavior {
     func viewDidLoad(viewController: UIViewController) {}
@@ -32,7 +28,6 @@ extension ViewControllerLifecycleBehavior {
 }
 
 extension UIViewController {
-    
     func addBehaviors(_ behaviors: [ViewControllerLifecycleBehavior]) {
         let behaviorViewController = LifecycleBehaviorViewController(behaviors: behaviors)
         
@@ -42,7 +37,6 @@ extension UIViewController {
     }
     
     private final class LifecycleBehaviorViewController: UIViewController, UIGestureRecognizerDelegate {
-        
         private let behaviors: [ViewControllerLifecycleBehavior]
         
         init(behaviors: [ViewControllerLifecycleBehavior]) {
@@ -112,8 +106,6 @@ extension UIViewController {
                 behavior.viewDidLayoutSubviews(viewController: viewController)
             }
         }
-        
-        // MARK: Private
         
         private func applyBehaviors(body: (_ behavior: ViewControllerLifecycleBehavior, _ viewController: UIViewController) -> Void) {
             guard let parent = parent else { return }

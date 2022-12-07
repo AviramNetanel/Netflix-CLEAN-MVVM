@@ -7,11 +7,8 @@
 
 import CoreData
 
-// MARK: - StorageInput protocol
-
 private protocol StorageInput {
     func fetchRequest(for requestDTO: AuthRequestDTO) -> NSFetchRequest<AuthRequestEntity>
-//    func performCachedAuthorizationSession(_ completion: @escaping (AuthRequest) -> Void)
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void)
     func save(response: AuthResponseDTO,
@@ -20,20 +17,13 @@ private protocol StorageInput {
                         in context: NSManagedObjectContext)
 }
 
-// MARK: - StorageOutput protocol
-
 private protocol StorageOutput {
     var coreDataStorage: CoreDataStorage { get }
 }
 
-// MARK: - Storage typelias
-
 private typealias Storage = StorageInput & StorageOutput
 
-// MARK: - AuthResponseStorage class
-
 final class AuthResponseStorage: Storage {
-    
     fileprivate let coreDataStorage: CoreDataStorage
     fileprivate let authService: AuthService
     
@@ -52,10 +42,7 @@ final class AuthResponseStorage: Storage {
     }
 }
 
-// MARK: - StorageInput implementation
-
 extension AuthResponseStorage {
-    
     func getResponse(for request: AuthRequestDTO,
                      completion: @escaping (Result<AuthResponseDTO?, CoreDataStorageError>) -> Void) {
         coreDataStorage.performBackgroundTask { [weak self] context in

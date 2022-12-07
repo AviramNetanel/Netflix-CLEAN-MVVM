@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - DisplayTableViewCellViewModel struct
-
 struct DisplayTableViewCellViewModel {
-    
     let presentedDisplayMedia: Observable<Media?>
     let presentedDisplayMediaDidChange: () -> Void
     var myList: MyList?

@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - ConfigurationInput protocol
-
 @objc
 private protocol ConfigurationInput {
     func viewDidRegisterRecognizers()
@@ -18,8 +16,6 @@ private protocol ConfigurationInput {
     func selectIfNeeded()
 }
 
-// MARK: - ConfigurationOutput protocol
-
 private protocol ConfigurationOutput {
     var view: PanelViewItem? { get }
     var viewModel: DisplayTableViewCellViewModel { get }
@@ -28,14 +24,9 @@ private protocol ConfigurationOutput {
     var longPressRecognizer: UILongPressGestureRecognizer! { get }
 }
 
-// MARK: - Configuration typealias
-
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
-// MARK: - PanelViewItemConfiguration class
-
 final class PanelViewItemConfiguration: Configuration {
-    
     enum GestureGecognizer {
         case tap
         case longPress
@@ -108,13 +99,11 @@ final class PanelViewItemConfiguration: Configuration {
         else { return }
         switch tag {
         case .myList:
-//            guard let myList = viewModel.myList else { return }
-            let media = viewModel.presentedDisplayMedia.value!
-            print("mylistempty", viewModel.myList?.list.value.isEmpty)
             if viewModel.myList!.list.value.isEmpty {
                 viewModel.myList?.createList()
             }
             
+            let media = viewModel.presentedDisplayMedia.value!
             viewModel.myList?.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
         case .info:
             let section = viewModel.sectionAt(.display)
@@ -131,26 +120,7 @@ final class PanelViewItemConfiguration: Configuration {
     func viewDidLongPress() {}
 }
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var configuration: PanelViewItemConfiguration! { get }
-//    var viewModel: PanelViewItemViewModel! { get }
-//    var isSelected: Bool { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - PanelViewItem class
-
 final class PanelViewItem: UIView, ViewInstantiable {
-    
     @IBOutlet private(set) weak var titleLabel: UILabel!
     @IBOutlet private(set) weak var imageView: UIImageView!
     

@@ -7,10 +7,7 @@
 
 import UIKit.UIApplication
 
-// MARK: - DeviceOrientation class
-
 final class DeviceOrientation {
-    
     static let shared = DeviceOrientation()
     
     var orientation: UIInterfaceOrientationMask = .portrait {

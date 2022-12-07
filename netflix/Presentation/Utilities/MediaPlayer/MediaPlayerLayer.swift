@@ -7,10 +7,7 @@
 
 import AVKit
 
-// MARK: - MediaPlayerLayer class
-
 final class MediaPlayerLayer: UIView {
-    
     override class var layerClass: AnyClass { AVPlayerLayer.self }
     
     var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }

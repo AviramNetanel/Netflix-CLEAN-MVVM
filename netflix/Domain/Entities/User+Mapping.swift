@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - User struct
-
 struct User {
     let _id: String?
     let name: String?
@@ -19,8 +17,6 @@ struct User {
     let active: Bool?
     var token: String?
 }
-
-// MARK: - Mapping
 
 extension User {
     func toDTO() -> UserDTO {

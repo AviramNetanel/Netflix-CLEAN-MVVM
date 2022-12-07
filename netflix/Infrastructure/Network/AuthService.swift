@@ -8,10 +8,9 @@
 import Foundation
 
 final class AuthService {
+    private let coreDataStorage: CoreDataStorage = .shared
     
     var user: UserDTO?
-    
-    private let coreDataStorage: CoreDataStorage = .shared
     
     var latestCachedUser: UserDTO? {
         let request = AuthRequestEntity.fetchRequest()

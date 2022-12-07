@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - ListResponseDTO struct
-
 struct ListResponseDTO {
-    
     struct GET: Decodable {
         let status: String
         let data: ListDTO
@@ -27,10 +24,7 @@ struct ListResponseDTO {
     }
 }
 
-// MARK: - Mapping
-
 extension ListResponseDTO.GET {
-    
     func toDomain() -> ListResponse.GET {
         return .init(status: status, data: data.toDomain())
     }

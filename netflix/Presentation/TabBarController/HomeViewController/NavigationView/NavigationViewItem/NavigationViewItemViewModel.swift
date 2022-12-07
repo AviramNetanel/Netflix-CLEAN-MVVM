@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - NavigationViewItemViewModel struct
-
 struct NavigationViewItemViewModel {
-    
     let tag: Int
     var title: String!
     var image: String!

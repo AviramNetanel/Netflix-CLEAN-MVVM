@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - NSAttributedString + Attributes
-
 extension NSAttributedString {
     typealias Attributes = [NSAttributedString.Key: Any]
     

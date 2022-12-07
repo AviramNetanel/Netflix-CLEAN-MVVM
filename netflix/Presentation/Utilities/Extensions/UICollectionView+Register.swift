@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - UICollectionView + Register
-
 extension UICollectionView {
-    
     func registerNib(_ views: UIView.Type...) {
         views.forEach {
             let nib = UINib(nibName: String(describing: $0), bundle: nil)

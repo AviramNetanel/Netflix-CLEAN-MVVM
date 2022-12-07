@@ -7,18 +7,13 @@
 
 import UIKit
 
-// MARK: - UIViewController + Scene Delegate
-
 extension UIViewController {
     var sceneDelegate: SceneDelegate? {
         return UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
     }
 }
 
-// MARK: - UIViewController + Add Child
-
 extension UIViewController {
-    
     func add(child: UIViewController, container: UIView) {
         addChild(child)
         
@@ -35,8 +30,6 @@ extension UIViewController {
         view.removeFromSuperview()
     }
 }
-
-// MARK: - UIViewController + Set Attributes
 
 extension UIViewController {
     func setAttributes(for fields: [UITextField]) {

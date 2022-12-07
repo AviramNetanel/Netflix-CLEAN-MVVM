@@ -7,11 +7,7 @@
 
 import UIKit
 
-// MARK: - LayoutInput protocol
-
 private protocol LayoutInput {}
-
-// MARK: - LayoutOutput protocol
 
 private protocol LayoutOutput {
     var layout: CollectionViewLayout.Layout! { get }
@@ -22,14 +18,9 @@ private protocol LayoutOutput {
     
 }
 
-// MARK: - Layout typealias
-
 private typealias Layout = LayoutInput & LayoutOutput
 
-// MARK: - CollectionViewLayout class
-
 final class CollectionViewLayout: UICollectionViewFlowLayout, Layout {
-    
     enum Layout {
         case ratable,
              resumable,

@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - ListRequestDTO struct
-
 struct ListRequestDTO {
-    
     struct GET: Decodable {
         let user: UserDTO
         var media: [MediaDTO]?
@@ -26,8 +23,6 @@ struct ListRequestDTO {
         let media: [String]
     }
 }
-
-// MARK: - Mapping
 
 extension ListRequestDTO.GET {
     func toDomain() -> ListRequest.GET {

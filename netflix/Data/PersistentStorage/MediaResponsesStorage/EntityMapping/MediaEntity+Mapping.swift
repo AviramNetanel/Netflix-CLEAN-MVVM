@@ -7,11 +7,8 @@
 
 import Foundation
 
-// MARK: - MediaEntity class
-
 @objc(MediaEntity)
 public final class MediaEntity: NSObject, Codable, NSSecureCoding {
-    
     var id: String?
     var type: String?
     var title: String?
@@ -80,8 +77,6 @@ public final class MediaEntity: NSObject, Codable, NSSecureCoding {
         self.numberOfEpisodes = numberOfEpisodes
     }
     
-    // MARK: NSSecureCoding
-    
     public static var supportsSecureCoding: Bool { true }
     
     public init?(coder: NSCoder) {
@@ -130,8 +125,6 @@ public final class MediaEntity: NSObject, Codable, NSSecureCoding {
         coder.encode(numberOfEpisodes, forKey: "numberOfEpisodes")
     }
 }
-
-// MARK: - Mapping
 
 extension MediaEntity {
     func toDTO() -> MediaDTO {

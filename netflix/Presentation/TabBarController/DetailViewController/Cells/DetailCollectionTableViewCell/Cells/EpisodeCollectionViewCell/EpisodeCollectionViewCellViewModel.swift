@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - EpisodeCollectionViewCellViewModel struct
-
 struct EpisodeCollectionViewCellViewModel {
-    
     let media: Media
     let posterImagePath: String
     let posterImageIdentifier: NSString

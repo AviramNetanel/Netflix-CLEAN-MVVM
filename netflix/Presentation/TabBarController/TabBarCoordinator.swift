@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - TabBarCoordinator class
-
 final class TabBarCoordinator: Coordinate {
-    
     enum Screen {
         case home
     }
@@ -31,17 +28,9 @@ final class TabBarCoordinator: Coordinate {
     }
     
     private func homeNavigation() -> UINavigationController {
-        let authService = Application.current.authService
-        let dataTransferService = Application.current.dataTransferService
-        
-        let controller = HomeViewController()
-        let mediaResponseCache = Application.current.mediaResponseCache
-        let sectionRepository = SectionRepository(dataTransferService: dataTransferService)
-        let mediaRepository = MediaRepository(dataTransferService: dataTransferService, cache: mediaResponseCache)
-        let listRepository = ListRepository(dataTransferService: dataTransferService)
-        let useCase = HomeUseCase(sectionsRepository: sectionRepository, mediaRepository: mediaRepository, listRepository: listRepository)
         let coordinator = HomeViewCoordinator()
-        let viewModel = HomeViewModel(authService: authService, useCase: useCase)
+        let viewModel = HomeViewModel()
+        let controller = HomeViewController()
         
         controller.viewModel = viewModel
         controller.viewModel.coordinator = coordinator

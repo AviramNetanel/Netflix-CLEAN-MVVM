@@ -7,9 +7,6 @@
 
 import Foundation
 
-// MARK: - CategoriesOverlayViewCollectionViewCellViewModel struct
-
 struct CategoriesOverlayViewCollectionViewCellViewModel {
-    
     let title: String
 }

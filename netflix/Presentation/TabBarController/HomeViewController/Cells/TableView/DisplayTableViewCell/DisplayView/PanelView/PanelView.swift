@@ -7,37 +7,7 @@
 
 import UIKit
 
-// MARK: - PanelViewDependencies protocol
-
-protocol PanelViewDependencies {
-    func createPanelView(on view: DisplayView, with viewModel: DisplayTableViewCellViewModel) -> PanelView
-    func createPanelViewItemViewModel(on view: PanelViewItem, with viewModel: DisplayTableViewCellViewModel) -> PanelViewItemViewModel
-    func createPanelViewItemConfiguration(on view: PanelViewItem, with viewModel: DisplayTableViewCellViewModel) -> PanelViewItemConfiguration
-}
-
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//    func playDidTap()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: DisplayTableViewCellViewModel { get }
-//    var leadingItemView: PanelViewItem! { get }
-//    var trailingItemView: PanelViewItem! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - PanelView class
-
 final class PanelView: UIView, ViewInstantiable {
-    
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private(set) weak var leadingItemViewContainer: UIView!
     @IBOutlet private(set) weak var trailingItemViewContainer: UIView!
@@ -46,8 +16,7 @@ final class PanelView: UIView, ViewInstantiable {
     fileprivate(set) var leadingItemView: PanelViewItem!
     fileprivate(set) var trailingItemView: PanelViewItem!
     
-    init(on parent: UIView,
-         with viewModel: DisplayTableViewCellViewModel) {
+    init(on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
         self.viewModel = viewModel
         super.init(frame: parent.bounds)
         self.nibDidLoad()

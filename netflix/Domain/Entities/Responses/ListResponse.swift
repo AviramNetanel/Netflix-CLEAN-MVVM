@@ -7,10 +7,7 @@
 
 import Foundation
 
-// MARK: - ListResponse struct
-
 struct ListResponse {
-    
     struct GET {
         let status: String
         let data: List

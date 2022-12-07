@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: - TabBarController class
-
 final class TabBarController: UITabBarController, View {
-    
     var viewModel: TabBarViewModel!
     
     override func viewDidLoad() {

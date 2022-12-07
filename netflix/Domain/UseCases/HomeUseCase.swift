@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - UseCaseInput protocol
-
 private protocol UseCaseInput {
     func request<T, U>(for response: T.Type,
                        request: U?,
@@ -20,22 +18,15 @@ private protocol UseCaseInput {
                        completion: ((Result<T, Error>) -> Void)?) -> Cancellable?
 }
 
-// MARK: - UseCaseOutput protocol
-
 private protocol UseCaseOutput {
     var sectionsRepository: SectionRepository { get }
     var mediaRepository: MediaRepository { get }
     var listRepository: ListRepository { get }
 }
 
-// MARK: - UseCase typealias
-
 private typealias UseCase = UseCaseInput & UseCaseOutput
 
-// MARK: - HomeUseCase class
-
 final class HomeUseCase: UseCase {
-    
     fileprivate let sectionsRepository: SectionRepository
     fileprivate(set) var mediaRepository: MediaRepository
     fileprivate(set) var listRepository: ListRepository

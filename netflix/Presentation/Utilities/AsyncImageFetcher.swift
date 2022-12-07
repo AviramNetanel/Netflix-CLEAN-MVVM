@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - FetcherInput protocol
-
 private protocol FetcherInput {
     init()
     static func urlSession() -> URLSession
@@ -18,22 +16,15 @@ private protocol FetcherInput {
     func load(url: URL, identifier: NSString, completion: @escaping (UIImage?) -> Void)
 }
 
-// MARK: - FetcherOutput protocol
-
 private protocol FetcherOutput {
     static var shared: AsyncImageFetcher { get }
     var cache: NSCache<NSString, UIImage> { get }
     var queue: OS_dispatch_queue_serial { get }
 }
 
-// MARK: - Fetcher typealias
-
 private typealias Fetcher = FetcherInput & FetcherOutput
 
-// MARK: - AsyncImageFetcher class
-
 final class AsyncImageFetcher: Fetcher {
-    
     static var shared = AsyncImageFetcher()
     
     fileprivate(set) var cache = NSCache<NSString, UIImage>()

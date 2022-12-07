@@ -7,45 +7,7 @@
 
 import UIKit
 
-// MARK: - CategoriesOverlayViewDependencies protocol
-
-protocol CategoriesOverlayViewDependencies {
-    func createCategoriesOverlayView() -> CategoriesOverlayView
-    func createCategoriesOverlayViewViewModel() -> CategoriesOverlayViewViewModel
-    func createCategoriesOverlayViewTableViewDataSource(with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewTableViewDataSource
-    func createCategoriesOverlayViewTableViewCell(for indexPath: IndexPath) -> CategoriesOverlayViewTableViewCell
-    func createCategoriesOverlayViewFooterView(on parent: UIView,
-                                               with viewModel: CategoriesOverlayViewViewModel) -> CategoriesOverlayViewFooterView
-    func createCategoriesOverlayViewOpaqueView() -> OpaqueView
-}
-
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidLoad()
-//    func itemsDidChange()
-//    func dataSourceDidChange()
-//    func isPresentedDidChange()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var tableView: UITableView { get }
-//    var viewModel: CategoriesOverlayViewViewModel { get }
-//    var dataSource: CategoriesOverlayViewTableViewDataSource { get }
-//    var opaqueView: OpaqueView { get }
-//    var footerView: CategoriesOverlayViewFooterView { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - CategoriesOverlayView class
-
 final class CategoriesOverlayView: UIView {
-    
     enum Category: Int, CaseIterable {
         case home
         case myList
@@ -158,10 +120,7 @@ final class CategoriesOverlayView: UIView {
     }
 }
 
-// MARK: - Observer bindings
-
 extension CategoriesOverlayView {
-    
     private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
         viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
     }
@@ -171,10 +130,7 @@ extension CategoriesOverlayView {
     }
 }
 
-// MARK: - Valuable implementation
-
 extension CategoriesOverlayView.Category: Valuable {
-    
     var stringValue: String {
         switch self {
         case .home: return "Home"

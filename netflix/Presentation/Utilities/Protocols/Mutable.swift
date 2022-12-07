@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - Mutable protocol
-
 protocol Mutable {
     associatedtype Cell where Cell: UICollectionViewCell
     func sort(_ sortOptions: TableViewCell<Cell>.SortOptions, sliceBy length: Int) -> Section?

@@ -7,28 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var leadingItem: DetailPanelViewItem! { get }
-//    var centerItem: DetailPanelViewItem! { get }
-//    var trailingItem: DetailPanelViewItem! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailPanelView class
-
 final class DetailPanelView: UIView, ViewInstantiable {
-    
     @IBOutlet private weak var leadingViewContainer: UIView!
     @IBOutlet private weak var centerViewContainer: UIView!
     @IBOutlet private weak var trailingViewContainer: UIView!

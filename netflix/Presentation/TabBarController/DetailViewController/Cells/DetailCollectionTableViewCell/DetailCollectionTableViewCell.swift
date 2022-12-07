@@ -7,26 +7,7 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure()
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var detailCollectionView: DetailCollectionView! { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-// MARK: - DetailCollectionTableViewCell class
-
 final class DetailCollectionTableViewCell: UITableViewCell {
-    
     fileprivate(set) var detailCollectionView: DetailCollectionView!
     
     init(with viewModel: DetailViewModel) {
