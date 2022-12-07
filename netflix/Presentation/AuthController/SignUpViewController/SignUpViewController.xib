@@ -102,6 +102,5 @@
             </constraints>
             <point key="canvasLocation" x="1508" y="413"/>
         </view>
-        <navigationItem id="U8v-w7-eZe" customClass="NavigationBarTitleView" customModule="netflix" customModuleProvider="target"/>
     </objects>
 </document>

@@ -64,17 +64,17 @@
                 <mask key="constraints">
                     <exclude reference="KdF-TT-iBu"/>
                     <exclude reference="vQ7-Pw-Yzz"/>
-                    <exclude reference="aKp-vA-8yS"/>
                     <exclude reference="1PF-Hb-LVh"/>
-                    <exclude reference="pFd-yu-aNQ"/>
-                    <exclude reference="H3D-AZ-5KT"/>
                     <exclude reference="A0U-5c-dVu"/>
-                    <exclude reference="XWF-cp-66g"/>
+                    <exclude reference="H3D-AZ-5KT"/>
+                    <exclude reference="aKp-vA-8yS"/>
+                    <exclude reference="pFd-yu-aNQ"/>
                     <exclude reference="3Vr-wb-bim"/>
-                    <exclude reference="ZBx-rn-0wY"/>
                     <exclude reference="ASA-1d-AaK"/>
                     <exclude reference="Vn4-Lp-EA6"/>
                     <exclude reference="WI9-Ip-ArR"/>
+                    <exclude reference="XWF-cp-66g"/>
+                    <exclude reference="ZBx-rn-0wY"/>
                     <exclude reference="m2a-W9-Knb"/>
                     <exclude reference="wBa-gu-juJ"/>
                 </mask>
@@ -82,12 +82,12 @@
             <variation key="heightClass=compact">
                 <mask key="constraints">
                     <include reference="KdF-TT-iBu"/>
+                    <include reference="A0U-5c-dVu"/>
                     <include reference="aKp-vA-8yS"/>
                     <include reference="pFd-yu-aNQ"/>
-                    <include reference="A0U-5c-dVu"/>
-                    <include reference="XWF-cp-66g"/>
                     <include reference="3Vr-wb-bim"/>
                     <include reference="Vn4-Lp-EA6"/>
+                    <include reference="XWF-cp-66g"/>
                     <include reference="m2a-W9-Knb"/>
                 </mask>
             </variation>
@@ -100,14 +100,13 @@
             </variation>
             <variation key="widthClass=compact">
                 <mask key="constraints">
-                    <include reference="ZBx-rn-0wY"/>
                     <include reference="ASA-1d-AaK"/>
                     <include reference="WI9-Ip-ArR"/>
+                    <include reference="ZBx-rn-0wY"/>
                     <include reference="wBa-gu-juJ"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="1540" y="43"/>
         </view>
-        <navigationItem id="Pko-Fp-dgY"/>
     </objects>
 </document>

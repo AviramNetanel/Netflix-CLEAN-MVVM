@@ -731,7 +731,7 @@
 			children = (
 				A1B70A99293EC46A00C718C6 /* AuthController */,
 				A18B991528BEBB9C0077A5A6 /* TabBarController */,
-				A18B993228BFC6FC0077A5A6 /* Utilities */,
+				A18B993228BFC6FC0077A5A6 /* Utils */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -771,7 +771,7 @@
 			path = TabBarController;
 			sourceTree = "<group>";
 		};
-		A18B993228BFC6FC0077A5A6 /* Utilities */ = {
+		A18B993228BFC6FC0077A5A6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				A186923C28CAD45A0087DE3B /* AsyncImageFetcher.swift */,
@@ -786,7 +786,7 @@
 				A18B993428BFC7130077A5A6 /* Protocols */,
 				A18B993328BFC70D0077A5A6 /* Extensions */,
 			);
-			path = Utilities;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A18B993328BFC70D0077A5A6 /* Extensions */ = {
@@ -1006,6 +1006,23 @@
 				A1B93C802900CF2900AF2C7F /* AuthRequestEntity+Mapping.swift */,
 			);
 			path = EntityMapping;
+			sourceTree = "<group>";
+		};
+		A18D85182940382500840045 /* FooterView */ = {
+			isa = PBXGroup;
+			children = (
+				A127C1E128DD00F100CEE34F /* CategoriesOverlayViewFooterView.swift */,
+			);
+			path = FooterView;
+			sourceTree = "<group>";
+		};
+		A18D85192940383000840045 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A18D85182940382500840045 /* FooterView */,
+				A1BA1DB128DA203200730EA8 /* OpaqueView */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A19956DB2900E0C600B7D655 /* Utils */ = {
@@ -1240,9 +1257,8 @@
 			children = (
 				A1BA1DAB28D9D42A00730EA8 /* CategoriesOverlayView.swift */,
 				A1BA1DB828DA20CA00730EA8 /* CategoriesOverlayViewViewModel.swift */,
-				A127C1E128DD00F100CEE34F /* CategoriesOverlayViewFooterView.swift */,
-				A1BA1DB128DA203200730EA8 /* OpaqueView */,
 				A1BA1DC028DCB75600730EA8 /* Cells */,
+				A18D85192940383000840045 /* Utils */,
 			);
 			path = CategoriesOverlayView;
 			sourceTree = "<group>";
