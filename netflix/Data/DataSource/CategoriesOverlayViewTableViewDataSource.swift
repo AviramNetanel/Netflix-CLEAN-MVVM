@@ -7,17 +7,7 @@
 
 import UIKit
 
-private protocol DataSourceInput {}
-
-private protocol DataSourceOutput {
-    var numberOfSections: Int { get }
-    var viewModel: CategoriesOverlayViewViewModel { get }
-}
-
-private typealias DataSourcing = DataSourceInput & DataSourceOutput
-
 final class CategoriesOverlayViewTableViewDataSource: NSObject,
-                                                      DataSourcing,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
     enum State {
@@ -49,5 +39,26 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.isPresented.value = false
+        
+        let homeViewController = viewModel.coordinator.viewController
+        let homeViewModel = homeViewController!.viewModel!
+        let category = CategoriesOverlayView.Category(rawValue: indexPath.row)!
+        let browseOverlayView = viewModel.coordinator.viewController!.browseOverlayView!
+        let section: Section
+        if viewModel.state == .categories {
+            section = category.toSection(with: homeViewModel)
+            browseOverlayView.dataSource = BrowseOverlayViewCollectionViewDataSource(section: section, with: homeViewModel)
+            browseOverlayView.viewModel.isPresented = true
+        }
+        if viewModel.state == .mainMenu {
+            if indexPath.row == 0 {
+                print("tvshows")
+                homeViewController?.navigationView.viewModel.state.value = .tvShows
+            }
+            if indexPath.row == 1 {
+                print("movies")
+                homeViewController?.navigationView.viewModel.state.value = .movies
+            }
+        }
     }
 }

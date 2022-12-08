@@ -12,18 +12,20 @@ struct NavigationViewViewModelActions {
 }
 
 final class NavigationViewViewModel {
+    private let coordinator: HomeViewCoordinator
     let state: Observable<NavigationView.State>
     let items: [NavigationViewItem]
     let actions: NavigationViewViewModelActions
     
-    init(items: [NavigationViewItem], actions: NavigationViewViewModelActions) {
+    init(items: [NavigationViewItem], actions: NavigationViewViewModelActions, with viewModel: HomeViewModel) {
+        self.coordinator = viewModel.coordinator!
         self.state = Observable(.home)
         self.actions = actions
         self.items = items
     }
     
-    func stateDidChange(withOwner homeViewController: HomeViewController,
-                        projectedValue state: NavigationView.State) {
+    func stateDidChange(projectedValue state: NavigationView.State) {
+        let homeViewController = coordinator.viewController!
         homeViewController.navigationView?.categoriesItemView.viewDidConfigure(with: state)
 
         switch state {
@@ -35,6 +37,11 @@ final class NavigationViewViewModel {
 
             homeViewController.navigationView?.tvShowsItemView.viewModel.hasInteracted = false
             homeViewController.navigationView?.moviesItemView.viewModel.hasInteracted = false
+            
+            /// BrowseOverlayView
+            homeViewController.navigationViewContainer.backgroundColor = .clear
+            homeViewController.browseOverlayView?.dataSource = nil
+            homeViewController.browseOverlayView?.viewModel.isPresented = false
         case .airPlay:
             break
         case .account:
@@ -46,6 +53,8 @@ final class NavigationViewViewModel {
             homeViewController.navigationView?.itemsCenterXConstraint.constant = -24.0
 
             homeViewController.navigationView?.tvShowsItemView.viewModel.hasInteracted = true
+            
+            homeViewController.navigationViewContainer.backgroundColor = .clear
         case .movies:
             homeViewController.navigationView?.tvShowsItemViewContainer.isHidden(true)
             homeViewController.navigationView?.moviesItemViewContainer.isHidden(false)
@@ -53,6 +62,8 @@ final class NavigationViewViewModel {
             homeViewController.navigationView?.itemsCenterXConstraint.constant = -32.0
             
             homeViewController.navigationView?.moviesItemView.viewModel.hasInteracted = true
+            
+            homeViewController.navigationViewContainer.backgroundColor = .clear
         case .categories:
             break
         }

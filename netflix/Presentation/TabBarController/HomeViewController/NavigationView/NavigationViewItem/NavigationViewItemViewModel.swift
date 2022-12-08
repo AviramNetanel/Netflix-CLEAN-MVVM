@@ -12,9 +12,11 @@ struct NavigationViewItemViewModel {
     var title: String!
     var image: String!
     var hasInteracted: Bool
+    var isSelected: Bool
     
     init(tag: Int) {
         self.hasInteracted = false
+        self.isSelected = false
         self.tag = tag
         self.title = title(for: tag)
         self.image = image(for: tag)

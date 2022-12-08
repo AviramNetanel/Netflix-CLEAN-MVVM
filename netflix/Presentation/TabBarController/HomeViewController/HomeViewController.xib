@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="netflix" customModuleProvider="target">
             <connections>
+                <outlet property="browseOverlayBottomConstraint" destination="dKF-al-WCX" id="69e-Pi-Rqp"/>
+                <outlet property="browseOverlayViewContainer" destination="q4T-AG-HT6" id="DKN-T8-CZU"/>
                 <outlet property="navigationViewContainer" destination="nyl-1H-Naw" id="Hv6-Rm-0HU"/>
                 <outlet property="navigationViewTopConstraint" destination="1Es-kR-AxL" id="Kl0-zp-GMe"/>
                 <outlet property="tableView" destination="dfl-3U-b2R" id="POV-S2-ces"/>
@@ -30,12 +32,20 @@
                         <constraint firstAttribute="height" constant="162" id="MNl-GI-zFP"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q4T-AG-HT6" userLabel="Browse Overlay View Container">
+                    <rect key="frame" x="0.0" y="162" width="393" height="690"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="nyl-1H-Naw" firstAttribute="top" secondItem="aac-7C-DY6" secondAttribute="top" constant="-162" id="1Es-kR-AxL"/>
+                <constraint firstAttribute="trailing" secondItem="q4T-AG-HT6" secondAttribute="trailing" id="Ag7-xy-g2y"/>
+                <constraint firstItem="q4T-AG-HT6" firstAttribute="height" secondItem="aac-7C-DY6" secondAttribute="height" multiplier="0.809859" id="SYl-4p-tYD"/>
                 <constraint firstItem="dfl-3U-b2R" firstAttribute="leading" secondItem="aac-7C-DY6" secondAttribute="leading" id="V1k-WO-ucP"/>
                 <constraint firstAttribute="bottom" secondItem="dfl-3U-b2R" secondAttribute="bottom" id="c3a-eP-LkU"/>
+                <constraint firstItem="q4T-AG-HT6" firstAttribute="bottom" secondItem="aac-7C-DY6" secondAttribute="bottom" id="dKF-al-WCX"/>
+                <constraint firstItem="q4T-AG-HT6" firstAttribute="leading" secondItem="aac-7C-DY6" secondAttribute="leading" id="khb-Yl-Mmq"/>
                 <constraint firstItem="nyl-1H-Naw" firstAttribute="leading" secondItem="aac-7C-DY6" secondAttribute="leading" id="nvZ-xe-ASD"/>
                 <constraint firstAttribute="trailing" secondItem="dfl-3U-b2R" secondAttribute="trailing" id="sXK-Bd-IJv"/>
                 <constraint firstItem="dfl-3U-b2R" firstAttribute="top" secondItem="aac-7C-DY6" secondAttribute="top" id="t2h-PY-cUN"/>

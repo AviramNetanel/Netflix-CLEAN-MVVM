@@ -50,14 +50,13 @@ final class NavigationView: UIView, ViewInstantiable {
         let actions = NavigationViewViewModelActions(
             stateDidChange: { state in
                 viewModel.coordinator?.viewController?.categoriesOverlayView?.viewModel
-                    .navigationViewStateDidChange(withOwner: viewModel.coordinator!.viewController!,
-                                                  projectedValue: state)
+                    .navigationViewStateDidChange(projectedValue: state)
                 
                 viewModel.coordinator?.viewController?.navigationView?.viewModel
-                    .stateDidChange(withOwner: viewModel.coordinator!.viewController!,
-                                    projectedValue: state)
+                    .stateDidChange(projectedValue: state)
             })
-        self.viewModel = NavigationViewViewModel(items: items, actions: actions)
+        self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
+        viewModel.coordinator?.viewController?.navigationView = self
         self.viewDidLoad()
     }
     

@@ -13,15 +13,19 @@ final class HomeViewController: UIViewController {
     @IBOutlet private(set) var tableView: UITableView!
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private(set) var browseOverlayViewContainer: UIView!
+    @IBOutlet private(set) var browseOverlayBottomConstraint: NSLayoutConstraint!
     
     var viewModel: HomeViewModel!
     private(set) var dataSource: HomeTableViewDataSource!
-    private(set) var navigationView: NavigationView!
-    private(set) var categoriesOverlayView: CategoriesOverlayView!
+    var navigationView: NavigationView!
+    var categoriesOverlayView: CategoriesOverlayView!
+    var browseOverlayView: BrowseOverlayView!
     
     deinit {
-        navigationView = nil
+        browseOverlayView = nil
         categoriesOverlayView = nil
+        navigationView = nil
         dataSource = nil
         viewModel = nil
     }
@@ -63,6 +67,11 @@ final class HomeViewController: UIViewController {
     
     private func setupCategoriesOverlayView() {
         categoriesOverlayView = CategoriesOverlayView(with: viewModel)
+    }
+    
+    private func setupBrowseOverlayView() {
+        browseOverlayView = BrowseOverlayView(on: browseOverlayViewContainer, with: viewModel)
+        browseOverlayViewContainer.isHidden(true)
     }
     
     func removeObservers() {
@@ -109,6 +118,8 @@ extension HomeViewController {
     private func tableViewState(in viewModel: HomeViewModel) {
         viewModel.tableViewState.observe(on: self) { [weak self] _ in
             self?.setupDataSource()
+            
+            self?.setupBrowseOverlayView()
         }
     }
     

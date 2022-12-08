@@ -17,100 +17,55 @@ final class CategoriesOverlayView: UIView {
         case thriller
         case adventure
         case comedy
+        case drama
         case horror
         case anime
         case familyNchildren
         case documentary
     }
     
-    private var tabBar: UITabBar?
-    fileprivate(set) lazy var tableView: UITableView = createTableView()
-    var viewModel: CategoriesOverlayViewViewModel!
-    var dataSource: CategoriesOverlayViewTableViewDataSource!
-    let opaqueView: OpaqueView
-    fileprivate var footerView: CategoriesOverlayViewFooterView
+    private(set) lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.separatorStyle = .none
+        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
+        return tableView
+    }()
+    let tabBar: UITabBar
+    let viewModel: CategoriesOverlayViewViewModel
+    private(set) var dataSource: CategoriesOverlayViewTableViewDataSource!
+    let opaqueView = OpaqueView(frame: UIScreen.main.bounds)
+    let footerView: CategoriesOverlayViewFooterView
     
     init(with viewModel: HomeViewModel) {
-        self.tabBar = viewModel.coordinator?.viewController?.tabBarController?.tabBar
-        self.viewModel = CategoriesOverlayViewViewModel()
-        self.opaqueView = OpaqueView(frame: UIScreen.main.bounds)
-        let parent = viewModel.coordinator?.viewController?.view
-        self.footerView = CategoriesOverlayViewFooterView(parent: parent ?? .init(), viewModel: self.viewModel)
+        self.tabBar = viewModel.coordinator!.viewController!.tabBarController!.tabBar
+        self.viewModel = CategoriesOverlayViewViewModel(with: viewModel)
+        let parent = viewModel.coordinator!.viewController!.view!
+        self.footerView = CategoriesOverlayViewFooterView(parent: parent, viewModel: self.viewModel)
         super.init(frame: UIScreen.main.bounds)
-        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: tableView, with: self.viewModel)
-        parent?.addSubview(self)
-        parent?.addSubview(footerView)
+        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: self.tableView, with: self.viewModel)
+        viewModel.coordinator?.viewController?.categoriesOverlayView = self
+        parent.addSubview(self)
+        parent.addSubview(self.footerView)
+        self.addSubview(self.tableView)
         self.viewDidLoad()
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
-    private func createTableView() -> UITableView {
-        let tableView = UITableView(frame: UIScreen.main.bounds, style: .plain)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.separatorStyle = .none
-        tableView.backgroundView = opaqueView
-        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
-        addSubview(tableView)
-        return tableView
-    }
-    
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         setupObservers()
+        setupSubviews()
     }
     
-    fileprivate func setupObservers() {
+    private func setupObservers() {
         isPresented(in: viewModel)
         items(in: viewModel)
     }
     
-    fileprivate func itemsDidChange() {
-        switch viewModel.state {
-        case .none:
-            viewModel.items.value = []
-        case .mainMenu:
-            let states = NavigationView.State.allCases[3...5].toArray()
-            viewModel.items.value = states
-        case .categories:
-            let categories = CategoriesOverlayView.Category.allCases
-            viewModel.items.value = categories
-        }
-    }
-    
-    fileprivate func dataSourceDidChange() {
-        if tableView.delegate == nil {
-            tableView.delegate = dataSource
-            tableView.dataSource = dataSource
-        }
-        
-        tableView.reloadData()
-        
-        tableView.contentInset = .init(
-            top: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2 - 80.0,
-            left: .zero,
-            bottom: (UIScreen.main.bounds.height - tableView.contentSize.height) / 2,
-            right: .zero)
-    }
-    
-    fileprivate func isPresentedDidChange() {
-        if case true = viewModel.isPresented.value {
-            isHidden(false)
-            tableView.isHidden(false)
-            footerView.isHidden(false)
-            tabBar?.isHidden(true)
-            
-            itemsDidChange()
-            return
-        }
-        
-        isHidden(true)
-        footerView.isHidden(true)
-        tableView.isHidden(true)
-        tabBar?.isHidden(false)
-        
-        tableView.delegate = nil
-        tableView.dataSource = nil
+    private func setupSubviews() {
+        tableView.backgroundView = opaqueView
     }
     
     func removeObservers() {
@@ -122,11 +77,11 @@ final class CategoriesOverlayView: UIView {
 
 extension CategoriesOverlayView {
     private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
-        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.isPresentedDidChange() }
+        viewModel.isPresented.observe(on: self) { [weak self] _ in self?.viewModel.isPresentedDidChange() }
     }
     
     private func items(in viewModel: CategoriesOverlayViewViewModel) {
-        viewModel.items.observe(on: self) { [weak self] _ in self?.dataSourceDidChange() }
+        viewModel.items.observe(on: self) { [weak self] _ in self?.viewModel.dataSourceDidChange() }
     }
 }
 
@@ -141,10 +96,31 @@ extension CategoriesOverlayView.Category: Valuable {
         case .thriller: return "Thriller"
         case .adventure: return "Adventure"
         case .comedy: return "Comedy"
+        case .drama: return "Drama"
         case .horror: return "Horror"
         case .anime: return "Anime"
         case .familyNchildren: return "Family & Children"
         case .documentary: return "Documentary"
+        }
+    }
+}
+
+extension CategoriesOverlayView.Category {
+    func toSection(with viewModel: HomeViewModel) -> Section {
+        switch self {
+        case .home: return viewModel.section(at: .resumable)
+        case .myList: return viewModel.section(at: .myList)
+        case .action: return viewModel.section(at: .action)
+        case .sciFi: return viewModel.section(at: .sciFi)
+        case .crime: return viewModel.section(at: .crime)
+        case .thriller: return viewModel.section(at: .thriller)
+        case .adventure: return viewModel.section(at: .adventure)
+        case .comedy: return viewModel.section(at: .comedy)
+        case .drama: return viewModel.section(at: .drama)
+        case .horror: return viewModel.section(at: .horror)
+        case .anime: return viewModel.section(at: .anime)
+        case .familyNchildren: return viewModel.section(at: .familyNchildren)
+        case .documentary: return viewModel.section(at: .documentary)
         }
     }
 }
