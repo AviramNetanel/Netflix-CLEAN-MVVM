@@ -1,42 +1,23 @@
 //
-//  MyList.swift
+//  MyListViewModel.swift
 //  netflix
 //
-//  Created by Zach Bazov on 14/11/2022.
+//  Created by Zach Bazov on 08/12/2022.
 //
 
-import UIKit
+import Foundation
 
 struct MyListActions {
     let listDidReload: () -> Void
 }
 
-private protocol ListInput {
-    func fetchList()
-    func createList()
-    func updateList()
-    func shouldAddOrRemove(_ media: Media, uponSelection selected: Bool)
-    func contains(_ media: Media, in list: [Media]) -> Bool
-}
-
-private protocol ListOutput {
-    var task: Cancellable? { get }
-    var list: Observable<Set<Media>> { get }
-    var user: UserDTO { get }
-    var homeUseCase: HomeUseCase { get }
-    var section: Section { get }
-    var actions: MyListActions { get }
-}
-
-private typealias ListProtocol = ListInput & ListOutput
-
-final class MyList: ListProtocol {
-    fileprivate var task: Cancellable? { willSet { task?.cancel() } }
-    fileprivate(set) var list: Observable<Set<Media>> = Observable([])
-    fileprivate let user: UserDTO
-    fileprivate let homeUseCase: HomeUseCase
-    fileprivate(set) var section: Section
-    fileprivate var actions: MyListActions
+final class MyListViewModel {
+    private var task: Cancellable? { willSet { task?.cancel() } }
+    private(set) var list: Observable<Set<Media>> = Observable([])
+    private let user: UserDTO
+    private let homeUseCase: HomeUseCase
+    private(set) var section: Section
+    private(set) var actions: MyListActions
     
     init(with viewModel: HomeViewModel) {
         self.user = Application.current.authService.user ?? .init()
@@ -48,25 +29,9 @@ final class MyList: ListProtocol {
     deinit {
         task = nil
     }
-    
-    func viewDidLoad() {
-        bindObservers()
-        fetchList()
-    }
-    
-    private func bindObservers() {
-        list.observe(on: self) { [weak self] _ in self?.actions.listDidReload() }
-    }
-    
-    func removeObservers() {
-        if let list = list as Observable<Set<Media>>? {
-            printIfDebug("Removed `MyList` observers.")
-            list.remove(observer: self)
-        }
-    }
 }
 
-extension MyList {
+extension MyListViewModel {
     func fetchList() {
         let requestDTO = ListRequestDTO.GET(user: user)
         task = homeUseCase.execute(
@@ -132,5 +97,7 @@ extension MyList {
         actions.listDidReload()
     }
     
-    func contains(_ media: Media, in list: [Media]) -> Bool { list.contains(media) }
+    func contains(_ media: Media, in list: [Media]) -> Bool {
+        return list.contains(media)
+    }
 }

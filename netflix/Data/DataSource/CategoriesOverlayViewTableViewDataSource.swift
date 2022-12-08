@@ -17,8 +17,8 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     }
     
     private weak var tableView: UITableView!
-    fileprivate let viewModel: CategoriesOverlayViewViewModel
-    fileprivate let numberOfSections: Int = 1
+    private let viewModel: CategoriesOverlayViewViewModel
+    private let numberOfSections: Int = 1
     
     init(on tableView: UITableView, with viewModel: CategoriesOverlayViewViewModel) {
         self.tableView = tableView

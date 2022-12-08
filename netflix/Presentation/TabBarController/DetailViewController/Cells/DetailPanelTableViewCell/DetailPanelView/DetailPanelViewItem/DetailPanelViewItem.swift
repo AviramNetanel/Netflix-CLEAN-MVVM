@@ -38,7 +38,7 @@ final class DetailPanelViewItemConfiguration {
     private func selectIfNeeded() {
         guard let tag = Item(rawValue: view.tag) else { return }
         if case .myList = tag {
-            view.viewModel.isSelected.value = myList.contains(
+            view.viewModel.isSelected.value = myList.viewModel.contains(
                 view.viewModel.media,
                 in: section.media)
         }
@@ -57,13 +57,12 @@ final class DetailPanelViewItemConfiguration {
         
         switch tag {
         case .myList:
-            let media = view.viewModel.media!
-            if myList.list.value.isEmpty {
-                myList.createList()
+            if myList.viewModel.list.value.isEmpty {
+                myList.viewModel.createList()
             }
-            myList.shouldAddOrRemove(
-                media,
-                uponSelection: view.viewModel.isSelected.value)
+            
+            let media = view.viewModel.media!
+            myList.viewModel.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
         case .rate: print("rate")
         case .share: print("share")
         }

@@ -57,7 +57,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     private var actions: HomeTableViewDataSourceActions!
     
     fileprivate let numberOfRows = 1
-    fileprivate(set) var displayCell: DisplayTableViewCell!
+    private(set) var displayCell: DisplayTableViewCell!
     
     init(tableView: UITableView, viewModel: HomeViewModel) {
         self.tableView = tableView

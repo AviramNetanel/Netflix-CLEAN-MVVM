@@ -21,11 +21,6 @@ private protocol DataSourceOutput {
     var viewModel: DetailViewModel { get }
     var actions: DetailTableViewDataSourceActions { get }
     var numberOfRows: Int { get }
-    var infoCell: DetailInfoTableViewCell! { get }
-    var descriptionCell: DetailDescriptionTableViewCell! { get }
-    var panelCell: DetailPanelTableViewCell! { get }
-    var navigationCell: DetailNavigationTableViewCell! { get }
-    var collectionCell: DetailCollectionTableViewCell! { get }
 }
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
@@ -47,11 +42,11 @@ final class DetailTableViewDataSource: NSObject,
     fileprivate let tableView: UITableView
     fileprivate let numberOfRows: Int = 1
     
-    fileprivate var infoCell: DetailInfoTableViewCell!
-    fileprivate var descriptionCell: DetailDescriptionTableViewCell!
-    fileprivate(set) var panelCell: DetailPanelTableViewCell!
-    fileprivate(set) var navigationCell: DetailNavigationTableViewCell!
-    fileprivate(set) var collectionCell: DetailCollectionTableViewCell!
+    private var infoCell: DetailInfoTableViewCell!
+    private var descriptionCell: DetailDescriptionTableViewCell!
+    private(set) var panelCell: DetailPanelTableViewCell!
+    private(set) var navigationCell: DetailNavigationTableViewCell!
+    private(set) var collectionCell: DetailCollectionTableViewCell!
     
     init(on tableView: UITableView, actions: DetailTableViewDataSourceActions, with viewModel: DetailViewModel) {
         self.tableView = tableView

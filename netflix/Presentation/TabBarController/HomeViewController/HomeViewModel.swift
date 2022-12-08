@@ -22,12 +22,12 @@ final class HomeViewModel: ViewModel {
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
     private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
     
-    fileprivate(set) var sections: [Section] = []
-    fileprivate(set) var media: [Media] = []
-    fileprivate(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
-    fileprivate(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
-    fileprivate var isEmpty: Bool { sections.isEmpty }
-    fileprivate(set) var myList: MyList!
+    private(set) var sections: [Section] = []
+    private(set) var media: [Media] = []
+    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+    private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
+    private var isEmpty: Bool { sections.isEmpty }
+    private(set) var myList: MyList!
     private var displayMediaCache: [HomeTableViewDataSource.State: Media] = [:]
     
     init() {
@@ -62,7 +62,6 @@ extension HomeViewModel {
         tableViewState.value = .all
         /// Creates an instance of `MyList`.
         myList = MyList(with: self)
-        myList.viewDidLoad()
     }
     
     fileprivate func fetchSections() {
@@ -97,7 +96,7 @@ extension HomeViewModel {
         guard !isEmpty else { return }
         
         if section.id == 6 {
-            var media = myList.list.value
+            var media = myList.viewModel.list.value
             switch tableViewState.value {
             case .all:
                 break
@@ -154,7 +153,7 @@ extension HomeViewModel {
                 sections[index.rawValue].media = media
             case .myList:
                 guard let myList = myList else { return }
-                var media = myList.list.value
+                var media = myList.viewModel.list.value
                 switch tableViewState.value {
                 case .all:
                     break

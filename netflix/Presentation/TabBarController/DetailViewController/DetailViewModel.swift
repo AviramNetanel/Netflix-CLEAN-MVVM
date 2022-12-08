@@ -30,7 +30,7 @@ final class DetailViewModel: ViewModel {
         self.media = media
         self.homeDataSourceState = viewModel.tableViewState.value
         self.myList = viewModel.myList
-        self.myListSection = viewModel.myList.section
+        self.myListSection = viewModel.myList.viewModel.section
     }
     
     deinit {
