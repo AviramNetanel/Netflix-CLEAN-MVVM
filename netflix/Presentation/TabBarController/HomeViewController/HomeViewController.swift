@@ -47,6 +47,7 @@ final class HomeViewController: UIViewController {
         setupDataSource()
         setupNavigationView()
         setupCategoriesOverlayView()
+        setupBrowseOverlayView()
     }
     
     private func setupObservers() {
@@ -118,8 +119,6 @@ extension HomeViewController {
     private func tableViewState(in viewModel: HomeViewModel) {
         viewModel.tableViewState.observe(on: self) { [weak self] _ in
             self?.setupDataSource()
-            
-            self?.setupBrowseOverlayView()
         }
     }
     

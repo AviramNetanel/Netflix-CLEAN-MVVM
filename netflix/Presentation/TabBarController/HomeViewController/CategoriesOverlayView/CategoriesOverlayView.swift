@@ -52,7 +52,7 @@ final class CategoriesOverlayView: UIView {
         
         self.dataSource = CategoriesOverlayViewTableViewDataSource(on: self.tableView, with: self.viewModel)
         
-        /// Updates root coordinator's navigation view property.
+        /// Updates root coordinator's `categoriesOverlayView` property.
         viewModel.coordinator?.viewController?.categoriesOverlayView = self
         
         self.viewDidLoad()

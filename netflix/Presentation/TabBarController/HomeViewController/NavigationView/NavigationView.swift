@@ -59,7 +59,7 @@ final class NavigationView: UIView, ViewInstantiable {
             })
         self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
         
-        /// Updates root coordinator's navigation view property.
+        /// Updates root coordinator's `navigationView` property.
         viewModel.coordinator?.viewController?.navigationView = self
         
         self.viewDidLoad()

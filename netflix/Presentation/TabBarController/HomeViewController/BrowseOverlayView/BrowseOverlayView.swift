@@ -21,23 +21,14 @@ final class BrowseOverlayView: UIView {
         
         super.init(frame: parent.bounds)
         
-        /// Updates root coordinator's navigation view property.
+        /// Updates root coordinator's `browseOverlayView` property.
         viewModel.coordinator?.viewController?.browseOverlayView = self
         
         parent.addSubview(self)
-        
-        self.viewDidLoad()
+        self.constraintToSuperview(parent)
     }
     
     required init?(coder: NSCoder) { fatalError() }
-    
-    private func viewDidLoad() {
-        setupSubviews()
-    }
-    
-    private func setupSubviews() {
-        backgroundColor = .black
-    }
     
     private func createCollectionView() -> UICollectionView {
         let layout = CollectionViewLayout(layout: .homeOverlay, scrollDirection: .vertical)
@@ -45,6 +36,7 @@ final class BrowseOverlayView: UIView {
         collectionView.register(StandardCollectionViewCell.nib,
                                 forCellWithReuseIdentifier: StandardCollectionViewCell.reuseIdentifier)
         collectionView.contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 0.0, right: 0.0)
+        collectionView.backgroundColor = .black
         addSubview(collectionView)
         return collectionView
     }
