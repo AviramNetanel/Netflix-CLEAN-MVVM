@@ -55,7 +55,6 @@ final class CategoriesOverlayViewViewModel {
             categoriesOverlay?.tableView.isHidden(false)
             categoriesOverlay?.footerView.isHidden(false)
             categoriesOverlay?.tabBar.isHidden(true)
-            
             itemsDidChange()
             return
         }
@@ -63,7 +62,7 @@ final class CategoriesOverlayViewViewModel {
         categoriesOverlay?.isHidden(true)
         categoriesOverlay?.footerView.isHidden(true)
         categoriesOverlay?.tableView.isHidden(true)
-        categoriesOverlay?.tabBar.isHidden(true)
+        categoriesOverlay?.tabBar.isHidden(false)
         
         categoriesOverlay?.tableView.delegate = nil
         categoriesOverlay?.tableView.dataSource = nil
