@@ -25,7 +25,7 @@ final class BrowseOverlayView: UIView {
         viewModel.coordinator?.viewController?.browseOverlayView = self
         
         parent.addSubview(self)
-//        self.constraintToSuperview(parent)
+        self.constraintToSuperview(parent)
     }
     
     required init?(coder: NSCoder) { fatalError() }
