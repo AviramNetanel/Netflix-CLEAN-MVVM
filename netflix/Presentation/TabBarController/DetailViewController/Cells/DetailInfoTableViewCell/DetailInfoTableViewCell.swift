@@ -19,7 +19,7 @@ final class DetailInfoTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

@@ -7,30 +7,16 @@
 
 import UIKit
 
-@objc
-private protocol ConfigurationInput {
-    func viewDidConfigure()
-    func viewDidRegisterRecognizers()
-    func viewDidTap()
-    func selectIfNeeded()
-}
-
-private protocol ConfigurationOutput {
-    var view: DetailPanelViewItem! { get }
-}
-
-private typealias Configuration = ConfigurationInput & ConfigurationOutput
-
-final class DetailPanelViewItemConfiguration: Configuration {
+final class DetailPanelViewItemConfiguration {
     enum Item: Int {
         case myList
         case rate
         case share
     }
     
-    fileprivate weak var view: DetailPanelViewItem!
-    fileprivate let myList: MyList
-    fileprivate let section: Section
+    private weak var view: DetailPanelViewItem!
+    private let myList: MyList
+    private let section: Section
     
     init(view: DetailPanelViewItem, with viewModel: DetailViewModel) {
         self.view = view
@@ -40,14 +26,16 @@ final class DetailPanelViewItemConfiguration: Configuration {
         self.viewDidRegisterRecognizers()
     }
     
-    deinit { view = nil }
+    deinit {
+        view = nil
+    }
     
-    fileprivate func viewDidRegisterRecognizers() {
+    private func viewDidRegisterRecognizers() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapRecognizer)
     }
     
-    fileprivate func selectIfNeeded() {
+    private func selectIfNeeded() {
         guard let tag = Item(rawValue: view.tag) else { return }
         if case .myList = tag {
             view.viewModel.isSelected.value = myList.contains(
@@ -63,6 +51,7 @@ final class DetailPanelViewItemConfiguration: Configuration {
         selectIfNeeded()
     }
     
+    @objc
     func viewDidTap() {
         guard let tag = Item(rawValue: view.tag) else { return }
         
@@ -86,7 +75,7 @@ final class DetailPanelViewItemConfiguration: Configuration {
 }
 
 final class DetailPanelViewItem: UIView {
-    fileprivate(set) var configuration: DetailPanelViewItemConfiguration!
+    private(set) var configuration: DetailPanelViewItemConfiguration!
     var viewModel: DetailPanelViewItemViewModel!
     
     fileprivate lazy var imageView = createImageView()

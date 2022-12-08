@@ -12,7 +12,7 @@ final class DetailDescriptionView: UIView, ViewInstantiable {
     @IBOutlet private weak var castLabel: UILabel!
     @IBOutlet private weak var writersLabel: UILabel!
     
-    var viewModel: DetailDescriptionViewViewModel!
+    private let viewModel: DetailDescriptionViewViewModel
     
     init(on parent: UIView, with viewModel: DetailDescriptionViewViewModel) {
         self.viewModel = viewModel
@@ -23,7 +23,7 @@ final class DetailDescriptionView: UIView, ViewInstantiable {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         
         descriptionTextView.text = viewModel.description

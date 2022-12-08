@@ -8,8 +8,8 @@
 import Foundation
 
 final class DetailNavigationViewItemViewModel {
-    fileprivate let tag: Int
-    fileprivate var isSelected: Bool
+    private let tag: Int
+    private var isSelected: Bool
     
     var title: String {
         guard let tag = DetailNavigationView.State(rawValue: tag) else { fatalError() }

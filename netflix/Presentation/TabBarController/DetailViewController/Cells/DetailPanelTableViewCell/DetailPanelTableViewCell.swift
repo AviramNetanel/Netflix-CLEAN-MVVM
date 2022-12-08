@@ -8,9 +8,7 @@
 import UIKit
 
 final class DetailPanelTableViewCell: UITableViewCell {
-    fileprivate(set) var panelView: DetailPanelView!
-    
-    deinit { panelView = nil }
+    private(set) var panelView: DetailPanelView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)
@@ -19,9 +17,13 @@ final class DetailPanelTableViewCell: UITableViewCell {
         self.viewDidConfigure()
     }
     
+    deinit {
+        panelView = nil
+    }
+    
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

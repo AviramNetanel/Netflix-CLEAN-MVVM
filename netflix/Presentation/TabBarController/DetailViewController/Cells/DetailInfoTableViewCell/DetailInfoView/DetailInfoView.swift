@@ -18,7 +18,7 @@ final class DetailInfoView: UIView, ViewInstantiable {
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var downloadButton: UIButton!
     
-    var viewModel: DetailInfoViewViewModel!
+    private let viewModel: DetailInfoViewViewModel
     fileprivate var ageRestrictionView: AgeRestrictionView!
     fileprivate var hdView: HDView!
     
@@ -38,12 +38,12 @@ final class DetailInfoView: UIView, ViewInstantiable {
         hdView = nil
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         setupSubviews()
         viewDidConfigure()
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         
         mediaTypeLabel.text = viewModel.mediaType
@@ -59,12 +59,13 @@ final class DetailInfoView: UIView, ViewInstantiable {
     }
     
     private func setupGradientView() {
-        gradientView.addGradientLayer(frame: gradientView.bounds,
-                                      colors: [.init(red: 25.0/255,
-                                                     green: 25.0/255,
-                                                     blue: 25.0/255,
-                                                     alpha: 1.0),
-                                               .clear],
-                                      locations: [0.3, 1.0])
+        gradientView.addGradientLayer(
+            frame: gradientView.bounds,
+            colors: [UIColor(red: 25.0/255,
+                             green: 25.0/255,
+                             blue: 25.0/255,
+                             alpha: 1.0),
+                     .clear],
+            locations: [0.3, 1.0])
     }
 }

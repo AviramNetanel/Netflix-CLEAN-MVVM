@@ -11,8 +11,8 @@ final class DetailViewController: UIViewController {
     @IBOutlet private(set) weak var tableView: UITableView!
     @IBOutlet private(set) weak var previewContainer: UIView!
     
-    private var previewView: PreviewView!
     var viewModel: DetailViewModel!
+    private var previewView: PreviewView!
     private(set) var dataSource: DetailTableViewDataSource!
     
     deinit {

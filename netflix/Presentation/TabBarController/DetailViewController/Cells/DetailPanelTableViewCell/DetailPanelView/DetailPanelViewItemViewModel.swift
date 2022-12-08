@@ -9,7 +9,7 @@ import Foundation
 
 final class DetailPanelViewItemViewModel {
     let tag: Int
-    var isSelected: Observable<Bool>
+    let isSelected: Observable<Bool>
     var media: Media!
     
     var systemImage: String {
@@ -33,13 +33,15 @@ final class DetailPanelViewItemViewModel {
     init(item: DetailPanelViewItem,
          with viewModel: DetailViewModel) {
         self.tag = item.tag
-        self.isSelected = .init(item.isSelected)
+        self.isSelected = Observable(item.isSelected)
         self.media = viewModel.media
-        self.bind(on: item)
+        self.observe(on: item)
     }
     
-    fileprivate func bind(on item: DetailPanelViewItem) {
-        isSelected.observe(on: self) { _ in item.configuration?.viewDidConfigure() }
+    private func observe(on item: DetailPanelViewItem) {
+        isSelected.observe(on: self) { _ in
+            item.configuration?.viewDidConfigure()
+        }
     }
     
     func removeObservers() {

@@ -18,66 +18,69 @@ final class NavigationView: UIView, ViewInstantiable {
     }
     
     @IBOutlet private weak var gradientView: UIView!
-    @IBOutlet private(set) weak var homeItemViewContainer: UIView!
-    @IBOutlet private(set) weak var airPlayItemViewContainer: UIView!
-    @IBOutlet private(set) weak var accountItemViewContainer: UIView!
+    @IBOutlet private weak var homeItemViewContainer: UIView!
+    @IBOutlet private weak var airPlayItemViewContainer: UIView!
+    @IBOutlet private weak var accountItemViewContainer: UIView!
     @IBOutlet private(set) weak var tvShowsItemViewContainer: UIView!
     @IBOutlet private(set) weak var moviesItemViewContainer: UIView!
     @IBOutlet private(set) weak var categoriesItemViewContainer: UIView!
     @IBOutlet private(set) weak var itemsCenterXConstraint: NSLayoutConstraint!
     
-    fileprivate(set) var homeItemView: NavigationViewItem!
-    fileprivate var airPlayItemView: NavigationViewItem!
-    fileprivate var accountItemView: NavigationViewItem!
-    fileprivate(set) var tvShowsItemView: NavigationViewItem!
-    fileprivate(set) var moviesItemView: NavigationViewItem!
-    fileprivate(set) var categoriesItemView: NavigationViewItem!
-    var viewModel: NavigationViewViewModel!
+    private(set) var viewModel: NavigationViewViewModel!
+    
+    private(set) var homeItemView: NavigationViewItem!
+    private var airPlayItemView: NavigationViewItem!
+    private var accountItemView: NavigationViewItem!
+    private(set) var tvShowsItemView: NavigationViewItem!
+    private(set) var moviesItemView: NavigationViewItem!
+    private(set) var categoriesItemView: NavigationViewItem!
     
     init(on parent: UIView, with viewModel: HomeViewModel) {
         super.init(frame: parent.bounds)
         self.nibDidLoad()
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.homeItemView = NavigationViewItem(onParent: self.homeItemViewContainer)
-        self.airPlayItemView = NavigationViewItem(onParent: self.airPlayItemViewContainer)
-        self.accountItemView = NavigationViewItem(onParent: self.accountItemViewContainer)
-        self.tvShowsItemView = NavigationViewItem(onParent: self.tvShowsItemViewContainer)
-        self.moviesItemView = NavigationViewItem(onParent: self.moviesItemViewContainer)
-        self.categoriesItemView = NavigationViewItem(onParent: self.categoriesItemViewContainer)
-        let items: [NavigationViewItem] = [self.homeItemView, self.airPlayItemView, self.accountItemView,
-                                           self.tvShowsItemView, self.moviesItemView, self.categoriesItemView]
+        
+        self.homeItemView = NavigationViewItem(onParent: self.homeItemViewContainer, with: viewModel)
+        self.airPlayItemView = NavigationViewItem(onParent: self.airPlayItemViewContainer, with: viewModel)
+        self.accountItemView = NavigationViewItem(onParent: self.accountItemViewContainer, with: viewModel)
+        self.tvShowsItemView = NavigationViewItem(onParent: self.tvShowsItemViewContainer, with: viewModel)
+        self.moviesItemView = NavigationViewItem(onParent: self.moviesItemViewContainer, with: viewModel)
+        self.categoriesItemView = NavigationViewItem(onParent: self.categoriesItemViewContainer, with: viewModel)
+        let items: [NavigationViewItem] = [self.homeItemView, self.airPlayItemView,
+                                           self.accountItemView, self.tvShowsItemView,
+                                           self.moviesItemView, self.categoriesItemView]
         let actions = NavigationViewViewModelActions(
             stateDidChange: { state in
-                viewModel.coordinator?.viewController?.categoriesOverlayView?.viewModel
-                    .navigationViewStateDidChange(projectedValue: state)
-                
-                viewModel.coordinator?.viewController?.navigationView?.viewModel
-                    .stateDidChange(projectedValue: state)
+                let navigation = viewModel.coordinator?.viewController?.navigationView
+                let categoriesOverlay = viewModel.coordinator?.viewController?.categoriesOverlayView
+                navigation?.viewModel.stateDidChange(state)
+                categoriesOverlay?.viewModel.coordinateStateChanges(for: state)
             })
         self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
+        
+        /// Updates root coordinator's navigation view property.
         viewModel.coordinator?.viewController?.navigationView = self
+        
         self.viewDidLoad()
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        categoriesItemView = nil
-        moviesItemView = nil
-        tvShowsItemView = nil
-        accountItemView = nil
-        airPlayItemView = nil
         homeItemView = nil
+        airPlayItemView = nil
+        accountItemView = nil
+        tvShowsItemView = nil
+        moviesItemView = nil
+        categoriesItemView = nil
         viewModel = nil
     }
     
-    private func setupBindings() {
-        viewDidTap(in: viewModel.items)
-    }
-    
     private func setupObservers() {
-        viewModel.state.observe(on: self) { [weak self] state in self?.viewModel.actions.stateDidChange(state) }
+        viewModel.state.observe(on: self) { [weak self] state in
+            self?.viewModel.actions.stateDidChange(state)
+        }
     }
     
     private func setupGradientView() {
@@ -91,7 +94,6 @@ final class NavigationView: UIView, ViewInstantiable {
     }
     
     fileprivate func viewDidLoad() {
-        setupBindings()
         setupObservers()
         viewDidConfigure()
     }
@@ -103,16 +105,6 @@ final class NavigationView: UIView, ViewInstantiable {
     func removeObservers() {
         printIfDebug("Removed `NavigationView` observers.")
         viewModel.state.remove(observer: self)
-    }
-}
-
-extension NavigationView {
-    private func viewDidTap(in items: [NavigationViewItem]) {
-        items.forEach {
-            $0.configuration._viewDidTap = { [weak self] state in
-                self?.viewModel.state.value = state
-            }
-        }
     }
 }
 

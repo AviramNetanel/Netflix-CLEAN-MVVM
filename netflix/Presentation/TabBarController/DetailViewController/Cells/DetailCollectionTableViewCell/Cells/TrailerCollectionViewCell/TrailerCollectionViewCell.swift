@@ -7,18 +7,7 @@
 
 import UIKit
 
-private protocol CellInput {
-    func dataDidDownload(with viewModel: TrailerCollectionViewCellViewModel,
-                         completion: (() -> Void)?)
-    func viewDidLoad(with viewModel: TrailerCollectionViewCellViewModel)
-    func viewDidConfigure(with viewModel: TrailerCollectionViewCellViewModel)
-}
-
-private protocol CellOutput {}
-
-private typealias Cell = CellInput & CellOutput
-
-final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
+final class TrailerCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var posterImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var playButton: UIButton!
@@ -34,14 +23,14 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
         return view
     }
     
-    fileprivate func dataDidDownload(with viewModel: TrailerCollectionViewCellViewModel,
+    private func dataDidDownload(with viewModel: TrailerCollectionViewCellViewModel,
                          completion: (() -> Void)?) {
         AsyncImageFetcher.shared.load(
             url: viewModel.posterImageURL,
             identifier: viewModel.posterImageIdentifier) { _ in completion?() }
     }
     
-    fileprivate func viewDidLoad(with viewModel: TrailerCollectionViewCellViewModel) {
+    private func viewDidLoad(with viewModel: TrailerCollectionViewCellViewModel) {
         dataDidDownload(with: viewModel) { [weak self] in
             DispatchQueue.main.async { self?.viewDidConfigure(with: viewModel) }
         }
@@ -49,7 +38,7 @@ final class TrailerCollectionViewCell: UICollectionViewCell, Cell {
         setupSubviews()
     }
     
-    fileprivate func viewDidConfigure(with viewModel: TrailerCollectionViewCellViewModel) {
+    private func viewDidConfigure(with viewModel: TrailerCollectionViewCellViewModel) {
         let image = AsyncImageFetcher.shared.object(for: viewModel.posterImageIdentifier)
         posterImageView.image = image
         titleLabel.text = viewModel.title

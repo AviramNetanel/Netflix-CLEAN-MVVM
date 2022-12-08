@@ -15,7 +15,6 @@ private protocol LayoutOutput {
     var lineSpacing: CGFloat { get }
     var width: CGFloat { get }
     var height: CGFloat { get }
-    
 }
 
 private typealias Layout = LayoutInput & LayoutOutput

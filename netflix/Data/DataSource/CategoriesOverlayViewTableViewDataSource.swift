@@ -10,7 +10,7 @@ import UIKit
 final class CategoriesOverlayViewTableViewDataSource: NSObject,
                                                       UITableViewDelegate,
                                                       UITableViewDataSource {
-    enum State {
+    enum State: Int {
         case none
         case mainMenu
         case categories
@@ -39,26 +39,6 @@ final class CategoriesOverlayViewTableViewDataSource: NSObject,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.isPresented.value = false
-        
-        let homeViewController = viewModel.coordinator.viewController
-        let homeViewModel = homeViewController!.viewModel!
-        let category = CategoriesOverlayView.Category(rawValue: indexPath.row)!
-        let browseOverlayView = viewModel.coordinator.viewController!.browseOverlayView!
-        let section: Section
-        if viewModel.state == .categories {
-            section = category.toSection(with: homeViewModel)
-            browseOverlayView.dataSource = BrowseOverlayViewCollectionViewDataSource(section: section, with: homeViewModel)
-            browseOverlayView.viewModel.isPresented = true
-        }
-        if viewModel.state == .mainMenu {
-            if indexPath.row == 0 {
-                print("tvshows")
-                homeViewController?.navigationView.viewModel.state.value = .tvShows
-            }
-            if indexPath.row == 1 {
-                print("movies")
-                homeViewController?.navigationView.viewModel.state.value = .movies
-            }
-        }
+        viewModel.didSelectRow(at: indexPath)
     }
 }

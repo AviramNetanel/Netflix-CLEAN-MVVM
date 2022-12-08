@@ -16,14 +16,12 @@ private protocol ConfigurationInput {
 
 private protocol ConfigurationOutput {
     var item: NavigationViewItem! { get }
-    var _viewDidTap: ((NavigationView.State) -> Void)? { get }
 }
 
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
 final class NavigationViewItemConfiguration: Configuration {
     fileprivate weak var item: NavigationViewItem!
-    var _viewDidTap: ((NavigationView.State) -> Void)?
     
     init(configurationWithItem item: NavigationViewItem) {
         self.item = item
@@ -32,7 +30,6 @@ final class NavigationViewItemConfiguration: Configuration {
     
     deinit {
         item = nil
-        _viewDidTap = nil
     }
     
     fileprivate func viewDidLoad() {
@@ -76,8 +73,11 @@ final class NavigationViewItemConfiguration: Configuration {
     }
     
     fileprivate func viewDidTap() {
-        guard let state = NavigationView.State(rawValue: item.tag) else { return }
-        _viewDidTap?(state)
+        guard
+            let navigation = item.viewModel.coordinator.viewController?.navigationView,
+            let state = NavigationView.State(rawValue: item.tag)
+        else { return }
+        navigation.viewModel.state.value = state
     }
 }
 
@@ -87,12 +87,12 @@ final class NavigationViewItem: UIView {
     private(set) var configuration: NavigationViewItemConfiguration!
     var viewModel: NavigationViewItemViewModel!
     
-    init(onParent parent: UIView) {
+    init(onParent parent: UIView, with viewModel: HomeViewModel) {
         super.init(frame: parent.bounds)
         self.tag = parent.tag
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.viewModel = .init(tag: self.tag)
+        self.viewModel = .init(tag: self.tag, with: viewModel)
         self.configuration = .init(configurationWithItem: self)
     }
     

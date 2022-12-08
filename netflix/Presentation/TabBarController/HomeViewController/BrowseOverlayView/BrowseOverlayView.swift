@@ -18,9 +18,14 @@ final class BrowseOverlayView: UIView {
     
     init(on parent: UIView, with viewModel: HomeViewModel) {
         self.viewModel = BrowseOverlayViewModel(with: viewModel)
+        
         super.init(frame: parent.bounds)
+        
+        /// Updates root coordinator's navigation view property.
         viewModel.coordinator?.viewController?.browseOverlayView = self
+        
         parent.addSubview(self)
+        
         self.viewDidLoad()
     }
     

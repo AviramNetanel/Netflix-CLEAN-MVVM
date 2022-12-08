@@ -7,20 +7,7 @@
 
 import UIKit
 
-private protocol CellInput {
-    func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
-                         completion: (() -> Void)?)
-    func viewDidLoad(at indexPath: IndexPath,
-                     with viewModel: EpisodeCollectionViewCellViewModel)
-    func viewDidConfigure(at indexPath: IndexPath,
-                          with viewModel: EpisodeCollectionViewCellViewModel)
-}
-
-private protocol CellOutput {}
-
-private typealias Cell = CellInput & CellOutput
-
-final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
+final class EpisodeCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var timestampLabel: UILabel!
@@ -40,7 +27,7 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
         return view
     }
     
-    fileprivate func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
+    private func dataDidDownload(with viewModel: EpisodeCollectionViewCellViewModel,
                                      completion: (() -> Void)?) {
         AsyncImageFetcher.shared.load(
             url: viewModel.posterImageURL,
@@ -49,7 +36,7 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
             }
     }
     
-    fileprivate func viewDidLoad(at indexPath: IndexPath,
+    private func viewDidLoad(at indexPath: IndexPath,
                                  with viewModel: EpisodeCollectionViewCellViewModel) {
         dataDidDownload(with: viewModel) { [weak self] in
             self?.viewDidConfigure(at: indexPath, with: viewModel)
@@ -58,7 +45,7 @@ final class EpisodeCollectionViewCell: UICollectionViewCell, Cell {
         setupSubviews()
     }
     
-    fileprivate func viewDidConfigure(at indexPath: IndexPath,
+    private func viewDidConfigure(at indexPath: IndexPath,
                                       with viewModel: EpisodeCollectionViewCellViewModel) {
         guard let season = viewModel.season else { return }
         let episode = season.episodes[indexPath.row]

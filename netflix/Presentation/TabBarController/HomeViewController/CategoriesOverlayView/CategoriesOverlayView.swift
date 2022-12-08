@@ -41,14 +41,20 @@ final class CategoriesOverlayView: UIView {
     init(with viewModel: HomeViewModel) {
         self.tabBar = viewModel.coordinator!.viewController!.tabBarController!.tabBar
         self.viewModel = CategoriesOverlayViewViewModel(with: viewModel)
+        
         let parent = viewModel.coordinator!.viewController!.view!
         self.footerView = CategoriesOverlayViewFooterView(parent: parent, viewModel: self.viewModel)
+        
         super.init(frame: UIScreen.main.bounds)
-        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: self.tableView, with: self.viewModel)
-        viewModel.coordinator?.viewController?.categoriesOverlayView = self
         parent.addSubview(self)
         parent.addSubview(self.footerView)
         self.addSubview(self.tableView)
+        
+        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: self.tableView, with: self.viewModel)
+        
+        /// Updates root coordinator's navigation view property.
+        viewModel.coordinator?.viewController?.categoriesOverlayView = self
+        
         self.viewDidLoad()
     }
     

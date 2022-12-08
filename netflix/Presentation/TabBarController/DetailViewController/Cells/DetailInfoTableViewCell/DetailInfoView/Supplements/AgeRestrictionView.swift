@@ -8,7 +8,7 @@
 import UIKit
 
 final class AgeRestrictionView: UIView {
-    fileprivate lazy var label = createLabel()
+    private lazy var label = createLabel()
     
     init(on parent: UIView) {
         super.init(frame: parent.bounds)
@@ -19,7 +19,7 @@ final class AgeRestrictionView: UIView {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         layer.cornerRadius = 2.0
         backgroundColor = .hexColor("#535353")
     }

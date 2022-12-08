@@ -8,7 +8,7 @@
 import UIKit
 
 final class DetailCollectionTableViewCell: UITableViewCell {
-    fileprivate(set) var detailCollectionView: DetailCollectionView!
+    private(set) var detailCollectionView: DetailCollectionView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)
@@ -19,9 +19,11 @@ final class DetailCollectionTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    deinit { detailCollectionView = nil }
+    deinit {
+        detailCollectionView = nil
+    }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }

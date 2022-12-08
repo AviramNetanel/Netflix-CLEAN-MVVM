@@ -8,7 +8,7 @@
 import UIKit
 
 final class HDView: UIView {
-    fileprivate lazy var label = createLabel()
+    private lazy var label = createLabel()
     
     init(on parent: UIView) {
         super.init(frame: parent.bounds)
@@ -28,7 +28,7 @@ final class HDView: UIView {
         return label
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         layer.cornerRadius = 2.0
         backgroundColor = .hexColor("#414141")
     }

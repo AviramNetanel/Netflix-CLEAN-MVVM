@@ -19,14 +19,15 @@ final class BrowseOverlayViewModel {
     }
     
     private func shouldDisplayOrHide() {
-        guard !isPresented else {
-            coordinator.viewController?.navigationViewContainer.backgroundColor = .black
+        if isPresented {
+            coordinator.viewController!.navigationViewContainer.backgroundColor = .black
             
             coordinator.viewController?.browseOverlayViewContainer.isHidden(false)
             coordinator.viewController?.browseOverlayBottomConstraint.constant = .zero
             return
         }
-        coordinator.viewController?.navigationViewContainer.backgroundColor = .clear
+        
+        coordinator.viewController!.navigationViewContainer.backgroundColor = .clear
         
         coordinator.viewController?.browseOverlayViewContainer.isHidden(true)
         coordinator.viewController?.browseOverlayBottomConstraint.constant = coordinator.viewController!.browseOverlayViewContainer.bounds.size.height

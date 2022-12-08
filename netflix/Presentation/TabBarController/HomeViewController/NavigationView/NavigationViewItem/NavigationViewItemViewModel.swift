@@ -8,14 +8,14 @@
 import Foundation
 
 struct NavigationViewItemViewModel {
+    let coordinator: HomeViewCoordinator
     let tag: Int
     var title: String!
     var image: String!
-    var hasInteracted: Bool
     var isSelected: Bool
     
-    init(tag: Int) {
-        self.hasInteracted = false
+    init(tag: Int, with viewModel: HomeViewModel) {
+        self.coordinator = viewModel.coordinator!
         self.isSelected = false
         self.tag = tag
         self.title = title(for: tag)

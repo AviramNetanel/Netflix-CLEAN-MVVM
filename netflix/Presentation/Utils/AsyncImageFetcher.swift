@@ -9,7 +9,9 @@ import UIKit
 
 private protocol FetcherInput {
     init()
+    
     static func urlSession() -> URLSession
+    
     func set(_ image: UIImage, forKey identifier: NSString)
     func remove(for identifier: NSString)
     func object(for identifier: NSString) -> UIImage?

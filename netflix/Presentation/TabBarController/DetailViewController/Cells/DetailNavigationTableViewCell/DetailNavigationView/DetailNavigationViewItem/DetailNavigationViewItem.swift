@@ -7,21 +7,7 @@
 
 import UIKit
 
-@objc
-private protocol ConfigurationInput {
-    func viewDidRegisterRecognizers()
-    func viewDidConfigure()
-    func viewDidTap()
-}
-
-private protocol ConfigurationOutput {
-    var view: DetailNavigationViewItem! { get }
-    var navigationView: DetailNavigationView! { get }
-}
-
-private typealias Configuration = ConfigurationInput & ConfigurationOutput
-
-final class DetailNavigationViewItemConfiguration: Configuration {
+final class DetailNavigationViewItemConfiguration {
     fileprivate weak var view: DetailNavigationViewItem!
     fileprivate weak var navigationView: DetailNavigationView!
     
@@ -37,11 +23,11 @@ final class DetailNavigationViewItemConfiguration: Configuration {
         navigationView = nil
     }
     
-    fileprivate func viewDidRegisterRecognizers() {
+    private func viewDidRegisterRecognizers() {
         view.button.addTarget(self, action: #selector(viewDidTap), for: .touchUpInside)
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         if navigationView.viewModel.media.type == .series {
             navigationView.viewModel.navigationViewState.value = .episodes
             navigationView.leadingViewContainer.isHidden(false)
@@ -53,6 +39,7 @@ final class DetailNavigationViewItemConfiguration: Configuration {
         }
     }
     
+    @objc
     func viewDidTap() {
         view.isSelected.toggle()
         
@@ -61,14 +48,14 @@ final class DetailNavigationViewItemConfiguration: Configuration {
 }
 
 final class DetailNavigationViewItem: UIView {
-    fileprivate(set) var configuration: DetailNavigationViewItemConfiguration!
-    var viewModel: DetailNavigationViewItemViewModel!
+    private(set) var configuration: DetailNavigationViewItemConfiguration!
+    private var viewModel: DetailNavigationViewItemViewModel!
     
     private lazy var indicatorView = createIndicatorView()
     fileprivate lazy var button = createButton()
     
     var isSelected = false
-    var widthConstraint: NSLayoutConstraint!
+    private(set) var widthConstraint: NSLayoutConstraint!
     
     init(navigationView: DetailNavigationView, on parent: UIView, with viewModel: DetailViewModel) {
         super.init(frame: parent.bounds)
@@ -104,7 +91,7 @@ final class DetailNavigationViewItem: UIView {
         return view
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         widthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: bounds.width)
         chainConstraintToSuperview(linking: indicatorView, to: button, withWidthAnchor: widthConstraint)
     }

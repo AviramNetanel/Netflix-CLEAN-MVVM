@@ -9,9 +9,9 @@ import UIKit
 
 final class DetailCollectionView: UIView {
     private let viewModel: DetailViewModel
-    fileprivate lazy var collectionView = createCollectionView()
-    fileprivate var dataSource: DetailCollectionViewDataSource<Mediable>!
-    fileprivate var layout: CollectionViewLayout!
+    private lazy var collectionView = createCollectionView()
+    private var dataSource: DetailCollectionViewDataSource<Mediable>!
+    private var layout: CollectionViewLayout!
     
     init(on parent: UIView, with viewModel: DetailViewModel) {
         self.viewModel = viewModel
@@ -43,7 +43,7 @@ final class DetailCollectionView: UIView {
         return collectionView
     }
     
-    fileprivate func dataDidLoad() {
+    private func dataDidLoad() {
         if viewModel.navigationViewState.value == .episodes {
             let cellViewModel = EpisodeCollectionViewCellViewModel(with: viewModel)
             let requestDTO = SeasonRequestDTO.GET(slug: cellViewModel.media.slug, season: 1)
@@ -53,7 +53,7 @@ final class DetailCollectionView: UIView {
         }
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         dataDidLoad()
     }
     

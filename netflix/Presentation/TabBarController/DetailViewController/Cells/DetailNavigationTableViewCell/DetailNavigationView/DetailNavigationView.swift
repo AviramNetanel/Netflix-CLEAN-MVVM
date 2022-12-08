@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DetailNavigationView: UIView, View, ViewInstantiable {
+final class DetailNavigationView: UIView, ViewInstantiable {
     enum State: Int {
         case episodes
         case trailers
@@ -18,10 +18,10 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
     @IBOutlet private(set) weak var centerViewContainer: UIView!
     @IBOutlet private(set) weak var trailingViewContrainer: UIView!
     
-    var viewModel: DetailViewModel!
-    fileprivate(set) var leadingItem: DetailNavigationViewItem!
-    fileprivate(set) var centerItem: DetailNavigationViewItem!
-    fileprivate(set) var trailingItem: DetailNavigationViewItem!
+    let viewModel: DetailViewModel
+    private(set) var leadingItem: DetailNavigationViewItem!
+    private(set) var centerItem: DetailNavigationViewItem!
+    private(set) var trailingItem: DetailNavigationViewItem!
     
     init(on parent: UIView, with viewModel: DetailViewModel) {
         self.viewModel = viewModel
@@ -43,7 +43,7 @@ final class DetailNavigationView: UIView, View, ViewInstantiable {
         trailingItem = nil
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         backgroundColor = .black
         
         stateDidChange(view: viewModel.navigationViewState.value == .episodes ? leadingItem : centerItem)

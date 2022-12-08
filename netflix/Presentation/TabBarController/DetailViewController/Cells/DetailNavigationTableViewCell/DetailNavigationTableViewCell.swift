@@ -8,7 +8,7 @@
 import UIKit
 
 final class DetailNavigationTableViewCell: UITableViewCell {
-    fileprivate(set) var navigationView: DetailNavigationView!
+    private(set) var navigationView: DetailNavigationView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)
@@ -22,7 +22,7 @@ final class DetailNavigationTableViewCell: UITableViewCell {
         navigationView = nil
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .black
         selectionStyle = .none
     }
