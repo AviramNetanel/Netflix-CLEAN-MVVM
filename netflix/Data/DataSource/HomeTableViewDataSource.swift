@@ -69,6 +69,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
                     return homeViewController.view.bounds.height * 0.76
                 }
                 return homeViewController.view.bounds.height * 0.19
+                
             }, viewDidScroll: { scrollView in
                 guard
                     let homeViewController = viewModel.coordinator?.viewController,
@@ -86,10 +87,11 @@ final class HomeTableViewDataSource: NSObject, DataSource {
                     homeViewController.navigationView.alpha = 0.0
                     homeViewController.view.layoutIfNeeded()
                 }
+                
             }, didSelectItem: { section, row in
                 let section = viewModel.sections[section]
                 let media = section.media[row]
-                viewModel.actions?.presentMediaDetails(section, media)
+                viewModel.actions?.presentMediaDetails(section, media, false)
             })
         super.init()
         self.viewDidLoad()

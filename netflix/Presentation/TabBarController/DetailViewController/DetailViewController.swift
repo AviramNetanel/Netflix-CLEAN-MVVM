@@ -14,10 +14,14 @@ final class DetailViewController: UIViewController {
     var viewModel: DetailViewModel!
     private var previewView: PreviewView!
     private(set) var dataSource: DetailTableViewDataSource!
+    var isRotated: Bool! {
+        didSet { setupOrientation() }
+    }
     
     deinit {
-        DeviceOrientation.shared.orientation = .portrait
+        DeviceOrientation.shared.orientationLock = .portrait
         removeObservers()
+        isRotated = nil
         previewView = nil
         dataSource = nil
         viewModel = nil
@@ -25,13 +29,19 @@ final class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setupOrientation()
         setupSubviews()
         setupObservers()
     }
     
-    private func setupView() {
-        DeviceOrientation.shared.orientation = .all
+    private func setupOrientation() {
+        DeviceOrientation.shared.orientationLock = .all
+        
+        if isRotated {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DeviceOrientation.shared.orientation = .landscapeLeft
+            }
+        }
     }
     
     private func setupSubviews() {

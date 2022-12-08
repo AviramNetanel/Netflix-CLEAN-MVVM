@@ -106,9 +106,9 @@ final class PanelViewItemConfiguration: Configuration {
             let media = viewModel.presentedDisplayMedia.value!
             viewModel.myList?.viewModel.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
         case .info:
-            let section = viewModel.sectionAt(.display)
+            let section = viewModel.sectionAt(.resumable)
             let media = viewModel.presentedDisplayMedia.value!
-            viewModel.actions?.presentMediaDetails(section, media)
+            viewModel.actions?.presentMediaDetails(section, media, false)
         }
         
         view.setAlphaAnimation(using: view.gestureRecognizers!.first) {

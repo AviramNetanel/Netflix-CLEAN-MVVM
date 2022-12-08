@@ -9,7 +9,7 @@ import Foundation
 
 struct HomeViewModelActions {
     let navigationViewDidAppear: () -> Void
-    let presentMediaDetails: (Section, Media) -> Void
+    let presentMediaDetails: (Section, Media, Bool) -> Void
     let reloadList: () -> Void
 }
 

@@ -32,10 +32,15 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupOrientation()
         setupBehaviors()
         setupSubviews()
         setupObservers()
         viewModel.viewWillLoad()
+    }
+    
+    private func setupOrientation() {
+        DeviceOrientation.shared.orientationLock = .portrait
     }
     
     private func setupBehaviors() {
@@ -111,7 +116,7 @@ extension HomeViewController {
     func didSelectItem(at section: Int, of row: Int) {
         let section = viewModel.sections[section]
         let media = section.media[row]
-        viewModel.actions?.presentMediaDetails(section, media)
+        viewModel.actions?.presentMediaDetails(section, media, false)
     }
 }
 

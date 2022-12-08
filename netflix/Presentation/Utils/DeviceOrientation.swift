@@ -10,6 +10,8 @@ import UIKit.UIApplication
 final class DeviceOrientation {
     static let shared = DeviceOrientation()
     
+    var orientationLock: UIInterfaceOrientationMask = .all
+    
     var orientation: UIInterfaceOrientationMask = .portrait {
         didSet { set(orientation: orientation) }
     }
@@ -26,6 +28,7 @@ final class DeviceOrientation {
             windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
             return
         }
+        
         UIDevice.current.setValue(orientation.rawValue, forKey: orientationKey)
     }
 }

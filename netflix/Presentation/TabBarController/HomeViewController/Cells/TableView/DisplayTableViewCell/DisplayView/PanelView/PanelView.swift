@@ -43,9 +43,8 @@ final class PanelView: UIView, ViewInstantiable {
     fileprivate func playDidTap() {
         let section = viewModel.sectionAt(.display)
         let media = viewModel.presentedDisplayMedia.value!
-        viewModel.actions?.presentMediaDetails(section, media)
-        
-        DeviceOrientation.shared.orientation = .landscapeRight
+        let rotated = true
+        viewModel.actions?.presentMediaDetails(section, media, rotated)
     }
     
     func removeObservers() {

@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return DeviceOrientation.shared.orientation
+        return DeviceOrientation.shared.orientationLock
     }
 
     // MARK: UISceneSession Lifecycle
