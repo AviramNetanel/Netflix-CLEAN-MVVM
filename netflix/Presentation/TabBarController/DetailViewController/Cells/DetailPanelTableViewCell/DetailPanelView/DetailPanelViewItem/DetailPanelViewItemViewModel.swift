@@ -38,6 +38,10 @@ final class DetailPanelViewItemViewModel {
         self.observe(on: item)
     }
     
+    deinit {
+        media = nil
+    }
+    
     private func observe(on item: DetailPanelViewItem) {
         isSelected.observe(on: self) { _ in
             item.configuration?.viewDidConfigure()

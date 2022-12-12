@@ -8,18 +8,23 @@
 import Foundation
 
 final class DetailViewModel: ViewModel {
+    var coordinator: DetailViewCoordinator?
     let useCase: DetailUseCase
     let section: Section
-    let media: Media
+    var media: Media
+    let orientation = DeviceOrientation.shared
     
-    var coordinator: DetailViewCoordinator?
-    
-    fileprivate var task: Cancellable? { willSet { task?.cancel() } }
-    fileprivate(set) var homeDataSourceState: HomeTableViewDataSource.State!
-    fileprivate(set) var navigationViewState: Observable<DetailNavigationView.State>! = Observable(.episodes)
-    fileprivate(set) var season: Observable<Season?>! = Observable(nil)
-    fileprivate(set) var myList: MyList!
-    fileprivate(set) var myListSection: Section!
+    var isRotated: Bool? {
+        didSet { shouldScreenRotate() }
+    }
+    private(set) var homeDataSourceState: HomeTableViewDataSource.State!
+    private(set) var navigationViewState: Observable<DetailNavigationView.State>! = Observable(.episodes)
+    private(set) var season: Observable<Season?>! = Observable(nil)
+    private(set) var myList: MyList!
+    private(set) var myListSection: Section!
+    private var task: Cancellable? {
+        willSet { task?.cancel() }
+    }
     
     init(section: Section, media: Media, with viewModel: HomeViewModel) {
         let dataTransferService = Application.current.dataTransferService
@@ -34,6 +39,7 @@ final class DetailViewModel: ViewModel {
     }
     
     deinit {
+        isRotated = nil
         myList = nil
         myListSection = nil
         season.value = nil
@@ -43,6 +49,20 @@ final class DetailViewModel: ViewModel {
     }
     
     func transform(input: Void) {}
+    
+    private func shouldScreenRotate() {
+        orientation.setLock(orientation: .all)
+        
+        if isRotated ?? false {
+            asynchrony(dispatchingDelayInSeconds: 1) { [weak orientation] in
+                orientation?.set(orientation: .landscapeLeft)
+            }
+        }
+    }
+    
+    func resetOrientation() {
+        orientation.setLock(orientation: .portrait)
+    }
     
     func getSeason(with request: SeasonRequestDTO.GET, completion: @escaping () -> Void) {
         task = useCase.execute(for: SeasonResponse.self,

@@ -15,9 +15,9 @@ struct HomeViewModelActions {
 
 final class HomeViewModel: ViewModel {
     var coordinator: HomeViewCoordinator?
-    
     let useCase: HomeUseCase
     private(set) lazy var actions: HomeViewModelActions! = coordinator?.actions()
+    let orientation = DeviceOrientation.shared
     
     private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
     private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
@@ -47,11 +47,16 @@ final class HomeViewModel: ViewModel {
     }
     
     func transform(input: Void) {}
+    
+    private func setupOrientation() {
+        let orientation = DeviceOrientation.shared
+        orientation.setLock(orientation: .portrait)
+    }
 }
 
 extension HomeViewModel {
     func viewWillLoad() {
-        /// Invokes request for sections data.
+        setupOrientation()
         fetchSections()
     }
     

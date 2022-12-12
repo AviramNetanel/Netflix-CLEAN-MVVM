@@ -8,27 +8,34 @@
 import UIKit
 
 final class PreviewView: UIView {
-    fileprivate lazy var imageView = createImageView()
-    var viewModel: PreviewViewViewModel!
+    private var viewModel: PreviewViewViewModel!
+    private(set) var mediaPlayerView: MediaPlayerView!
+    private(set) lazy var imageView = createImageView()
     
     init(on parent: UIView, with viewModel: DetailViewModel) {
         self.viewModel = .init(with: viewModel.media)
         super.init(frame: .zero)
         parent.addSubview(self)
         self.constraintToSuperview(parent)
-        self.createMediaPlayer(on: parent, view: self, with: viewModel)
         self.viewDidConfigure()
+        self.mediaPlayerView = createMediaPlayer(on: parent, view: self, with: viewModel)
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
+    deinit {
+        mediaPlayerView = nil
+        viewModel = nil
+        mediaPlayerView = nil
+    }
+    
     private func createMediaPlayer(on parent: UIView,
                                    view: PreviewView,
-                                   with viewModel: DetailViewModel) {
-        let mediaPlayerView = MediaPlayerView.create(on: view, with: viewModel)
+                                   with viewModel: DetailViewModel) -> MediaPlayerView {
+        let mediaPlayerView = MediaPlayerView(on: view, with: viewModel)
         
-        mediaPlayerView.prepareToPlay = { isPlaying in
-            isPlaying ? view.imageView.isHidden(true) : view.imageView.isHidden(false)
+        mediaPlayerView.prepareToPlay = { [weak self] isPlaying in
+            isPlaying ? self?.imageView.isHidden(true) : self?.imageView.isHidden(false)
         }
         
         mediaPlayerView.delegate?.player(mediaPlayerView.mediaPlayer,
@@ -36,8 +43,9 @@ final class PreviewView: UIView {
         mediaPlayerView.delegate?.playerDidPlay(mediaPlayerView.mediaPlayer)
         
         parent.addSubview(mediaPlayerView)
-        
         mediaPlayerView.constraintToSuperview(parent)
+        
+        return mediaPlayerView
     }
     
     private func createImageView() -> UIImageView {
@@ -47,11 +55,11 @@ final class PreviewView: UIView {
         return imageView
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         AsyncImageFetcher.shared.load(
             url: viewModel.url,
             identifier: viewModel.identifier) { [weak self] image in
-                DispatchQueue.main.async { self?.imageView.image = image }
+                asynchrony { self?.imageView.image = image }
             }
     }
 }

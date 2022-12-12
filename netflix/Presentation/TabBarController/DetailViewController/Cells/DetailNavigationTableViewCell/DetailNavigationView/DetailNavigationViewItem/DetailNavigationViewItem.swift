@@ -8,8 +8,8 @@
 import UIKit
 
 final class DetailNavigationViewItemConfiguration {
-    fileprivate weak var view: DetailNavigationViewItem!
-    fileprivate weak var navigationView: DetailNavigationView!
+    private weak var view: DetailNavigationViewItem!
+    private weak var navigationView: DetailNavigationView!
     
     init(on view: DetailNavigationViewItem, with navigationView: DetailNavigationView) {
         self.view = view
@@ -48,8 +48,8 @@ final class DetailNavigationViewItemConfiguration {
 }
 
 final class DetailNavigationViewItem: UIView {
-    private(set) var configuration: DetailNavigationViewItemConfiguration!
-    private var viewModel: DetailNavigationViewItemViewModel!
+    var configuration: DetailNavigationViewItemConfiguration!
+    var viewModel: DetailNavigationViewItemViewModel!
     
     private lazy var indicatorView = createIndicatorView()
     fileprivate lazy var button = createButton()

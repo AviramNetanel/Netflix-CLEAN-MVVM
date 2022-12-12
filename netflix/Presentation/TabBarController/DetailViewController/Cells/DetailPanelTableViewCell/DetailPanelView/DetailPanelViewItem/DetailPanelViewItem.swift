@@ -37,16 +37,18 @@ final class DetailPanelViewItemConfiguration {
     
     private func selectIfNeeded() {
         guard let tag = Item(rawValue: view.tag) else { return }
+        guard let viewModel = view.viewModel else { return }
         if case .myList = tag {
-            view.viewModel.isSelected.value = myList.viewModel.contains(
-                view.viewModel.media,
+            viewModel.isSelected.value = myList.viewModel.contains(
+                viewModel.media,
                 in: section.media)
         }
     }
     
     func viewDidConfigure() {
-        view.imageView.image = UIImage(systemName: view.viewModel.systemImage)?.whiteRendering()
-        view.label.text = view.viewModel.title
+        guard let viewModel = view.viewModel else { return }
+        view.imageView.image = UIImage(systemName: viewModel.systemImage)?.whiteRendering()
+        view.label.text = viewModel.title
         
         selectIfNeeded()
     }
@@ -54,21 +56,21 @@ final class DetailPanelViewItemConfiguration {
     @objc
     func viewDidTap() {
         guard let tag = Item(rawValue: view.tag) else { return }
-        
+        guard let viewModel = view.viewModel else { return }
         switch tag {
         case .myList:
             if myList.viewModel.list.value.isEmpty {
                 myList.viewModel.createList()
             }
             
-            let media = view.viewModel.media!
-            myList.viewModel.shouldAddOrRemove(media, uponSelection: view.viewModel.isSelected.value)
+            let media = viewModel.media!
+            myList.viewModel.shouldAddOrRemove(media, uponSelection: viewModel.isSelected.value)
         case .rate: print("rate")
         case .share: print("share")
         }
         
-        view.setAlphaAnimation(using: view.gestureRecognizers!.first) { [weak self] in
-            self?.view.viewModel.isSelected.value.toggle()
+        view.setAlphaAnimation(using: view.gestureRecognizers!.first) {
+            viewModel.isSelected.value.toggle()
         }
     }
 }

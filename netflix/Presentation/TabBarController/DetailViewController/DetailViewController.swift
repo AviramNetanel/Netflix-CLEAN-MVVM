@@ -12,16 +12,12 @@ final class DetailViewController: UIViewController {
     @IBOutlet private(set) weak var previewContainer: UIView!
     
     var viewModel: DetailViewModel!
-    private var previewView: PreviewView!
+    private(set) var previewView: PreviewView!
     private(set) var dataSource: DetailTableViewDataSource!
-    var isRotated: Bool! {
-        didSet { setupOrientation() }
-    }
     
     deinit {
-        DeviceOrientation.shared.orientationLock = .portrait
+        viewModel.resetOrientation()
         removeObservers()
-        isRotated = nil
         previewView = nil
         dataSource = nil
         viewModel = nil
@@ -29,19 +25,8 @@ final class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupOrientation()
         setupSubviews()
         setupObservers()
-    }
-    
-    private func setupOrientation() {
-        DeviceOrientation.shared.orientationLock = .all
-        
-        if isRotated {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                DeviceOrientation.shared.orientation = .landscapeLeft
-            }
-        }
     }
     
     private func setupSubviews() {
@@ -68,12 +53,6 @@ final class DetailViewController: UIViewController {
             printIfDebug("Removed `DetailViewModel` observers.")
             viewModel.navigationViewState.remove(observer: self)
             viewModel.season.remove(observer: self)
-        }
-        if let panelView = dataSource.panelCell.panelView {
-            printIfDebug("Removed `DetailPanelViewItem` observers.")
-            panelView.leadingItem.viewModel.removeObservers()
-            panelView.centerItem.viewModel.removeObservers()
-            panelView.trailingItem.viewModel.removeObservers()
         }
     }
 }

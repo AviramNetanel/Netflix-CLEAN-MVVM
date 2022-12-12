@@ -21,6 +21,7 @@ private protocol DataSourceOutput {
     var viewModel: DetailViewModel { get }
     var actions: DetailTableViewDataSourceActions { get }
     var numberOfRows: Int { get }
+    var numberOfSections: Int { get }
 }
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
@@ -39,14 +40,15 @@ final class DetailTableViewDataSource: NSObject,
     
     fileprivate let viewModel: DetailViewModel
     fileprivate let actions: DetailTableViewDataSourceActions
-    fileprivate let tableView: UITableView
+    let tableView: UITableView
     fileprivate let numberOfRows: Int = 1
+    fileprivate let numberOfSections = Index.allCases.count
     
-    private var infoCell: DetailInfoTableViewCell!
-    private var descriptionCell: DetailDescriptionTableViewCell!
-    private(set) var panelCell: DetailPanelTableViewCell!
-    private(set) var navigationCell: DetailNavigationTableViewCell!
-    private(set) var collectionCell: DetailCollectionTableViewCell!
+    var infoCell: DetailInfoTableViewCell!
+    var descriptionCell: DetailDescriptionTableViewCell!
+    var panelCell: DetailPanelTableViewCell!
+    var navigationCell: DetailNavigationTableViewCell!
+    var collectionCell: DetailCollectionTableViewCell!
     
     init(on tableView: UITableView, actions: DetailTableViewDataSourceActions, with viewModel: DetailViewModel) {
         self.tableView = tableView
@@ -58,11 +60,17 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     deinit {
+        infoCell?.removeFromSuperview()
         infoCell = nil
+        descriptionCell?.removeFromSuperview()
         descriptionCell = nil
+        panelCell?.removeFromSuperview()
         panelCell = nil
+        navigationCell?.removeFromSuperview()
         navigationCell = nil
+        collectionCell?.removeFromSuperview()
         collectionCell = nil
+        tableView.removeFromSuperview()
     }
     
     fileprivate func viewsDidRegister() {
@@ -80,7 +88,7 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Index.allCases.count
+        return numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

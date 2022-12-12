@@ -15,4 +15,19 @@ final class DetailViewCoordinator: Coordinate {
     weak var viewController: DetailViewController?
     
     func showScreen(_ screen: Screen) {}
+    
+    func presentDetails(for media: Media) {
+        let navigation = viewController?.navigationController
+        let controller = DetailViewController()
+        let viewModel = viewController?.viewModel
+        
+        viewController?.previewView?.mediaPlayerView?.stopPlayer()
+        viewController = nil
+        
+        controller.viewModel = viewModel
+        controller.viewModel.media = media
+        viewController = controller
+        
+        navigation?.setViewControllers([controller], animated: true)
+    }
 }

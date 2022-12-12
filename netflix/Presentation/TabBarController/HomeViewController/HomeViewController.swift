@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-    
+    deinitialization
     @IBOutlet private(set) var tableView: UITableView!
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
@@ -17,10 +17,10 @@ final class HomeViewController: UIViewController {
     @IBOutlet private(set) var browseOverlayBottomConstraint: NSLayoutConstraint!
     
     var viewModel: HomeViewModel!
-    private(set) var dataSource: HomeTableViewDataSource!
     var navigationView: NavigationView!
     var categoriesOverlayView: CategoriesOverlayView!
     var browseOverlayView: BrowseOverlayView!
+    private(set) var dataSource: HomeTableViewDataSource!
     
     deinit {
         browseOverlayView = nil
@@ -32,15 +32,10 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupOrientation()
         setupBehaviors()
         setupSubviews()
         setupObservers()
         viewModel.viewWillLoad()
-    }
-    
-    private func setupOrientation() {
-        DeviceOrientation.shared.orientationLock = .portrait
     }
     
     private func setupBehaviors() {

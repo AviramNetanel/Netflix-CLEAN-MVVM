@@ -8,7 +8,7 @@
 import UIKit
 
 final class DetailPanelTableViewCell: UITableViewCell {
-    private(set) var panelView: DetailPanelView!
+    var panelView: DetailPanelView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailPanelTableViewCell.reuseIdentifier)

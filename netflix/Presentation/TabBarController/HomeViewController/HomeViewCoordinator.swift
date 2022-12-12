@@ -21,9 +21,13 @@ final class HomeViewCoordinator: Coordinate {
         let homeViewModel = viewController!.viewModel!
         let viewModel = DetailViewModel(section: section, media: media, with: homeViewModel)
         controller.viewModel = viewModel
-        controller.isRotated = rotated
+        controller.viewModel.coordinator = DetailViewCoordinator()
+        controller.viewModel.coordinator?.viewController = controller
+        controller.viewModel.isRotated = rotated
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.setNavigationBarHidden(true, animated: false)
         
-        viewController?.present(controller, animated: true)
+        viewController?.present(navigation, animated: true)
     }
     
     func actions() -> HomeViewModelActions {

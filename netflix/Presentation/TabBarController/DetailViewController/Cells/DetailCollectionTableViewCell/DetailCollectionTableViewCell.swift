@@ -8,7 +8,7 @@
 import UIKit
 
 final class DetailCollectionTableViewCell: UITableViewCell {
-    private(set) var detailCollectionView: DetailCollectionView!
+    var detailCollectionView: DetailCollectionView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailCollectionTableViewCell.reuseIdentifier)

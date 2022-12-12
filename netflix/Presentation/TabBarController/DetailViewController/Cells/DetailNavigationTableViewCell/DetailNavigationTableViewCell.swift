@@ -8,7 +8,7 @@
 import UIKit
 
 final class DetailNavigationTableViewCell: UITableViewCell {
-    private(set) var navigationView: DetailNavigationView!
+    var navigationView: DetailNavigationView!
     
     init(with viewModel: DetailViewModel) {
         super.init(style: .default, reuseIdentifier: DetailNavigationTableViewCell.reuseIdentifier)

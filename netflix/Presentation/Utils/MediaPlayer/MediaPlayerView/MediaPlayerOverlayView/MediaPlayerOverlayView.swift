@@ -143,16 +143,11 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
         case .airPlay:
             print(item.rawValue)
         case .rotate:
-            if DeviceOrientation.shared.orientation == .landscapeLeft {
-                DeviceOrientation.shared.orientation = .portrait
-                return
-            }
-            if DeviceOrientation.shared.orientation == .portrait {
-                DeviceOrientation.shared.orientation = .landscapeLeft
-            }
+            let orientation = DeviceOrientation.shared
+            orientation.rotate()
         case .backward:
-            if mediaPlayerView.mediaPlayer.player.currentItem?.currentTime() == .zero {
-                if let player = mediaPlayerView.mediaPlayer.player as AVPlayer?,
+            if mediaPlayerView?.mediaPlayer?.player.currentItem?.currentTime() == .zero {
+                if let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer?,
                    let duration = player.currentItem?.duration {
                     player.currentItem?.seek(to: duration, completionHandler: nil)
                 }
@@ -161,7 +156,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
             DispatchQueue.main.async { [weak self] in
                 guard
                     let self = self,
-                    let player = self.mediaPlayerView.mediaPlayer.player as AVPlayer?
+                    let player = self.mediaPlayerView?.mediaPlayer?.player as AVPlayer?
                 else { return }
                 player.seek(to: player.currentTime() - time)
                 let progress = Float(player.currentTime().seconds)
@@ -170,10 +165,10 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
                 self.overlayView.progressView.progress = progress
             }
         case .play:
-            let player = mediaPlayerView.mediaPlayer.player
+            guard let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer? else { return }
             player.timeControlStatus == .playing ? player.pause() : player.play()
         case .forward:
-            let player = mediaPlayerView.mediaPlayer.player
+            guard let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer? else { return }
             if player.currentItem?.currentTime() == player.currentItem?.duration {
                 player.currentItem?.seek(to: .zero, completionHandler: nil)
             }
@@ -182,7 +177,7 @@ final class MediaPlayerOverlayViewConfiguration: Configuration {
             let progress = Float(player.currentTime().seconds)
                 / Float(player.currentItem?.duration.seconds ?? .zero) + 10.0
                 / Float(player.currentItem?.duration.seconds ?? .zero)
-            self.overlayView.progressView.progress = progress
+            self.overlayView?.progressView?.progress = progress
         case .mute:
             print(item.rawValue)
         }
@@ -371,7 +366,7 @@ final class MediaPlayerOverlayView: UIView, ViewInstantiable {
     
     @objc
     func valueDidChange(for slider: UISlider) {
-        let player = mediaPlayerView.mediaPlayer.player
+        guard let player = mediaPlayerView?.mediaPlayer?.player as AVPlayer? else { return }
         let newTime = CMTime(seconds: Double(slider.value), preferredTimescale: 600)
         player.seek(to: newTime, toleranceBefore: .zero, toleranceAfter: .zero)
         progressView.setProgress(progressView.progress + Float(newTime.seconds), animated: true)

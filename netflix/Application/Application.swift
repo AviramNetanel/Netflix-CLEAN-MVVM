@@ -14,12 +14,7 @@ final class Application {
     let configuration = AppConfiguration()
     let authService = AuthService()
     
-    private(set) lazy var dataTransferService: DataTransferService = {
-        let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
-        let config = NetworkConfig(baseURL: url)
-        let networkService = NetworkService(config: config)
-        return DataTransferService(with: networkService)
-    }()
+    private(set) lazy var dataTransferService: DataTransferService = createDataTransferService()
     private(set) lazy var authResponseCache: AuthResponseStorage = AuthResponseStorage(authService: authService)
     private(set) lazy var mediaResponseCache: MediaResponseStorage = MediaResponseStorage()
     
@@ -33,5 +28,12 @@ final class Application {
             return
         }
         coordinator.showScreen(.auth)
+    }
+    
+    private func createDataTransferService() -> DataTransferService {
+        let url = URL(string: configuration.apiScheme + "://" + configuration.apiHost)!
+        let config = NetworkConfig(baseURL: url)
+        let networkService = NetworkService(config: config)
+        return DataTransferService(with: networkService)
     }
 }

@@ -27,7 +27,24 @@ final class DetailPanelView: UIView, ViewInstantiable {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidConfigure() {
+    deinit {
+        removeObservers()
+        leadingItem.viewModel = nil
+        centerItem.viewModel = nil
+        trailingItem.viewModel = nil
+        leadingItem = nil
+        centerItem = nil
+        trailingItem = nil
+    }
+    
+    private func viewDidConfigure() {
         backgroundColor = .black
+    }
+    
+    private func removeObservers() {
+        printIfDebug("Removed `DetailPanelView` observers.")
+        leadingItem?.viewModel?.removeObservers()
+        centerItem?.viewModel?.removeObservers()
+        trailingItem?.viewModel?.removeObservers()
     }
 }

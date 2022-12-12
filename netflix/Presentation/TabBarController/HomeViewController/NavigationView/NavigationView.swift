@@ -84,13 +84,13 @@ final class NavigationView: UIView, ViewInstantiable {
     }
     
     private func setupGradientView() {
+        let rect = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: bounds.height)
         gradientView.addGradientLayer(
-            frame: gradientView.bounds,
-            colors:
-                [.black.withAlphaComponent(0.8),
-                 .black.withAlphaComponent(0.6),
-                 .clear],
-            locations: [0.0, 0.5, 1.0])
+            frame: rect,
+            colors: [.black.withAlphaComponent(0.9),
+                     .black.withAlphaComponent(0.7),
+                     .clear],
+            locations: [0.0, 0.3, 1.0])
     }
     
     fileprivate func viewDidLoad() {
