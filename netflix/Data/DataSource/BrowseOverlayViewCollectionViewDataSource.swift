@@ -10,10 +10,12 @@ import UIKit.UICollectionView
 final class BrowseOverlayViewCollectionViewDataSource: NSObject,
                                                        UICollectionViewDelegate,
                                                        UICollectionViewDataSource {
+    private let coordinator: HomeViewCoordinator
     private let section: Section
     private let items: [Media]
     
     init(section: Section, with viewModel: HomeViewModel) {
+        self.coordinator = viewModel.coordinator!
         self.section = section
         self.items = section.media
     }
@@ -28,5 +30,10 @@ final class BrowseOverlayViewCollectionViewDataSource: NSObject,
             reuseIdentifier: StandardCollectionViewCell.reuseIdentifier,
             section: section,
             for: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let media = items[indexPath.row]
+        coordinator.presentMediaDetails(in: section, for: media, shouldScreenRoatate: false)
     }
 }
