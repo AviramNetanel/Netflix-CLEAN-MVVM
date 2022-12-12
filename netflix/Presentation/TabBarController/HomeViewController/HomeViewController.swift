@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-    deinitialization
+    
     @IBOutlet private(set) var tableView: UITableView!
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
