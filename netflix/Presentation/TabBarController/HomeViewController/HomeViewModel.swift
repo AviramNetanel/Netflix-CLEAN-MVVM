@@ -19,15 +19,18 @@ final class HomeViewModel: ViewModel {
     private(set) lazy var actions: HomeViewModelActions! = coordinator?.actions()
     let orientation = DeviceOrientation.shared
     
-    private var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
-    private var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
+    var sectionsTask: Cancellable? { willSet { sectionsTask?.cancel() } }
+    var mediaTask: Cancellable? { willSet { mediaTask?.cancel() } }
     
     private(set) var sections: [Section] = []
     private(set) var media: [Media] = []
-    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+//    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+    
+    var tableViewState: HomeTableViewDataSource.State!
+    
     private(set) var presentedDisplayMedia: Observable<Media?> = Observable(nil)
     private var isEmpty: Bool { sections.isEmpty }
-    private(set) var myList: MyList!
+    var myList: MyList!
     private var displayMediaCache: [HomeTableViewDataSource.State: Media] = [:]
     
     init() {
@@ -41,6 +44,8 @@ final class HomeViewModel: ViewModel {
     }
     
     deinit {
+        print("HomeViewModel")
+        tableViewState = nil
         myList = nil
         mediaTask = nil
         sectionsTask = nil
@@ -64,7 +69,9 @@ extension HomeViewModel {
         /// Invokes navigation bar presentation.
         actions?.navigationViewDidAppear()
         /// Invokes tableview presentation.
-        tableViewState.value = .all
+//        let tabBar = Application.current.coordinator.viewController as? TabBarController
+//        print(0, tabBar?.viewModel.coordinator?.tableViewState.value)
+        Application.current.coordinator.coordinator.tableViewState.value = tableViewState
         /// Creates an instance of `MyList`.
         myList = MyList(with: self)
     }
@@ -102,13 +109,15 @@ extension HomeViewModel {
         
         if section.id == 6 {
             var media = myList.viewModel.list.value
-            switch tableViewState.value {
+            switch tableViewState {
             case .all:
                 break
             case .series:
                 media = media.filter { $0.type == .series }
             case .films:
                 media = media.filter { $0.type == .film }
+            default:
+                break
             }
             sections[section.id].media = media.toArray()
         }
@@ -121,7 +130,7 @@ extension HomeViewModel {
             switch index {
             case .ratable:
                 var media = media
-                switch tableViewState.value {
+                switch tableViewState {
                 case .all:
                     media = media
                         .sorted { $0.rating > $1.rating }
@@ -139,11 +148,13 @@ extension HomeViewModel {
                         .sorted { $0.rating > $1.rating }
                         .filter { $0.rating > 7.5 }
                         .slice(10)
+                default:
+                    break
                 }
                 sections[index.rawValue].media = media
             case .resumable:
                 var media = media
-                switch tableViewState.value {
+                switch tableViewState {
                 case .all:
                     media = media.shuffled()
                 case .series:
@@ -154,18 +165,22 @@ extension HomeViewModel {
                     media = media
                         .shuffled()
                         .filter { $0.type == .film }
+                default:
+                    break
                 }
                 sections[index.rawValue].media = media
             case .myList:
                 guard let myList = myList else { return }
                 var media = myList.viewModel.list.value
-                switch tableViewState.value {
+                switch tableViewState {
                 case .all:
                     break
                 case .series:
                     media = media.filter { $0.type == .series }
                 case .films:
                     media = media.filter { $0.type == .film }
+                default:
+                    break
                 }
                 sections[index.rawValue].media = media.toArray()
             case .action, .sciFi,
@@ -174,7 +189,7 @@ extension HomeViewModel {
                     .drama, .horror,
                     .anime, .familyNchildren,
                     .documentary:
-                switch tableViewState.value {
+                switch tableViewState {
                 case .all:
                     sections[index.rawValue].media = media
                         .shuffled()
@@ -189,10 +204,12 @@ extension HomeViewModel {
                         .shuffled()
                         .filter { $0.type == .film }
                         .filter { $0.genres.contains(sections[index.rawValue].title) }
+                default:
+                    break
                 }
             case .blockbuster:
                 let value = Float(7.5)
-                switch tableViewState.value {
+                switch tableViewState {
                 case .all:
                     sections[index.rawValue].media = media
                         .filter { $0.rating > value }
@@ -204,6 +221,8 @@ extension HomeViewModel {
                     sections[index.rawValue].media = media
                         .filter { $0.type == .film }
                         .filter { $0.rating > value }
+                default:
+                    break
                 }
             default: break
             }
@@ -232,6 +251,6 @@ extension HomeViewModel {
     }
     
     func presentedDisplayMediaDidChange() {
-        presentedDisplayMedia.value = generateMedia(for: tableViewState.value)
+        presentedDisplayMedia.value = generateMedia(for: tableViewState)
     }
 }

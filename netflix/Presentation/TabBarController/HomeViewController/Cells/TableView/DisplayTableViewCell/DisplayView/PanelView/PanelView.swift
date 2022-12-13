@@ -12,9 +12,9 @@ final class PanelView: UIView, ViewInstantiable {
     @IBOutlet private(set) weak var leadingItemViewContainer: UIView!
     @IBOutlet private(set) weak var trailingItemViewContainer: UIView!
     
-    private var viewModel: DisplayTableViewCellViewModel!
-    fileprivate(set) var leadingItemView: PanelViewItem!
-    fileprivate(set) var trailingItemView: PanelViewItem!
+    var viewModel: DisplayTableViewCellViewModel!
+    var leadingItemView: PanelViewItem!
+    var trailingItemView: PanelViewItem!
     
     init(on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
         self.viewModel = viewModel
@@ -30,8 +30,13 @@ final class PanelView: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
+        print("PanelView")
+        removeObservers()
+        leadingItemView?.viewModel = nil
+        trailingItemView?.viewModel = nil
         leadingItemView = nil
         trailingItemView = nil
+        viewModel = nil
     }
     
     fileprivate func viewDidConfigure() {
@@ -49,7 +54,7 @@ final class PanelView: UIView, ViewInstantiable {
     
     func removeObservers() {
         printIfDebug("Removed `PanelView` observers.")
-        leadingItemView.viewModel.removeObservers()
-        trailingItemView.viewModel.removeObservers()
+        leadingItemView?.viewModel?.removeObservers()
+        trailingItemView?.viewModel.removeObservers()
     }
 }

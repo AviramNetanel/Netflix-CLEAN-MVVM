@@ -16,9 +16,9 @@ final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
         case rating
     }
     
-    fileprivate lazy var collectionView = createCollectionView()
-    fileprivate(set) var dataSource: HomeCollectionViewDataSource<T>!
-    fileprivate var layout: CollectionViewLayout!
+    lazy var collectionView = createCollectionView()
+    var dataSource: HomeCollectionViewDataSource<T>!
+    var layout: CollectionViewLayout!
     
     init(with viewModel: HomeViewModel,
          for indexPath: IndexPath,
@@ -36,8 +36,13 @@ final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
     }
     
     deinit {
+        print("TableViewCell")
+//        collectionView.delegate = nil
+//        collectionView.dataSource = nil
+//        collectionView.removeFromSuperview()
         layout = nil
         dataSource = nil
+//        removeFromSuperview()
     }
     
     required init?(coder: NSCoder) { fatalError() }

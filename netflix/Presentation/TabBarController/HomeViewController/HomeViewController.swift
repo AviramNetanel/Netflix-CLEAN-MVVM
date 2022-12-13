@@ -10,7 +10,7 @@ import UIKit
 final class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
-    @IBOutlet private(set) var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private(set) var browseOverlayViewContainer: UIView!
@@ -20,7 +20,7 @@ final class HomeViewController: UIViewController {
     var navigationView: NavigationView!
     var categoriesOverlayView: CategoriesOverlayView!
     var browseOverlayView: BrowseOverlayView!
-    private(set) var dataSource: HomeTableViewDataSource!
+    var dataSource: HomeTableViewDataSource!
     
     deinit {
         browseOverlayView = nil
@@ -55,14 +55,18 @@ final class HomeViewController: UIViewController {
         presentedDisplayMedia(in: viewModel)
     }
     
-    private func setupDataSource() {
+    func removeCoordinator() {
+        viewModel?.coordinator = nil
+    }
+    
+    func setupDataSource() {
         /// Filters the sections based on the data source state.
         viewModel.filter(sections: viewModel.sections)
         /// Initializes the data source.
         dataSource = HomeTableViewDataSource(tableView: tableView, viewModel: viewModel)
     }
     
-    private func setupNavigationView() {
+    func setupNavigationView() {
         navigationView = NavigationView(on: navigationViewContainer, with: viewModel)
     }
     
@@ -78,7 +82,7 @@ final class HomeViewController: UIViewController {
     func removeObservers() {
         if let viewModel = viewModel {
             printIfDebug("Removed `HomeViewModel` observers.")
-            viewModel.tableViewState.remove(observer: self)
+            Application.current.coordinator.coordinator.tableViewState.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
     }
@@ -117,7 +121,10 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func tableViewState(in viewModel: HomeViewModel) {
-        viewModel.tableViewState.observe(on: self) { [weak self] _ in
+        let tabBar = Application.current.coordinator.viewController as? TabBarController
+        tabBar?.viewModel.coordinator?.tableViewState.observe(on: self) { [weak self] state in
+            guard let state = state as HomeTableViewDataSource.State? else { return }
+            print("Setupingg", viewModel.tableViewState, tabBar?.viewModel.coordinator?.tableViewState)
             self?.setupDataSource()
         }
     }

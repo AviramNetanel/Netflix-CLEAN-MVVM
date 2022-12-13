@@ -26,6 +26,10 @@ final class NavigationViewViewModel {
         self.items = items
     }
     
+    deinit {
+        print("NavigationViewViewModel")
+    }
+    
     func stateDidChange(_ state: NavigationView.State) {
         let navigationView = coordinator.viewController!.navigationView!
         

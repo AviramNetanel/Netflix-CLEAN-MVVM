@@ -14,9 +14,14 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var logoBottomConstraint: NSLayoutConstraint!
     
     var viewModel: CollectionViewCellViewModel!
-    fileprivate var representedIdentifier: NSString?
+    var representedIdentifier: NSString?
     
-    deinit { representedIdentifier = nil }
+    deinit {
+        print("CollectionViewCell")
+        representedIdentifier = nil
+        viewModel = nil
+//        removeFromSuperview()
+    }
     
     static func create(on collectionView: UICollectionView,
                        reuseIdentifier: String,
@@ -33,6 +38,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+//        viewModel = nil
         coverImageView.image = nil
         logoImageView.image = nil
         placeholderLabel.text = nil

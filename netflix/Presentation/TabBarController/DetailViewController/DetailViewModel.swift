@@ -33,7 +33,7 @@ final class DetailViewModel: ViewModel {
         self.useCase = useCase
         self.section = section
         self.media = media
-        self.homeDataSourceState = viewModel.tableViewState.value
+        self.homeDataSourceState = viewModel.tableViewState
         self.myList = viewModel.myList
         self.myListSection = viewModel.myList.viewModel.section
     }

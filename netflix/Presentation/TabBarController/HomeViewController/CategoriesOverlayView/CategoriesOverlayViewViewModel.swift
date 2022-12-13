@@ -90,8 +90,8 @@ final class CategoriesOverlayViewViewModel {
             browseOverlay.viewModel.isPresented = false
             browseOverlay.dataSource = nil
             
-            if homeViewModel.tableViewState.value != .all {
-                homeViewModel.tableViewState.value = .all
+            if homeViewModel.tableViewState != .all {
+                homeViewModel.tableViewState = .all
             }
         case .tvShows:
             defer {
@@ -109,7 +109,7 @@ final class CategoriesOverlayViewViewModel {
             isPresented.value = false
             browseOverlay.viewModel.isPresented = false
             
-            homeViewModel.tableViewState.value = .series
+            homeViewModel.tableViewState = .series
         case .movies:
             defer {
                 navigationView.homeItemView.viewModel.isSelected = false
@@ -126,7 +126,7 @@ final class CategoriesOverlayViewViewModel {
             isPresented.value = false
             browseOverlay.viewModel.isPresented = false
             
-            homeViewModel.tableViewState.value = .films
+            homeViewModel.tableViewState = .films
         case .categories:
             self.state = .categories
             

@@ -18,7 +18,7 @@ private protocol ConfigurationOutput {
 private typealias Configuration = ConfigurationInput & ConfigurationOutput
 
 struct DisplayViewConfiguration: Configuration {
-    fileprivate weak var view: DisplayView!
+    weak var view: DisplayView!
     
     init(view: DisplayView, viewModel: DisplayViewViewModel) {
         self.view = view
@@ -26,23 +26,23 @@ struct DisplayViewConfiguration: Configuration {
     }
     
     func viewDidConfigure(with viewModel: DisplayViewViewModel) {
-        view.posterImageView.image = nil
-        view.logoImageView.image = nil
-        view.genresLabel.attributedText = nil
+        view?.posterImageView.image = nil
+        view?.logoImageView.image = nil
+        view?.genresLabel.attributedText = nil
         
         AsyncImageFetcher.shared.load(
             url: viewModel.posterImageURL,
             identifier: viewModel.posterImageIdentifier) { image in
-                DispatchQueue.main.async { view.posterImageView.image = image }
+                DispatchQueue.main.async { view?.posterImageView.image = image }
             }
         
         AsyncImageFetcher.shared.load(
             url: viewModel.logoImageURL,
             identifier: viewModel.logoImageIdentifier) { image in
-                DispatchQueue.main.async { view.logoImageView.image = image }
+                DispatchQueue.main.async { view?.logoImageView.image = image }
             }
         
-        view.genresLabel.attributedText = viewModel.attributedGenres
+        view?.genresLabel.attributedText = viewModel.attributedGenres
     }
 }
 
@@ -54,9 +54,9 @@ final class DisplayView: UIView, ViewInstantiable {
     @IBOutlet private weak var typeImageView: UIImageView!
     @IBOutlet private(set) weak var panelViewContainer: UIView!
     
-    private var viewModel: DisplayViewViewModel!
-    fileprivate(set) var configuration: DisplayViewConfiguration!
-    fileprivate(set) var panelView: PanelView!
+    var viewModel: DisplayViewViewModel!
+    var configuration: DisplayViewConfiguration!
+    var panelView: PanelView!
     
     init(with viewModel: DisplayTableViewCellViewModel) {
         super.init(frame: .zero)
@@ -69,6 +69,7 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     deinit {
+        print("DisplayView")
         panelView = nil
         configuration = nil
         viewModel = nil

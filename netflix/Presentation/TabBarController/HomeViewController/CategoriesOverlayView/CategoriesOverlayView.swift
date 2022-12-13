@@ -60,6 +60,12 @@ final class CategoriesOverlayView: UIView {
     
     required init?(coder: NSCoder) { fatalError() }
     
+    deinit {
+        print("CategoriesOverlayView")
+        removeObservers()
+        dataSource = nil
+    }
+    
     private func viewDidLoad() {
         setupObservers()
         setupSubviews()

@@ -14,7 +14,7 @@ private protocol DataSourceOutput {
     var items: [T] { get }
     var collectionView: UICollectionView { get }
     var numberOfSections: Int { get }
-    var cache: NSCache<NSString, UIImage> { get }
+//    var cache: NSCache<NSString, UIImage> { get }
 }
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
@@ -27,7 +27,7 @@ final class DetailCollectionViewDataSource<T>: NSObject,
     fileprivate let numberOfSections = 1
     fileprivate let collectionView: UICollectionView
     let items: [T]
-    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
+//    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     
     init(collectionView: UICollectionView, items: [T], with viewModel: DetailViewModel) {
         self.viewModel = viewModel

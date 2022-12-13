@@ -13,28 +13,49 @@ final class TabBarCoordinator: Coordinate {
     }
     
     weak var viewController: TabBarController?
+    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
     
-    func showScreen(_ screen: Screen) {
+    func showScreen(_ screen: Screen, _ state: NavigationView.State? = nil) {
         switch screen {
         case .home:
-            let home = homeNavigation()
+            let home = homeNavigation(state)
             viewController?.viewControllers = [home]
         }
     }
     
-    func requestUserCredentials() {
-        let viewModel = AuthViewModel()
-        viewModel.cachedAuthorizationSession { [weak self] in self?.showScreen(.home) }
+    func showScreen(_ screen: Screen) {
+        switch screen {
+        case .home:
+            let home = homeNavigation(.home)
+            viewController?.viewControllers = [home]
+        }
     }
     
-    private func homeNavigation() -> UINavigationController {
+    func requestUserCredentials(_ state: NavigationView.State?) {
+        let viewModel = AuthViewModel()
+        viewModel.cachedAuthorizationSession { [weak self] in self?.showScreen(.home, state) }
+    }
+    
+    private func homeNavigation(_ state: NavigationView.State?) -> UINavigationController {
         let coordinator = HomeViewCoordinator()
         let viewModel = HomeViewModel()
         let controller = HomeViewController()
         
+        if state == .tvShows {
+            tableViewState.value = .series
+        } else if state == .movies {
+            tableViewState.value = .films
+        } else if state == .home {
+            tableViewState.value = .all
+        } else {}
+        
+        viewModel.tableViewState = tableViewState.value
         controller.viewModel = viewModel
+        controller.viewModel.tableViewState = tableViewState.value
         controller.viewModel.coordinator = coordinator
+        controller.viewModel.coordinator?.viewController = controller
         coordinator.viewController = controller
+        coordinator.viewController?.viewModel = viewModel
         
         let navigationController = UINavigationController(rootViewController: controller)
         setupNavigation(navigationController)

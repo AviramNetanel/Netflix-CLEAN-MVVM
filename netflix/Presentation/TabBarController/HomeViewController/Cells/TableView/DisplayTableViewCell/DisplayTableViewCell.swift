@@ -8,7 +8,7 @@
 import UIKit
 
 final class DisplayTableViewCell: UITableViewCell {
-    let displayView: DisplayView
+    var displayView: DisplayView!
     
     init(for indexPath: IndexPath, with viewModel: HomeViewModel) {
         let viewModel = DisplayTableViewCellViewModel(with: viewModel)
@@ -20,4 +20,10 @@ final class DisplayTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) { fatalError() }
+    
+    deinit {
+        print("DisplayTableViewCell")
+//        displayView?.removeFromSuperview()
+        displayView = nil
+    }
 }

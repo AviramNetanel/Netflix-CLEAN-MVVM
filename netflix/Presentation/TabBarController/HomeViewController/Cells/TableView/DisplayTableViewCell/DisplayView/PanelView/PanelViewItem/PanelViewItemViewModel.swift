@@ -10,7 +10,7 @@ import Foundation
 final class PanelViewItemViewModel {
     let tag: Int
     let isSelected: Observable<Bool>
-    let media: Media!
+    var media: Media!
     
     var systemImage: String {
         let leading = isSelected.value ? "checkmark" : "plus"
@@ -29,6 +29,12 @@ final class PanelViewItemViewModel {
         self.isSelected = .init(item.isSelected)
         self.media = media
         self.bind(on: item)
+    }
+    
+    deinit {
+        print("PanelViewItemViewModel")
+        removeObservers()
+        media = nil
     }
     
     fileprivate func bind(on item: PanelViewItem) {

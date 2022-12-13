@@ -68,18 +68,20 @@ final class NavigationView: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        homeItemView = nil
-        airPlayItemView = nil
-        accountItemView = nil
-        tvShowsItemView = nil
-        moviesItemView = nil
-        categoriesItemView = nil
-        viewModel = nil
+        print("NavigationView")
+//        removeObservers()
+//        homeItemView = nil
+//        airPlayItemView = nil
+//        accountItemView = nil
+//        tvShowsItemView = nil
+//        moviesItemView = nil
+//        categoriesItemView = nil
+//        viewModel = nil
     }
     
     private func setupObservers() {
         viewModel.state.observe(on: self) { [weak self] state in
-            self?.viewModel.actions.stateDidChange(state)
+            self?.viewModel?.actions.stateDidChange(state)
         }
     }
     

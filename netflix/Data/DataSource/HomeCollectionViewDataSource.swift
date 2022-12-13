@@ -20,7 +20,7 @@ private protocol DataSourceOutput {
     var collectionView: UICollectionView! { get }
     var actions: HomeCollectionViewDataSourceActions? { get }
     var section: Section { get }
-    var cache: NSCache<NSString, UIImage> { get }
+//    var cache: NSCache<NSString, UIImage> { get }
 }
 
 private typealias DataSource = DataSourceInput & DataSourceOutput
@@ -30,11 +30,12 @@ final class HomeCollectionViewDataSource<Cell>: NSObject,
                                                 UICollectionViewDelegate,
                                                 UICollectionViewDataSource,
                                                 UICollectionViewDataSourcePrefetching where Cell: UICollectionViewCell {
-    fileprivate weak var collectionView: UICollectionView!
-    fileprivate var actions: HomeCollectionViewDataSourceActions?
+    weak var collectionView: UICollectionView!
+    var actions: HomeCollectionViewDataSourceActions?
     fileprivate var section: Section
-    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
+//    fileprivate var cache: NSCache<NSString, UIImage> { AsyncImageFetcher.shared.cache }
     fileprivate let homeViewModel: HomeViewModel
+//    var cell: CollectionViewCell!
     
     init(on collectionView: UICollectionView,
          section: Section,
@@ -49,6 +50,14 @@ final class HomeCollectionViewDataSource<Cell>: NSObject,
     }
     
     deinit {
+        print("HomeCollectionViewDataSource")
+//        cell?.representedIdentifier = nil
+//        cell?.viewModel = nil
+//        cell?.removeFromSuperview()
+//        cell = nil
+//        collectionView?.delegate = nil
+//        collectionView?.dataSource = nil
+//        collectionView?.removeFromSuperview()
         collectionView = nil
         actions = nil
     }

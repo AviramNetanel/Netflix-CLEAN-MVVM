@@ -37,11 +37,11 @@ final class PanelViewItemConfiguration: Configuration {
         case info
     }
     
-    fileprivate weak var view: PanelViewItem?
+    weak var view: PanelViewItem?
     fileprivate var viewModel: DisplayTableViewCellViewModel
     fileprivate var gestureRecognizers: [GestureGecognizer]
-    fileprivate var tapRecognizer: UITapGestureRecognizer!
-    fileprivate var longPressRecognizer: UILongPressGestureRecognizer!
+    var tapRecognizer: UITapGestureRecognizer!
+    var longPressRecognizer: UILongPressGestureRecognizer!
     
     init(view: PanelViewItem,
          gestureRecognizers: [GestureGecognizer],
@@ -54,6 +54,7 @@ final class PanelViewItemConfiguration: Configuration {
     }
     
     deinit {
+        print("PanelViewItemConfiguration")
         view = nil
         tapRecognizer = nil
         longPressRecognizer = nil
@@ -85,8 +86,10 @@ final class PanelViewItemConfiguration: Configuration {
     
     func viewDidConfigure() {
         guard let view = view else { return }
-        view.imageView.image = .init(systemName: view.viewModel.systemImage)
-        view.titleLabel.text = view.viewModel.title
+        guard let viewModel = view.viewModel else { return }
+        view.imageView.image = .init(systemName: viewModel.systemImage)
+        view.titleLabel.text = viewModel.title
+        
         
         selectIfNeeded()
     }
@@ -124,8 +127,8 @@ final class PanelViewItem: UIView, ViewInstantiable {
     @IBOutlet private(set) weak var titleLabel: UILabel!
     @IBOutlet private(set) weak var imageView: UIImageView!
     
-    fileprivate(set) var configuration: PanelViewItemConfiguration!
-    private(set) var viewModel: PanelViewItemViewModel!
+    var configuration: PanelViewItemConfiguration!
+    var viewModel: PanelViewItemViewModel!
     fileprivate(set) var isSelected = false
     
     init(on parent: UIView, with viewModel: DisplayTableViewCellViewModel) {
@@ -141,7 +144,13 @@ final class PanelViewItem: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
+        print("PanelViewItem")
+        viewModel?.removeObservers()
+        configuration?.tapRecognizer = nil
+        configuration?.longPressRecognizer = nil
+        configuration?.view = nil
         configuration = nil
+        viewModel?.media = nil
         viewModel = nil
     }
 }

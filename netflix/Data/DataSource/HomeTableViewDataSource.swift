@@ -52,12 +52,12 @@ final class HomeTableViewDataSource: NSObject, DataSource {
         case films
     }
     
-    private weak var tableView: UITableView!
+    weak var tableView: UITableView!
     private let viewModel: HomeViewModel
-    private var actions: HomeTableViewDataSourceActions!
+    var actions: HomeTableViewDataSourceActions!
     
     fileprivate let numberOfRows = 1
-    private(set) var displayCell: DisplayTableViewCell!
+    var displayCell: DisplayTableViewCell!
     
     init(tableView: UITableView, viewModel: HomeViewModel) {
         self.tableView = tableView
@@ -98,7 +98,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
     
     deinit {
-        displayCell = nil
+        print("TableViewDS deinit")
     }
     
     fileprivate func viewDidLoad() {
@@ -114,7 +114,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
         tableView.register(class: StandardTableViewCell.self)
     }
     
-    fileprivate func dataSourceDidChange() {
+    func dataSourceDidChange() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -139,6 +139,7 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
             })
         
         if case .display = index {
+            guard displayCell == nil else { return displayCell }
             displayCell = DisplayTableViewCell(for: indexPath, with: viewModel)
             return displayCell
         } else if case .ratable = index {
@@ -172,7 +173,7 @@ extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
 
 extension HomeTableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        actions.viewDidScroll(scrollView)
+        actions?.viewDidScroll(scrollView)
     }
 }
 
