@@ -1,5 +1,5 @@
 //
-//  CategoriesOverlayViewViewModel.swift
+//  NavigationOverlayViewModel.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/09/2022.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class CategoriesOverlayViewViewModel {
+final class NavigationOverlayViewModel {
     let coordinator: HomeViewCoordinator
     
     private(set) var isPresented: Observable<Bool> = Observable(false)
     private(set) var items: Observable<[Valuable]> = Observable([])
-    private var state: CategoriesOverlayViewTableViewDataSource.State = .mainMenu
+    private var state: NavigationOverlayTableViewDataSource.State = .mainMenu
     
     init(with viewModel: HomeViewModel) {
         self.coordinator = viewModel.coordinator!
@@ -26,7 +26,7 @@ final class CategoriesOverlayViewViewModel {
             let states = NavigationView.State.allCases[3...5].toArray()
             items.value = states
         case .categories:
-            let categories = CategoriesOverlayView.Category.allCases
+            let categories = NavigationOverlayView.Category.allCases
             items.value = categories
         }
     }
@@ -160,12 +160,12 @@ final class CategoriesOverlayViewViewModel {
         let homeViewController = coordinator.viewController
         let homeViewModel = homeViewController!.viewModel!
         let navigationView = homeViewController!.navigationView!
-        let category = CategoriesOverlayView.Category(rawValue: indexPath.row)!
+        let category = NavigationOverlayView.Category(rawValue: indexPath.row)!
         let browseOverlayView = coordinator.viewController!.browseOverlayView!
         
         if state == .categories {
             let section = category.toSection(with: homeViewModel)
-            browseOverlayView.dataSource = BrowseOverlayViewCollectionViewDataSource(
+            browseOverlayView.dataSource = BrowseOverlayCollectionViewDataSource(
                 section: section,
                 with: homeViewModel)
             browseOverlayView.viewModel.isPresented = true

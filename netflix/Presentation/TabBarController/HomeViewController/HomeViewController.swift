@@ -18,7 +18,7 @@ final class HomeViewController: UIViewController {
     
     var viewModel: HomeViewModel!
     var navigationView: NavigationView!
-    var categoriesOverlayView: CategoriesOverlayView!
+    var categoriesOverlayView: NavigationOverlayView!
     var browseOverlayView: BrowseOverlayView!
     var dataSource: HomeTableViewDataSource!
     
@@ -71,7 +71,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoriesOverlayView() {
-        categoriesOverlayView = CategoriesOverlayView(with: viewModel)
+        categoriesOverlayView = NavigationOverlayView(with: viewModel)
     }
     
     private func setupBrowseOverlayView() {

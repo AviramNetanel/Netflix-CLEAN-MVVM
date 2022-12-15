@@ -1,5 +1,5 @@
 //
-//  BrowseOverlayViewCollectionViewDataSource.swift
+//  BrowseOverlayCollectionViewDataSource.swift
 //  netflix
 //
 //  Created by Zach Bazov on 07/12/2022.
@@ -7,7 +7,7 @@
 
 import UIKit.UICollectionView
 
-final class BrowseOverlayViewCollectionViewDataSource: NSObject,
+final class BrowseOverlayCollectionViewDataSource: NSObject,
                                                        UICollectionViewDelegate,
                                                        UICollectionViewDataSource {
     private let coordinator: HomeViewCoordinator

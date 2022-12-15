@@ -1,5 +1,5 @@
 //
-//  CategoriesOverlayView.swift
+//  NavigationOverlayView.swift
 //  netflix
 //
 //  Created by Zach Bazov on 20/09/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CategoriesOverlayView: UIView {
+final class NavigationOverlayView: UIView {
     enum Category: Int, CaseIterable {
         case home
         case myList
@@ -29,28 +29,28 @@ final class CategoriesOverlayView: UIView {
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         tableView.separatorStyle = .none
-        tableView.register(class: CategoriesOverlayViewTableViewCell.self)
+        tableView.register(class: NavigationOverlayTableViewCell.self)
         return tableView
     }()
     let tabBar: UITabBar
-    let viewModel: CategoriesOverlayViewViewModel
-    private(set) var dataSource: CategoriesOverlayViewTableViewDataSource!
+    let viewModel: NavigationOverlayViewModel
+    private(set) var dataSource: NavigationOverlayTableViewDataSource!
     let opaqueView = OpaqueView(frame: UIScreen.main.bounds)
-    let footerView: CategoriesOverlayViewFooterView
+    let footerView: NavigationOverlayFooterView
     
     init(with viewModel: HomeViewModel) {
         self.tabBar = viewModel.coordinator!.viewController!.tabBarController!.tabBar
-        self.viewModel = CategoriesOverlayViewViewModel(with: viewModel)
+        self.viewModel = NavigationOverlayViewModel(with: viewModel)
         
         let parent = viewModel.coordinator!.viewController!.view!
-        self.footerView = CategoriesOverlayViewFooterView(parent: parent, viewModel: self.viewModel)
+        self.footerView = NavigationOverlayFooterView(parent: parent, viewModel: self.viewModel)
         
         super.init(frame: UIScreen.main.bounds)
         parent.addSubview(self)
         parent.addSubview(self.footerView)
         self.addSubview(self.tableView)
         
-        self.dataSource = CategoriesOverlayViewTableViewDataSource(on: self.tableView, with: self.viewModel)
+        self.dataSource = NavigationOverlayTableViewDataSource(on: self.tableView, with: self.viewModel)
         
         /// Updates root coordinator's `categoriesOverlayView` property.
         viewModel.coordinator?.viewController?.categoriesOverlayView = self
@@ -87,17 +87,17 @@ final class CategoriesOverlayView: UIView {
     }
 }
 
-extension CategoriesOverlayView {
-    private func isPresented(in viewModel: CategoriesOverlayViewViewModel) {
+extension NavigationOverlayView {
+    private func isPresented(in viewModel: NavigationOverlayViewModel) {
         viewModel.isPresented.observe(on: self) { [weak self] _ in self?.viewModel.isPresentedDidChange() }
     }
     
-    private func items(in viewModel: CategoriesOverlayViewViewModel) {
+    private func items(in viewModel: NavigationOverlayViewModel) {
         viewModel.items.observe(on: self) { [weak self] _ in self?.viewModel.dataSourceDidChange() }
     }
 }
 
-extension CategoriesOverlayView.Category: Valuable {
+extension NavigationOverlayView.Category: Valuable {
     var stringValue: String {
         switch self {
         case .home: return "Home"
@@ -117,7 +117,7 @@ extension CategoriesOverlayView.Category: Valuable {
     }
 }
 
-extension CategoriesOverlayView.Category {
+extension NavigationOverlayView.Category {
     func toSection(with viewModel: HomeViewModel) -> Section {
         switch self {
         case .home: return viewModel.section(at: .resumable)

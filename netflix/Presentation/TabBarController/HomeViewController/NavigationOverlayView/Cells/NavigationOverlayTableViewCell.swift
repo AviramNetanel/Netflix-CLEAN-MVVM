@@ -1,5 +1,5 @@
 //
-//  CategoriesOverlayViewTableViewCell.swift
+//  NavigationOverlayTableViewCell.swift
 //  netflix
 //
 //  Created by Zach Bazov on 22/09/2022.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class CategoriesOverlayViewTableViewCell: UITableViewCell {
+final class NavigationOverlayTableViewCell: UITableViewCell {
     private lazy var titleLabel = createLabel()
-    var viewModel: CategoriesOverlayViewCollectionViewCellViewModel!
+    var viewModel: NavigationOverlayCollectionViewCellViewModel!
     
     init(on tableView: UITableView, for indexPath: IndexPath, with items: [Valuable]) {
         let model = items[indexPath.row]
-        self.viewModel = CategoriesOverlayViewCollectionViewCellViewModel(title: model.stringValue)
-        super.init(style: .default, reuseIdentifier: CategoriesOverlayViewTableViewCell.reuseIdentifier)
+        self.viewModel = NavigationOverlayCollectionViewCellViewModel(title: model.stringValue)
+        super.init(style: .default, reuseIdentifier: NavigationOverlayTableViewCell.reuseIdentifier)
         self.backgroundColor = .clear
         self.selectionStyle = .none
         self.viewDidConfigure()

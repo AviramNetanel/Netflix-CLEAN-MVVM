@@ -1,5 +1,5 @@
 //
-//  CategoriesOverlayViewFooterView.swift
+//  NavigationOverlayFooterView.swift
 //  netflix
 //
 //  Created by Zach Bazov on 22/09/2022.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class CategoriesOverlayViewFooterView: UIView {
-    var viewModel: CategoriesOverlayViewViewModel!
+final class NavigationOverlayFooterView: UIView {
+    var viewModel: NavigationOverlayViewModel!
     fileprivate lazy var button = createButton()
     
-    init(parent: UIView, viewModel: CategoriesOverlayViewViewModel) {
+    init(parent: UIView, viewModel: NavigationOverlayViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         self.addSubview(button)

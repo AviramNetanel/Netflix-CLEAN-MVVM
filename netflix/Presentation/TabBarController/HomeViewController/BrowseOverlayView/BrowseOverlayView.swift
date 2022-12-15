@@ -12,7 +12,7 @@ final class BrowseOverlayView: UIView {
     
     private lazy var collectionView: UICollectionView = createCollectionView()
     
-    var dataSource: BrowseOverlayViewCollectionViewDataSource? {
+    var dataSource: BrowseOverlayCollectionViewDataSource? {
         didSet { dataSourceDidChange() }
     }
     
