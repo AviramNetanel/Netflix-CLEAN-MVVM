@@ -31,7 +31,7 @@ final class BrowseOverlayView: UIView {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        print("BrowseOverlayView")
+//        print("BrowseOverlayView")
         collectionView.removeFromSuperview()
     }
     

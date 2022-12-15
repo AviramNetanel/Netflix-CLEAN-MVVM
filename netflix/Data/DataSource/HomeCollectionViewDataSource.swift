@@ -50,7 +50,7 @@ final class HomeCollectionViewDataSource<Cell>: NSObject,
     }
     
     deinit {
-        print("HomeCollectionViewDataSource")
+//        print("HomeCollectionViewDataSource")
 //        cell?.representedIdentifier = nil
 //        cell?.viewModel = nil
 //        cell?.removeFromSuperview()

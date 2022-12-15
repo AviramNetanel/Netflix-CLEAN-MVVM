@@ -22,8 +22,6 @@ final class DisplayTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        print("DisplayTableViewCell")
-//        displayView?.removeFromSuperview()
         displayView = nil
     }
 }

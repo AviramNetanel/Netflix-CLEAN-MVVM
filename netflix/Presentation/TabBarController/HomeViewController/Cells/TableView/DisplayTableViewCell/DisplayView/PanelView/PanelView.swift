@@ -30,7 +30,6 @@ final class PanelView: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        print("PanelView")
         removeObservers()
         leadingItemView?.viewModel = nil
         trailingItemView?.viewModel = nil

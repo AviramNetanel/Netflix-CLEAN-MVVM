@@ -68,70 +68,74 @@ final class CategoriesOverlayViewViewModel {
         categoriesOverlay?.tableView.dataSource = nil
     }
     
-    func coordinateStateChanges(for state: NavigationView.State) {
-        guard
-            let homeViewController = coordinator.viewController,
-            let homeViewModel = homeViewController.viewModel,
-            let navigationView = homeViewController.navigationView,
-            let browseOverlay = homeViewController.browseOverlayView
-        else { return }
+    func navigationViewStateDidChange(_ state: NavigationView.State) {
+        guard let homeViewController = coordinator.viewController,
+              let navigationView = homeViewController.navigationView,
+              let browseOverlay = homeViewController.browseOverlayView else {
+            return
+        }
         
         switch state {
         case .home:
-            defer {
+            if !navigationView.homeItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = true
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 navigationView.moviesItemView.viewModel.isSelected = false
-            }
-            
-            self.state = .mainMenu
-            isPresented.value = false
-            
-            browseOverlay.viewModel.isPresented = false
-            browseOverlay.dataSource = nil
-            
-            if homeViewModel.tableViewState != .all {
-                homeViewModel.tableViewState = .all
+                
+                if browseOverlay.viewModel.isPresented {
+                    browseOverlay.viewModel.isPresented = false
+                    
+                    navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection ?? .home)
+                    if Application.current.coordinator.coordinator.lastSelection == .tvShows {
+                        navigationView.homeItemView.viewModel.isSelected = false
+                        navigationView.tvShowsItemView.viewModel.isSelected = true
+                        navigationView.moviesItemView.viewModel.isSelected = false
+                    } else if Application.current.coordinator.coordinator.lastSelection == .movies {
+                        navigationView.homeItemView.viewModel.isSelected = false
+                        navigationView.tvShowsItemView.viewModel.isSelected = false
+                        navigationView.moviesItemView.viewModel.isSelected = true
+                    }
+                } else {
+                    Application.current.coordinator.replaceRootCoordinator()
+                }
+                
+                Application.current.coordinator.coordinator.lastSelection = .home
+            } else {
+                if browseOverlay.viewModel.isPresented {
+                    browseOverlay.viewModel.isPresented = false
+                }
             }
         case .tvShows:
-            defer {
+            Application.current.coordinator.coordinator.lastSelection = .tvShows
+            
+            if !navigationView.tvShowsItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false
                 navigationView.tvShowsItemView.viewModel.isSelected = true
                 navigationView.moviesItemView.viewModel.isSelected = false
-            }
-            
-            if navigationView.tvShowsItemView.viewModel.isSelected {
-                isPresented.value = true
+                
+                Application.current.coordinator.replaceRootCoordinator()
+            } else {
                 self.state = .mainMenu
-                return
+                isPresented.value = true
             }
-            
-            isPresented.value = false
-            browseOverlay.viewModel.isPresented = false
-            
-            homeViewModel.tableViewState = .series
         case .movies:
-            defer {
+            Application.current.coordinator.coordinator.lastSelection = .movies
+            
+            if !navigationView.moviesItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 navigationView.moviesItemView.viewModel.isSelected = true
-            }
-            
-            if navigationView.moviesItemView.viewModel.isSelected {
-                isPresented.value = true
+                
+                Application.current.coordinator.replaceRootCoordinator()
+            } else {
                 self.state = .mainMenu
-                return
+                isPresented.value = true
             }
-            
-            isPresented.value = false
-            browseOverlay.viewModel.isPresented = false
-            
-            homeViewModel.tableViewState = .films
         case .categories:
             self.state = .categories
-            
             isPresented.value = true
-        default: break
+        default:
+            break
         }
     }
     

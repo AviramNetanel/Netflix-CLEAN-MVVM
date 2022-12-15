@@ -98,7 +98,7 @@ final class HomeTableViewDataSource: NSObject, DataSource {
     }
     
     deinit {
-        print("TableViewDS deinit")
+//        print("TableViewDS deinit")
     }
     
     fileprivate func viewDidLoad() {

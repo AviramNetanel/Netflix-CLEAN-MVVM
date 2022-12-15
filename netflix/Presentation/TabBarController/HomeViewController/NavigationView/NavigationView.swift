@@ -55,12 +55,26 @@ final class NavigationView: UIView, ViewInstantiable {
                 let navigation = viewModel.coordinator?.viewController?.navigationView
                 let categoriesOverlay = viewModel.coordinator?.viewController?.categoriesOverlayView
                 navigation?.viewModel.stateDidChange(state)
-                categoriesOverlay?.viewModel.coordinateStateChanges(for: state)
+                categoriesOverlay?.viewModel.navigationViewStateDidChange(state)
             })
         self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
         
         /// Updates root coordinator's `navigationView` property.
         viewModel.coordinator?.viewController?.navigationView = self
+        ///
+        if Application.current.coordinator.coordinator.tableViewState.value == .all {
+            Application.current.coordinator.coordinator.lastSelection = .home
+            self.homeItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .home
+        } else if Application.current.coordinator.coordinator.tableViewState.value == .series {
+            Application.current.coordinator.coordinator.lastSelection = .tvShows
+            self.tvShowsItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .tvShows
+        } else if Application.current.coordinator.coordinator.tableViewState.value == .films {
+            Application.current.coordinator.coordinator.lastSelection = .movies
+            self.moviesItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .movies
+        }
         
         self.viewDidLoad()
     }
@@ -68,8 +82,8 @@ final class NavigationView: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        print("NavigationView")
-//        removeObservers()
+//        print("NavigationView")
+        removeObservers()
 //        homeItemView = nil
 //        airPlayItemView = nil
 //        accountItemView = nil

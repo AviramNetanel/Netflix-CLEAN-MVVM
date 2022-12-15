@@ -17,10 +17,8 @@ class CollectionViewCell: UICollectionViewCell {
     var representedIdentifier: NSString?
     
     deinit {
-        print("CollectionViewCell")
         representedIdentifier = nil
         viewModel = nil
-//        removeFromSuperview()
     }
     
     static func create(on collectionView: UICollectionView,
@@ -38,7 +36,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        viewModel = nil
+        viewModel = nil
         coverImageView.image = nil
         logoImageView.image = nil
         placeholderLabel.text = nil

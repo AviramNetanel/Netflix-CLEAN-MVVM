@@ -69,7 +69,6 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     deinit {
-        print("DisplayView")
         panelView = nil
         configuration = nil
         viewModel = nil

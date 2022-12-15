@@ -61,7 +61,7 @@ final class CategoriesOverlayView: UIView {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        print("CategoriesOverlayView")
+//        print("CategoriesOverlayView")
         removeObservers()
         dataSource = nil
     }

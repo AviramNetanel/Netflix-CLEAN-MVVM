@@ -123,9 +123,16 @@ extension HomeViewController {
     private func tableViewState(in viewModel: HomeViewModel) {
         let tabBar = Application.current.coordinator.viewController as? TabBarController
         tabBar?.viewModel.coordinator?.tableViewState.observe(on: self) { [weak self] state in
-            guard let state = state as HomeTableViewDataSource.State? else { return }
-            print("Setupingg", viewModel.tableViewState, tabBar?.viewModel.coordinator?.tableViewState)
+//            guard let state = state as HomeTableViewDataSource.State? else { return }
+//            print("Setupingg", viewModel.tableViewState, tabBar?.viewModel.coordinator?.tableViewState.value)
             self?.setupDataSource()
+//            if state == .all {
+//                self?.navigationView.viewModel.stateDidChange(.home)
+//            } else if state == .series {
+//                self?.navigationView.viewModel.stateDidChange(.tvShows)
+//            } else if state == .films {
+//                self?.navigationView.viewModel.stateDidChange(.movies)
+//            } else {}
         }
     }
     

@@ -27,7 +27,7 @@ final class NavigationViewViewModel {
     }
     
     deinit {
-        print("NavigationViewViewModel")
+//        print("NavigationViewViewModel")
     }
     
     func stateDidChange(_ state: NavigationView.State) {

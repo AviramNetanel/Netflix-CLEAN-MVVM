@@ -14,6 +14,7 @@ final class TabBarCoordinator: Coordinate {
     
     weak var viewController: TabBarController?
     private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+    var lastSelection: NavigationView.State!
     
     func showScreen(_ screen: Screen, _ state: NavigationView.State? = nil) {
         switch screen {

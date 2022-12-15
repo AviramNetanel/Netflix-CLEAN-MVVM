@@ -21,10 +21,8 @@ final class RatedCollectionViewCell: CollectionViewCell {
     fileprivate var textLayer = TextLayer()
     
     deinit {
-        print("RatedCollectionViewCell")
         textLayer.removeFromSuperlayer()
         layerView.removeFromSuperview()
-//        removeFromSuperview()
     }
     
     override func awakeFromNib() {

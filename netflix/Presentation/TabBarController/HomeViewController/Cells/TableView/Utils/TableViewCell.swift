@@ -36,13 +36,8 @@ final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
     }
     
     deinit {
-        print("TableViewCell")
-//        collectionView.delegate = nil
-//        collectionView.dataSource = nil
-//        collectionView.removeFromSuperview()
         layout = nil
         dataSource = nil
-//        removeFromSuperview()
     }
     
     required init?(coder: NSCoder) { fatalError() }

@@ -44,7 +44,8 @@ final class HomeViewModel: ViewModel {
     }
     
     deinit {
-        print("HomeViewModel")
+//        print("HomeViewModel")
+        myList.removeObservers()
         tableViewState = nil
         myList = nil
         mediaTask = nil
