@@ -24,7 +24,6 @@ final class HomeViewModel: ViewModel {
     
     private(set) var sections: [Section] = []
     private(set) var media: [Media] = []
-//    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
     
     var tableViewState: HomeTableViewDataSource.State!
     
@@ -44,12 +43,12 @@ final class HomeViewModel: ViewModel {
     }
     
     deinit {
-//        print("HomeViewModel")
-        myList.removeObservers()
         tableViewState = nil
+        myList?.removeObservers()
         myList = nil
         mediaTask = nil
         sectionsTask = nil
+        coordinator = nil
     }
     
     func transform(input: Void) {}

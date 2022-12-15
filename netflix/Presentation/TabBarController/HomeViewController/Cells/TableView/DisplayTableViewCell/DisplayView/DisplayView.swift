@@ -76,7 +76,7 @@ final class DisplayView: UIView, ViewInstantiable {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         setupSubviews()
     }
     

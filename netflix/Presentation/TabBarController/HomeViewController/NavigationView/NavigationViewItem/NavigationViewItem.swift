@@ -78,8 +78,6 @@ final class NavigationViewItemConfiguration: Configuration {
             return
         }
         
-        AsyncImageFetcher.shared.cache.removeAllObjects()
-        
         navigation.viewModel.state.value = state
     }
 }
@@ -102,7 +100,6 @@ final class NavigationViewItem: UIView {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-//        print("NavigationViewItem")
         configuration = nil
         viewModel = nil
     }
@@ -126,96 +123,3 @@ final class NavigationViewItem: UIView {
         }
     }
 }
-
-//func killHomeVC() {
-//    let tabBar = Application.current.coordinator.window?.rootViewController as! TabBarController
-//
-//    AsyncImageFetcher.shared.cache.removeAllObjects()
-//
-//    if var _ = item.viewModel.coordinator.viewController?.dataSource {
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.removeObservers()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.viewModel?.myList?.removeObservers()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.viewModel?.removeObservers()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.viewModel?.removeObservers()
-//
-//        item?.viewModel?.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.tapRecognizer = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.longPressRecognizer = nil
-//        item?.viewModel?.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.view = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.viewModel = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration.longPressRecognizer = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration.tapRecognizer = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration?.view = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.viewModel = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.viewModel = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.removeObservers()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView?.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.panelView = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.configuration = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.viewModel = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView?.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell?.displayView = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.displayCell = nil
-//
-//        item.viewModel.coordinator.viewController?.dataSource?.tableView.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.dataSource?.tableView.delegate = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.tableView.dataSource = nil
-//        item.viewModel.coordinator.viewController?.dataSource?.tableView = nil
-//        item.viewModel.coordinator.viewController?.dataSource = nil
-//        item.viewModel.coordinator.viewController?.tableView?.delegate = nil
-//        item.viewModel.coordinator.viewController?.tableView?.dataSource = nil
-//        item.viewModel.coordinator.viewController?.tableView?.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.tableView = nil
-//
-//        item.viewModel.coordinator.viewController?.navigationView.removeObservers()
-//        item.viewModel.coordinator.viewController?.navigationView.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.navigationView = nil
-//
-//        item.viewModel.coordinator.viewController?.categoriesOverlayView.removeObservers()
-//        item.viewModel.coordinator.viewController?.categoriesOverlayView.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.categoriesOverlayView = nil
-//
-//        item.viewModel.coordinator.viewController?.browseOverlayView.removeFromSuperview()
-//        item.viewModel.coordinator.viewController?.browseOverlayView = nil
-//
-//        item.viewModel.coordinator.viewController?.viewModel?.myList?.removeObservers()
-//        item.viewModel.coordinator.viewController?.viewModel?.coordinator = nil
-//        item.viewModel.coordinator.viewController?.viewModel?.mediaTask = nil
-//        item.viewModel.coordinator.viewController?.viewModel?.sectionsTask = nil
-//        item.viewModel.coordinator.viewController?.viewModel?.tableViewState = nil
-//        item.viewModel.coordinator.viewController?.viewModel?.myList = nil
-//        item.viewModel.coordinator.viewController?.viewModel = nil
-//
-//        item.viewModel.coordinator.viewController?.removeObservers()
-//        item.viewModel.coordinator.viewController?.removeFromParent()
-//
-//        item.viewModel.coordinator.viewController = nil
-//
-//        tabBar.viewModel.coordinator = nil
-//
-//        Application.current.coordinator.viewController = nil
-//    }
-//
-//    asynchrony(dispatchingDelayInSeconds: 1) { [weak self] in
-//        if state == .home {
-//            Application.current.coordinator.showScreen(.tabBar, .all)
-//        } else if state == .tvShows {
-//            Application.current.coordinator.showScreen(.tabBar, .series)
-//        } else if state == .movies {
-//            Application.current.coordinator.showScreen(.tabBar, .films)
-//        } else {}
-//    }
-//
-//    if state == .home {
-//        Application.current.coordinator.showScreen(.tabBar, .all)
-//    } else if state == .tvShows {
-//        Application.current.coordinator.showScreen(.tabBar, .series)
-//    } else if state == .movies {
-//        Application.current.coordinator.showScreen(.tabBar, .films)
-//    } else {}
-//}

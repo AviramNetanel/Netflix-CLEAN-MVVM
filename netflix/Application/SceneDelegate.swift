@@ -40,8 +40,8 @@ extension SceneDelegate: UIWindowSceneDelegate {
             if let navigationView = homeViewController.navigationView {
                 navigationView.removeObservers()
             }
-            if let categoriesOverlayView = homeViewController.categoriesOverlayView {
-                categoriesOverlayView.removeObservers()
+            if let navigationOverlayView = homeViewController.navigationView.navigationOverlayView {
+                navigationOverlayView.removeObservers()
             }
             
             printIfDebug("Removed `HomeViewController` observers successfully.")

@@ -32,7 +32,6 @@ final class PanelViewItemViewModel {
     }
     
     deinit {
-//        removeObservers()
         media = nil
     }
     

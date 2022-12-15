@@ -18,13 +18,15 @@ final class HomeViewController: UIViewController {
     
     var viewModel: HomeViewModel!
     var navigationView: NavigationView!
-    var categoriesOverlayView: NavigationOverlayView!
     var browseOverlayView: BrowseOverlayView!
     var dataSource: HomeTableViewDataSource!
     
     deinit {
+        browseOverlayView?.removeFromSuperview()
+        navigationView?.removeFromSuperview()
+        tableView?.removeFromSuperview()
+        removeObservers()
         browseOverlayView = nil
-        categoriesOverlayView = nil
         navigationView = nil
         dataSource = nil
         viewModel = nil
@@ -46,7 +48,6 @@ final class HomeViewController: UIViewController {
     private func setupSubviews() {
         setupDataSource()
         setupNavigationView()
-        setupCategoriesOverlayView()
         setupBrowseOverlayView()
     }
     
@@ -68,10 +69,6 @@ final class HomeViewController: UIViewController {
     
     func setupNavigationView() {
         navigationView = NavigationView(on: navigationViewContainer, with: viewModel)
-    }
-    
-    private func setupCategoriesOverlayView() {
-        categoriesOverlayView = NavigationOverlayView(with: viewModel)
     }
     
     private func setupBrowseOverlayView() {
@@ -123,23 +120,14 @@ extension HomeViewController {
     private func tableViewState(in viewModel: HomeViewModel) {
         let tabBar = Application.current.coordinator.viewController as? TabBarController
         tabBar?.viewModel.coordinator?.tableViewState.observe(on: self) { [weak self] state in
-//            guard let state = state as HomeTableViewDataSource.State? else { return }
-//            print("Setupingg", viewModel.tableViewState, tabBar?.viewModel.coordinator?.tableViewState.value)
             self?.setupDataSource()
-//            if state == .all {
-//                self?.navigationView.viewModel.stateDidChange(.home)
-//            } else if state == .series {
-//                self?.navigationView.viewModel.stateDidChange(.tvShows)
-//            } else if state == .films {
-//                self?.navigationView.viewModel.stateDidChange(.movies)
-//            } else {}
         }
     }
     
     private func presentedDisplayMedia(in viewModel: HomeViewModel) {
         viewModel.presentedDisplayMedia.observe(on: self) { [weak self] media in
             guard let media = media else { return }
-            self!.categoriesOverlayView.opaqueView.viewModelDidUpdate(with: media)
+            self!.navigationView.navigationOverlayView.opaqueView.viewModelDidUpdate(with: media)
         }
     }
 }

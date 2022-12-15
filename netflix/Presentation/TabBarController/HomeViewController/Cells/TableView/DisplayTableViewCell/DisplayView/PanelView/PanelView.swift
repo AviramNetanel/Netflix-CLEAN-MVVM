@@ -33,18 +33,20 @@ final class PanelView: UIView, ViewInstantiable {
         removeObservers()
         leadingItemView?.viewModel = nil
         trailingItemView?.viewModel = nil
+        leadingItemView?.removeFromSuperview()
+        trailingItemView?.removeFromSuperview()
         leadingItemView = nil
         trailingItemView = nil
         viewModel = nil
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         playButton.layer.cornerRadius = 6.0
         playButton.addTarget(self, action: #selector(playDidTap), for: .touchUpInside)
     }
     
     @objc
-    fileprivate func playDidTap() {
+    private func playDidTap() {
         let section = viewModel.sectionAt(.display)
         let media = viewModel.presentedDisplayMedia.value!
         let rotated = true

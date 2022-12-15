@@ -27,6 +27,7 @@ final class NavigationView: UIView, ViewInstantiable {
     @IBOutlet private(set) weak var itemsCenterXConstraint: NSLayoutConstraint!
     
     private(set) var viewModel: NavigationViewViewModel!
+    var navigationOverlayView: NavigationOverlayView!
     
     private(set) var homeItemView: NavigationViewItem!
     private var airPlayItemView: NavigationViewItem!
@@ -53,17 +54,18 @@ final class NavigationView: UIView, ViewInstantiable {
         let actions = NavigationViewViewModelActions(
             stateDidChange: { state in
                 let navigation = viewModel.coordinator?.viewController?.navigationView
-                let categoriesOverlay = viewModel.coordinator?.viewController?.categoriesOverlayView
                 navigation?.viewModel.stateDidChange(state)
-                categoriesOverlay?.viewModel.navigationViewStateDidChange(state)
+                navigation?.navigationOverlayView.viewModel.navigationViewStateDidChange(state)
             })
         self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
         
         /// Updates root coordinator's `navigationView` property.
         viewModel.coordinator?.viewController?.navigationView = self
+        
+        self.navigationOverlayView = NavigationOverlayView(with: viewModel)
+        
         ///
         if Application.current.coordinator.coordinator.tableViewState.value == .all {
-            Application.current.coordinator.coordinator.lastSelection = .home
             self.homeItemView.viewModel.isSelected = true
             self.viewModel.state.value = .home
         } else if Application.current.coordinator.coordinator.tableViewState.value == .series {
@@ -82,15 +84,9 @@ final class NavigationView: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-//        print("NavigationView")
         removeObservers()
-//        homeItemView = nil
-//        airPlayItemView = nil
-//        accountItemView = nil
-//        tvShowsItemView = nil
-//        moviesItemView = nil
-//        categoriesItemView = nil
-//        viewModel = nil
+        navigationOverlayView?.removeFromSuperview()
+        navigationOverlayView = nil
     }
     
     private func setupObservers() {

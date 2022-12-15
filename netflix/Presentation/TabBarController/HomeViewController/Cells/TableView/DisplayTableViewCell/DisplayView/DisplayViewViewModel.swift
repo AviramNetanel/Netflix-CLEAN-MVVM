@@ -42,7 +42,7 @@ struct DisplayViewViewModel {
         self.attributedGenres = self.genres(for: media)
     }
     
-    fileprivate func path(with media: Media) -> String? {
+    private func path(with media: Media) -> String? {
         switch PresentedLogo(rawValue: media.resources.presentedDisplayLogo) {
         case .first: return media.resources.logos[0]
         case .second: return media.resources.logos[1]
@@ -55,7 +55,7 @@ struct DisplayViewViewModel {
         }
     }
     
-    fileprivate func genres(for media: Media) -> NSMutableAttributedString {
+    private func genres(for media: Media) -> NSMutableAttributedString {
         guard
             let symbol = " · " as String?,
             let genres = media.genres as [String]?

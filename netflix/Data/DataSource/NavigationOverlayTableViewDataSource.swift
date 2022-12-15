@@ -17,7 +17,7 @@ final class NavigationOverlayTableViewDataSource: NSObject,
     }
     
     private weak var tableView: UITableView!
-    private let viewModel: NavigationOverlayViewModel
+    private weak var viewModel: NavigationOverlayViewModel!
     private let numberOfSections: Int = 1
     
     init(on tableView: UITableView, with viewModel: NavigationOverlayViewModel) {

@@ -53,7 +53,7 @@ final class NavigationOverlayView: UIView {
         self.dataSource = NavigationOverlayTableViewDataSource(on: self.tableView, with: self.viewModel)
         
         /// Updates root coordinator's `categoriesOverlayView` property.
-        viewModel.coordinator?.viewController?.categoriesOverlayView = self
+        viewModel.coordinator?.viewController?.navigationView?.navigationOverlayView = self
         
         self.viewDidLoad()
     }
@@ -61,8 +61,9 @@ final class NavigationOverlayView: UIView {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-//        print("CategoriesOverlayView")
         removeObservers()
+        tableView.removeFromSuperview()
+        footerView.removeFromSuperview()
         dataSource = nil
     }
     
@@ -81,7 +82,7 @@ final class NavigationOverlayView: UIView {
     }
     
     func removeObservers() {
-        printIfDebug("Removed `CategoriesOverlayView` observers.")
+        printIfDebug("Removed `NavigationOverlayView` observers.")
         viewModel.isPresented.remove(observer: self)
         viewModel.items.remove(observer: self)
     }

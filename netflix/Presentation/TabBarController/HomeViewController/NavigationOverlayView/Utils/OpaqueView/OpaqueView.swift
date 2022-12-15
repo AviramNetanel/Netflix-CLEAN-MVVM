@@ -8,9 +8,9 @@
 import UIKit
 
 final class OpaqueView: UIView {
-    fileprivate var imageView: UIImageView!
-    fileprivate var blurView: UIVisualEffectView!
-    var viewModel: OpaqueViewViewModel!
+    private var imageView: UIImageView!
+    private var blurView: UIVisualEffectView!
+    private(set) var viewModel: OpaqueViewViewModel!
     
     deinit {
         imageView = nil
@@ -18,7 +18,7 @@ final class OpaqueView: UIView {
         viewModel = nil
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidConfigure() {
         imageView?.removeFromSuperview()
         blurView?.removeFromSuperview()
         
@@ -35,13 +35,15 @@ final class OpaqueView: UIView {
         AsyncImageFetcher.shared.load(
             url: viewModel.imageURL,
             identifier: viewModel.identifier) { [weak self] image in
-                DispatchQueue.main.async { self?.imageView.image = image }
+                asynchrony {
+                    self?.imageView.image = image
+                }
             }
     }
     
     func viewModelDidUpdate(with media: Media) {
         guard let presentedDisplayMedia = media as Media? else { return }
-        self.viewModel = .init(with: presentedDisplayMedia)
-        viewDidLoad()
+        viewModel = .init(with: presentedDisplayMedia)
+        viewDidConfigure()
     }
 }

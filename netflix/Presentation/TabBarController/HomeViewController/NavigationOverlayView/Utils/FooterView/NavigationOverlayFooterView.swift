@@ -8,8 +8,8 @@
 import UIKit
 
 final class NavigationOverlayFooterView: UIView {
-    var viewModel: NavigationOverlayViewModel!
-    fileprivate lazy var button = createButton()
+    private var viewModel: NavigationOverlayViewModel!
+    private lazy var button = createButton()
     
     init(parent: UIView, viewModel: NavigationOverlayViewModel) {
         self.viewModel = viewModel
@@ -33,13 +33,13 @@ final class NavigationOverlayFooterView: UIView {
         return button
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         backgroundColor = .clear
         isHidden(true)
     }
     
     @objc
-    fileprivate func viewDidTap() {
+    private func viewDidTap() {
         viewModel.isPresented.value = false
     }
 }

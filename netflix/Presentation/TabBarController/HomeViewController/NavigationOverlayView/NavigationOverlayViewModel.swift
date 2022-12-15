@@ -32,52 +32,54 @@ final class NavigationOverlayViewModel {
     }
     
     func dataSourceDidChange() {
-        let categoriesOverlay = coordinator.viewController?.categoriesOverlayView
-        let tableView = categoriesOverlay?.tableView
-        if tableView?.delegate == nil {
-            tableView?.delegate = categoriesOverlay!.dataSource
-            tableView?.dataSource = categoriesOverlay!.dataSource
+        guard let navigationOverlayView = coordinator.viewController?.navigationView?.navigationOverlayView else { return }
+        
+        let tableView = navigationOverlayView.tableView
+        if tableView.delegate == nil {
+            tableView.delegate = navigationOverlayView.dataSource
+            tableView.dataSource = navigationOverlayView.dataSource
         }
         
-        tableView?.reloadData()
-        
-        tableView?.contentInset = .init(
-            top: (categoriesOverlay!.bounds.height - tableView!.contentSize.height) / 2 - 80.0,
+        tableView.reloadData()
+        tableView.contentInset = .init(
+            top: (navigationOverlayView.bounds.height - tableView.contentSize.height) / 2 - 80.0,
             left: .zero,
-            bottom: (categoriesOverlay!.bounds.height - tableView!.contentSize.height) / 2,
+            bottom: (navigationOverlayView.bounds.height - tableView.contentSize.height) / 2,
             right: .zero)
     }
     
     func isPresentedDidChange() {
-        let categoriesOverlay = coordinator.viewController?.categoriesOverlayView
+        guard let navigationOverlayView = coordinator.viewController?.navigationView?.navigationOverlayView else { return }
         if case true = isPresented.value {
-            categoriesOverlay?.isHidden(false)
-            categoriesOverlay?.tableView.isHidden(false)
-            categoriesOverlay?.footerView.isHidden(false)
-            categoriesOverlay?.tabBar.isHidden(true)
+            navigationOverlayView.isHidden(false)
+            navigationOverlayView.tableView.isHidden(false)
+            navigationOverlayView.footerView.isHidden(false)
+            navigationOverlayView.tabBar.isHidden(true)
+            
             itemsDidChange()
             return
         }
         
-        categoriesOverlay?.isHidden(true)
-        categoriesOverlay?.footerView.isHidden(true)
-        categoriesOverlay?.tableView.isHidden(true)
-        categoriesOverlay?.tabBar.isHidden(false)
+        navigationOverlayView.isHidden(true)
+        navigationOverlayView.footerView.isHidden(true)
+        navigationOverlayView.tableView.isHidden(true)
+        navigationOverlayView.tabBar.isHidden(false)
         
-        categoriesOverlay?.tableView.delegate = nil
-        categoriesOverlay?.tableView.dataSource = nil
+        navigationOverlayView.tableView.delegate = nil
+        navigationOverlayView.tableView.dataSource = nil
     }
     
     /// The `NavigationView` designed to contain two phases for navigation methods.
     /// Phase #1: First cycle of the navigation, switching between the navigation states,
     ///           simply by clicking (selecting) one of them.
     /// Phase #2: The expansion cycle of the navigation,
-    ///           which controls the presentations of `CategoriesOverlayView` & `BrowseOverlayView`.
+    ///           which controls the presentations of `NavigationOverlayView` & `BrowseOverlayView`.
     ///           If needed, switch between the table view data-source's state
     ///           to display other data (e.g. series, films or all).
     /// - Parameter state: corresponding navigation's state value.
     func navigationViewStateDidChange(_ state: NavigationView.State) {
-        guard let homeViewController = coordinator.viewController,
+        guard let rootCoordinator = Application.current.coordinator as AppCoordinator?,
+              let homeViewController = coordinator.viewController,
               let navigationView = homeViewController.navigationView,
               let browseOverlay = homeViewController.browseOverlayView else {
             return
@@ -92,15 +94,16 @@ final class NavigationOverlayViewModel {
                 navigationView.homeItemView.viewModel.isSelected = true
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 navigationView.moviesItemView.viewModel.isSelected = false
-                /// In-case `browseOverlayView` has been presented.
-                if browseOverlay.viewModel.isPresented {
-                    /// Hide the browser view.
+                /// - PHASE #2-A:
+                /// Firstly, check for a case where the browser overlay is presented and home's table view
+                /// data source state has been set to 'all' state.
+                if browseOverlay.viewModel.isPresented && homeViewController.viewModel.tableViewState == .all {
+                    /// In-case `browseOverlayView` has been presented, hide it.
                     browseOverlay.viewModel.isPresented = false
-                    /// - PHASE #2:
-                    /// Applys `NavigationView` state changes.
+                    /// Apply `NavigationView` state changes.
                     navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection ?? .home)
                     /// Based the navigation last selection, change selection settings.
-                    if Application.current.coordinator.coordinator.lastSelection == .tvShows {
+                    if rootCoordinator.coordinator.lastSelection == .tvShows {
                         navigationView.homeItemView.viewModel.isSelected = false
                         navigationView.tvShowsItemView.viewModel.isSelected = true
                         navigationView.moviesItemView.viewModel.isSelected = false
@@ -110,40 +113,63 @@ final class NavigationOverlayViewModel {
                         navigationView.moviesItemView.viewModel.isSelected = true
                     }
                 } else {
-                    /// Reload a new view-controller instance.
-                    Application.current.coordinator.replaceRootCoordinator()
+                    /// - PHASE #2-B:
+                    /// Secondly, check for a case where the browser overlay is presented.
+                    /// and the navigation view state has been set to 'tvShows' or 'movies'.
+                    if browseOverlay.viewModel.isPresented {
+                        /// In-case the browser view has been presented, hide it.
+                        browseOverlay.viewModel.isPresented = false
+                        /// Apply navigation view state changes.
+                        navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection)
+                    } else {
+                        /// Reload a new view-controller instance.
+                        rootCoordinator.replaceRootCoordinator()
+                    }
                 }
-                /// Store state to property.
-                Application.current.coordinator.coordinator.lastSelection = .home
             } else {
-                /// In-case the browser view has been presented.
+                /// - PHASE #2-C:
+                /// Thirdly, check for a case where the browser overlay is presented.
+                /// Otherwise, in-case where the `lastSelection` value
+                /// is set to either 'tvShows' or 'movies', reset it and initiate re-coordination procedure.
                 if browseOverlay.viewModel.isPresented {
-                    /// Hide the view.
                     browseOverlay.viewModel.isPresented = false
+                } else {
+                    /// In-case the last selection is either set to both media types states (series and films).
+                    /// Initiate re-coordination procedure, and reset `lastSelection` value to home state.
+                    if rootCoordinator.coordinator.lastSelection == .tvShows || rootCoordinator.coordinator.lastSelection == .movies {
+                        /// Re-coordinate with a new view-controller instance.
+                        rootCoordinator.replaceRootCoordinator()
+                        /// Reset to home state.
+                        rootCoordinator.coordinator.lastSelection = .home
+                    } else {
+                        /// Occurs once home state has been restored to the navigation view state,
+                        /// and `browseOverlayView` view presentation is hidden.
+                        /// Thus, this case represents the initial view's navigation state.
+                    }
                 }
             }
         case .tvShows:
-            Application.current.coordinator.coordinator.lastSelection = .tvShows
+            rootCoordinator.coordinator.lastSelection = .tvShows
             
             if !navigationView.tvShowsItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false
                 navigationView.tvShowsItemView.viewModel.isSelected = true
                 navigationView.moviesItemView.viewModel.isSelected = false
                 
-                Application.current.coordinator.replaceRootCoordinator()
+                rootCoordinator.replaceRootCoordinator()
             } else {
                 self.state = .mainMenu
                 isPresented.value = true
             }
         case .movies:
-            Application.current.coordinator.coordinator.lastSelection = .movies
+            rootCoordinator.coordinator.lastSelection = .movies
             
             if !navigationView.moviesItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 navigationView.moviesItemView.viewModel.isSelected = true
                 
-                Application.current.coordinator.replaceRootCoordinator()
+                rootCoordinator.replaceRootCoordinator()
             } else {
                 self.state = .mainMenu
                 isPresented.value = true

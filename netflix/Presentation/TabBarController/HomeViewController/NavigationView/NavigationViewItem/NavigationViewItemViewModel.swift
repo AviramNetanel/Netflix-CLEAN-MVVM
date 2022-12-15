@@ -22,7 +22,7 @@ struct NavigationViewItemViewModel {
         self.image = image(for: tag)
     }
     
-    fileprivate func title(for tag: Int) -> String? {
+    private func title(for tag: Int) -> String? {
         guard let state = NavigationView.State(rawValue: tag) else { return nil }
         switch state {
         case .tvShows: return "TV Shows"
@@ -32,7 +32,7 @@ struct NavigationViewItemViewModel {
         }
     }
     
-    fileprivate func image(for tag: Int) -> String? {
+    private func image(for tag: Int) -> String? {
         guard let state = NavigationView.State(rawValue: tag) else { return nil }
         switch state {
         case .home: return "netflix-logo-sm"

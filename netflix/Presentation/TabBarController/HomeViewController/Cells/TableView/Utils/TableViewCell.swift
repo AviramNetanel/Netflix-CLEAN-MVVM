@@ -53,7 +53,7 @@ final class TableViewCell<T>: UITableViewCell where T: UICollectionViewCell {
         return collectionView
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         backgroundColor = .black
     }
     
