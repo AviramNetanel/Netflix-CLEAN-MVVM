@@ -60,17 +60,11 @@ final class DetailTableViewDataSource: NSObject,
     }
     
     deinit {
-//        infoCell?.removeFromSuperview()
         infoCell = nil
-//        descriptionCell?.removeFromSuperview()
         descriptionCell = nil
-//        panelCell?.removeFromSuperview()
         panelCell = nil
-//        navigationCell?.removeFromSuperview()
         navigationCell = nil
-//        collectionCell?.removeFromSuperview()
         collectionCell = nil
-//        tableView.removeFromSuperview()
     }
     
     fileprivate func viewsDidRegister() {
