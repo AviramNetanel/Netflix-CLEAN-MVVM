@@ -68,6 +68,14 @@ final class CategoriesOverlayViewViewModel {
         categoriesOverlay?.tableView.dataSource = nil
     }
     
+    /// The `NavigationView` designed to contain two phases for navigation methods.
+    /// Phase #1: First cycle of the navigation, switching between the navigation states,
+    ///           simply by clicking (selecting) one of them.
+    /// Phase #2: The expansion cycle of the navigation,
+    ///           which controls the presentations of `CategoriesOverlayView` & `BrowseOverlayView`.
+    ///           If needed, switch between the table view data-source's state
+    ///           to display other data (e.g. series, films or all).
+    /// - Parameter state: corresponding navigation's state value.
     func navigationViewStateDidChange(_ state: NavigationView.State) {
         guard let homeViewController = coordinator.viewController,
               let navigationView = homeViewController.navigationView,
@@ -77,15 +85,21 @@ final class CategoriesOverlayViewViewModel {
         
         switch state {
         case .home:
+            /// - PHASE #1:
+            /// In-case `homeItemView` hasn't been selected.
             if !navigationView.homeItemView.viewModel.isSelected {
+                /// Change view selection.
                 navigationView.homeItemView.viewModel.isSelected = true
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 navigationView.moviesItemView.viewModel.isSelected = false
-                
+                /// In-case `browseOverlayView` has been presented.
                 if browseOverlay.viewModel.isPresented {
+                    /// Hide the browser view.
                     browseOverlay.viewModel.isPresented = false
-                    
+                    /// - PHASE #2:
+                    /// Applys `NavigationView` state changes.
                     navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection ?? .home)
+                    /// Based the navigation last selection, change selection settings.
                     if Application.current.coordinator.coordinator.lastSelection == .tvShows {
                         navigationView.homeItemView.viewModel.isSelected = false
                         navigationView.tvShowsItemView.viewModel.isSelected = true
@@ -96,12 +110,15 @@ final class CategoriesOverlayViewViewModel {
                         navigationView.moviesItemView.viewModel.isSelected = true
                     }
                 } else {
+                    /// Reload a new view-controller instance.
                     Application.current.coordinator.replaceRootCoordinator()
                 }
-                
+                /// Store state to property.
                 Application.current.coordinator.coordinator.lastSelection = .home
             } else {
+                /// In-case the browser view has been presented.
                 if browseOverlay.viewModel.isPresented {
+                    /// Hide the view.
                     browseOverlay.viewModel.isPresented = false
                 }
             }
@@ -162,7 +179,6 @@ final class CategoriesOverlayViewViewModel {
                 navigationView.tvShowsItemView.viewModel.isSelected = false
                 
                 browseOverlayView.viewModel.isPresented = false
-                
             } else if case .movies = options {
                 if navigationView.viewModel.state.value == .movies { return }
                 navigationView.viewModel.state.value = .movies
