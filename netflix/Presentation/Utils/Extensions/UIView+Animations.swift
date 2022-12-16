@@ -20,13 +20,14 @@ extension UIView {
     func animateUsingSpring(withDuration duration: TimeInterval,
                             withDamping damping: CGFloat,
                             initialSpringVelocity velocity: CGFloat,
-                            animations: @escaping () -> Void) {
+                            animations: @escaping () -> Void,
+                            completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: duration,
                        delay: .zero,
                        usingSpringWithDamping: damping,
                        initialSpringVelocity: velocity,
                        animations: animations,
-                       completion: nil)
+                       completion: completion)
     }
 }
 

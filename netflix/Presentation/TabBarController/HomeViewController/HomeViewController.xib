@@ -9,7 +9,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="netflix" customModuleProvider="target">
             <connections>
-                <outlet property="browseOverlayBottomConstraint" destination="dKF-al-WCX" id="69e-Pi-Rqp"/>
                 <outlet property="browseOverlayViewContainer" destination="q4T-AG-HT6" id="DKN-T8-CZU"/>
                 <outlet property="navigationViewContainer" destination="nyl-1H-Naw" id="Hv6-Rm-0HU"/>
                 <outlet property="navigationViewTopConstraint" destination="1Es-kR-AxL" id="Kl0-zp-GMe"/>

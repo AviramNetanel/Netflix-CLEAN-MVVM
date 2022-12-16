@@ -22,7 +22,7 @@
 
 "HomeViewController.NavigationOverlayView.Home.Title" = "Home";
 "HomeViewController.NavigationOverlayView.MyList.Title" = "My List";
-"HomeViewController.NavigationOverlayView.Section.Title" = "Section";
+"HomeViewController.NavigationOverlayView.Action.Title" = "Action";
 "HomeViewController.NavigationOverlayView.SciFi.Title" = "Sci-Fi";
 "HomeViewController.NavigationOverlayView.Crime.Title" = "Crime";
 "HomeViewController.NavigationOverlayView.Thriller.Title" = "Thriller";

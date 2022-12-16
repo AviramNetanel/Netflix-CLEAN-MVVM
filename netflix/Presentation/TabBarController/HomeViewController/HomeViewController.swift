@@ -14,7 +14,6 @@ final class HomeViewController: UIViewController {
     @IBOutlet private(set) var navigationViewContainer: UIView!
     @IBOutlet private(set) var navigationViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private(set) var browseOverlayViewContainer: UIView!
-    @IBOutlet private(set) var browseOverlayBottomConstraint: NSLayoutConstraint!
     
     var viewModel: HomeViewModel!
     var navigationView: NavigationView!
@@ -58,7 +57,6 @@ final class HomeViewController: UIViewController {
     
     private func setupBrowseOverlayView() {
         browseOverlayView = BrowseOverlayView(on: browseOverlayViewContainer, with: viewModel)
-        browseOverlayViewContainer.isHidden(true)
     }
     
     func removeObservers() {

@@ -50,23 +50,39 @@ final class NavigationOverlayViewModel {
     
     func isPresentedDidChange() {
         guard let navigationOverlayView = coordinator.viewController?.navigationView?.navigationOverlayView else { return }
+        
         if case true = isPresented.value {
-            navigationOverlayView.isHidden(false)
-            navigationOverlayView.tableView.isHidden(false)
-            navigationOverlayView.footerView.isHidden(false)
-            navigationOverlayView.tabBar.isHidden(true)
+            navigationOverlayView.animateUsingSpring(
+                withDuration: 0.5,
+                withDamping: 1.0,
+                initialSpringVelocity: 0.5) {
+                    navigationOverlayView.alpha = 1.0
+                    navigationOverlayView.tableView.alpha = 1.0
+                    navigationOverlayView.footerView.alpha = 1.0
+                    navigationOverlayView.tabBar.alpha = 0.0
+                }
             
             itemsDidChange()
             return
         }
         
-        navigationOverlayView.isHidden(true)
-        navigationOverlayView.footerView.isHidden(true)
-        navigationOverlayView.tableView.isHidden(true)
-        navigationOverlayView.tabBar.isHidden(false)
+        navigationOverlayView.animateUsingSpring(
+            withDuration: 0.5,
+            withDamping: 1.0,
+            initialSpringVelocity: 0.5,
+            animations: {
+                navigationOverlayView.alpha = 0.0
+                navigationOverlayView.tableView.alpha = 0.0
+                navigationOverlayView.footerView.alpha = 0.0
+                navigationOverlayView.tabBar.alpha = 1.0
+            },
+            completion: { done in
+                if done {
+                    navigationOverlayView.tableView.delegate = nil
+                    navigationOverlayView.tableView.dataSource = nil
+                }
+            })
         
-        navigationOverlayView.tableView.delegate = nil
-        navigationOverlayView.tableView.dataSource = nil
     }
     
     /// The `NavigationView` designed to contain two phases for navigation methods.

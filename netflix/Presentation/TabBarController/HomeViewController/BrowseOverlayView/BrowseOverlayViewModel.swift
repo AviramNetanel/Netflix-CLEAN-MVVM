@@ -19,17 +19,27 @@ final class BrowseOverlayViewModel {
     }
     
     private func shouldDisplayOrHide() {
+        guard let homeViewController = coordinator.viewController else { return }
+        
         if isPresented {
-            coordinator.viewController!.navigationViewContainer.backgroundColor = .black
-            
-            coordinator.viewController?.browseOverlayViewContainer.isHidden(false)
-            coordinator.viewController?.browseOverlayBottomConstraint.constant = .zero
+            homeViewController.view.animateUsingSpring(
+                withDuration: 0.5,
+                withDamping: 1.0,
+                initialSpringVelocity: 0.7,
+                animations: {
+                    homeViewController.navigationViewContainer.backgroundColor = .black
+                    homeViewController.browseOverlayViewContainer.alpha = 1.0
+                })
             return
         }
         
-        coordinator.viewController!.navigationViewContainer.backgroundColor = .clear
-        
-        coordinator.viewController?.browseOverlayViewContainer.isHidden(true)
-        coordinator.viewController?.browseOverlayBottomConstraint.constant = coordinator.viewController!.browseOverlayViewContainer.bounds.size.height
+        homeViewController.view.animateUsingSpring(
+            withDuration: 0.5,
+            withDamping: 1.0,
+            initialSpringVelocity: 0.7,
+            animations: {
+                homeViewController.navigationViewContainer.backgroundColor = .clear
+                homeViewController.browseOverlayViewContainer.alpha = .zero
+            })
     }
 }
