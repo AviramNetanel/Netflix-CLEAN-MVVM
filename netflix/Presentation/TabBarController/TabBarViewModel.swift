@@ -10,5 +10,8 @@ import UIKit
 final class TabBarViewModel: ViewModel {
     var coordinator: TabBarCoordinator?
     
+    private(set) var tableViewState: Observable<HomeTableViewDataSource.State> = Observable(.all)
+    var lastSelection: NavigationView.State!
+    
     func transform(input: Void) {}
 }

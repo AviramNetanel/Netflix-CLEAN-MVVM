@@ -10,7 +10,7 @@ import UIKit
 final class Application {
     static let current = Application()
     
-    let coordinator = AppCoordinator()
+    let rootCoordinator = RootCoordinator()
     let configuration = AppConfiguration()
     let authService = AuthService()
     
@@ -21,13 +21,13 @@ final class Application {
     private init() {}
     
     func root(in window: UIWindow?) {
-        coordinator.window = window
+        rootCoordinator.window = window
         
         if authService.latestCachedUser != nil {
-            coordinator.showScreen(.tabBar)
+            rootCoordinator.showScreen(.tabBar)
             return
         }
-        coordinator.showScreen(.auth)
+        rootCoordinator.showScreen(.auth)
     }
     
     private func createDataTransferService() -> DataTransferService {

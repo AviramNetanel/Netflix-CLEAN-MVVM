@@ -78,10 +78,12 @@ final class NavigationOverlayViewModel {
     ///           to display other data (e.g. series, films or all).
     /// - Parameter state: corresponding navigation's state value.
     func navigationViewStateDidChange(_ state: NavigationView.State) {
-        guard let rootCoordinator = Application.current.coordinator as AppCoordinator?,
+        guard let rootCoordinator = Application.current.rootCoordinator as RootCoordinator?,
+              let tabCoordinator = Application.current.rootCoordinator.tabCoordinator,
               let homeViewController = coordinator.viewController,
               let navigationView = homeViewController.navigationView,
-              let browseOverlay = homeViewController.browseOverlayView else {
+              let browseOverlay = homeViewController.browseOverlayView,
+              var lastSelection = tabCoordinator.viewController?.viewModel.lastSelection ?? .home as NavigationView.State? else {
             return
         }
         
@@ -101,13 +103,13 @@ final class NavigationOverlayViewModel {
                     /// In-case `browseOverlayView` has been presented, hide it.
                     browseOverlay.viewModel.isPresented = false
                     /// Apply `NavigationView` state changes.
-                    navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection ?? .home)
+                    navigationView.viewModel.stateDidChange(lastSelection)
                     /// Based the navigation last selection, change selection settings.
-                    if rootCoordinator.coordinator.lastSelection == .tvShows {
+                    if tabCoordinator.viewController?.viewModel.lastSelection == .tvShows {
                         navigationView.homeItemView.viewModel.isSelected = false
                         navigationView.tvShowsItemView.viewModel.isSelected = true
                         navigationView.moviesItemView.viewModel.isSelected = false
-                    } else if Application.current.coordinator.coordinator.lastSelection == .movies {
+                    } else if lastSelection == .movies {
                         navigationView.homeItemView.viewModel.isSelected = false
                         navigationView.tvShowsItemView.viewModel.isSelected = false
                         navigationView.moviesItemView.viewModel.isSelected = true
@@ -120,7 +122,6 @@ final class NavigationOverlayViewModel {
                         /// In-case the browser view has been presented, hide it.
                         browseOverlay.viewModel.isPresented = false
                         /// Apply navigation view state changes.
-                        let lastSelection = Application.current.coordinator.coordinator.lastSelection!
                         navigationView.viewModel.stateDidChange(lastSelection)
                     } else {
                         /// Reload a new view-controller instance.
@@ -137,12 +138,11 @@ final class NavigationOverlayViewModel {
                 } else {
                     /// In-case the last selection is either set to both media types states (series and films).
                     /// Initiate re-coordination procedure, and reset `lastSelection` value to home state.
-                    if rootCoordinator.coordinator.lastSelection == .tvShows
-                        || rootCoordinator.coordinator.lastSelection == .movies {
+                    if lastSelection == .tvShows || lastSelection == .movies {
                         /// Re-coordinate with a new view-controller instance.
                         rootCoordinator.replaceRootCoordinator()
                         /// Reset to home state.
-                        rootCoordinator.coordinator.lastSelection = .home
+                        lastSelection = .home
                     } else {
                         /// Occurs once home state has been restored to the navigation view state,
                         /// and `browseOverlayView` view presentation is hidden.
@@ -151,7 +151,7 @@ final class NavigationOverlayViewModel {
                 }
             }
         case .tvShows:
-            rootCoordinator.coordinator.lastSelection = .tvShows
+            lastSelection = .tvShows
             
             if !navigationView.tvShowsItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false
@@ -164,7 +164,7 @@ final class NavigationOverlayViewModel {
                 isPresented.value = true
             }
         case .movies:
-            rootCoordinator.coordinator.lastSelection = .movies
+            lastSelection = .movies
             
             if !navigationView.moviesItemView.viewModel.isSelected {
                 navigationView.homeItemView.viewModel.isSelected = false

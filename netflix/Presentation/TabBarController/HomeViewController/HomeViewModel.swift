@@ -71,7 +71,7 @@ extension HomeViewModel {
         /// Invokes tableview presentation.
 //        let tabBar = Application.current.coordinator.viewController as? TabBarController
 //        print(0, tabBar?.viewModel.coordinator?.tableViewState.value)
-        Application.current.coordinator.coordinator.tableViewState.value = tableViewState
+        Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value = tableViewState
         /// Creates an instance of `MyList`.
         myList = MyList(with: self)
     }

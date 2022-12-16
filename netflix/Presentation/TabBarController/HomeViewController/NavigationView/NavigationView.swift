@@ -64,20 +64,7 @@ final class NavigationView: UIView, ViewInstantiable {
         
         self.navigationOverlayView = NavigationOverlayView(with: viewModel)
         
-        ///
-        if Application.current.coordinator.coordinator.tableViewState.value == .all {
-            self.homeItemView.viewModel.isSelected = true
-            self.viewModel.state.value = .home
-        } else if Application.current.coordinator.coordinator.tableViewState.value == .series {
-            Application.current.coordinator.coordinator.lastSelection = .tvShows
-            self.tvShowsItemView.viewModel.isSelected = true
-            self.viewModel.state.value = .tvShows
-        } else if Application.current.coordinator.coordinator.tableViewState.value == .films {
-            Application.current.coordinator.coordinator.lastSelection = .movies
-            self.moviesItemView.viewModel.isSelected = true
-            self.viewModel.state.value = .movies
-        }
-        
+        self.viewDidReconfigure()
         self.viewDidLoad()
     }
     
@@ -106,13 +93,29 @@ final class NavigationView: UIView, ViewInstantiable {
             locations: [0.0, 0.3, 1.0])
     }
     
-    fileprivate func viewDidLoad() {
+    private func viewDidLoad() {
         setupObservers()
         viewDidConfigure()
     }
     
-    fileprivate func viewDidConfigure() {
+    private func viewDidConfigure() {
         setupGradientView()
+    }
+    
+    private func viewDidReconfigure() {
+        /// Reconfigure the view once reinitialized.
+        if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .all {
+            self.homeItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .home
+        } else if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .series {
+            Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.lastSelection = .tvShows
+            self.tvShowsItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .tvShows
+        } else if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .films {
+            Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.lastSelection = .movies
+            self.moviesItemView.viewModel.isSelected = true
+            self.viewModel.state.value = .movies
+        }
     }
     
     func removeObservers() {

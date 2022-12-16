@@ -29,6 +29,7 @@ final class NavigationViewItemConfiguration: Configuration {
     }
     
     deinit {
+        item?.removeFromSuperview()
         item = nil
     }
     

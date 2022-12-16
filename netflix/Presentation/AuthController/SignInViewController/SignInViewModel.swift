@@ -22,7 +22,7 @@ final class SignInViewModel {
         let requestDTO = AuthRequestDTO(user: userDTO)
         
         let authService = Application.current.authService
-        let coordinator = Application.current.coordinator
+        let coordinator = Application.current.rootCoordinator
         
         viewModel.signIn(request: requestDTO.toDomain()) { result in
             if case let .success(responseDTO) = result {

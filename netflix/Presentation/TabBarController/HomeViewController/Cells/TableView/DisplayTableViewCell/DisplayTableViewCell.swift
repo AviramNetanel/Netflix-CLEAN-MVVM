@@ -24,5 +24,6 @@ final class DisplayTableViewCell: UITableViewCell {
     deinit {
         displayView?.removeFromSuperview()
         displayView = nil
+        removeFromSuperview()
     }
 }

@@ -21,7 +21,7 @@ final class SignUpViewModel {
     @objc
     func signUpButtonDidTap() {
         let authService = Application.current.authService
-        let coordinator = Application.current.coordinator
+        let coordinator = Application.current.rootCoordinator
         
         let userDTO = UserDTO(name: name,
                               email: email,
