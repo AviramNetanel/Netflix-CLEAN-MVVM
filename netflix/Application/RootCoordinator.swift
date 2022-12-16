@@ -87,7 +87,7 @@ final class RootCoordinator: Coordinate {
         
         tabCoordinator.viewController = nil
         tabBar?.viewModel.coordinator = nil
-        Application.current.rootCoordinator.viewController = nil
+        viewController = nil
         
         if navigationView?.viewModel.state.value == .home {
             self.tabBar(with: .all)

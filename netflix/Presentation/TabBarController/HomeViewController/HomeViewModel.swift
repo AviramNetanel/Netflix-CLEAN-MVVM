@@ -8,9 +8,7 @@
 import Foundation
 
 struct HomeViewModelActions {
-    let navigationViewDidAppear: () -> Void
     let presentMediaDetails: (Section, Media, Bool) -> Void
-    let reloadList: () -> Void
 }
 
 final class HomeViewModel: ViewModel {
@@ -67,11 +65,11 @@ extension HomeViewModel {
     
     fileprivate func viewDidLoad() {
         /// Invokes navigation bar presentation.
-        actions?.navigationViewDidAppear()
+        let navigationViewModel = coordinator?.viewController?.navigationView.viewModel
+        navigationViewModel?.actions.navigationViewDidAppear()
         /// Invokes tableview presentation.
-//        let tabBar = Application.current.coordinator.viewController as? TabBarController
-//        print(0, tabBar?.viewModel.coordinator?.tableViewState.value)
-        Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value = tableViewState
+        let tabBarViewModel = Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel
+        tabBarViewModel?.tableViewState.value = tableViewState
         /// Creates an instance of `MyList`.
         myList = MyList(with: self)
     }

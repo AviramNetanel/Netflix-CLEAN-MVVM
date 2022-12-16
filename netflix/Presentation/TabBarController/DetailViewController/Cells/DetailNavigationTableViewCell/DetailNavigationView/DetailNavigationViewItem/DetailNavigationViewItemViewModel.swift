@@ -14,9 +14,9 @@ final class DetailNavigationViewItemViewModel {
     var title: String {
         guard let tag = DetailNavigationView.State(rawValue: tag) else { fatalError() }
         switch tag {
-        case .episodes: return "Episodes"
-        case .trailers: return "Trailers"
-        case .similarContent: return "Similar Content"
+        case .episodes: return Localization.TabBar.Detail.Navigation().leadingItem
+        case .trailers: return Localization.TabBar.Detail.Navigation().centerItem
+        case .similarContent: return Localization.TabBar.Detail.Navigation().trailingItem
         }
     }
     

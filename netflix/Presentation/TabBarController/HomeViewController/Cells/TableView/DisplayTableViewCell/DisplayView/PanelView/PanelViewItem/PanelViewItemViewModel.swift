@@ -19,8 +19,10 @@ final class PanelViewItemViewModel {
     }
     
     var title: String {
-        let leading = "My List"
-        let trailing = "Info"
+        let leadingTitle = Localization.TabBar.Home.Panel().leadingTitle
+        let trailingTitle = Localization.TabBar.Home.Panel().trailingTitle
+        let leading = leadingTitle
+        let trailing = trailingTitle
         return tag == 0 ? leading : trailing
     }
     

@@ -94,26 +94,28 @@ extension NavigationOverlayView {
     }
     
     private func items(in viewModel: NavigationOverlayViewModel) {
-        viewModel.items.observe(on: self) { [weak self] _ in self?.viewModel.dataSourceDidChange() }
+        viewModel.items.observe(on: self) { [weak self] _ in
+            self?.viewModel.dataSourceDidChange()
+        }
     }
 }
 
 extension NavigationOverlayView.Category: Valuable {
     var stringValue: String {
         switch self {
-        case .home: return "Home"
-        case .myList: return "My List"
-        case .action: return "Action"
-        case .sciFi: return "Sci-Fi"
-        case .crime: return "Crime"
-        case .thriller: return "Thriller"
-        case .adventure: return "Adventure"
-        case .comedy: return "Comedy"
-        case .drama: return "Drama"
-        case .horror: return "Horror"
-        case .anime: return "Anime"
-        case .familyNchildren: return "Family & Children"
-        case .documentary: return "Documentary"
+        case .home: return Localization.TabBar.Home.Navigation.Overlay().home
+        case .myList: return Localization.TabBar.Home.Navigation.Overlay().myList
+        case .action: return Localization.TabBar.Home.Navigation.Overlay().action
+        case .sciFi: return Localization.TabBar.Home.Navigation.Overlay().sciFi
+        case .crime: return Localization.TabBar.Home.Navigation.Overlay().crime
+        case .thriller: return Localization.TabBar.Home.Navigation.Overlay().thriller
+        case .adventure: return Localization.TabBar.Home.Navigation.Overlay().adventure
+        case .comedy: return Localization.TabBar.Home.Navigation.Overlay().comedy
+        case .drama: return Localization.TabBar.Home.Navigation.Overlay().drama
+        case .horror: return Localization.TabBar.Home.Navigation.Overlay().horror
+        case .anime: return Localization.TabBar.Home.Navigation.Overlay().anime
+        case .familyNchildren: return Localization.TabBar.Home.Navigation.Overlay().familyNchildren
+        case .documentary: return Localization.TabBar.Home.Navigation.Overlay().documentary
         }
     }
 }

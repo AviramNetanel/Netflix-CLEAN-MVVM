@@ -7,31 +7,10 @@
 
 import UIKit
 
-//// MARK: - ViewInput protocol
-//
-//private protocol ViewInput {
-//    func viewDidConfigure(at index: Int, with viewModel: HomeViewModel)
-//}
-//
-//// MARK: - ViewOutput protocol
-//
-//private protocol ViewOutput {
-//    var viewModel: TableViewHeaderFooterViewViewModel { get }
-//}
-//
-//// MARK: - View typealias
-//
-//private typealias View = ViewInput & ViewOutput
-
-extension UITableViewHeaderFooterView: ViewInstantiable {}
-
-// MARK: - TableViewHeaderFooterView class
-
 final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
-    
     var viewModel: TableViewHeaderFooterViewViewModel!
     
-    fileprivate lazy var titleLabel = createLabel()
+    private lazy var titleLabel = createLabel()
     
     init(for section: Int, with viewModel: HomeViewModel) {
         super.init(reuseIdentifier: String(describing: TableViewHeaderFooterView.reuseIdentifier))
@@ -51,7 +30,7 @@ final class TableViewHeaderFooterView: UITableViewHeaderFooterView {
         return label
     }
     
-    fileprivate func viewDidConfigure(at index: Int, with homeViewModel: HomeViewModel) {
+    private func viewDidConfigure(at index: Int, with homeViewModel: HomeViewModel) {
         backgroundView = .init()
         backgroundView?.backgroundColor = .black
         

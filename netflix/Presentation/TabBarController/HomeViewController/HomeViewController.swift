@@ -62,9 +62,10 @@ final class HomeViewController: UIViewController {
     }
     
     func removeObservers() {
-        if let viewModel = viewModel {
+        if let viewModel = viewModel,
+           let tabBarViewModel = Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel {
             printIfDebug("Removed `HomeViewModel` observers.")
-            Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.remove(observer: self)
+            tabBarViewModel.tableViewState.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
     }
@@ -83,6 +84,25 @@ final class HomeViewController: UIViewController {
         
         removeObservers()
         removeFromParent()
+    }
+}
+
+extension HomeViewController {
+    private func tableViewState(in viewModel: HomeViewModel) {
+        guard let tabBar = Application.current.rootCoordinator.viewController as? TabBarController,
+              let tabBarViewModel = tabBar.viewModel else {
+            return
+        }
+        tabBarViewModel.tableViewState.observe(on: self) { [weak self] state in
+            self?.setupDataSource()
+        }
+    }
+    
+    private func presentedDisplayMedia(in viewModel: HomeViewModel) {
+        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] media in
+            guard let media = media else { return }
+            self!.navigationView.navigationOverlayView.opaqueView.viewModelDidUpdate(with: media)
+        }
     }
 }
 
@@ -114,21 +134,5 @@ extension HomeViewController {
         let section = viewModel.sections[section]
         let media = section.media[row]
         viewModel.actions?.presentMediaDetails(section, media, false)
-    }
-}
-
-extension HomeViewController {
-    private func tableViewState(in viewModel: HomeViewModel) {
-        let tabBar = Application.current.rootCoordinator.viewController as? TabBarController
-        tabBar?.viewModel.coordinator?.viewController?.viewModel.tableViewState.observe(on: self) { [weak self] state in
-            self?.setupDataSource()
-        }
-    }
-    
-    private func presentedDisplayMedia(in viewModel: HomeViewModel) {
-        viewModel.presentedDisplayMedia.observe(on: self) { [weak self] media in
-            guard let media = media else { return }
-            self!.navigationView.navigationOverlayView.opaqueView.viewModelDidUpdate(with: media)
-        }
     }
 }

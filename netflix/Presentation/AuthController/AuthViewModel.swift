@@ -32,7 +32,6 @@ final class AuthViewModel: ViewModel {
 }
 
 extension AuthViewModel {
-    
     func signUp(request: AuthRequest,
                 completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
         task = useCase.execute(

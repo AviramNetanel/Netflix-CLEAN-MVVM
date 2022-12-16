@@ -23,7 +23,17 @@ final class MyListViewModel {
         self.user = Application.current.authService.user ?? .init()
         self.homeUseCase = viewModel.useCase
         self.section = viewModel.section(at: .myList)
-        self.actions = MyListActions(listDidReload: viewModel.actions.reloadList)
+        self.actions = MyListActions(
+            listDidReload: {
+                guard
+                    viewModel.coordinator!.viewController!.tableView.numberOfSections > 0,
+                    let myListIndex = HomeTableViewDataSource.Index(rawValue: 6),
+                    let section = viewModel.coordinator!.viewController?.viewModel?.section(at: .myList)
+                else { return }
+                viewModel.coordinator!.viewController?.viewModel?.filter(section: section)
+                let index = IndexSet(integer: myListIndex.rawValue)
+                viewModel.coordinator!.viewController?.tableView.reloadSections(index, with: .automatic)
+            })
     }
     
     deinit {

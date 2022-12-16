@@ -55,9 +55,10 @@ final class TabBarCoordinator: Coordinate {
     }
     
     private func setupNavigation(_ controller: UINavigationController) {
-        controller.tabBarItem = UITabBarItem(title: "Home",
-                                             image: UIImage(systemName: "house.fill")?.whiteRendering(),
-                                             tag: 0)
+        let title = Localization.TabBar.Coordinator().tabBarButtonTitle
+        let image = UIImage(systemName: "house.fill")?.whiteRendering()
+        
+        controller.tabBarItem = UITabBarItem(title: title, image: image, tag: 0)
         controller.tabBarItem.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12.0, weight: .bold)], for: .normal)
@@ -66,6 +67,7 @@ final class TabBarCoordinator: Coordinate {
     
     func requestUserCredentials(_ state: NavigationView.State?) {
         let viewModel = AuthViewModel()
+        
         viewModel.cachedAuthorizationSession { [weak self] in
             self?.createHomeNavigationController(with: state)
         }

@@ -51,13 +51,7 @@ final class NavigationView: UIView, ViewInstantiable {
         let items: [NavigationViewItem] = [self.homeItemView, self.airPlayItemView,
                                            self.accountItemView, self.tvShowsItemView,
                                            self.moviesItemView, self.categoriesItemView]
-        let actions = NavigationViewViewModelActions(
-            stateDidChange: { state in
-                let navigation = viewModel.coordinator?.viewController?.navigationView
-                navigation?.viewModel.stateDidChange(state)
-                navigation?.navigationOverlayView.viewModel.navigationViewStateDidChange(state)
-            })
-        self.viewModel = NavigationViewViewModel(items: items, actions: actions, with: viewModel)
+        self.viewModel = NavigationViewViewModel(items: items, actions: self.actions(), with: viewModel)
         
         /// Updates root coordinator's `navigationView` property.
         viewModel.coordinator?.viewController?.navigationView = self
@@ -104,18 +98,30 @@ final class NavigationView: UIView, ViewInstantiable {
     
     private func viewDidReconfigure() {
         /// Reconfigure the view once reinitialized.
-        if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .all {
+        let tabBarViewModel = Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel
+        if tabBarViewModel?.tableViewState.value == .all {
             self.homeItemView.viewModel.isSelected = true
             self.viewModel.state.value = .home
-        } else if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .series {
-            Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.lastSelection = .tvShows
+        } else if tabBarViewModel?.tableViewState.value == .series {
+            tabBarViewModel?.lastSelection = .tvShows
             self.tvShowsItemView.viewModel.isSelected = true
             self.viewModel.state.value = .tvShows
-        } else if Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.tableViewState.value == .films {
-            Application.current.rootCoordinator.tabCoordinator.viewController?.viewModel.lastSelection = .movies
+        } else if tabBarViewModel?.tableViewState.value == .films {
+            tabBarViewModel?.lastSelection = .movies
             self.moviesItemView.viewModel.isSelected = true
             self.viewModel.state.value = .movies
         }
+    }
+    
+    private func actions() -> NavigationViewViewModelActions {
+        return NavigationViewViewModelActions(
+            navigationViewDidAppear: { [weak self] in
+                self?.viewModel?.navigationViewDidAppear()
+            },
+            stateDidChange: { [weak self] state in
+                self?.viewModel.stateDidChange(state)
+                self?.navigationOverlayView.viewModel.navigationViewStateDidChange(state)
+            })
     }
     
     func removeObservers() {
@@ -127,11 +133,12 @@ final class NavigationView: UIView, ViewInstantiable {
 extension NavigationView.State: Valuable {
     var stringValue: String {
         switch self {
-        case .home: return "Home"
-        case .tvShows: return "TV Shows"
-        case .movies: return "Movies"
-        case .categories: return "Categories"
-        default: return .init()
+        case .home: return Localization.TabBar.Home.Navigation().home
+        case .tvShows: return Localization.TabBar.Home.Navigation().tvShows
+        case .movies: return Localization.TabBar.Home.Navigation().movies
+        case .categories: return Localization.TabBar.Home.Navigation().categories
+        case .airPlay: return Localization.TabBar.Home.Navigation().airPlay
+        case .account: return Localization.TabBar.Home.Navigation().account
         }
     }
 }

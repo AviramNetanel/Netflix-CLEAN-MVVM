@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  netflix
+
+  Created by Zach Bazov on 16/12/2022.
+  
+*/
+
+"LandpageViewController.BarButton.Title" = "Sign In";
+
+"TabBarCoordinator.TabBarItem.Title" = "Home";
+
+"HomeViewController.PanelViewItem.Leading.Title" = "My List";
+"HomeViewController.PanelViewItem.Trailing.Title" = "Info";
+
+"HomeViewController.NavigationView.Home.Title" = "Home";
+"HomeViewController.NavigationView.TVShows.Title" = "TV Shows";
+"HomeViewController.NavigationView.Movies.Title" = "Movies";
+"HomeViewController.NavigationView.Categories.Title" = "Categories";
+"HomeViewController.NavigationView.AirPlay.Title" = "Air Play";
+"HomeViewController.NavigationView.Account.Title" = "Account";
+
+"HomeViewController.NavigationOverlayView.Home.Title" = "Home";
+"HomeViewController.NavigationOverlayView.MyList.Title" = "My List";
+"HomeViewController.NavigationOverlayView.Section.Title" = "Section";
+"HomeViewController.NavigationOverlayView.SciFi.Title" = "Sci-Fi";
+"HomeViewController.NavigationOverlayView.Crime.Title" = "Crime";
+"HomeViewController.NavigationOverlayView.Thriller.Title" = "Thriller";
+"HomeViewController.NavigationOverlayView.Adventure.Title" = "Adventure";
+"HomeViewController.NavigationOverlayView.Comedy.Title" = "Comedy";
+"HomeViewController.NavigationOverlayView.Drama.Title" = "Drama";
+"HomeViewController.NavigationOverlayView.Horror.Title" = "Horror";
+"HomeViewController.NavigationOverlayView.Anime.Title" = "Anime";
+"HomeViewController.NavigationOverlayView.FamilyNChildren.Title" = "Family & Children";
+"HomeViewController.NavigationOverlayView.Documentary.Title" = "Documentary";
+
+"DetailViewController.PanelViewItem.Leading.Title" = "My List";
+"DetailViewController.PanelViewItem.Center.Title" = "Rate";
+"DetailViewController.PanelViewItem.Trailing.Title" = "Share";
+
+"DetailViewController.NavigationViewItem.Leading.Title" = "Episodes";
+"DetailViewController.NavigationViewItem.Center.Title" = "Trailers";
+"DetailViewController.NavigationViewItem.Trailing.Title" = "Similar Content";

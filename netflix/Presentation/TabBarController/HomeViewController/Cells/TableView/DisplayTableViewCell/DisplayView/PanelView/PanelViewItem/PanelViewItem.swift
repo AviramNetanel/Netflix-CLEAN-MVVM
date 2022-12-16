@@ -90,7 +90,6 @@ final class PanelViewItemConfiguration: Configuration {
         view.imageView.image = .init(systemName: viewModel.systemImage)
         view.titleLabel.text = viewModel.title
         
-        
         selectIfNeeded()
     }
     

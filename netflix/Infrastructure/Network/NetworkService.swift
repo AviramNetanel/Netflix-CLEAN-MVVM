@@ -69,12 +69,12 @@ struct NetworkService {
                 self.logger.log(error: error)
                 completion(.failure(error))
             } else {
-//                self.logger.log(responseData: data, response: response)
+                self.logger.log(responseData: data, response: response)
                 completion(.success(data))
             }
         }
         
-//        logger.log(request: request)
+        logger.log(request: request)
         
         return sessionDataTask
     }

@@ -24,6 +24,7 @@ final class HomeViewCoordinator: Coordinate {
         controller.viewModel.coordinator = DetailViewCoordinator()
         controller.viewModel.coordinator?.viewController = controller
         controller.viewModel.isRotated = rotated
+        
         let navigation = UINavigationController(rootViewController: controller)
         navigation.setNavigationBarHidden(true, animated: false)
         
@@ -32,26 +33,8 @@ final class HomeViewCoordinator: Coordinate {
     
     func actions() -> HomeViewModelActions {
         return HomeViewModelActions(
-            navigationViewDidAppear: { [weak self] in
-                self?.viewController?.navigationViewTopConstraint.constant = 0.0
-                self?.viewController?.navigationView.alpha = 1.0
-                self?.viewController?.view.animateUsingSpring(withDuration: 0.66,
-                                                              withDamping: 1.0,
-                                                              initialSpringVelocity: 1.0)
-                
-            }, presentMediaDetails: { [weak self] section, media, rotated in
+            presentMediaDetails: { [weak self] section, media, rotated in
                 self?.presentMediaDetails(in: section, for: media, shouldScreenRoatate: rotated)
-                
-            }, reloadList: { [weak self] in
-                guard
-                    let self = self,
-                    self.viewController!.tableView.numberOfSections > 0,
-                    let myListIndex = HomeTableViewDataSource.Index(rawValue: 6),
-                    let section = self.viewController?.viewModel?.section(at: .myList)
-                else { return }
-                self.viewController?.viewModel?.filter(section: section)
-                let index = IndexSet(integer: myListIndex.rawValue)
-                self.viewController?.tableView.reloadSections(index, with: .automatic)
             })
     }
 }

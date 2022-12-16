@@ -24,9 +24,9 @@ final class DetailPanelViewItemViewModel {
     var title: String {
         guard let tag = DetailPanelViewItemConfiguration.Item(rawValue: tag) else { fatalError() }
         switch tag {
-        case .myList: return "My List"
-        case .rate: return "Rate"
-        case .share: return "Share"
+        case .myList: return Localization.TabBar.Detail.Panel().leadingItem
+        case .rate: return Localization.TabBar.Detail.Panel().centerItem
+        case .share: return Localization.TabBar.Detail.Panel().trailingItem
         }
     }
     

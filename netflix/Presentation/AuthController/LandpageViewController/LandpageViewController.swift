@@ -33,7 +33,8 @@ final class LandpageViewController: UIViewController {
     }
     
     private func setupNavigationBarButtonItem() {
-        let button = UIBarButtonItem(title: "Sign In",
+        let string = Localization.Auth.Landpage().signInBarButton
+        let button = UIBarButtonItem(title: string,
                                      style: .plain,
                                      target: viewModel.coordinator,
                                      action: #selector(viewModel.coordinator!.presentSignIn))

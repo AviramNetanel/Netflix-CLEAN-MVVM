@@ -8,6 +8,7 @@
 import Foundation
 
 struct NavigationViewViewModelActions {
+    let navigationViewDidAppear: () -> Void
     let stateDidChange: (NavigationView.State) -> Void
 }
 
@@ -24,6 +25,13 @@ final class NavigationViewViewModel {
         self.state = Observable(.home)
         self.actions = actions
         self.items = items
+    }
+    
+    func navigationViewDidAppear() {
+        let homeViewController = coordinator.viewController!
+        homeViewController.navigationViewTopConstraint.constant = 0.0
+        homeViewController.navigationView.alpha = 1.0
+        homeViewController.view.animateUsingSpring(withDuration: 0.66, withDamping: 1.0, initialSpringVelocity: 1.0)
     }
     
     func stateDidChange(_ state: NavigationView.State) {
