@@ -31,8 +31,6 @@ final class PanelView: UIView, ViewInstantiable {
     
     deinit {
         removeObservers()
-        leadingItemView?.viewModel = nil
-        trailingItemView?.viewModel = nil
         leadingItemView?.removeFromSuperview()
         trailingItemView?.removeFromSuperview()
         leadingItemView = nil

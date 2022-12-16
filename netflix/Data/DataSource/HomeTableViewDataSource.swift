@@ -115,6 +115,13 @@ final class HomeTableViewDataSource: NSObject, DataSource {
         tableView.dataSource = self
         tableView.reloadData()
     }
+    
+//    func terminate() {
+//        tableView.removeFromSuperview()
+//        tableView.delegate = nil
+//        tableView.dataSource = nil
+//        tableView = nil
+//    }
 }
 
 extension HomeTableViewDataSource: UITableViewDelegate, UITableViewDataSource {

@@ -87,6 +87,7 @@ final class NavigationView: UIView, ViewInstantiable {
         removeObservers()
         navigationOverlayView?.removeFromSuperview()
         navigationOverlayView = nil
+        viewModel = nil
     }
     
     private func setupObservers() {

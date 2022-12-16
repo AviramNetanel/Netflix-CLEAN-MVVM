@@ -69,6 +69,7 @@ final class DisplayView: UIView, ViewInstantiable {
     }
     
     deinit {
+        panelView?.removeFromSuperview()
         panelView = nil
         configuration = nil
         viewModel = nil

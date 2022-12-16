@@ -21,17 +21,6 @@ final class HomeViewController: UIViewController {
     var browseOverlayView: BrowseOverlayView!
     var dataSource: HomeTableViewDataSource!
     
-    deinit {
-        browseOverlayView?.removeFromSuperview()
-        navigationView?.removeFromSuperview()
-        tableView?.removeFromSuperview()
-        removeObservers()
-        browseOverlayView = nil
-        navigationView = nil
-        dataSource = nil
-        viewModel = nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBehaviors()
@@ -56,18 +45,14 @@ final class HomeViewController: UIViewController {
         presentedDisplayMedia(in: viewModel)
     }
     
-    func removeCoordinator() {
-        viewModel?.coordinator = nil
-    }
-    
-    func setupDataSource() {
+    private func setupDataSource() {
         /// Filters the sections based on the data source state.
         viewModel.filter(sections: viewModel.sections)
         /// Initializes the data source.
         dataSource = HomeTableViewDataSource(tableView: tableView, viewModel: viewModel)
     }
     
-    func setupNavigationView() {
+    private func setupNavigationView() {
         navigationView = NavigationView(on: navigationViewContainer, with: viewModel)
     }
     
@@ -82,6 +67,22 @@ final class HomeViewController: UIViewController {
             Application.current.coordinator.coordinator.tableViewState.remove(observer: self)
             viewModel.presentedDisplayMedia.remove(observer: self)
         }
+    }
+    
+    func terminate() {
+        navigationView.removeFromSuperview()
+        navigationView = nil
+
+        browseOverlayView.removeFromSuperview()
+        browseOverlayView = nil
+        
+        viewModel.myList.removeObservers()
+        viewModel.coordinator = nil
+        viewModel.myList = nil
+        viewModel = nil
+        
+        removeObservers()
+        removeFromParent()
     }
 }
 

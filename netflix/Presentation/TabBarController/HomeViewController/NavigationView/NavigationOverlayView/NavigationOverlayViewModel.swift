@@ -120,7 +120,8 @@ final class NavigationOverlayViewModel {
                         /// In-case the browser view has been presented, hide it.
                         browseOverlay.viewModel.isPresented = false
                         /// Apply navigation view state changes.
-                        navigationView.viewModel.stateDidChange(Application.current.coordinator.coordinator.lastSelection)
+                        let lastSelection = Application.current.coordinator.coordinator.lastSelection!
+                        navigationView.viewModel.stateDidChange(lastSelection)
                     } else {
                         /// Reload a new view-controller instance.
                         rootCoordinator.replaceRootCoordinator()
@@ -136,7 +137,8 @@ final class NavigationOverlayViewModel {
                 } else {
                     /// In-case the last selection is either set to both media types states (series and films).
                     /// Initiate re-coordination procedure, and reset `lastSelection` value to home state.
-                    if rootCoordinator.coordinator.lastSelection == .tvShows || rootCoordinator.coordinator.lastSelection == .movies {
+                    if rootCoordinator.coordinator.lastSelection == .tvShows
+                        || rootCoordinator.coordinator.lastSelection == .movies {
                         /// Re-coordinate with a new view-controller instance.
                         rootCoordinator.replaceRootCoordinator()
                         /// Reset to home state.

@@ -103,21 +103,6 @@ final class AppCoordinator: Coordinate {
         let homeViewController = homeNavigation.viewControllers.first! as? HomeViewController
         let navigationView = homeViewController?.navigationView!
         
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.tapRecognizer = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.longPressRecognizer = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration?.view = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.configuration = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.viewModel = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView?.removeFromSuperview()
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.leadingItemView = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration.longPressRecognizer = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration.tapRecognizer = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration?.view = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.configuration = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.viewModel = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView?.removeFromSuperview()
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.trailingItemView = nil
-        homeViewController?.dataSource?.displayCell?.displayView?.panelView?.viewModel = nil
         homeViewController?.dataSource?.displayCell?.displayView?.panelView?.removeFromSuperview()
         homeViewController?.dataSource?.displayCell?.displayView?.panelView = nil
         homeViewController?.dataSource?.displayCell?.displayView?.configuration = nil

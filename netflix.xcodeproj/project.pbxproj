@@ -161,7 +161,7 @@
 		A1B68F2E2923DF2300FF5F18 /* Set+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B68F2D2923DF2300FF5F18 /* Set+Extension.swift */; };
 		A1B70A6F293D578200C718C6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A6E293D578200C718C6 /* View.swift */; };
 		A1B70A71293D578600C718C6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A70293D578600C718C6 /* ViewModel.swift */; };
-		A1B70A73293D6DC500C718C6 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A72293D6DC500C718C6 /* AppCoordinator.swift */; };
+		A1B70A73293D6DC500C718C6 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A72293D6DC500C718C6 /* RootCoordinator.swift */; };
 		A1B70A75293D76EB00C718C6 /* HomeViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A74293D76EB00C718C6 /* HomeViewCoordinator.swift */; };
 		A1B70A77293D77BA00C718C6 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A76293D77BA00C718C6 /* TabBarCoordinator.swift */; };
 		A1B70A79293D780100C718C6 /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B70A78293D780100C718C6 /* TabBarViewModel.swift */; };
@@ -380,7 +380,7 @@
 		A1B68F2D2923DF2300FF5F18 /* Set+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extension.swift"; sourceTree = "<group>"; };
 		A1B70A6E293D578200C718C6 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		A1B70A70293D578600C718C6 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		A1B70A72293D6DC500C718C6 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		A1B70A72293D6DC500C718C6 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		A1B70A74293D76EB00C718C6 /* HomeViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCoordinator.swift; sourceTree = "<group>"; };
 		A1B70A76293D77BA00C718C6 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		A1B70A78293D780100C718C6 /* TabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
@@ -626,7 +626,6 @@
 				A1B70A80293D8E7300C718C6 /* HomeViewController.xib */,
 				A1E81D1028CFE2B300D044EA /* Cells */,
 				A1AD25C328D4D25400F793B3 /* NavigationView */,
-				A1BA1DAA28D9D3D500730EA8 /* NavigationOverlayView */,
 				A18D851A29403CD100840045 /* BrowseOverlayView */,
 			);
 			path = HomeViewController;
@@ -757,7 +756,7 @@
 				A1B70A7A293D7B7000C718C6 /* Application.swift */,
 				A18B991628BEBD040077A5A6 /* AppConfiguration.swift */,
 				A1F56A5B28C668100089BD4F /* AppAppearance.swift */,
-				A1B70A72293D6DC500C718C6 /* AppCoordinator.swift */,
+				A1B70A72293D6DC500C718C6 /* RootCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -1162,6 +1161,7 @@
 				A1AD25CF28D6D31000F793B3 /* NavigationViewViewModel.swift */,
 				A1AD25C628D55DF300F793B3 /* NavigationView.xib */,
 				A1AD25CE28D56BD100F793B3 /* NavigationViewItem */,
+				A1BA1DAA28D9D3D500730EA8 /* NavigationOverlayView */,
 			);
 			path = NavigationView;
 			sourceTree = "<group>";
@@ -1486,7 +1486,7 @@
 				A1B70A8A293E5E0400C718C6 /* Coordinate.swift in Sources */,
 				A1AD25BE28D3FC1200F793B3 /* UITableViewHeaderFooterView+Reusable.swift in Sources */,
 				A1AE02D1293BA29A00AF0BD6 /* DeviceOrientation.swift in Sources */,
-				A1B70A73293D6DC500C718C6 /* AppCoordinator.swift in Sources */,
+				A1B70A73293D6DC500C718C6 /* RootCoordinator.swift in Sources */,
 				A1AA28D428F590B30011EE9D /* EpisodeCollectionViewCell.swift in Sources */,
 				A18B997828C020FC0077A5A6 /* NetworkService.swift in Sources */,
 				A127C1E228DD00F100CEE34F /* NavigationOverlayFooterView.swift in Sources */,

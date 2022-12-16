@@ -54,6 +54,7 @@ final class PanelViewItemConfiguration: Configuration {
     }
     
     deinit {
+        view?.removeFromSuperview()
         view = nil
         tapRecognizer = nil
         longPressRecognizer = nil
@@ -143,11 +144,8 @@ final class PanelViewItem: UIView, ViewInstantiable {
     required init?(coder: NSCoder) { fatalError() }
     
     deinit {
-        configuration?.tapRecognizer = nil
-        configuration?.longPressRecognizer = nil
-        configuration?.view = nil
+        configuration.view = nil
         configuration = nil
-        viewModel?.media = nil
         viewModel = nil
     }
 }
