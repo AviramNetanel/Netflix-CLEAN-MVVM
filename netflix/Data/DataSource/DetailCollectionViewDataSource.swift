@@ -57,8 +57,14 @@ final class DetailCollectionViewDataSource<T>: NSObject,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let media = items[indexPath.row] as! Media
         let coordinator = viewModel.coordinator!
-        coordinator.presentDetails(for: media)
+        if case .episodes = viewModel.navigationViewState.value {
+            ///
+        } else if case .trailers = viewModel.navigationViewState.value {
+            ///
+        } else {
+            let media = items[indexPath.row] as! Media
+            coordinator.presentDetails(for: media)
+        }
     }
 }
